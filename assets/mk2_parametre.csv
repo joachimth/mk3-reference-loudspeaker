@@ -1,0 +1,20 @@
+Parameter,Værdi
+Kabinet højde,1050 mm
+Kabinet bredde,300 mm konstant
+Kabinet form,lige taarn med rundinger >=25 mm
+Dybde,370 mm
+Materiale,22 mm birkefiner (foretrukket) eller MDF
+Basvolumen,"ca. 64 L netto, lukket (84 L brutto)"
+Bas-alignment,Qtc ca. 0.75 / Fc ca. 54 Hz (Vas 94 L x2)
+Midkammer,"5-6 L lukket, kraftigt dæmpet, isoleret"
+Waveguide profil,OS (oblate spheroid) + rullet mund
+Waveguide coverage,ca. 100 grader H / 64 grader V
+Waveguide mund,211.7 x 121.0 mm
+Waveguide dybde,75 mm (65 OS + 10 roundover)
+Waveguide throat,28 mm (tilpasses H2606)
+Horisontal pattern-kontrol,ned til ca. 1620 Hz
+Diskant/mid centerafstand,160 mm
+Mid/diskant deling,ca. 1600 Hz LR4 (sættes endeligt af måling)
+Bas/mid deling,180 Hz LR4
+Sidebas center,310 mm fra bund
+Forventet on-axis,ca. +/-1 til 1.5 dB 100 Hz-10 kHz efter måling
