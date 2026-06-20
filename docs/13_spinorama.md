@@ -1,5 +1,11 @@
 # Chapter 13 - Spinorama
 
+> **Note:** All spinorama and directivity-index curves discussed for the Mk2 in
+> this repository are **simplified power-response estimates from simulation, not
+> CEA-2034 data measured on a turntable.** They indicate design direction only;
+> the true spinorama can only come from gated anechoic/quasi-anechoic
+> measurements of the finished speaker (see [Chapter 15](15_measurements.md)).
+
 ---
 
 ## What is a spinorama?

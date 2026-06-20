@@ -32,7 +32,7 @@ The ScanSpeak Illuminator 15W/4434G00 is the midrange driver selected for this p
 | Nominal diameter | 15 cm (6 inch) |
 | Re | ~5.6 Ω |
 | Fs | ~55 Hz |
-| Sensitivity | ~88 dB / 2.83V / 1m |
+| Sensitivity | ~89.7 dB / 2.83V / 1m |
 | Xmax | ~7 mm |
 | Sd | ~107 cm² |
 

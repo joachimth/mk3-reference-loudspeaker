@@ -120,7 +120,7 @@ The driver's Fs of 1030 Hz means the 1250 Hz crossover is 220 Hz above resonance
 
 ## Consequence
 
-The WG212 throat diameter must be designed specifically for the H2606/920000 dome and surround geometry. The high sensitivity (95.2 dB) requires approximately 7 dB of DSP attenuation relative to the midrange channel. The final crossover frequency must be validated by distortion measurements of the H2606/920000 in the actual printed waveguide.
+The WG212 throat diameter must be designed specifically for the H2606/920000 dome and surround geometry. The high sensitivity (95.2 dB) requires roughly 5 to 7 dB of DSP attenuation relative to the midrange channel (~89.7 dB), finalised from measurement. The final crossover frequency must be validated by distortion measurements of the H2606/920000 in the actual printed waveguide.
 
 ---
 

@@ -31,6 +31,11 @@ The latest simplified spinorama/directivity simulations suggest that lowering th
   description (Chapter 11). Design numbers (Qtc ~0.62 / Fc ~34.5 Hz) are unchanged.
 - Registered the **SB23 line** as a parallel alternative variant (see `ROADMAP.md`
   and `assets/`). The v6b GRS spec is unchanged.
+- Minor data polish (REVIEW §D): midrange sensitivity corrected ~88 → ~89.7 dB
+  with the tweeter pad widened to ~5-7 dB (measurement-dependent); deep-GRS driver
+  displacement raised ~1.5 → ~5 L for the pair (net bass still ~70 L); added a
+  4 Ω-vs-8 Ω impedance-confirmation note (Chapter 3) and a "simulated, not
+  CEA-2034" banner to Chapter 13.
 
 ## v6 - Directivity optimization
 
