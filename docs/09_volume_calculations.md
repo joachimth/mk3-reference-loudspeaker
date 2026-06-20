@@ -28,19 +28,30 @@ These two volumes must be designed independently. The mid chamber is fully seale
 | Vas | ~31.7 L | Equivalent pair: see below |
 | Qts | ~0.45 | ~0.45 (unchanged) |
 
-For two identical sealed drivers in the same enclosure, the system behavior is equivalent to a single driver with double the moving mass and double the Sd, and the Vas of the equivalent driver is half the individual Vas per driver (because Vas scales with Sd and compliance).
-
-However, in practice the sealed-box alignment is often calculated using the simple relation:
+For **N** identical drivers sharing one sealed enclosure, the system behaves like
+a single equivalent driver with N times the Sd and **N times the Vas**:
 
 ```
-Qtc = Qts × sqrt(1 + Vas_effective / Vb)
+Vas_total = N × Vas_single
+Qtc = Qts × sqrt(1 + Vas_total / Vb)
+Fc  = Fs  × sqrt(1 + Vas_total / Vb)
 ```
 
-Where Vas_effective accounts for both drivers sharing the enclosure.
+For two GRS 8SW-4HE-8 (Vas ~31.7 L each), `Vas_total = 2 × 31.7 = 63.4 L`. In a
+~69 L net enclosure:
 
-For two drivers in a shared enclosure, the effective system Vas is approximately equal to the individual driver Vas (since both drivers share the same air volume and the air spring they see is halved per driver but they each experience the full enclosure).
+```
+Qtc = 0.45 × sqrt(1 + 63.4/69) ≈ 0.62
+Fc  = 24.9 × sqrt(1 + 63.4/69) ≈ 34.5 Hz
+```
 
-The simulation used Qts = 0.45 and targeted a Qtc of approximately 0.62 in a ~69 L enclosure. This result was obtained from simulation software (VituixCAD / WinISD equivalent) and should be verified before construction.
+This matches the target alignment and is consistent with Chapter 3. (An earlier
+version of this chapter stated the effective Vas was roughly the individual-driver
+Vas — that is incorrect and would give ~0.54 / ~30 Hz, not the values above.)
+The figures are simplified estimates — verified independently in
+[../REVIEW.md](../REVIEW.md) §A and reproduced by
+[../simulations/bass_alignment_maxspl.py](../simulations/bass_alignment_maxspl.py)
+— and should still be confirmed before construction.
 
 ### Gross vs. net volume
 
