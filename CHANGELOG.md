@@ -17,6 +17,21 @@ All notable design changes for Mk2 Reference Loudspeaker are documented here.
 
 The latest simplified spinorama/directivity simulations suggest that lowering the mid/tweeter crossover and reducing the c-c spacing are more important than increasing waveguide mouth size.
 
+### Refined and corrected (post-review)
+
+- Push-push woofers specified as **opposed at the same height with a rigid
+  coupling block**, replacing the earlier 350 mm / 700 mm vertical stagger (the
+  stagger re-introduced a rocking moment; same-height opposed cancels cleanly and
+  fits the ~22 mm magnet gap). See Chapter 8.
+- DD-010 (1250 Hz) and DD-011 (140 mm c-c) annotated with the review caveats:
+  1250 Hz sits below the WG212 control band, and ~150-160 mm is the realistic
+  buildable c-c. The nominal targets are retained pending measurement.
+- Corrected physics-doc errors flagged in `REVIEW.md`: the sealed-box formula and
+  T/S data (Chapter 3), the N-driver Vas relation (Chapter 9), and the LR4 phase
+  description (Chapter 11). Design numbers (Qtc ~0.62 / Fc ~34.5 Hz) are unchanged.
+- Registered the **SB23 line** as a parallel alternative variant (see `ROADMAP.md`
+  and `assets/`). The v6b GRS spec is unchanged.
+
 ## v6 - Directivity optimization
 
 ### Added

@@ -35,13 +35,20 @@ For the Mk2 Reference Loudspeaker, both woofers are mounted on the side panels:
 - One woofer on the left side panel
 - One woofer on the right side panel
 - Both woofers facing outward (magnets facing inward)
-- Centers aligned at the same height
+- **Centers opposed at the same height** (directly across from each other)
 
-The two woofers are vertically stacked (different heights) in the current layout:
-- Lower woofer: approximately 350 mm from cabinet bottom
-- Upper woofer: approximately 700 mm from cabinet bottom
+Mounting the two drivers directly opposite at the same height is the correct
+push-push arrangement: the two reaction forces share a single line of action and
+cancel as a clean couple, with no rocking moment. A vertical stagger (mounting
+one driver higher than the other) offsets that line of action and re-introduces
+a rocking moment on the cabinet, so it is avoided. (An earlier layout proposed a
+~350 mm / ~700 mm stagger; this has been dropped — see [REVIEW.md](../REVIEW.md) §C3.)
 
-**Note:** In the strict push-push configuration, both drivers should be mounted on opposite sides at the same height. The vertical offset in this design reduces some of the vibration cancellation benefit but is acceptable in practice. The primary benefit of reduced cabinet excitation remains.
+The geometry fits: the GRS overall depth is ~117 mm, so in the ~256 mm internal
+width two opposed magnets leave roughly `256 − 2×117 ≈ 22 mm` of static clearance
+between them (the magnets are fixed to the baskets/walls and do not move). That
+gap is enough to bond a short rigid coupling block between the two magnet
+assemblies — see *Mechanical coupling* below.
 
 ---
 
@@ -76,9 +83,14 @@ Push-pull cancels the acoustic output - it is not useful for producing bass. Pus
 
 ## Mechanical coupling
 
-For maximum vibration cancellation, the two woofer magnet assemblies can be mechanically coupled together with a rigid brace between them. This prevents the two magnets from independently exciting the cabinet side panels.
+With the two drivers opposed at the same height, a short rigid **coupling block**
+is bonded across the ~22 mm gap between the magnet assemblies. This ties the two
+motors together so they cannot independently excite the cabinet side panels — the
+ideal force-cancelling arrangement, and the main reason same-height opposed
+placement is preferred over a stagger.
 
-This is a refinement that may be explored in the prototype phase. The brace must be designed to not interfere with the bass chamber volume or air flow.
+The block must not significantly obstruct the bass chamber air flow. Its size and
+fixing are finalized in CAD and confirmed in the prototype phase.
 
 ---
 
@@ -92,7 +104,7 @@ This is a refinement that may be explored in the prototype phase. The brace must
 
 ## Open items
 
-- Confirm woofer height positions (350 mm / 700 mm) match bracing layout
-- Verify mechanical coupling feasibility in the 300 × 370 mm cross-section
+- Confirm the opposed woofer center height matches the bracing layout
+- Verify the coupling block fits the ~22 mm magnet gap in the 300 × 370 mm cross-section without choking air flow
 - Develop polarity test procedure for prototype verification
 - Measure cabinet vibration with and without push-push coupling (optional)

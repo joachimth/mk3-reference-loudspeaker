@@ -90,3 +90,23 @@ Current main design:
 - Internal DSP
 - Full wiring plan
 - Finalized build guide
+
+---
+
+## Alternative variant - SB23 line (parallel study)
+
+A separate, self-contained study explores a **SB23-based** version of the Mk2
+rather than the GRS bass of the main v6b line. It shares the H2606 tweeter, 15W
+midrange and waveguide direction but differs on the bass and several cabinet
+numbers:
+
+- 2 × SB Acoustics SB23NRXS45-8 (push-push), sealed ~64 L, Qtc ≈ 0.75 / Fc ≈ 54 Hz
+- OS (oblate-spheroid) waveguide, ~1600 Hz LR4 mid/tweeter, c-c ~157-160 mm
+- Cabinet ~1050 mm tall, 180 Hz LR4 bass/mid
+
+This is **not** the reference design — v6b (GRS) remains the main line. The full
+write-up, drawings, parameters and parts list live in
+[`assets/`](assets/) (see [`assets/mk2_design_bible_sb23.md`](assets/mk2_design_bible_sb23.md)
+and [`assets/README.md`](assets/README.md)). Several of its directivity arguments
+(higher crossover near the waveguide control limit, ~157-160 mm c-c) align with
+the review caveats now recorded against DD-010 / DD-011.

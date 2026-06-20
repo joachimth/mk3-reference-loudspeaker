@@ -190,6 +190,17 @@ Lowering the mid/tweeter crossover improves the directivity match and vertical r
 
 The tweeter/waveguide combination must be measured carefully for distortion and headroom at 1250 Hz.
 
+## Caveat (review)
+
+[REVIEW.md](REVIEW.md) §C2 notes the directivity rationale is only half-right:
+1250 Hz sits roughly 300-450 Hz *below* the WG212's pattern-control limit
+(~1500-1700 Hz), so in that octave the waveguide is not yet controlling and the
+directivity-match benefit is limited — lowering the crossover mainly improves
+*lobing*, not constant directivity. It also asks the H2606 (Fs 1030 Hz) to work
+at only ~1.2 × Fs on an LR4 high-pass, which is a distortion/headroom risk. 1250
+Hz is retained as the pre-measurement target, but the usable value may land
+higher (expect ~1400-1700 Hz); set it from measured H2606-in-WG distortion and DI.
+
 ---
 
 # DD-011 - Target 140 mm mid/tweeter c-c spacing
@@ -205,3 +216,14 @@ Shorter c-c spacing reduces vertical lobing around the mid/tweeter crossover.
 ## Consequence
 
 The front layout becomes mechanically tight. The waveguide flange and midrange recess must be designed together.
+
+## Caveat (review)
+
+[REVIEW.md](REVIEW.md) §C1 estimates the geometric minimum c-c at ~145-160 mm:
+the 15W frame is ~Ø149 (half ~74.5 mm) and a WG212 flange is ~140-150 mm tall
+(half ~70-75 mm), so 140 mm is only achievable with a deliberately compact /
+bottom-trimmed ("D-shaped") flange. The lobing analysis
+(`simulations/vertical_lobing.py`) shows ~155-160 mm crossed near the waveguide
+control limit is still clean vertically, so treat **~150-160 mm** as the
+realistic target and set the final value from the actual WG flange + mid recess
+in CAD rather than over-committing to 140 mm.
