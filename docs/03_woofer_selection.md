@@ -38,23 +38,35 @@ The GRS 8SW-4HE-8 was introduced in v3 and became the woofer candidate for all s
 | Fs | ~24.9 Hz |
 | Vas | ~31.7 L |
 | Qts | ~0.45 |
-| Re | 3.4 Ω |
-| Xmax | ~13 mm |
-| Sd | ~214 cm² |
+| Re | ~3.8 Ω |
+| Xmax | ~10.8 mm |
+| Sd | ~227 cm² |
+
+T/S values are from the SoundImports datasheet and must be verified against the
+official GRS sheet before construction. Use the conservative datasheet **Xmax
+~10.8 mm** for any excursion/SPL estimate; the ~13 mm figure quoted elsewhere is
+likely an Xmech/peak number, not Xmax.
 
 **Two drivers in series:**
 - Total impedance: ~8 Ω nominal
 - Combined Vas: approximately 2 × 31.7 L = 63.4 L equivalent (for one equivalent driver)
-- Combined Sd: approximately 2 × 214 cm² = 428 cm²
+- Combined Sd: approximately 2 × 227 cm² = 454 cm²
 
 **Sealed alignment - two drivers in 69 L net:**
 
-Using the relation Qtc = Qts × sqrt(1 + Vb/Vas per driver pair):
+Two identical drivers sharing one sealed box behave like a single equivalent
+driver with `Sd_total = 2 × Sd` and `Vas_total = 2 × Vas_single = 63.4 L`. The
+sealed alignment is then:
 
-For two GRS 8SW-4HE-8 in a sealed cabinet, the effective system can be treated as an equivalent single driver with the combined moving mass and Sd. The simulation target:
+```
+Qtc = Qts × sqrt(1 + Vas_total / Vb) = 0.45 × sqrt(1 + 63.4/69) ≈ 0.62
+Fc  = Fs  × sqrt(1 + Vas_total / Vb) = 24.9 × sqrt(1 + 63.4/69) ≈ 34.5 Hz
+```
+
+So for two GRS 8SW-4HE-8 in a sealed cabinet (simulation target):
 
 - Net bass volume: ~69 L
-- Fc: ~34-35 Hz
+- Fc: ~34.5 Hz
 - Qtc: ~0.62
 
 This is a low-Q sealed alignment that:

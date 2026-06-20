@@ -26,7 +26,11 @@ The LR4 crossover is the standard choice for active multi-way loudspeakers. Its 
 - **-6 dB at the crossover frequency** for each driver
 - **Summed acoustic response is flat** at all frequencies when drivers are in phase and perfectly aligned
 - **4th order (24 dB/octave) slopes** provide fast rolloff, reducing out-of-band driver stress and lobing
-- **Phase matched** at the crossover frequency (both drivers are 180° out of phase at Fc, but this is corrected by time delay in DSP or physical offset)
+- **In phase at the crossover frequency** - the two acoustic outputs are in phase (0°) at Fc, each at -6 dB, and sum flat **without** any polarity inversion. (This is the defining LR4 property. LR2, by contrast, is 180° out of phase at Fc and needs a polarity flip on one driver.)
+
+DSP delay is used separately to align the drivers' physical **acoustic-centre
+offsets** so the summation holds off-axis as well as on-axis — it is not
+correcting a 180° crossover phase.
 
 LR4 crossovers can be implemented as a cascade of two 2nd-order Butterworth filters, or directly as a 4th-order IIR filter in the DSP.
 
