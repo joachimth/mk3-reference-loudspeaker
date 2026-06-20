@@ -9,8 +9,8 @@ ASSUMPTIONS (simplified physics, NOT measured data)
 - Max SPL is the EXCURSION-limited ceiling (anechoic, half-space, 1 m),
   two drivers summing in phase: SPL = 20*log10(k*f^2), capped at a thermal estimate.
 - Driver T/S from the SoundImports datasheet; verify against the official GRS sheet.
-  (Repo doc 03 currently lists Xmax ~13 mm / Sd ~214 cm2; datasheet values used here
-   are the conservative Xmax 10.8 mm / Sd 227 cm2.)
+  (Repo doc 03 lists the conservative Xmax 10.8 mm / Sd 227 cm2, matching the
+   datasheet values used here.)
 
 Output: simulations/plots/bass_alignment_maxspl.png
 """

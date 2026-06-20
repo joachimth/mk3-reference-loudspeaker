@@ -152,7 +152,7 @@ Princippet: sigt efter **akustiske LR4-targets** ved **matchede frekvenser**, _e
 - **Fuldt aktivt, 3 forstærkerkanaler pr. højttaler** (bas / mid / diskant) fra DSP.
 - Bas: 2 × SB23 i parallel = 4 Ω på én kanal (vælg forstærker, der er komfortabel ved 4 Ω).
 - DSP-forslag: **miniDSP Flex (helst FIR-kapabel)** pr. højttaler, eller en 8-kanals enhed til parret. Alternativt CamillaDSP + multikanals DAC for fuld FIR-frihed.
-- Niveau-match i DSP: midten (~88 dB) sætter systemets reference; bassen får +6 dB headroom (parallel), diskanten i WG dæmpes ned.
+- Niveau-match i DSP: midten (~89.7 dB) sætter systemets reference; bassen får +6 dB headroom (parallel), diskanten i WG dæmpes ned.
 
 ---
 
