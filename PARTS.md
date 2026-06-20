@@ -21,7 +21,7 @@ This is the initial parts overview for Mk2 Reference Loudspeaker.
 
 - 1 x ScanSpeak H2606/920000 (Discovery, horn dome, textile, 6 Ω, 95.2 dB) per loudspeaker
 - Mounted in custom WG212 waveguide
-- Sensitivity ~7 dB higher than midrange - DSP attenuation required
+- Sensitivity ~5-7 dB higher than midrange (~89.7 dB) - DSP attenuation required
 
 ---
 

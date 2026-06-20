@@ -63,7 +63,7 @@ The textile dome provides a softer character than metal or polymer horn tweeters
 
 ## Sensitivity mismatch
 
-At 95.2 dB / 2.83V / 1m, the H2606/920000 is significantly more sensitive than the ScanSpeak 15W/4434G00 midrange (~88 dB). This means the tweeter channel will require substantial gain reduction in the DSP - approximately 7 dB of attenuation relative to the midrange channel - to achieve a flat summed response at the crossover.
+At 95.2 dB / 2.83V / 1m, the H2606/920000 is significantly more sensitive than the ScanSpeak 15W/4434G00 midrange (~89.7 dB). This means the tweeter channel will require substantial gain reduction in the DSP - on the order of 5 to 7 dB of attenuation relative to the midrange channel - to achieve a flat summed response at the crossover. The exact pad is finalised from measurement (the tweeter gains some sensitivity in the waveguide, and baffle step lowers the mid's effective level).
 
 This is handled in DSP and does not affect the acoustic design, but it must be accounted for in the level-matching step.
 
@@ -99,7 +99,7 @@ The distortion level at 1250 Hz in the actual WG212 must be measured on the prot
 
 The tweeter is:
 - High-pass at 1250 Hz LR4
-- Approximately -7 dB gain adjustment in DSP to match midrange sensitivity
+- Approximately -5 to -7 dB gain adjustment in DSP to match midrange sensitivity (finalised from measurement)
 - DSP delay applied to align acoustic center with midrange
 
 See Chapter 11 (Crossovers) and Chapter 14 (DSP) for detail.

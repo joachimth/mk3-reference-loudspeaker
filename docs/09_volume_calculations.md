@@ -62,7 +62,10 @@ The gross internal bass chamber volume must exceed 69 L by the volume displaced 
 - Damping material
 - Mid chamber walls
 
-Typical deductions per 8-inch woofer: approximately 0.5-1.0 L displacement.
+Deductions per 8-inch woofer depend strongly on motor depth. The GRS 8SW-4HE is
+a deep driver (~117 mm overall depth, large magnet), so each displaces roughly
+2-3 L inside the cabinet — budget ~5 L for the pair rather than the ~1 L typical
+of a shallow woofer.
 Bracing: estimate 2-5% of gross volume depending on brace density.
 
 The gross external volume of the main cabinet (minus walls and mid chamber) will need to be calculated from the final cabinet drawings.
@@ -81,11 +84,11 @@ Total gross internal volume = 256 × 326 × 1036 / 1,000,000 = ~86.5 L
 
 Deductions from gross total:
 - Mid chamber: ~5.7 L (net) + walls
-- Driver displacement (2 woofers): ~1.5 L estimated
+- Driver displacement (2 woofers): ~5 L estimated (deep GRS magnets, ~2-3 L each)
 - Bracing: ~4-6 L estimated
 - Damping material: minor
 
-Approximate remaining bass net volume: ~86.5 - 5.7 - 6 - 1.5 = ~73 L
+Approximate remaining bass net volume: ~86.5 - 5.7 - 6 - 5 = ~70 L
 
 This suggests the current external dimensions can support a ~69 L net bass volume with reasonable bracing. The exact figure must be calculated from the final CAD model.
 

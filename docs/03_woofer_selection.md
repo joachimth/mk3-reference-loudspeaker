@@ -102,6 +102,12 @@ Two 4-ohm woofers wired in series: nominal 8 Ω total load.
 
 Parallel wiring (2 Ω total) is possible if the amplifier channel is rated for 2-ohm loads, but series wiring is safer for most DSP/amplifier hardware.
 
+**Confirm impedance before wiring.** The supplier listing shows 4 Ω (Re ~3.8 Ω)
+for this SKU despite the "-8" in the part number, so the series-to-8 Ω plan above
+assumes 4-ohm drivers. Verify the actual DCR of the delivered drivers before
+committing the wiring — if they are genuinely 8 Ω, series gives 16 Ω and parallel
+gives the intended 8 Ω instead.
+
 ---
 
 ## Current status

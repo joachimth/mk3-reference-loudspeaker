@@ -151,7 +151,7 @@ The three driver channels must be level-matched so that the crossover sums corre
 1. Measuring the on-axis sensitivity of each driver
 2. Applying gain reduction in the DSP to match levels at the crossover frequencies
 
-**Expected level adjustment:** The ScanSpeak H2606/920000 has a rated sensitivity of 95.2 dB / 2.83V / 1m, compared with approximately 88 dB for the ScanSpeak 15W midrange. This means the tweeter channel will require approximately -7 dB of gain reduction relative to the midrange channel before any other correction EQ is applied.
+**Expected level adjustment:** The ScanSpeak H2606/920000 has a rated sensitivity of 95.2 dB / 2.83V / 1m, compared with approximately 89.7 dB for the ScanSpeak 15W midrange. This means the tweeter channel will require roughly -5 to -7 dB of gain reduction relative to the midrange channel before any other correction EQ is applied; the exact value is set from measurement.
 
 ---
 
