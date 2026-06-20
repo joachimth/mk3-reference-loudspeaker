@@ -32,8 +32,17 @@ finalized design.
 
 | File | What it is |
 |---|---|
+| [mk2_design_bible_sb23.md](mk2_design_bible_sb23.md) | **The SB23 study's full design write-up** (Danish): OS waveguide, ~1600 Hz LR4, c-c ~157 mm, 2 × SB23 sealed ~64 L (Qtc ≈ 0.75 / Fc ≈ 54 Hz). The textual companion to the drawings below. This is an alternative direction, **not** the repo's v6b spec. |
 | [mk2_estimeret_respons.png](mk2_estimeret_respons.png) | Estimated spinorama-style response: on-axis design target, estimated in-room, sound power, directivity index (physics-based estimate, not measured). |
 | [mk2_kabinet_tegning.png](mk2_kabinet_tegning.png) | Cabinet dimensions and driver placement (labelled WG 212 mm, c-c 157 mm). |
 | [mk2_cab_ark1_ydre.png](mk2_cab_ark1_ydre.png) | Sheet 1 — external dimensions (front / side / top), 300 × 370 × 1050 mm. |
 | [mk2_cab_ark2_snit_lodret.png](mk2_cab_ark2_snit_lodret.png) | Sheet 2 — vertical section A-A showing chambers and bracing, 22 mm walls. |
 | [mk2_dsp.csv](mk2_dsp.csv) | DSP filter plan per driver (HP/LP, Linkwitz Transform, delay, rest-EQ). |
+
+Note: `mk2_design_bible_sb23.md` references two files that were **not** included
+in the import — `mk2_waveguide_profil.png` and `mk2_parametre.csv` — so those
+links are currently dead. The OS waveguide model it describes is in
+[../cad/mk2_waveguide_os.scad](../cad/mk2_waveguide_os.scad).
+
+The GRS-based review and simulations that critique the v6b design live elsewhere:
+[../REVIEW.md](../REVIEW.md) and [../simulations/](../simulations/).

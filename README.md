@@ -62,7 +62,10 @@ The full Design Bible lives in the `docs/` folder:
 - [CHANGELOG.md](CHANGELOG.md) - Design change log
 - [REFERENCES.md](REFERENCES.md) - Books, papers, tools
 - [TODO.md](TODO.md) - Outstanding tasks
-- [assets/](assets/) - Drawings, response plot, and DSP table (reference material; see [assets/README.md](assets/README.md) — note these depict an SB23 study that diverges from the v6b spec)
+- [REVIEW.md](REVIEW.md) - External technical review of the docs/simulations (flags physics-doc errors and revisits the 1250 Hz / 140 mm targets)
+- [simulations/](simulations/) - Version-controlled simulation scripts + generated plots (bass alignment / max-SPL, vertical lobing)
+- [cad/](cad/) - Parametric CAD (OpenSCAD OS waveguide for the H2606)
+- [assets/](assets/) - Drawings, response plot, DSP table, and the SB23 study's design bible (reference material; see [assets/README.md](assets/README.md) — note the SB23 material diverges from the v6b spec)
 
 ## License
 
