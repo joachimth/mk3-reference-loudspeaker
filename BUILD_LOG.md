@@ -33,9 +33,8 @@ Not started.
 
 ## Bass placement
 
-- Lower woofer center: approx. 350 mm from bottom
-- Upper woofer center: approx. 700 mm from bottom
-- Configuration: side-mounted push-push
+- Woofer centers: approx. 520 mm from bottom (both sides, opposed at the same height)
+- Configuration: side-mounted push-push, opposed + coupling block (see Chapter 8)
 
 ## Mid/tweeter layout
 

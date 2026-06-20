@@ -31,7 +31,7 @@ Shelf braces are full-width panels of plywood installed horizontally inside the 
 - Create the top boundary of the mid chamber
 - Add mass and rigidity to the cabinet structure
 
-For the push-push woofer placement (lower at 350 mm, upper at 700 mm), shelf braces near each woofer position may be considered for bracing the woofer cutout areas in the side panels.
+For the push-push woofer placement (both woofers opposed at the same height, ~520 mm nominal), a shelf brace near the woofer line may be considered for bracing the woofer cutout areas in the side panels.
 
 ---
 
@@ -84,9 +84,9 @@ The level of bass chamber fill affects the acoustic volume: heavily stuffed cham
 
 | Location | Type | Purpose |
 |---|---|---|
-| Lower woofer height (~350 mm) | Window brace | Stiffen side panels near lower woofer |
+| Woofer line (~520 mm, both sides) | Window brace | Stiffen side panels around the opposed woofer cutouts |
 | Mid chamber top | Shelf brace | Top wall of mid chamber, separates bass/mid |
-| Upper woofer height (~700 mm) | Window brace | Stiffen side panels near upper woofer |
+| Opposed magnet gap (~520 mm) | Coupling block | Tie the two woofer motors together (see Chapter 8) |
 | Baffle interior | Vertical brace | Stiffen baffle between driver cutouts |
 | Side panels (behind baffle) | Vertical braces | Reduce free span of longest panel sections |
 

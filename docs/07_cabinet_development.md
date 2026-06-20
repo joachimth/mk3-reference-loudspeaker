@@ -66,15 +66,17 @@ The midrange operates in a dedicated sealed chamber (see Chapter 9: Volume calcu
 
 ### Woofers
 
-Two GRS 8SW-4HE-8 woofers are side-mounted in a push-push configuration. The current placement targets:
+Two GRS 8SW-4HE-8 woofers are side-mounted in a push-push configuration, opposed
+at the same height on the two side panels (directly across from each other — see
+Chapter 8). The current placement targets:
 
-- Lower woofer center: approximately 350 mm from the cabinet bottom
-- Upper woofer center: approximately 700 mm from the cabinet bottom
+- Both woofer centers: approximately 520 mm from the cabinet bottom (nominal;
+  same height on both sides)
 
-These positions are subject to revision based on:
+This height is subject to revision based on:
 - Internal bracing layout
 - Mid chamber boundaries
-- Push-push mechanical symmetry
+- The coupling block between the opposed magnets (push-push symmetry)
 
 ---
 
