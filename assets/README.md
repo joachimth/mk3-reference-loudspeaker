@@ -30,19 +30,41 @@ finalized design.
 
 ## File index
 
+This folder holds the **SB23 study** (the alternative direction) — its write-up,
+drawings, data, and plots. Duplicates that also belonged in the type-based
+folders have been removed: the review is at [../REVIEW.md](../REVIEW.md), the
+runnable scripts + their plots are in [../simulations/](../simulations/), and the
+waveguide model is in [../cad/mk2_waveguide_os.scad](../cad/mk2_waveguide_os.scad).
+
+### Write-up + data
+
 | File | What it is |
 |---|---|
-| [mk2_design_bible_sb23.md](mk2_design_bible_sb23.md) | **The SB23 study's full design write-up** (Danish): OS waveguide, ~1600 Hz LR4, c-c ~157 mm, 2 × SB23 sealed ~64 L (Qtc ≈ 0.75 / Fc ≈ 54 Hz). The textual companion to the drawings below. This is an alternative direction, **not** the repo's v6b spec. |
-| [mk2_estimeret_respons.png](mk2_estimeret_respons.png) | Estimated spinorama-style response: on-axis design target, estimated in-room, sound power, directivity index (physics-based estimate, not measured). |
-| [mk2_kabinet_tegning.png](mk2_kabinet_tegning.png) | Cabinet dimensions and driver placement (labelled WG 212 mm, c-c 157 mm). |
-| [mk2_cab_ark1_ydre.png](mk2_cab_ark1_ydre.png) | Sheet 1 — external dimensions (front / side / top), 300 × 370 × 1050 mm. |
-| [mk2_cab_ark2_snit_lodret.png](mk2_cab_ark2_snit_lodret.png) | Sheet 2 — vertical section A-A showing chambers and bracing, 22 mm walls. |
+| [mk2_design_bible_sb23.md](mk2_design_bible_sb23.md) | **The SB23 study's full design write-up** (Danish): OS waveguide, ~1600 Hz LR4, c-c ~157–160 mm, 2 × SB23 sealed ~64 L (Qtc ≈ 0.75 / Fc ≈ 54 Hz). Textual companion to the drawings. Alternative direction, **not** the repo's v6b spec. |
+| [mk2_parametre.csv](mk2_parametre.csv) | Parameter list for the SB23 study (cabinet, alignment, waveguide, crossovers). |
+| [mk2_stykliste.csv](mk2_stykliste.csv) | Cut list / bill of materials for the SB23 cabinet (panel sizes, bracing, magnet coupling rod). |
 | [mk2_dsp.csv](mk2_dsp.csv) | DSP filter plan per driver (HP/LP, Linkwitz Transform, delay, rest-EQ). |
 
-Note: `mk2_design_bible_sb23.md` references two files that were **not** included
-in the import — `mk2_waveguide_profil.png` and `mk2_parametre.csv` — so those
-links are currently dead. The OS waveguide model it describes is in
-[../cad/mk2_waveguide_os.scad](../cad/mk2_waveguide_os.scad).
+### Drawings
 
-The GRS-based review and simulations that critique the v6b design live elsewhere:
-[../REVIEW.md](../REVIEW.md) and [../simulations/](../simulations/).
+| File | What it is |
+|---|---|
+| [mk2_kabinet_tegning.png](mk2_kabinet_tegning.png) | Cabinet dimensions and driver placement (labelled WG 212 mm, c-c 157 mm). |
+| [mk2_cab_ark1_ydre.png](mk2_cab_ark1_ydre.png) | Sheet 1 — external dimensions (front / side / top), 300 × 370 × 1050 mm. |
+| [mk2_cab_ark2_snit_lodret.png](mk2_cab_ark2_snit_lodret.png) | Sheet 2 — vertical section A-A (chambers + bracing, 22 mm walls). |
+| [mk2_cab_ark3_snit_vandret.png](mk2_cab_ark3_snit_vandret.png) | Sheet 3 — horizontal section (push-push side woofers, internal width). |
+| [mk2_cab_ark4_baffel.png](mk2_cab_ark4_baffel.png) | Sheet 4 — baffle layout (WG + mid cutouts, recesses). |
+| [mk2_kabinet_tegninger.pdf](mk2_kabinet_tegninger.pdf) | Combined cabinet drawings (PDF). |
+| [mk2_waveguide_profil.png](mk2_waveguide_profil.png) | Rendered OS waveguide profile (companion to `../cad/mk2_waveguide_os.scad`). |
+
+### Plots (estimates, not measured)
+
+| File | What it is |
+|---|---|
+| [mk2_estimeret_respons.png](mk2_estimeret_respons.png) | Estimated spinorama-style response: on-axis target, estimated in-room, sound power, directivity index. |
+| [mk2_di_handoff.png](mk2_di_handoff.png) | Directivity-index hand-off across the mid/tweeter crossover. |
+| [mk2_vertikal_lobing.png](mk2_vertikal_lobing.png) | Vertical lobing estimate for the SB23 study's c-c / crossover. |
+
+The design bible's inline image and file references (`mk2_waveguide_profil.png`,
+`mk2_kabinet_tegning.png`, `mk2_parametre.csv`, `mk2_dsp.csv`) all resolve within
+this folder.

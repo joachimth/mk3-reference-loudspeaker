@@ -28,6 +28,9 @@ with a tangent rolled mouth that ends flush with the baffle.
 Open in OpenSCAD, render with F6, export STL. `$fn` is high for export — drop to
 64 while iterating. The model echoes the computed mouth size and depth on render.
 
+A rendered profile of this waveguide is in
+[../assets/mk2_waveguide_profil.png](../assets/mk2_waveguide_profil.png).
+
 These are **design-direction geometry, not validated by measurement.** Mouth
 size, throat and coverage must be confirmed against H2606-in-waveguide
 measurements.
