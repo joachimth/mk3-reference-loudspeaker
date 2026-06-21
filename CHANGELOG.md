@@ -53,6 +53,10 @@ The latest simplified spinorama/directivity simulations suggest that lowering th
   (flange moved behind the flush mouth plane, removing the forward lip that would
   diffract) and added `simulations/waveguide_profile.py` illustrating the issue
   and the flush / blended fixes.
+- `cabinet.scad`: added an optional waveguide-in-baffle **assembly** view
+  (`show_waveguide`) and explicit `eps` cut overshoots so openings render cleanly
+  — coincident faces otherwise smear in OpenSCAD instead of showing a hole. The
+  seated mouth pokes `wg_through` mm through the baffle so the solids overlap.
 - All CAD/simulation outputs are simulation-stage estimates, not measured or final.
 
 ## v6 - Directivity optimization
