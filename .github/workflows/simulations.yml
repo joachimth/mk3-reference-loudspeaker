@@ -62,6 +62,23 @@ jobs:
         working-directory: simulations
         run: python vertical_lobing.py 2>&1
 
+      # New scripts (added June 2026)
+      - name: Run crossover_simulation.py
+        working-directory: simulations
+        run: python crossover_simulation.py 2>&1
+
+      - name: Run system_response.py
+        working-directory: simulations
+        run: python system_response.py 2>&1
+
+      - name: Run polar_response.py
+        working-directory: simulations
+        run: python polar_response.py 2>&1
+
+      - name: Run vertical_polar_map.py
+        working-directory: simulations
+        run: python vertical_polar_map.py 2>&1
+
       # ------------------------------------------------------------------ #
       #  4. List generated plots (sanity check)                            #
       # ------------------------------------------------------------------ #
@@ -83,7 +100,9 @@ jobs:
 
           Triggered by: ${{ github.sha }}
           Scripts: bass_alignment_maxspl, bass_volume_compare, waveguide_profile,
-                   directivity_estimate, vertical_lobing"
+                   directivity_estimate, vertical_lobing,
+                   crossover_simulation, system_response, polar_response,
+                   vertical_polar_map"
           git push
 
       # ------------------------------------------------------------------ #
