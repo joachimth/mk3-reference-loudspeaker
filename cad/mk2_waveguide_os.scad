@@ -40,6 +40,14 @@ tw_face_d    = 104.3;
 tw_bcd       = 92;
 tw_hole_d    = 4.4;
 
+// Tweeter rear mounting plate
+// Provides a proper seating surface + screw holes for the H2606 at the throat end.
+// Without this plate the tube wall at z=0 is only ø44 mm — far too narrow for
+// the 104.3 mm faceplate and 92 mm BCD holes.
+tw_ring_od    = 130;   // outer diameter of rear plate (> tw_bcd + 2×material)
+tw_ring_thick =   8;   // total plate thickness (z = -tw_ring_thick … 0)
+tw_fp_recess  =   4;   // depth of faceplate seating pocket (on rear face)
+
 // Baffle mounting (countersunk, front)
 baf_bcd_x    = 222;
 baf_bcd_y    = 142;
@@ -117,6 +125,14 @@ module waveguide(){
             translate([0,0,D_tot-flange_thick])
                 linear_extrude(flange_thick)
                     rounded_rect_2d(flange_w, flange_h, corner_r);
+
+            // Rear tweeter mounting plate.  The loft_bore tube at z=0 is only
+            // ø44 mm — too narrow to seat the ø104 mm H2606 faceplate or to
+            // accommodate the 92 mm BCD screw holes.  This plate (z = -tw_ring_thick
+            // … 0) provides a proper seating surface and screw-hole lands.
+            translate([0, 0, -tw_ring_thick])
+                linear_extrude(tw_ring_thick)
+                    circle(d=tw_ring_od);
         }
         loft_bore(0);                                // hollow out acoustic bore
 
@@ -126,13 +142,25 @@ module waveguide(){
             linear_extrude(flange_thick+0.6)
                 ellipse_2d(mouth_rx, mouth_ry);
 
-        // rear faceplate clearance for the tweeter
-        translate([0,0,-2]) cylinder(d=tw_face_d+1.0, h=4);
+        // Faceplate seating pocket on the rear face of the back plate.
+        // tw_fp_recess deep so the tweeter faceplate sits flush with the
+        // back-plate rear surface; overrun by 0.5 mm for clean CSG.
+        translate([0, 0, -tw_ring_thick - 0.5])
+            cylinder(d=tw_face_d + 1.0, h=tw_fp_recess + 0.5);
 
-        // tweeter screw holes (reference)
+        // Acoustic throat through-hole in the back plate.
+        // loft_bore(0) only subtracts from z=0 upward; the plate (z<0) needs
+        // its own opening for the tweeter dome to project into the bore.
+        translate([0, 0, -tw_ring_thick - 1])
+            cylinder(d=throat_d, h=tw_ring_thick + 2);
+
+        // Tweeter mounting screw holes — through the full plate thickness.
+        // Previously these sat at r=46 mm (BCD/2) but the shell at z=0 was
+        // only r=22 mm, so the holes were entirely in mid-air.  They now
+        // pass properly through the rear mounting plate.
         for(a=[45,135,225,315])
-            translate([(tw_bcd/2)*cos(a),(tw_bcd/2)*sin(a),-2])
-                cylinder(d=tw_hole_d, h=16);
+            translate([(tw_bcd/2)*cos(a),(tw_bcd/2)*sin(a),-tw_ring_thick-1])
+                cylinder(d=tw_hole_d, h=tw_ring_thick+2);
 
         // baffle mounting, countersunk from the front (flush) face at z = D_tot
         for(x=[-baf_bcd_x/2, baf_bcd_x/2])
@@ -143,4 +171,6 @@ module waveguide(){
 
 waveguide();
 
-echo(str("MOUTH  ", 2*mouth_rx, " x ", 2*mouth_ry, " mm   depth ", D_tot, " mm"));
+echo(str("MOUTH       ", 2*mouth_rx, " x ", 2*mouth_ry, " mm"));
+echo(str("DEPTH       throat-to-baffle ", D_tot, " mm  |  total incl. back plate ", D_tot + tw_ring_thick, " mm"));
+echo(str("BACK PLATE  ø", tw_ring_od, " mm  thick ", tw_ring_thick, " mm  faceplate pocket ø", tw_face_d+1.0, " x ", tw_fp_recess, " mm deep"));
