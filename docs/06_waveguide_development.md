@@ -60,18 +60,39 @@ The improvement from WG220 to WG240 was significantly smaller than the improveme
 
 ---
 
-## WG212 design tasks
+## WG212 geometry (design candidate)
 
-The waveguide CAD is not yet completed. Required steps:
+A parametric OpenSCAD model now exists:
+[`../cad/mk2_waveguide_os.scad`](../cad/mk2_waveguide_os.scad) (see
+[`../cad/README.md`](../cad/README.md)). It realises the WG212 as an **asymmetric
+oblate-spheroid (OS)** waveguide — wide horizontally to match the still-broad
+midrange at the crossover, narrower vertically to limit vertical lobing. The
+geometry is recorded as DESIGN_DECISIONS.md **DD-012**:
+
+| Parameter | Value (estimate) |
+|---|---|
+| Throat diameter | ~28 mm (placeholder — must match the real H2606 exit) |
+| Profile | Oblate-spheroid bore + tangent rolled mouth (flush with baffle) |
+| Nominal coverage | ~100° horizontal / ~64° vertical |
+| Mouth | ~211.7 × 121.0 mm |
+| Total depth | ~75 mm |
+| Horizontal pattern-control limit | ~1620 Hz |
+| Flange | 252 × 168 mm, R22 corners, flush/recessed into the baffle |
+
+Because horizontal control only reaches down to ~1620 Hz, the waveguide best
+supports a crossover **near that limit**. The v6b nominal target is still
+1250 Hz LR4, but that sits below the control band — exactly the trade-off flagged
+in DD-010 and [REVIEW.md](../REVIEW.md) §C2, to be settled by measuring the
+printed waveguide.
 
 | Task | Status |
 |---|---|
-| Define throat diameter (H2606 specific) | Pending |
-| Define profile (OS/Tractrix/custom) | Pending |
-| Define mouth radius and termination | Pending |
-| Define depth | Pending |
-| Define flange shape for baffle integration | Pending |
-| Generate OpenSCAD or CAD model | Pending |
+| Define throat diameter (H2606 specific) | Placeholder (28 mm) — verify on prototype |
+| Define profile (OS/Tractrix/custom) | Done — asymmetric OS |
+| Define mouth and termination | Done — ~211.7 × 121, rolled flush mouth |
+| Define depth | Done — ~75 mm |
+| Define flange shape for baffle integration | Done — 252 × 168, R22 |
+| Generate OpenSCAD or CAD model | Done — `cad/mk2_waveguide_os.scad` |
 | Export STL for printing | Pending |
 | Print prototype | Pending |
 | Test fit H2606 | Pending |
@@ -100,13 +121,15 @@ The WG212 flange must integrate cleanly with the front baffle:
 - The flange should sit flush or slightly recessed into the baffle
 - The baffle around the waveguide should be as smooth as possible (no sharp edges near the waveguide mouth)
 - The midrange cutout is immediately below the waveguide; the gap between them sets the c-c distance
-- The c-c distance target is 140 mm (center of WG212 tweeter dome to center of 15W midrange)
+- The nominal c-c target is 140 mm, but the realistic buildable value is ~150 mm
+  (DD-011 caveat); the narrow vertical mouth (~121 mm) of the asymmetric WG212
+  helps keep this tight without lobing. The `cabinet.scad` model uses 150 mm.
 
 ---
 
 ## Open items
 
-- Complete WG212 CAD design
-- Determine throat geometry to fit H2606
-- Print and test prototype
-- Measure H2606 distortion in WG212 at 1250 Hz to confirm crossover suitability
+- Verify the throat against the real H2606 faceplate and update the model
+- Export STL, print and test-fit the prototype
+- Measure H2606 distortion + directivity in WG212 to confirm the crossover
+  (1250 Hz nominal vs the ~1620 Hz control limit)

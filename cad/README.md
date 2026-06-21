@@ -34,3 +34,32 @@ A rendered profile of this waveguide is in
 These are **design-direction geometry, not validated by measurement.** Mouth
 size, throat and coverage must be confirmed against H2606-in-waveguide
 measurements.
+
+## `cabinet.scad`
+
+A fully parametric **OpenSCAD** model of the v6b enclosure — the first cabinet
+geometry in the repo.
+
+- External **300 × 370 × 1080 mm**, 22 mm walls, **R50** front vertical
+  roundovers (rear edges square).
+- **Side-mounted push-push** woofer cut-outs, opposed at the same height
+  (~520 mm), with the rigid coupling block between the magnets (see
+  [Chapter 8](../docs/08_push_push_bass.md)).
+- Front baffle cut-outs for the **WG212** (elliptical mouth + rounded flange
+  recess, matched to `mk2_waveguide_os.scad`) and the **15W/4434G00** midrange at
+  **~150 mm c-c**.
+- `show_internals = true` renders a cut-away with the sealed mid chamber, a
+  window brace at the woofer line and the bass/mid shelf brace.
+
+### Critical tunables (verify before cutting)
+
+- `woofer_z`, `tw_z`, `mid_z` (driver heights) and `cc` set the baffle layout;
+  confirm against the real flanges and the bracing layout
+  ([Chapter 10](../docs/10_bracing.md)).
+- The mid-chamber box here is **representational** — its net volume must be
+  confirmed at **~5.7 L** from the solid model
+  ([Chapter 9](../docs/09_volume_calculations.md)) before it is trusted.
+- Cut-out diameters (woofer 185, mid 124 mm) are estimates pending datasheet
+  templates.
+
+This is a **dimension-check / visualisation model, not a cut list.**

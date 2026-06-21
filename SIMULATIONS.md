@@ -10,6 +10,11 @@ The simulations so far are simplified design-direction estimates, not final meas
 
 Final crossover and DSP decisions must be based on real measurements in the finished cabinet.
 
+Version-controlled, assumption-headed scripts and their plots now live in
+[`simulations/`](simulations/) (`bass_alignment_maxspl.py`, `bass_volume_compare.py`,
+`vertical_lobing.py`, `directivity_estimate.py`); parametric OpenSCAD geometry
+lives in [`cad/`](cad/) (WG212 waveguide + cabinet).
+
 ---
 
 # Bass Simulations
