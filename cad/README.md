@@ -34,6 +34,22 @@ with a tangent rolled mouth that ends flush with the baffle.
 Open in OpenSCAD, render with F6, export STL. `$fn` is high for export — drop to
 64 while iterating. The model echoes the computed mouth size and depth on render.
 
+### CI renders and STL downloads
+
+The [`cad-render`](../.github/workflows/cad-render.yml) workflow runs automatically
+on every push that changes a `.scad` file. It:
+
+1. Renders both models to STL (waveguide + cabinet)
+2. Renders 3 preview PNGs per model and commits them to [`../assets/renders/`](../assets/renders/)
+3. Creates a [GitHub Release](../../../releases/latest) with the STL files as downloadable assets
+
+| Preview | Description |
+|---------|-------------|
+| ![mouth](../assets/renders/waveguide_mouth.png) | Waveguide mouth view |
+| ![rear](../assets/renders/waveguide_rear.png) | Waveguide rear / back plate |
+| ![exterior](../assets/renders/cabinet_exterior.png) | Cabinet exterior |
+| ![cutaway](../assets/renders/cabinet_cutaway.png) | Cabinet cutaway |
+
 A rendered profile of this waveguide is in
 [../assets/mk2_waveguide_profil.png](../assets/mk2_waveguide_profil.png).
 

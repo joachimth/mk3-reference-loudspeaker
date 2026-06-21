@@ -1,0 +1,98 @@
+name: Run simulations
+
+# Triggers when any simulation script changes, or manually.
+# Also runs on changes to SIMULATIONS.md so docs stay in sync with plots.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'simulations/**.py'
+      - 'SIMULATIONS.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed to commit updated plots back to repo
+
+jobs:
+  simulate:
+    runs-on: ubuntu-22.04
+
+    steps:
+      # ------------------------------------------------------------------ #
+      #  1. Checkout                                                         #
+      # ------------------------------------------------------------------ #
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ------------------------------------------------------------------ #
+      #  2. Python + dependencies                                           #
+      #  Only numpy + matplotlib are used by the current scripts.          #
+      # ------------------------------------------------------------------ #
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: |
+          pip install --quiet numpy matplotlib
+
+      # ------------------------------------------------------------------ #
+      #  3. Run all simulation scripts                                      #
+      #  Each script saves its plot(s) to simulations/plots/.              #
+      #  Run order: bass first (used as reference), then directivity etc.  #
+      # ------------------------------------------------------------------ #
+      - name: Run bass_alignment_maxspl.py
+        working-directory: simulations
+        run: python bass_alignment_maxspl.py 2>&1
+
+      - name: Run bass_volume_compare.py
+        working-directory: simulations
+        run: python bass_volume_compare.py 2>&1
+
+      - name: Run waveguide_profile.py
+        working-directory: simulations
+        run: python waveguide_profile.py 2>&1
+
+      - name: Run directivity_estimate.py
+        working-directory: simulations
+        run: python directivity_estimate.py 2>&1
+
+      - name: Run vertical_lobing.py
+        working-directory: simulations
+        run: python vertical_lobing.py 2>&1
+
+      # ------------------------------------------------------------------ #
+      #  4. List generated plots (sanity check)                            #
+      # ------------------------------------------------------------------ #
+      - name: List generated plots
+        run: |
+          echo "=== simulations/plots/ ==="
+          ls -lh simulations/plots/
+
+      # ------------------------------------------------------------------ #
+      #  5. Commit updated plots back to repo                              #
+      # ------------------------------------------------------------------ #
+      - name: Commit updated simulation plots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add simulations/plots/
+          git diff --staged --quiet && echo "No plot changes." || \
+            git commit -m "ci(sims): update simulation plots [skip ci]
+
+          Triggered by: ${{ github.sha }}
+          Scripts: bass_alignment_maxspl, bass_volume_compare, waveguide_profile,
+                   directivity_estimate, vertical_lobing"
+          git push
+
+      # ------------------------------------------------------------------ #
+      #  6. Upload plots as workflow artifact (90-day retention)           #
+      # ------------------------------------------------------------------ #
+      - name: Upload simulation plots as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-plots-${{ github.run_number }}
+          path: simulations/plots/
+          retention-days: 90
+          if-no-files-found: error

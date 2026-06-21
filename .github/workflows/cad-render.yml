@@ -1,0 +1,177 @@
+name: Render CAD models
+
+# Triggers on any change to the .scad source files, or manually.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'cad/**.scad'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed to commit back PNG renders and create releases
+
+jobs:
+  render:
+    runs-on: ubuntu-22.04
+
+    steps:
+      # ------------------------------------------------------------------ #
+      #  1. Checkout                                                         #
+      # ------------------------------------------------------------------ #
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ------------------------------------------------------------------ #
+      #  2. Install OpenSCAD + virtual display (needed for PNG rendering)   #
+      # ------------------------------------------------------------------ #
+      - name: Install OpenSCAD and Xvfb
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y openscad xvfb
+          openscad --version
+
+      # ------------------------------------------------------------------ #
+      #  3. Create output directories                                       #
+      # ------------------------------------------------------------------ #
+      - name: Prepare output directories
+        run: |
+          mkdir -p assets/renders
+          mkdir -p cad/exports
+
+      # ------------------------------------------------------------------ #
+      #  4. Render STL exports                                              #
+      # ------------------------------------------------------------------ #
+      - name: Render waveguide STL
+        run: |
+          cd cad
+          openscad -o exports/mk2_waveguide_os.stl mk2_waveguide_os.scad 2>&1 \
+            | tee /tmp/wg_stl.log
+          ls -lh exports/mk2_waveguide_os.stl
+
+      - name: Render cabinet STL
+        run: |
+          cd cad
+          openscad -o exports/mk2_cabinet.stl cabinet.scad 2>&1 \
+            | tee /tmp/cab_stl.log
+          ls -lh exports/mk2_cabinet.stl
+
+      # ------------------------------------------------------------------ #
+      #  5. Render waveguide PNGs (3 views)                                #
+      #  Camera format: tx,ty,tz, rx,ry,rz, distance                      #
+      #  Model: throat z=0, mouth z=75, back plate z=-8..0; flange 252x168 #
+      # ------------------------------------------------------------------ #
+      - name: Render waveguide - mouth view (3/4 front)
+        run: |
+          cd cad
+          xvfb-run -a openscad --render \
+            --camera=0,0,37,55,0,25,520 \
+            --imgsize=1920,1080 \
+            --colorscheme=Cornfield \
+            -o ../assets/renders/waveguide_mouth.png \
+            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+
+      - name: Render waveguide - rear view (back plate + screw holes)
+        run: |
+          cd cad
+          xvfb-run -a openscad --render \
+            --camera=0,0,33,115,0,195,520 \
+            --imgsize=1920,1080 \
+            --colorscheme=Cornfield \
+            -o ../assets/renders/waveguide_rear.png \
+            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+
+      - name: Render waveguide - side profile (shows OS bore curve)
+        run: |
+          cd cad
+          xvfb-run -a openscad --render \
+            --camera=0,0,37,90,0,90,520 \
+            --imgsize=1920,1080 \
+            --colorscheme=Cornfield \
+            -o ../assets/renders/waveguide_side.png \
+            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+
+      # ------------------------------------------------------------------ #
+      #  6. Render cabinet PNGs (3 views)                                  #
+      #  Model: 300 x 370 x 1080 mm, front baffle at +Y, woofers on sides  #
+      # ------------------------------------------------------------------ #
+      - name: Render cabinet - exterior (3/4 front)
+        run: |
+          cd cad
+          xvfb-run -a openscad --render \
+            -D 'show_internals=false' -D 'show_waveguide=false' \
+            --camera=0,0,540,55,0,25,2800 \
+            --imgsize=1920,1080 \
+            --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_exterior.png \
+            cabinet.scad 2>&1 | grep -v "^$"
+
+      - name: Render cabinet - cutaway (internal chambers + braces)
+        run: |
+          cd cad
+          xvfb-run -a openscad --render \
+            -D 'show_internals=true' -D 'show_waveguide=false' \
+            --camera=160,0,540,65,0,350,2800 \
+            --imgsize=1920,1080 \
+            --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_cutaway.png \
+            cabinet.scad 2>&1 | grep -v "^$"
+
+      - name: Render cabinet - assembly (waveguide seated in baffle)
+        run: |
+          cd cad
+          xvfb-run -a openscad --render \
+            -D 'show_internals=false' -D 'show_waveguide=true' \
+            --camera=0,0,920,70,0,15,1200 \
+            --imgsize=1920,1080 \
+            --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_assembly.png \
+            cabinet.scad 2>&1 | grep -v "^$"
+
+      # ------------------------------------------------------------------ #
+      #  7. Commit rendered PNGs back to repo                              #
+      # ------------------------------------------------------------------ #
+      - name: Commit renders to assets/renders/
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/renders/
+          git diff --staged --quiet && echo "No render changes." || \
+            git commit -m "ci(cad): auto-render preview images [skip ci]
+
+          Triggered by: ${{ github.sha }}
+          Renders: waveguide (mouth/rear/side), cabinet (exterior/cutaway/assembly)"
+          git push
+
+      # ------------------------------------------------------------------ #
+      #  8. Create GitHub Release with STL downloads                       #
+      # ------------------------------------------------------------------ #
+      - name: Get short SHA
+        id: sha
+        run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Create STL release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: cad-r${{ github.run_number }}
+          name: "CAD Export #${{ github.run_number }} (${{ steps.sha.outputs.short }})"
+          make_latest: true
+          body: |
+            Automatically rendered STL exports from commit `${{ github.sha }}`.
+
+            ## Downloads
+            | File | Description |
+            |------|-------------|
+            | `mk2_waveguide_os.stl` | WG212 oblate-spheroid waveguide for ScanSpeak H2606/920000 |
+            | `mk2_cabinet.stl` | v6b cabinet — 300 × 370 × 1080 mm, push-push GRS 8SW-4HE layout |
+
+            ## Notes
+            - Design-direction geometry — **not validated by measurement**
+            - `throat_d` = 28 mm is a placeholder — verify against the physical H2606 exit before printing
+            - Crossover frequency (1250 Hz target) depends on WG212 distortion measurement — see [ROADMAP](../blob/main/ROADMAP.md)
+
+            Preview renders in [`assets/renders/`](../blob/main/assets/renders/).
+          files: |
+            cad/exports/mk2_waveguide_os.stl
+            cad/exports/mk2_cabinet.stl
