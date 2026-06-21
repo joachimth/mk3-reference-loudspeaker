@@ -49,8 +49,12 @@ midchamber_d  = 210;   // internal depth of the mid chamber [mm] (<= inner depth
 show_internals = true; // true: cutaway with mid chamber + braces
 show_waveguide = false;// true: seat the WG212 model into the baffle (assembly view)
 
-// WG212 assembly placement (keep in sync with mk2_waveguide_os.scad)
-wg_depth   = 75;       // = D_tot: throat-to-flush-mouth depth of the waveguide [mm]
+// WG212 assembly placement. wg_front_z() is imported from mk2_waveguide_os.scad
+// and returns the waveguide's front (baffle) face depth, so the seating tracks
+// the waveguide automatically - no hard-coded number to drift out of sync.
+// (Flush-terminated waveguide -> 75 mm. If yours only sits flush near ~84.5 mm,
+//  your waveguide file is the old flange-forward / sharp-edged version.)
+wg_depth   = wg_front_z();
 wg_through = 0.3;      // how far the mouth pokes through the baffle [mm].
                        // MUST be > 0: with the waveguide ending flush, a value of
                        // 0 leaves the mouth coplanar with the baffle and OpenSCAD

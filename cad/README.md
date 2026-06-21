@@ -58,7 +58,10 @@ geometry in the repo.
   window brace at the woofer line and the bass/mid shelf brace.
 - `show_waveguide = true` drops the WG212 model into the baffle (it `use`s
   `mk2_waveguide_os.scad`, so keep both files together). The waveguide is seated
-  with its mouth poking `wg_through` (default 0.3 mm) **through** the baffle.
+  with its mouth poking `wg_through` (default 0.3 mm) **through** the baffle. Its
+  seating depth is read from the waveguide via `wg_front_z()`, so it can't drift
+  out of sync. (If it only sits flush near ~84.5 mm, your waveguide file is the
+  old flange-forward version — the flush model seats at `D_tot` = 75 mm.)
 
 ### Assembly and the coincident-face rule
 

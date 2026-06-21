@@ -63,6 +63,14 @@ function prof_r(z, th) =
 
 D_tot = D_os + Lr;
 
+// Depth of the finished part's FRONT (baffle) face, measured from the throat
+// plane. With the flush termination the front face IS the mouth plane (D_tot) -
+// the flange sits behind it. Exposed so cabinet.scad can seat the waveguide
+// without a hard-coded number. (If a build needs ~D_tot + flange_thick to sit
+// flush, the flange is still FORWARD of the mouth = the old, sharp-edged
+// geometry: pull the current file.)
+function wg_front_z() = D_tot;
+
 // ----------------------- HELPERS -------------------------------------
 module ellipse_2d(rx, ry){ scale([rx, ry]) circle(r=1); }
 
