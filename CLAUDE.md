@@ -71,7 +71,7 @@ When the design changes, bump or annotate the version and record it in both
 
 `DESIGN_DECISIONS.md` records each significant choice as `DD-NNN` with three
 sections: **Decision**, **Reasoning**, and (usually) **Consequence**. The next
-new decision is `DD-012`. Keep this format when adding one.
+new decision is `DD-013`. Keep this format when adding one.
 
 ## The current spec (v6b) — keep it consistent
 
@@ -141,13 +141,18 @@ There is nothing to build, lint, or run. The workflow is purely editorial:
 These are referenced as aspirations in `TODO.md` / `SIMULATIONS.md` but are not
 in the repo:
 
-- Python simulation scripts, plots, or CSV data (`simulations/` is planned, not present)
-- CAD / OpenSCAD / STEP / STL files for the cabinet or WG212 waveguide
+- CSV datasets or measured-data files
+- Exported meshes (STL/STEP) or 2D panel drawings / cut lists
 - VituixCAD project files, REW measurements or presets
 - Any actual measurement data (the build hasn't started)
 
-If asked to "add the simulation" or "generate the CAD," confirm scope first —
-these would be new artifact types for this repo, not edits to existing ones.
+Partially present (simulation-stage, estimates only — extend, don't assume
+finished): `simulations/` holds version-controlled Python scripts + plots, and
+`cad/` holds parametric OpenSCAD models for the WG212 waveguide and the cabinet.
+
+If asked to "add the simulation" or "generate the CAD," check `simulations/` and
+`cad/` first and extend them; exported meshes, drawings and measured data would
+still be new artifact types — confirm scope before creating those.
 
 ## Domain glossary (quick reference)
 

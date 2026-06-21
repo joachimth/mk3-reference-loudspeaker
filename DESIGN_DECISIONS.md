@@ -227,3 +227,39 @@ bottom-trimmed ("D-shaped") flange. The lobing analysis
 control limit is still clean vertically, so treat **~150-160 mm** as the
 realistic target and set the final value from the actual WG flange + mid recess
 in CAD rather than over-committing to 140 mm.
+
+---
+
+# DD-012 - WG212 geometry: asymmetric oblate-spheroid waveguide
+
+## Decision
+
+Define the WG212 as an **asymmetric oblate-spheroid (OS)** waveguide for the
+H2606/920000, parametrised in [`cad/mk2_waveguide_os.scad`](cad/mk2_waveguide_os.scad):
+
+- Throat ~28 mm (placeholder, to be matched to the real H2606 exit)
+- OS bore with a tangent rolled mouth that ends flush with the baffle
+- Nominal coverage ~100° horizontal / ~64° vertical
+- Mouth ~211.7 × 121.0 mm, total depth ~75 mm
+- Flange 252 × 168 mm, R22 corners
+- Horizontal pattern-control limit ~1620 Hz
+
+## Reasoning
+
+A 5" midrange is still close to omnidirectional at the 1250-1600 Hz crossover, so
+the waveguide is matched **wide horizontally** rather than narrow. A **narrower
+vertical** coverage limits vertical lobing and lets the mid sit at a tight c-c.
+The OS profile gives a smooth throat (no diffraction edge) and the flush rolled
+mouth suppresses mouth-diffraction ripple. Terminating control at ~1620 Hz keeps
+the waveguide working in its controlled band for a crossover near that frequency.
+
+## Consequence
+
+The ~1620 Hz control limit sits above the v6b nominal 1250 Hz target, reinforcing
+the DD-010 caveat: the crossover may need to rise toward ~1500-1700 Hz once the
+printed waveguide is measured. The ~75 mm depth must be accommodated behind the
+baffle, and the 28 mm throat must be verified against the physical H2606 before
+printing. The mouth must terminate **flush** with the baffle (no forward lip or
+sharp edge) to avoid diffraction; the model was corrected to seat the flange
+behind the flush mouth plane (see docs/06 and `simulations/waveguide_profile.py`).
+This is simulation-stage geometry, not validated by measurement.

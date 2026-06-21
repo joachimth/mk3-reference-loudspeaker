@@ -49,11 +49,11 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 ## Bass
 
-- [ ] Compare 65 L
-- [ ] Compare 68 L
-- [ ] Compare 70 L
-- [ ] Compare Qtc
-- [ ] Compare group delay
+- [x] Compare 65 L
+- [x] Compare 68 L
+- [x] Compare 70 L
+- [x] Compare Qtc
+- [x] Compare group delay
 
 ## Midrange
 
@@ -63,7 +63,7 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 ## Tweeter
 
-- [ ] Compare 1250 Hz
+- [x] Compare 1250 Hz
 - [ ] Compare 1300 Hz
 - [ ] Compare 1400 Hz
 
@@ -74,7 +74,7 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 - [ ] Simulate early reflections
 - [ ] Simulate sound power
 - [ ] Simulate predicted in-room response
-- [ ] Simulate DI
+- [x] Simulate DI (estimate)
 
 ---
 
@@ -82,15 +82,15 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 ## WG212
 
-- [ ] Define throat diameter
-- [ ] Define profile
-- [ ] Define mouth radius
-- [ ] Define depth
-- [ ] Define flange shape
+- [x] Define throat diameter (placeholder 28 mm - verify on H2606)
+- [x] Define profile
+- [x] Define mouth radius
+- [x] Define depth
+- [x] Define flange shape
 
 ## CAD
 
-- [ ] Generate OpenSCAD model
+- [x] Generate OpenSCAD model
 - [ ] Export STL
 - [ ] Export STEP
 - [ ] Generate drawing
@@ -107,14 +107,14 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 ## Geometry
 
-- [ ] Finalize external dimensions
+- [x] Finalize external dimensions
 - [ ] Verify internal dimensions
-- [ ] Verify driver spacing
+- [x] Verify driver spacing (cabinet.scad, c-c 150 mm)
 
 ## Bracing
 
-- [ ] Design window braces
-- [ ] Design shelf braces
+- [x] Design window braces (representational in cabinet.scad)
+- [x] Design shelf braces (representational in cabinet.scad)
 - [ ] Add vertical braces
 
 ## Mid chamber
@@ -133,15 +133,15 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 ## Cabinet
 
-- [ ] OpenSCAD model
+- [x] OpenSCAD model
 - [ ] STEP model
 - [ ] 2D drawings
 
 ## Driver cutouts
 
-- [ ] Woofer cutout
-- [ ] Midrange cutout
-- [ ] Waveguide cutout
+- [x] Woofer cutout
+- [x] Midrange cutout
+- [x] Waveguide cutout
 
 ---
 

@@ -37,6 +37,24 @@ The latest simplified spinorama/directivity simulations suggest that lowering th
   4 Ω-vs-8 Ω impedance-confirmation note (Chapter 3) and a "simulated, not
   CEA-2034" banner to Chapter 13.
 
+### Design-stage work (CAD + simulations)
+
+- WG212 geometry defined as an asymmetric oblate-spheroid waveguide and recorded
+  as **DD-012** (throat ~28 mm, ~100°/64° coverage, mouth ~211.7 × 121 mm, control
+  ~1620 Hz); Chapter 6 updated to reference `cad/mk2_waveguide_os.scad` and tick
+  the completed geometry tasks.
+- Added `cad/cabinet.scad` (first cabinet CAD): shell, R50 roundovers, opposed
+  push-push cut-outs + coupling block, WG/mid baffle cut-outs at 150 mm c-c,
+  sealed mid chamber and braces.
+- Added simulations `bass_volume_compare.py` (64–72 L alignment + group delay;
+  confirms Qtc ~0.62 / Fc ~34.5 at 69 L and tolerance-robustness) and
+  `directivity_estimate.py` (DI step vs crossover — quantifies DD-010 / REVIEW §C2).
+- Fixed a sharp waveguide-mouth-to-baffle edge in `cad/mk2_waveguide_os.scad`
+  (flange moved behind the flush mouth plane, removing the forward lip that would
+  diffract) and added `simulations/waveguide_profile.py` illustrating the issue
+  and the flush / blended fixes.
+- All CAD/simulation outputs are simulation-stage estimates, not measured or final.
+
 ## v6 - Directivity optimization
 
 ### Added

@@ -100,15 +100,22 @@ module waveguide(){
     difference(){
         union(){
             loft_bore(wall);                         // outer shell = bore + wall
-            translate([0,0,D_tot])                   // front flange at mouth plane
+            // Flange sits BEHIND the flush mouth plane (z = D_tot) so the bore
+            // meets the baffle with no forward lip / sharp edge -> less mouth
+            // diffraction. (Earlier the flange was forward of D_tot with a
+            // straight mouth cut, leaving a sharp 90 deg edge at the baffle.)
+            // See simulations/waveguide_profile.py. For an even gentler baffle
+            // blend, increase Lr (bigger roundover) at the cost of depth.
+            translate([0,0,D_tot-flange_thick])
                 linear_extrude(flange_thick)
                     rounded_rect_2d(flange_w, flange_h, corner_r);
         }
         loft_bore(0);                                // hollow out acoustic bore
 
-        // open the mouth through the flange
-        translate([0,0,D_tot-0.5])
-            linear_extrude(flange_thick+1.5)
+        // clear the mouth opening through the rearward flange, up to the flush
+        // plane at z = D_tot (the baffle face) - no forward straight lip
+        translate([0,0,D_tot-flange_thick-0.5])
+            linear_extrude(flange_thick+0.6)
                 ellipse_2d(mouth_rx, mouth_ry);
 
         // rear faceplate clearance for the tweeter
@@ -119,10 +126,10 @@ module waveguide(){
             translate([(tw_bcd/2)*cos(a),(tw_bcd/2)*sin(a),-2])
                 cylinder(d=tw_hole_d, h=16);
 
-        // baffle mounting, countersunk from the front face
+        // baffle mounting, countersunk from the front (flush) face at z = D_tot
         for(x=[-baf_bcd_x/2, baf_bcd_x/2])
         for(y=[-baf_bcd_y/2, baf_bcd_y/2])
-            countersunk(x,y,baf_screw_d,baf_cs_d,baf_cs_depth, D_tot+flange_thick);
+            countersunk(x,y,baf_screw_d,baf_cs_d,baf_cs_depth, D_tot);
     }
 }
 
