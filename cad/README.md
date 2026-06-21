@@ -56,6 +56,19 @@ geometry in the repo.
   **~150 mm c-c**.
 - `show_internals = true` renders a cut-away with the sealed mid chamber, a
   window brace at the woofer line and the bass/mid shelf brace.
+- `show_waveguide = true` drops the WG212 model into the baffle (it `use`s
+  `mk2_waveguide_os.scad`, so keep both files together). The waveguide is seated
+  with its mouth poking `wg_through` (default 0.3 mm) **through** the baffle.
+
+### Assembly and the coincident-face rule
+
+OpenSCAD cannot show a hole or a join where two surfaces sit at exactly the same
+plane — the boolean becomes non-manifold and renders as a flickering "smear"
+instead of a clean opening. So every cutter here overshoots the panel it pierces
+by `eps` (0.1 mm), and when the waveguide is seated its flush mouth is pushed
+`wg_through` mm proud of the baffle so the two solids genuinely overlap. Keep
+`wg_through > 0` (≥ 0.01 mm); set it to ~0.3 mm for a reliable preview. The
+overlap is cosmetic for visualisation — it is not a real interference fit.
 
 ### Critical tunables (verify before cutting)
 

@@ -16,6 +16,10 @@
 // Units: millimetres.   Render: `openscad -o cabinet.stl cabinet.scad`
 // ---------------------------------------------------------------------
 
+// Pull in the waveguide model for the optional assembly view (only its
+// modules are imported; nothing renders unless show_waveguide = true).
+use <mk2_waveguide_os.scad>
+
 // ---- External shell -------------------------------------------------
 W      = 300;    // width  [mm]
 D      = 370;    // depth  [mm]
@@ -43,7 +47,17 @@ mid_cut_d     = 124;   // 15W/4434G00 cut-out diameter [mm]
 midchamber_h  = 235;   // internal height of the sealed mid chamber [mm]
 midchamber_d  = 210;   // internal depth of the mid chamber [mm] (<= inner depth)
 show_internals = true; // true: cutaway with mid chamber + braces
+show_waveguide = false;// true: seat the WG212 model into the baffle (assembly view)
 
+// WG212 assembly placement (keep in sync with mk2_waveguide_os.scad)
+wg_depth   = 75;       // = D_tot: throat-to-flush-mouth depth of the waveguide [mm]
+wg_through = 0.3;      // how far the mouth pokes through the baffle [mm].
+                       // MUST be > 0: with the waveguide ending flush, a value of
+                       // 0 leaves the mouth coplanar with the baffle and OpenSCAD
+                       // renders the join as a non-manifold smear, not a clean
+                       // opening/seam. 0.3 mm is a safe overlap.
+
+eps = 0.1;             // generic cut overshoot for clean booleans [mm]
 fn = 140;
 // ---------------------------------------------------------------------
 
@@ -61,10 +75,10 @@ module outer()  linear_extrude(H) profile2d(W, D, round_r);
 module cavity() translate([0,0,wall])
                     linear_extrude(H - 2*wall) offset(-wall) profile2d(W, D, round_r);
 
-// driver cut-out oriented through the +Y baffle
-module baffle_cut(z, dia, depth = wall + 2) {
-    translate([0, D/2 - depth + 1, z]) rotate([-90,0,0])
-        cylinder(h = depth, r = dia/2, $fn = fn);
+// driver cut-out: pierce the full baffle thickness with eps overshoot both faces
+module baffle_cut(z, dia) {
+    translate([0, D/2 - wall - eps, z]) rotate([-90,0,0])
+        cylinder(h = wall + 2*eps, r = dia/2, $fn = fn);
 }
 module rrect2d(w, h, r)
     hull() for (sx=[-1,1]) for (sy=[-1,1])
@@ -73,15 +87,17 @@ module rrect2d(w, h, r)
 // WG212 opening: elliptical mouth through the baffle + flange recess outside
 // (matches the asymmetric OS waveguide in mk2_waveguide_os.scad)
 module baffle_wg(z) {
-    translate([0, D/2 - wall - 1, z]) rotate([-90,0,0])
-        linear_extrude(wall + 2) scale([wg_mouth_w/2, wg_mouth_h/2]) circle(1, $fn = fn);
+    // elliptical mouth pierces the baffle (eps overshoot both faces)
+    translate([0, D/2 - wall - eps, z]) rotate([-90,0,0])
+        linear_extrude(wall + 2*eps) scale([wg_mouth_w/2, wg_mouth_h/2]) circle(1, $fn = fn);
+    // flange recess: a pocket of depth wg_flange_t in the outer baffle face
     translate([0, D/2 - wg_flange_t, z]) rotate([-90,0,0])
-        linear_extrude(wg_flange_t + 0.1) rrect2d(wg_flange_w, wg_flange_h, wg_flange_r);
+        linear_extrude(wg_flange_t + eps) rrect2d(wg_flange_w, wg_flange_h, wg_flange_r);
 }
 // woofer cut-out through a side panel (+/-X)
 module side_cut(sign, z, dia) {
-    translate([sign*(W/2 - wall - 1), 0, z]) rotate([0, sign*90, 0])
-        cylinder(h = wall + 2, r = dia/2, $fn = fn);
+    translate([sign*(W/2 - wall - eps), 0, z]) rotate([0, sign*90, 0])
+        cylinder(h = wall + 2*eps, r = dia/2, $fn = fn);
 }
 
 module enclosure() {
@@ -133,6 +149,17 @@ module coupling_block() {
         cylinder(h = 26, r = 28, center = true, $fn = 48);
 }
 
+// ---- WG212 seated in the baffle (optional assembly) -----------------
+module wg_in_baffle() {
+    // waveguide frame: throat at z=0, flush mouth at z=wg_depth, opening toward +z.
+    // rotate([-90,0,0]) maps the waveguide axis (+z) to the cabinet baffle normal
+    // (+Y); seat the mouth at the baffle and poke through by wg_through so the
+    // waveguide and baffle overlap (no coincident faces).
+    color("Gainsboro")
+    translate([0, D/2 - wg_depth + wg_through, tw_z]) rotate([-90,0,0])
+        waveguide();
+}
+
 if (show_internals) {
     difference() {
         union() {
@@ -141,10 +168,12 @@ if (show_internals) {
             brace_window(woofer_z);
             shelf_brace(mid_z - midchamber_h/2 - 30);
             coupling_block();
+            if (show_waveguide) wg_in_baffle();
         }
         // cutaway: remove the +X half for an internal view
         translate([0, -D, -10]) cube([W, 2*D, H + 20]);
     }
 } else {
     enclosure();
+    if (show_waveguide) wg_in_baffle();
 }
