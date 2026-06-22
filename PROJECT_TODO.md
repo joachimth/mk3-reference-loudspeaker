@@ -53,6 +53,11 @@ Grouped by area. The critical path to prototype is marked 🔴.
 - [x] **Waveguide CAD: fix stale header comment** — header said "crossover at ~1600 Hz"; corrected to 1250 Hz LR4 (unconfirmed) with fallback options.
 - [x] **Waveguide CAD: add `min(1.0, ...)` clamp in `prof_r`** — defensive guard against floating-point rounding at z=D_tot where asin argument is algebraically exactly 1.0.
 - [x] **cabinet.scad: sync mouth/flange dims from waveguide** — was hardcoded (211.7×121.0 mm etc.); now uses exported functions `wg_mouth_rx()`, `wg_mouth_ry()`, `wg_flange_w_fn()`, etc. so any waveguide geometry change propagates automatically.
+- [x] **Official H2606/920000 datasheets added** — PDF + drawing PNG + STEP + IGS + x_t in `assets/datasheets/`. README with all key dimensions.
+- [x] **`throat_d` corrected: 28 → 33 mm** — from official ScanSpeak STEP file. H2606 horn exit is ø33.0 mm (r=16.5 at front face). The WG212 is an extension waveguide starting at the H2606's horn exit. Verify with calipers on physical unit.
+- [x] **`tw_bcd` corrected: 92 → 95 mm** — from drawing (Pitch diam. ø95 ±0.1 mm). Previous value would have placed all 4 mounting screws 1.5 mm too close to centre; tweeter would not mount correctly.
+- [x] **`tw_face_d` corrected: 104.3 → 104.0 mm** — from drawing (ø104 ±0.2 mm).
+- [x] **`tw_hole_d` corrected: 4.4 → 4.0 mm** — from drawing (ø4 ±0.10 mm × 4).
 - [ ] **Waveguide: add baffle roundover blend** — `Lr` controls the mouth roundover. Document in `cad/README.md` how to increase `Lr` for a smoother mouth-to-baffle transition (currently 10 mm, could go to 18-20 mm for a more gradual blend).
 - [ ] **Cabinet: 2D cut drawings** — for workshop use. Currently only OpenSCAD 3D model, no panel dimensions sheet.
 - [ ] **Cabinet: mid chamber dimensioned drawing** — volume verification requires a proper dimensioned sketch.

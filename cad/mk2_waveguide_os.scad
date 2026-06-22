@@ -20,8 +20,13 @@
 $fn = 120;
 
 // ----------------------- MAIN ACOUSTIC PARAMETERS --------------------
-throat_d   = 28;     // throat diameter. VERIFY against the real H2606
-                     // dome/faceplate exit (26-30 typical). Critical.
+throat_d   = 33;     // horn exit diameter of the H2606/920000 built-in horn.
+                     // Confirmed from official ScanSpeak STEP file (H2606-920000.STEP,
+                     // assets/datasheets/): ø33.0 mm at the front face of the faceplate
+                     // (Y=44.09 mm in STEP model, the unique small circle d=33.0 mm).
+                     // The H2606 dome is ø26 mm; the built-in horn expands to ø33 mm
+                     // at the exit. Our WG212 is an extension waveguide starting there.
+                     // Verify with calipers on the physical unit before final print.
 theta_h    = 50;     // horizontal half-angle (deg)  -> ~100 deg coverage
 theta_v    = 32;     // vertical   half-angle (deg)  -> ~64  deg coverage
 D_os       = 65;     // depth of the OS (constant-directivity) section
@@ -37,10 +42,15 @@ flange_h     = 168;  // outer flange height
 flange_thick = 9;
 corner_r     = 22;   // flange corner radius
 
-// Tweeter (rear) mounting reference - adapt to measured H2606
-tw_face_d    = 104.3;
-tw_bcd       = 92;
-tw_hole_d    = 4.4;
+// Tweeter (rear) mounting — all dimensions from official ScanSpeak datasheet
+// (H2606-920000.pdf + .STEP, assets/datasheets/). Do NOT edit without re-checking
+// the physical unit; tolerances are tight on the faceplate pocket and BCD.
+tw_face_d    = 104.0;  // faceplate OD: ø104 ±0.2 mm  (drawing + STEP r=52.0)
+tw_bcd       = 95.0;   // mounting pitch circle: ø95 ±0.1 mm  (drawing + STEP r=47.5)
+tw_hole_d    = 4.0;    // mounting screw hole: ø4 ±0.10 mm x4 at 90°  (drawing)
+//
+// Cabinet direct-mount cutout (not used in waveguide mount but noted for reference):
+//   tw_cutout_d = 72  (ø72 mm baffle cutout if H2606 mounted directly to baffle)
 
 // Tweeter rear mounting plate
 // Provides a proper seating surface + screw holes for the H2606 at the throat end.
