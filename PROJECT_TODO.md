@@ -1,0 +1,128 @@
+# Mk2 Reference Loudspeaker — Project TODO
+
+Generated June 22, 2026 after full repo audit.
+Grouped by area. The critical path to prototype is marked 🔴.
+
+---
+
+## 🔴 Critical path — must complete before prototype build
+
+### WG212 waveguide
+- [ ] **Measure real H2606/920000 throat exit diameter** — update `throat_d` in `cad/mk2_waveguide_os.scad` (currently 28 mm placeholder). Print throat test pieces first. Without this, the print is a gamble.
+- [ ] **Print WG212 prototype** (PETG recommended, print flat, slow cool). Use STL from the CI release.
+- [ ] **Test-fit H2606 in printed WG212** — verify faceplate seating pocket depth (`tw_fp_recess=4`), back-plate diameter (`tw_ring_od=130`), and screw hole positions (BCD 92 mm).
+- [ ] **Measure H2606 distortion at 1250 Hz in WG212** — this is the gate. If THD at 1250 Hz is acceptable (< ~1-2%), the crossover target holds. If not, shift to 1350-1450 Hz and update `fc_mid` in all simulation scripts.
+- [ ] **Confirm realistic c-c spacing** from the printed WG212 flange + 15W frame — expected ~150-155 mm, not 140 mm. Update `cc_mid_tw_mm` in `simulations/design_versions_comparison.py` and DESIGN_DECISIONS.md DD-011.
+
+### Cabinet CAD
+- [ ] **Verify mid chamber net volume** from `cabinet.scad` solid model — target 5.7 L. Currently listed as "representational."
+- [ ] **Verify woofer mounting depth** fits 22 mm wall — check GRS 8SW-4HE-8 spec for max mounting depth. Risk noted in build guide.
+- [ ] **Confirm driver cutout diameters** — woofer 185 mm and midrange 124 mm are estimates. Get exact values from datasheets / physical measurement.
+- [ ] **Add vertical braces** to `cabinet.scad` — noted as open in TODO.md.
+- [ ] **Export STEP file** from cabinet + waveguide models (for CNC or external review).
+
+### DSP platform
+- [ ] **Select DSP/amplifier platform** — MiniDSP 4×10 HD, Hypex FusionAmp FA123/FA253, or ADAU1452 custom. Decision needed before ordering electronics.
+
+---
+
+## Documentation fixes (known errors)
+
+- [ ] **README.md "Next steps"** — still says "waveguide CAD, cabinet CAD". Both are done. Update to reflect current state: "Print WG212, measure, build prototype."
+- [ ] **`docs/00_design_bible.md` chapter status column** — all chapters marked "Draft". Mark the ones that are actually complete (most are well-written). Suggested: ch 1-14 → "Complete (pre-measurement)", ch 15-17 → "Pending prototype".
+- [ ] **`simulations/README.md`** — only lists the 5 original scripts. The 4 new scripts (`crossover_simulation`, `system_response`, `polar_response`, `vertical_polar_map`) and `design_versions_comparison` are missing from the table.
+- [ ] **DESIGN_REQUIREMENTS.md** — `c-c spacing` still says 140 mm. Align with realistic 150-155 mm once confirmed from printed WG212.
+- [ ] **PARTS.md** — no pricing, no quantities-per-pair, no supplier links. Useful to add before ordering. Currently open items section has no status updates despite driver spec fixes elsewhere.
+- [ ] **`assets/README.md`** — good disclaimer about SB23 assets, but `mk2_dsp.csv` and `mk2_parametre.csv` have no explanation of what their columns mean.
+
+---
+
+## Simulations — open tasks
+
+- [ ] **Update `system_response.py` tweeter model** once H2606-in-WG212 is measured. The current tanh step is a placeholder — swap it for a polynomial fit to the real FR.
+- [ ] **Add DSP EQ / Linkwitz Transform to `bass_alignment_maxspl.py`** — script shows the raw sealed rolloff. Show the DSP-corrected response with a Linkwitz Transform to e.g. Fc=28 Hz, Q=0.707.
+- [ ] **Add baffle step simulation** — 365 Hz step for a 300 mm wide cabinet is significant (+6 dB). Currently not modelled in any script. Useful before DSP configuration.
+- [ ] **Group delay plot** — `bass_volume_compare.py` mentions group delay in its title but the plot only shows sealed response curves. Add a group delay subplot.
+- [ ] **Import measured data** into simulation scripts once prototype is built — spinorama.csv, polar_horizontal.csv will become comparison targets.
+
+---
+
+## CAD — open tasks
+
+- [ ] **Waveguide: STEP export** — for external machining or material comparison.
+- [ ] **Waveguide: add baffle roundover blend** — `Lr` controls the mouth roundover. Document in `cad/README.md` how to increase `Lr` for a smoother mouth-to-baffle transition (currently 10 mm, could go to 18-20 mm for a more gradual blend).
+- [ ] **Cabinet: 2D cut drawings** — for workshop use. Currently only OpenSCAD 3D model, no panel dimensions sheet.
+- [ ] **Cabinet: mid chamber dimensioned drawing** — volume verification requires a proper dimensioned sketch.
+- [ ] **Verify `wg_through` parameter** in `cabinet.scad` (currently 0.3 mm overlap) — once the WG212 is printed and measured, confirm this cosmetic offset is correct.
+
+---
+
+## CI/CD — minor improvements
+
+- [ ] **`cad-render.yml`: add STEP export** once an OpenSCAD→STEP pipeline is confirmed (OpenSCAD 2021.01 supports `--export-format binstl`; STEP requires either a newer version or FreeCAD scripting).
+- [ ] **`simulations.yml`: pin numpy + matplotlib versions** to avoid future CI breakage (currently installs latest).
+- [ ] **Add a `README.md` badge** for the simulations workflow status (green/red) — makes health visible at a glance.
+- [ ] **`cad-render.yml` camera angles** — review after first render run; adjust if the views aren't informative.
+
+---
+
+## Build — ordered sequence
+
+*(Not started. Full sequence in `docs/16_build_guide.md`.)*
+
+- [ ] Order all drivers (2× GRS 8SW-4HE-8, 1× ScanSpeak 15W/4434G00, 1× H2606/920000 per speaker)
+- [ ] Order DSP/amplifier platform
+- [ ] Order 22 mm birch plywood (~4 sheets per pair)
+- [ ] Order hardware (threaded inserts, gasket tape, terminal plate, cable)
+- [ ] Cut panels (Phase 1)
+- [ ] Cut driver cutouts — confirm diameters from physical drivers first (Phase 2)
+- [ ] Assemble mid chamber (Phase 3)
+- [ ] Assemble main cabinet (Phase 4)
+- [ ] Internal damping (Phase 5)
+- [ ] Install woofers — verify push-push polarity with battery test (Phase 6)
+- [ ] Install mid chamber + midrange (Phase 7)
+- [ ] Install WG212 + tweeter — confirm c-c from built cabinet (Phase 8)
+- [ ] Sand + finish (Phase 9)
+- [ ] Install electronics (Phase 10)
+
+---
+
+## Measurements (post-build)
+
+*(Full plan in `docs/15_measurements.md` and `MEASUREMENTS.md`.)*
+
+- [ ] Measure H2606 distortion at 1250 Hz **before** finalizing crossover — this is the design gate
+- [ ] Nearfield woofer measurement
+- [ ] Nearfield midrange measurement
+- [ ] Nearfield tweeter/WG measurement
+- [ ] Far-field on-axis (gated or outdoor ground-plane)
+- [ ] Polar sweep horizontal: 0° → 180° in 10° steps
+- [ ] Polar sweep vertical: ±30° in 10° steps
+- [ ] Import to VituixCAD — extract acoustic centers, set delays
+- [ ] Finalize DSP: delays + baffle step EQ + waveguide EQ + Linkwitz Transform
+- [ ] REW preset file backup
+
+---
+
+## Future versions (not blocking v6b)
+
+- [ ] **v7: Cardioid bass** — rear-firing woofer array for dipole/cardioid bass cancellation
+- [ ] **v8: Purifi midrange** — swap 15W for Purifi 5" or 6.5" once crossover frequency is measured
+- [ ] **v9: Bliesma tweeter** — Bliesma T25B or similar as alternative to H2606
+- [ ] **v10: FIR crossovers** — linear-phase crossover once DSP platform supports it
+- [ ] **GitHub Pages site** — render the design bible as a static site from the `docs/` folder
+
+---
+
+## Summary — what's blocking what
+
+```
+throat_d verified
+    └─► WG212 printed + H2606 test-fit
+            └─► distortion measurement at 1250 Hz
+                    ├─► crossover frequency confirmed (or adjusted to 1350-1450 Hz)
+                    │       └─► DSP platform selected
+                    │               └─► build starts
+                    └─► c-c confirmed from real parts
+                            └─► DESIGN_REQUIREMENTS + DD-011 updated
+```
