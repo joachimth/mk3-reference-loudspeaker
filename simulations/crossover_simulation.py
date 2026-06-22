@@ -151,3 +151,26 @@ out = os.path.join(os.path.dirname(__file__), "plots", "crossover_simulation.png
 os.makedirs(os.path.dirname(out), exist_ok=True)
 fig.savefig(out, dpi=135)
 print("wrote", out)
+
+# ---------------------------------------------------------------------------
+#  CSV export
+# ---------------------------------------------------------------------------
+csv_dir = os.path.join(os.path.dirname(__file__), "csv")
+os.makedirs(csv_dir, exist_ok=True)
+csv_out = os.path.join(csv_dir, "crossover_simulation.csv")
+header = ("freq_Hz,woofer_mag_dB,woofer_phase_deg,"
+          "mid_mag_dB,mid_phase_deg,"
+          "tweeter_mag_dB,tweeter_phase_deg,"
+          "sum_mag_dB,sum_phase_deg")
+rows = [header]
+for i in range(len(f)):
+    rows.append(
+        f"{f[i]:.3f},"
+        f"{mag_w[i]:.4f},{ph_w[i]:.4f},"
+        f"{mag_mid[i]:.4f},{ph_mid[i]:.4f},"
+        f"{mag_t[i]:.4f},{ph_t[i]:.4f},"
+        f"{mag_sum[i]:.4f},{ph_sum[i]:.4f}"
+    )
+with open(csv_out, "w") as fh:
+    fh.write("\n".join(rows) + "\n")
+print("wrote", csv_out)

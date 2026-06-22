@@ -148,3 +148,26 @@ out = os.path.join(os.path.dirname(__file__), "plots", "system_response.png")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 fig.savefig(out, dpi=135)
 print("wrote", out)
+
+# ---------------------------------------------------------------------------
+#  CSV export
+# ---------------------------------------------------------------------------
+csv_dir = os.path.join(os.path.dirname(__file__), "csv")
+os.makedirs(csv_dir, exist_ok=True)
+csv_out = os.path.join(csv_dir, "system_response.csv")
+header = ("freq_Hz,woofer_dB,mid_dB,tweeter_raw_dB,tweeter_trimmed_dB,"
+          "system_sum_raw_dB,system_sum_matched_dB")
+rows = [header]
+for i in range(len(f)):
+    rows.append(
+        f"{f[i]:.3f},"
+        f"{mag_woofer[i]:.4f},"
+        f"{mag_mid[i]:.4f},"
+        f"{mag_tweeter[i]:.4f},"
+        f"{mag_tweeter_trimmed[i]:.4f},"
+        f"{mag_sum[i]:.4f},"
+        f"{mag_sum_trimmed[i]:.4f}"
+    )
+with open(csv_out, "w") as fh:
+    fh.write("\n".join(rows) + "\n")
+print("wrote", csv_out)

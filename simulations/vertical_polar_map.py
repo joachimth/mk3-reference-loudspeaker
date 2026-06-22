@@ -179,3 +179,25 @@ print("\nNote: At the crossover frequency LR4 gives -6 dB per driver, so the nul
 print("      is partially filled.  A shallower null does NOT mean the crossover is")
 print("      better — it means the two sources overlap more.  The real criterion is")
 print("      the null position relative to the listening window (±15°).")
+
+# ---------------------------------------------------------------------------
+#  CSV export: vertical lobing data for all crossover options
+# ---------------------------------------------------------------------------
+csv_dir = os.path.join(os.path.dirname(__file__), "csv")
+os.makedirs(csv_dir, exist_ok=True)
+csv_out = os.path.join(csv_dir, "vertical_polar_map.csv")
+
+# theta rows, frequency columns, one table per crossover
+# Write as a "long" format: crossover_Hz, freq_Hz, theta_deg, spl_dB
+rows = ["crossover_Hz,freq_Hz,theta_deg,spl_norm_dB"]
+for name, fc in xovers.items():
+    for fi_idx, fi in enumerate(f[::4]):   # every 4th frequency for size
+        fi_idx_full = fi_idx * 4
+        for tj, tj_deg in enumerate(theta[::5]):   # every 5 deg
+            tj_full = tj * 5
+            val = 20*np.log10(maps[name][tj_full, fi_idx_full])
+            rows.append(f"{fc},{fi:.2f},{tj_deg:.1f},{val:.4f}")
+
+with open(csv_out, "w") as fh:
+    fh.write("\n".join(rows) + "\n")
+print("wrote", csv_out)

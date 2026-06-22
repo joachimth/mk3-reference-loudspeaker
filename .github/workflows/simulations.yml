@@ -79,39 +79,50 @@ jobs:
         working-directory: simulations
         run: python vertical_polar_map.py 2>&1
 
+      - name: Run design_versions_comparison.py
+        working-directory: simulations
+        run: python design_versions_comparison.py 2>&1
+
       # ------------------------------------------------------------------ #
-      #  4. List generated plots (sanity check)                            #
+      #  4. List generated plots and CSV files (sanity check)             #
       # ------------------------------------------------------------------ #
-      - name: List generated plots
+      - name: List generated outputs
         run: |
           echo "=== simulations/plots/ ==="
           ls -lh simulations/plots/
+          echo "=== simulations/csv/ ==="
+          ls -lh simulations/csv/ 2>/dev/null || echo "(none yet)"
+          echo "=== simulations/design_versions.md ==="
+          ls -lh simulations/design_versions.md 2>/dev/null || echo "(none yet)"
 
       # ------------------------------------------------------------------ #
-      #  5. Commit updated plots back to repo                              #
+      #  5. Commit updated plots, CSVs and comparison table back to repo  #
       # ------------------------------------------------------------------ #
-      - name: Commit updated simulation plots
+      - name: Commit updated simulation outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add simulations/plots/
-          git diff --staged --quiet && echo "No plot changes." || \
-            git commit -m "ci(sims): update simulation plots [skip ci]
+          git add simulations/plots/ simulations/csv/ simulations/design_versions.md
+          git diff --staged --quiet && echo "No output changes." || \
+            git commit -m "ci(sims): update simulation outputs [skip ci]
 
           Triggered by: ${{ github.sha }}
           Scripts: bass_alignment_maxspl, bass_volume_compare, waveguide_profile,
                    directivity_estimate, vertical_lobing,
                    crossover_simulation, system_response, polar_response,
-                   vertical_polar_map"
+                   vertical_polar_map, design_versions_comparison"
           git push
 
       # ------------------------------------------------------------------ #
       #  6. Upload plots as workflow artifact (90-day retention)           #
       # ------------------------------------------------------------------ #
-      - name: Upload simulation plots as artifact
+      - name: Upload simulation outputs as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: simulation-plots-${{ github.run_number }}
-          path: simulations/plots/
+          name: simulation-outputs-${{ github.run_number }}
+          path: |
+            simulations/plots/
+            simulations/csv/
+            simulations/design_versions.md
           retention-days: 90
           if-no-files-found: error

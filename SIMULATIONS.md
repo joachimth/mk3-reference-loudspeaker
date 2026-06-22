@@ -95,9 +95,9 @@ Curves to maintain:
 
 # Simulation Tasks
 
-- [ ] Recreate all current Python simulations in version-controlled scripts
-- [ ] Add assumptions at top of each script
-- [ ] Export plots to `simulations/plots/`
-- [ ] Export CSV data to `simulations/csv/`
-- [ ] Create a comparison table for all design versions
-- [ ] Validate against actual measurements later
+- [x] Recreate all current Python simulations in version-controlled scripts
+- [x] Add assumptions at top of each script
+- [x] Export plots to `simulations/plots/` (CI auto-commits on every push)
+- [x] Export CSV data to `simulations/csv/` (crossover, system, spinorama, polar, vertical)
+- [x] Create a comparison table for all design versions (`design_versions_comparison.py` → `design_versions.md` + `csv/design_versions.csv`)
+- [ ] Validate against actual measurements (blocked: prototype not yet built)

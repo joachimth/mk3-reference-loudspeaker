@@ -270,3 +270,38 @@ out = os.path.join(os.path.dirname(__file__), "plots", "polar_response.png")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 fig.savefig(out, dpi=135)
 print("wrote", out)
+
+# ---------------------------------------------------------------------------
+#  CSV exports
+# ---------------------------------------------------------------------------
+csv_dir = os.path.join(os.path.dirname(__file__), "csv")
+os.makedirs(csv_dir, exist_ok=True)
+
+# Spinorama curves
+spin_out = os.path.join(csv_dir, "spinorama.csv")
+header = "freq_Hz,on_axis_dB,listening_window_dB,early_reflections_dB,sound_power_dB,DI_dB,PIR_dB"
+rows = [header]
+for i in range(len(f)):
+    rows.append(
+        f"{f[i]:.3f},{on_axis[i]:.4f},{lw[i]:.4f},"
+        f"{er[i]:.4f},{sp[i]:.4f},{DI[i]:.4f},{PIR[i]:.4f}"
+    )
+with open(spin_out, "w") as fh:
+    fh.write("\n".join(rows) + "\n")
+print("wrote", spin_out)
+
+# Polar data (angles × frequencies)  - sampled at 10-deg intervals
+polar_out = os.path.join(csv_dir, "polar_horizontal.csv")
+theta_sample = np.arange(0, 181, 10)
+f_sample_idx = [np.argmin(np.abs(f - fx)) for fx in [200, 500, 1000, 2000, 4000, 8000, 16000]]
+header_parts = ["theta_deg"] + [f"f{f[i]:.0f}Hz_dB" for i in f_sample_idx]
+rows = [",".join(header_parts)]
+for t_deg in theta_sample:
+    t_idx = np.argmin(np.abs(theta - t_deg))
+    vals = [f"{t_deg:.0f}"]
+    for fi in f_sample_idx:
+        vals.append(f"{20*np.log10(D_total_norm[fi, t_idx]):.4f}")
+    rows.append(",".join(vals))
+with open(polar_out, "w") as fh:
+    fh.write("\n".join(rows) + "\n")
+print("wrote", polar_out)

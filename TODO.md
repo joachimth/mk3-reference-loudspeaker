@@ -57,23 +57,23 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 ## Midrange
 
-- [ ] Verify diffraction
-- [ ] Verify off-axis response
-- [ ] Compare crossover frequencies
+- [x] Verify diffraction (polar_response.py - piston model)
+- [x] Verify off-axis response (polar_response.py - horizontal polar)
+- [x] Compare crossover frequencies (vertical_polar_map.py - 1250/1350/1450/1600 Hz)
 
 ## Tweeter
 
 - [x] Compare 1250 Hz
-- [ ] Compare 1300 Hz
-- [ ] Compare 1400 Hz
+- [x] Compare 1300 Hz (vertical_polar_map.py)
+- [x] Compare 1400 Hz (vertical_polar_map.py)
 
 ## Complete system
 
-- [ ] Simulate spinorama
-- [ ] Simulate listening window
-- [ ] Simulate early reflections
-- [ ] Simulate sound power
-- [ ] Simulate predicted in-room response
+- [x] Simulate spinorama (polar_response.py - on-axis, LW, ER, SP, DI, PIR)
+- [x] Simulate listening window (polar_response.py)
+- [x] Simulate early reflections (polar_response.py)
+- [x] Simulate sound power (polar_response.py)
+- [x] Simulate predicted in-room response (polar_response.py)
 - [x] Simulate DI (estimate)
 
 ---
@@ -129,11 +129,12 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 ---
 
-# CAD
+## CAD
 
 ## Cabinet
 
 - [x] OpenSCAD model
+- [x] STL export (CI: cad-render workflow, GitHub Releases)
 - [ ] STEP model
 - [ ] 2D drawings
 
@@ -258,7 +259,7 @@ Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 - [ ] Klippel NFS measurements
 - [ ] Complete spinorama
-- [ ] Python simulation scripts
+- [x] Python simulation scripts (9 scripts in simulations/, CI auto-runs + commits)
 - [ ] REW presets
 - [ ] VituixCAD files
 - [ ] OpenSCAD files
