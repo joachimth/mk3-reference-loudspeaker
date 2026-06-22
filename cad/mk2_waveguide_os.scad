@@ -8,8 +8,10 @@
 //   - Asymmetric coverage: ~100 deg horizontal, ~64 deg vertical.
 //   - Tangent rolled mouth that ends flush with the baffle plane
 //     (kills mouth diffraction ripple).
-//   - Horizontal pattern control down to ~1620 Hz  => clean LR4
-//     crossover to the 15W/4434G00 at ~1600 Hz.
+//   - Horizontal pattern control down to ~1620 Hz.
+//     Current crossover target: 1250 Hz LR4 (well below the control limit).
+//     1250 Hz is UNCONFIRMED — pending H2606/920000 distortion measurement
+//     in the finished waveguide. Fallback options: 1350 / 1450 / 1600 Hz.
 //
 //  After editing, render with F6 and export STL.
 //  $fn high = slow but smooth; drop to 64 while iterating.
@@ -63,11 +65,15 @@ function a0(th)   = atan( D_os*pow(tan(th),2) / r_e(th) );          // wall angl
 function Rroll(th)= Lr / (1 - sin(a0(th)) );                        // roundover radius
 
 // radius at depth z for a given half-angle th (OS, then tangent arc)
+// The asin argument is exactly 1.0 at z=D_tot by design (Rroll ensures it),
+// but floating-point accumulation through atan→sin→division can yield 1+ε on
+// some platforms, causing asin() to return undef.  The min() clamp is harmless
+// algebraically and prevents degenerate geometry in the mouth-end loft segment.
 function prof_r(z, th) =
     (z <= D_os)
       ? sqrt(r_t*r_t + pow(z*tan(th),2))
       : r_e(th) + Rroll(th) * ( cos(a0(th))
-            - cos( asin( sin(a0(th)) + (z - D_os)/Rroll(th) ) ) );
+            - cos( asin( min(1.0, sin(a0(th)) + (z - D_os)/Rroll(th)) ) ) );
 
 D_tot = D_os + Lr;
 
@@ -111,6 +117,18 @@ module countersunk(x,y,d,csd,csdepth,total){
 // ----------------------- MODEL ---------------------------------------
 mouth_rx = prof_r(D_tot, theta_h);
 mouth_ry = prof_r(D_tot, theta_v);
+
+// ----------------------- EXPORTED FUNCTIONS (for cabinet.scad) -------
+// These allow cabinet.scad (via `use`) to derive the correct mouth size
+// and flange dimensions automatically instead of hardcoding them.
+// Any change to throat_d, theta_h, theta_v, D_os, Lr, or flange_* here
+// propagates to the cabinet without a separate manual update.
+function wg_mouth_rx()    = prof_r(D_tot, theta_h);  // horizontal mouth radius [mm]
+function wg_mouth_ry()    = prof_r(D_tot, theta_v);  // vertical   mouth radius [mm]
+function wg_flange_w_fn() = flange_w;                // outer flange width  [mm]
+function wg_flange_h_fn() = flange_h;                // outer flange height [mm]
+function wg_flange_r_fn() = corner_r;                // flange corner radius [mm]
+function wg_flange_t_fn() = flange_thick;            // flange thickness / recess depth [mm]
 
 module waveguide(){
     difference(){

@@ -35,12 +35,15 @@ tw_z          = 900;   // WG212/tweeter acoustic centre height [mm]
 cc            = 150;   // mid/tweeter centre-to-centre [mm] (DD-011 realistic)
 mid_z         = tw_z - cc;
 // WG212 opening matches cad/mk2_waveguide_os.scad (asymmetric OS waveguide)
-wg_mouth_w    = 211.7; // WG212 mouth width  (horizontal) [mm]
-wg_mouth_h    = 121.0; // WG212 mouth height (vertical)   [mm]
-wg_flange_w   = 252;   // WG212 flange recess width  [mm]
-wg_flange_h   = 168;   // WG212 flange recess height [mm]
-wg_flange_r   = 22;    // flange corner radius [mm]
-wg_flange_t   = 9;     // flange recess depth [mm]
+// WG212 mouth and flange dimensions — derived from mk2_waveguide_os.scad via
+// exported functions so they stay in sync automatically when the waveguide
+// profile changes (throat_d, angles, etc.).  Do NOT hardcode these here.
+wg_mouth_w    = 2 * wg_mouth_rx();    // WG212 mouth width  (horizontal) [mm]
+wg_mouth_h    = 2 * wg_mouth_ry();    // WG212 mouth height (vertical)   [mm]
+wg_flange_w   = wg_flange_w_fn();     // WG212 flange recess width  [mm]
+wg_flange_h   = wg_flange_h_fn();     // WG212 flange recess height [mm]
+wg_flange_r   = wg_flange_r_fn();     // flange corner radius [mm]
+wg_flange_t   = wg_flange_t_fn();     // flange thickness / recess depth [mm]
 mid_cut_d     = 124;   // 15W/4434G00 cut-out diameter [mm]
 
 // ---- Internals ------------------------------------------------------

@@ -50,6 +50,9 @@ Grouped by area. The critical path to prototype is marked 🔴.
 ## CAD — open tasks
 
 - [ ] **Waveguide: STEP export** — for external machining or material comparison.
+- [x] **Waveguide CAD: fix stale header comment** — header said "crossover at ~1600 Hz"; corrected to 1250 Hz LR4 (unconfirmed) with fallback options.
+- [x] **Waveguide CAD: add `min(1.0, ...)` clamp in `prof_r`** — defensive guard against floating-point rounding at z=D_tot where asin argument is algebraically exactly 1.0.
+- [x] **cabinet.scad: sync mouth/flange dims from waveguide** — was hardcoded (211.7×121.0 mm etc.); now uses exported functions `wg_mouth_rx()`, `wg_mouth_ry()`, `wg_flange_w_fn()`, etc. so any waveguide geometry change propagates automatically.
 - [ ] **Waveguide: add baffle roundover blend** — `Lr` controls the mouth roundover. Document in `cad/README.md` how to increase `Lr` for a smoother mouth-to-baffle transition (currently 10 mm, could go to 18-20 mm for a more gradual blend).
 - [ ] **Cabinet: 2D cut drawings** — for workshop use. Currently only OpenSCAD 3D model, no panel dimensions sheet.
 - [ ] **Cabinet: mid chamber dimensioned drawing** — volume verification requires a proper dimensioned sketch.
