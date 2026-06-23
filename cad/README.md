@@ -6,9 +6,11 @@ Parametric CAD models for the Mk2 Reference Loudspeaker.
 
 A fully parametric **OpenSCAD** model of the tweeter waveguide for the
 ScanSpeak **H2606/920000** — an oblate-spheroid (OS) constant-directivity bore
-with a tangent rolled mouth that ends flush with the baffle.
+with a tangent rolled mouth and a cylindrical **protrusion** that extends past
+the mounting flange so the waveguide passes through the cabinet baffle cutout.
 
-- Mouth ≈ **211.7 × 121.0 mm**, total depth **75 mm** (the WG212 family).
+- Mouth ≈ **211.7 × 121.0 mm**, acoustic depth **75 mm**, front face at
+  **80 mm** with the default `protrusion = 5` (the WG212 family).
 - Asymmetric coverage ≈ **100° horizontal / 64° vertical**.
 - Horizontal pattern control down to ≈ **1620 Hz**, i.e. designed to support a
   clean LR4 crossover to the 15W/4434G00 **near the waveguide's control limit**
@@ -17,16 +19,22 @@ with a tangent rolled mouth that ends flush with the baffle.
 
 ### Critical tunables (verify before printing)
 
-- `throat_d` (28 mm placeholder) **must be matched to the real H2606 dome /
-  faceplate exit** — this sets whether you get a throat resonance. Print throat
-  test pieces against the physical tweeter first.
+- `throat_d` (33.0 mm from official H2606/920000 STEP geometry) **must be
+  caliper-verified on the physical unit before final print** — this sets whether
+  you get a throat resonance. Print throat test pieces against the physical
+  tweeter first.
+- `protrusion` (default **5 mm**) — cylindrical extension past the flange front
+  face. The waveguide tube is sized so it passes *through* a cutout in the
+  cabinet baffle instead of ending flush with the baffle. Increase to match a
+  thicker baffle + desired forward lip; reduce to 0 for a flush-to-baffle
+  termination (the historical default — sharp 90° edge, not recommended).
 - The mouth roundover must blend smoothly into the cabinet's baffle roundover;
   a step there re-introduces diffraction.
-- **Mouth-to-baffle termination:** the flange now sits *behind* the flush mouth
-  plane so the bore meets the baffle with no forward lip (an earlier version left
-  a sharp 90° edge there — a diffraction source). `Lr` controls the mouth
-  roundover; increase it for an even gentler baffle blend at the cost of depth.
-  See [`../simulations/waveguide_profile.py`](../simulations/waveguide_profile.py)
+- **Mouth-to-baffle termination:** the flange sits *behind* the acoustic mouth
+  plane (z = D_tot) so the bore meets the baffle with no forward lip. `Lr`
+  controls the mouth roundover; increase it for an even gentler baffle blend
+  at the cost of depth. See
+  [`../simulations/waveguide_profile.py`](../simulations/waveguide_profile.py)
   and `plots/waveguide_termination.png`.
 
 ### Building

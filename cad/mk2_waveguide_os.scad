@@ -6,8 +6,12 @@
 //   - Oblate-spheroid (OS) bore  => smooth throat (no diffraction edge)
 //     and near-conical, CONSTANT-DIRECTIVITY main section.
 //   - Asymmetric coverage: ~100 deg horizontal, ~64 deg vertical.
-//   - Tangent rolled mouth that ends flush with the baffle plane
-//     (kills mouth diffraction ripple).
+//   - Tangent rolled mouth at the acoustic end (z = D_tot).  A short
+//     cylindrical PROTRUSION (z = D_tot .. D_tot + protrusion) extends
+//     past the flange so the waveguide passes through the cabinet baffle
+//     cutout instead of ending flush with the baffle face.  Default
+//     protrusion is 5 mm past the flange front; increase to match your
+//     baffle thickness + desired forward lip.
 //   - Horizontal pattern control down to ~1620 Hz.
 //     Current crossover target: 1250 Hz LR4 (well below the control limit).
 //     1250 Hz is UNCONFIRMED — pending H2606/920000 distortion measurement
@@ -32,6 +36,12 @@ theta_v    = 32;     // vertical   half-angle (deg)  -> ~64  deg coverage
 D_os       = 65;     // depth of the OS (constant-directivity) section
 Lr         = 10;     // forward depth of the mouth roundover
 wall       = 8;      // wall thickness
+protrusion = 5;      // cylindrical extension past the flange front face so
+                     // the waveguide passes through the cabinet baffle cutout
+                     // instead of ending flush with the baffle.  Increase to
+                     // match baffle thickness + desired forward lip; default
+                     // 5 mm past the flange is enough for a ~18 mm MDF baffle
+                     // with a slight visible lip.
 steps      = 96;     // loft resolution along depth
 
 // Derived mouth (computed below): ~211.7 x 121.0 mm, total depth 75 mm
@@ -74,7 +84,14 @@ function r_e(th)  = sqrt(r_t*r_t + pow(D_os*tan(th),2));            // OS radius
 function a0(th)   = atan( D_os*pow(tan(th),2) / r_e(th) );          // wall angle at OS end (deg)
 function Rroll(th)= Lr / (1 - sin(a0(th)) );                        // roundover radius
 
-// radius at depth z for a given half-angle th (OS, then tangent arc)
+// radius at depth z for a given half-angle th (OS, then tangent arc, then
+// cylindrical protrusion past the acoustic mouth)
+//   z <= D_os           : OS (constant-directivity) bore profile
+//   D_os < z <= D_tot   : tangent roundover to the mouth
+//   z >  D_tot          : constant mouth radius (cylindrical continuation
+//                         through the cabinet baffle cutout; the acoustic
+//                         profile is already settled, this is geometry only)
+//
 // The asin argument is exactly 1.0 at z=D_tot by design (Rroll ensures it),
 // but floating-point accumulation through atan→sin→division can yield 1+ε on
 // some platforms, causing asin() to return undef.  The min() clamp is harmless
@@ -82,18 +99,20 @@ function Rroll(th)= Lr / (1 - sin(a0(th)) );                        // roundover
 function prof_r(z, th) =
     (z <= D_os)
       ? sqrt(r_t*r_t + pow(z*tan(th),2))
-      : r_e(th) + Rroll(th) * ( cos(a0(th))
-            - cos( asin( min(1.0, sin(a0(th)) + (z - D_os)/Rroll(th)) ) ) );
+      : (z <= D_tot)
+        ? r_e(th) + Rroll(th) * ( cos(a0(th))
+              - cos( asin( min(1.0, sin(a0(th)) + (z - D_os)/Rroll(th)) ) ) )
+        : prof_r(D_tot, th);
 
-D_tot = D_os + Lr;
+D_tot       = D_os + Lr;                  // acoustic mouth position (mm)
+D_tot_ext   = D_tot + protrusion;          // front face of the protrusion (mm)
 
-// Depth of the finished part's FRONT (baffle) face, measured from the throat
-// plane. With the flush termination the front face IS the mouth plane (D_tot) -
-// the flange sits behind it. Exposed so cabinet.scad can seat the waveguide
-// without a hard-coded number. (If a build needs ~D_tot + flange_thick to sit
-// flush, the flange is still FORWARD of the mouth = the old, sharp-edged
-// geometry: pull the current file.)
-function wg_front_z() = D_tot;
+// Depth of the finished part's FRONT face, measured from the throat plane.
+// With protrusion > 0 this is past the flange, where the waveguide mouth
+// exits through the cabinet baffle cutout.  The flange itself is still
+// at z = D_tot - flange_thick .. D_tot.  Exposed so cabinet.scad can
+// seat the waveguide without a hard-coded number.
+function wg_front_z() = D_tot_ext;
 
 // ----------------------- HELPERS -------------------------------------
 module ellipse_2d(rx, ry){ scale([rx, ry]) circle(r=1); }
@@ -106,10 +125,12 @@ module rounded_rect_2d(w,h,r){
 }
 
 // loft an elliptical bore between (rx,ry) cross-sections along z
+// Total length = D_tot + protrusion (the protrusion section is a cylindrical
+// continuation of the mouth since prof_r is constant there).
 module loft_bore(off=0){
     for(i=[0:steps-1]){
-        z1 = (i/steps)     * D_tot;
-        z2 = ((i+1)/steps) * D_tot;
+        z1 = (i/steps)     * D_tot_ext;
+        z2 = ((i+1)/steps) * D_tot_ext;
         rx1 = prof_r(z1,theta_h)+off; ry1 = prof_r(z1,theta_v)+off;
         rx2 = prof_r(z2,theta_h)+off; ry2 = prof_r(z2,theta_v)+off;
         hull(){
@@ -135,10 +156,11 @@ mouth_ry = prof_r(D_tot, theta_v);
 // propagates to the cabinet without a separate manual update.
 function wg_mouth_rx()    = prof_r(D_tot, theta_h);  // horizontal mouth radius [mm]
 function wg_mouth_ry()    = prof_r(D_tot, theta_v);  // vertical   mouth radius [mm]
+function wg_protrusion_fn() = protrusion;            // forward protrusion past flange [mm]
 function wg_flange_w_fn() = flange_w;                // outer flange width  [mm]
 function wg_flange_h_fn() = flange_h;                // outer flange height [mm]
 function wg_flange_r_fn() = corner_r;                // flange corner radius [mm]
-function wg_flange_t_fn() = flange_thick;            // flange thickness / recess depth [mm]
+function wg_flange_t_fn() = flange_thick;            // flange thickness / recess depth [mm] 
 
 module waveguide(){
     difference(){
@@ -190,15 +212,18 @@ module waveguide(){
             translate([(tw_bcd/2)*cos(a),(tw_bcd/2)*sin(a),-tw_ring_thick-1])
                 cylinder(d=tw_hole_d, h=tw_ring_thick+2);
 
-        // baffle mounting, countersunk from the front (flush) face at z = D_tot
+        // baffle mounting, countersunk from the front face of the protrusion
+        // (z = D_tot + protrusion) so the screw head sits flush with the
+        // waveguide's exposed forward face.
         for(x=[-baf_bcd_x/2, baf_bcd_x/2])
         for(y=[-baf_bcd_y/2, baf_bcd_y/2])
-            countersunk(x,y,baf_screw_d,baf_cs_d,baf_cs_depth, D_tot);
+            countersunk(x,y,baf_screw_d,baf_cs_d,baf_cs_depth, D_tot_ext);
     }
 }
 
 waveguide();
 
 echo(str("MOUTH       ", 2*mouth_rx, " x ", 2*mouth_ry, " mm"));
-echo(str("DEPTH       throat-to-baffle ", D_tot, " mm  |  total incl. back plate ", D_tot + tw_ring_thick, " mm"));
+echo(str("DEPTH       acoustic mouth at D_tot=", D_tot, " mm  |  front face (incl. protrusion) at D_tot+protrusion=", D_tot_ext, " mm  |  total incl. back plate ", D_tot_ext + tw_ring_thick, " mm"));
+echo(str("PROTRUSION  ", protrusion, " mm past the flange front (cylindrical, mouth radius)"));
 echo(str("BACK PLATE  ø", tw_ring_od, " mm  thick ", tw_ring_thick, " mm  faceplate pocket ø", tw_face_d+1.0, " x ", tw_fp_recess, " mm deep"));
