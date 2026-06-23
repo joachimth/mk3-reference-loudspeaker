@@ -6,11 +6,13 @@ Parametric CAD models for the Mk2 Reference Loudspeaker.
 
 A fully parametric **OpenSCAD** model of the tweeter waveguide for the
 ScanSpeak **H2606/920000** — an oblate-spheroid (OS) constant-directivity bore
-with a tangent rolled mouth and a cylindrical **protrusion** that extends past
-the mounting flange so the waveguide passes through the cabinet baffle cutout.
+with a tangent rolled mouth and a cylindrical **protrusion** that extends
+through the cabinet baffle so the waveguide tube ends **flush with the outside
+of the baffle** (no visible step, no protrusion past the cabinet face).
 
 - Mouth ≈ **211.7 × 121.0 mm**, acoustic depth **75 mm**, front face at
-  **80 mm** with the default `protrusion = 5` (the WG212 family).
+  **97 mm** with the default `protrusion = 22` matching `cabinet.scad`'s
+  `wall = 22;` (panel thickness — the WG212 family).
 - Asymmetric coverage ≈ **100° horizontal / 64° vertical**.
 - Horizontal pattern control down to ≈ **1620 Hz**, i.e. designed to support a
   clean LR4 crossover to the 15W/4434G00 **near the waveguide's control limit**
@@ -23,11 +25,17 @@ the mounting flange so the waveguide passes through the cabinet baffle cutout.
   caliper-verified on the physical unit before final print** — this sets whether
   you get a throat resonance. Print throat test pieces against the physical
   tweeter first.
-- `protrusion` (default **5 mm**) — cylindrical extension past the flange front
-  face. The waveguide tube is sized so it passes *through* a cutout in the
-  cabinet baffle instead of ending flush with the baffle. Increase to match a
-  thicker baffle + desired forward lip; reduce to 0 for a flush-to-baffle
-  termination (the historical default — sharp 90° edge, not recommended).
+- `protrusion` (default **22 mm**) — cylindrical extension past the flange
+  front face. The waveguide tube passes *through* a cutout in the cabinet
+  baffle and ends **flush with the outside of the baffle**. Keep this value
+  in sync with `cabinet.scad`'s `wall = 22;` (panel thickness); if you change
+  one, change the other or the waveguide will be misaligned with the baffle
+  face. Set to 0 for a flush-to-flange termination (historical default — the
+  tube ends inside the cabinet, which is the bug this parameter fixes).
+- `flange_thick` (default **5 mm**) — thickness of the screw-mounting flange
+  behind the cabinet baffle. 5 mm is plenty for wood-screw mounting into the
+  baffle; the baffle cutout in `cabinet.scad` derives its recess depth from
+  this value automatically (`wg_flange_t_fn()`).
 - The mouth roundover must blend smoothly into the cabinet's baffle roundover;
   a step there re-introduces diffraction.
 - **Mouth-to-baffle termination:** the flange sits *behind* the acoustic mouth

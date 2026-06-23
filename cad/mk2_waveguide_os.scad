@@ -6,12 +6,12 @@
 //   - Oblate-spheroid (OS) bore  => smooth throat (no diffraction edge)
 //     and near-conical, CONSTANT-DIRECTIVITY main section.
 //   - Asymmetric coverage: ~100 deg horizontal, ~64 deg vertical.
-//   - Tangent rolled mouth at the acoustic end (z = D_tot).  A short
-//     cylindrical PROTRUSION (z = D_tot .. D_tot + protrusion) extends
-//     past the flange so the waveguide passes through the cabinet baffle
-//     cutout instead of ending flush with the baffle face.  Default
-//     protrusion is 5 mm past the flange front; increase to match your
-//     baffle thickness + desired forward lip.
+//   - Tangent rolled mouth at the acoustic end (z = D_tot).  A cylindrical
+//     PROTRUSION (z = D_tot .. D_tot + protrusion) extends past the flange
+//     so the waveguide tube ends FLUSH with the OUTSIDE of the cabinet
+//     baffle - no visible step, no protrusion past the cabinet face.
+//     Default `protrusion = 22` matches `cabinet.scad`'s `wall = 22;`
+//     (panel thickness).  Keep these two values in sync.
 //   - Horizontal pattern control down to ~1620 Hz.
 //     Current crossover target: 1250 Hz LR4 (well below the control limit).
 //     1250 Hz is UNCONFIRMED — pending H2606/920000 distortion measurement
@@ -36,12 +36,15 @@ theta_v    = 32;     // vertical   half-angle (deg)  -> ~64  deg coverage
 D_os       = 65;     // depth of the OS (constant-directivity) section
 Lr         = 10;     // forward depth of the mouth roundover
 wall       = 8;      // wall thickness
-protrusion = 5;      // cylindrical extension past the flange front face so
-                     // the waveguide passes through the cabinet baffle cutout
-                     // instead of ending flush with the baffle.  Increase to
-                     // match baffle thickness + desired forward lip; default
-                     // 5 mm past the flange is enough for a ~18 mm MDF baffle
-                     // with a slight visible lip.
+protrusion = 22;     // cylindrical extension past the flange front face so
+                     // the waveguide tube ends FLUSH with the OUTSIDE of the
+                     // cabinet baffle.  Default 22 mm matches cabinet.scad's
+                     // `wall = 22;` (panel thickness).  If you change the
+                     // baffle thickness in cabinet.scad, change this to match
+                     // - or the waveguide will either disappear into the wall
+                     // or protrude past it.  Set to 0 for a flush-to-flange
+                     // termination (historical default; tube ends inside the
+                     // cabinet = the bug we just fixed).
 steps      = 96;     // loft resolution along depth
 
 // Derived mouth (computed below): ~211.7 x 121.0 mm, total depth 75 mm
@@ -49,7 +52,9 @@ steps      = 96;     // loft resolution along depth
 // ----------------------- FLANGE / MOUNTING ---------------------------
 flange_w     = 252;  // outer flange width  (baffle face)
 flange_h     = 168;  // outer flange height
-flange_thick = 9;
+flange_thick = 5;    // flange thickness — 5 mm is plenty for wood-screw mounting
+                     // into the cabinet baffle (back plate still 8 mm thick,
+                     // separate from this flange).
 corner_r     = 22;   // flange corner radius
 
 // Tweeter (rear) mounting — all dimensions from official ScanSpeak datasheet
