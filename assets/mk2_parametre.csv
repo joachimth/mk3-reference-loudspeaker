@@ -20,3 +20,15 @@ Mid/diskant deling,1250 Hz LR4 (ubekraeftet - afhaenger af H2606 distortion i wa
 Bas/mid deling,150 Hz LR4,cabinet
 Sidebas center,520 mm fra bund,cabinet (woofer_z)
 Forventet on-axis,ca. +/-1 til 1.5 dB 100 Hz-10 kHz efter maaling,design_target
+Midwoofer faceplate OD,104 mm +-0.2,assets/datasheets/15W-4434G00.md
+Midwoofer BCD,95 mm +-0.1,assets/datasheets/15W-4434G00.md
+Midwoofer monteringshuller,4 mm +-0.10 x 4 stk 90 grader,assets/datasheets/15W-4434G00.md
+Midwoofer basket depth,45.1 mm,assets/datasheets/15W-4434G00.md
+Midwoofer Fs,43 Hz,assets/datasheets/15W-4434G00.md (scan-speak.dk)
+Midwoofer Re,3.0 ohm,assets/datasheets/15W-4434G00.md (scan-speak.dk)
+Midwoofer Qt,0.21,assets/datasheets/15W-4434G00.md (scan-speak.dk)
+Midwoofer sensitivity,89.5 dB (2.83V/1m),assets/datasheets/15W-4434G00.md (scan-speak.dk)
+Midwoofer VAS,12.8 L,assets/datasheets/15W-4434G00.md (scan-speak.dk)
+Midwoofer Sd,80 cm^2,assets/datasheets/15W-4434G00.md (scan-speak.dk)
+Midwoofer Bl,5.9 Tm,assets/datasheets/15W-4434G00.md (scan-speak.dk)
+Midwoofer baffle cutout,124 mm (hardkodet - VERIFICER mod 72 mm chassis dim),cabinet.scad:mid_cut_d (TODO)

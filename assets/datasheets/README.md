@@ -42,4 +42,9 @@ No official STEP/IGES available yet. T-S parameters in `assets/mk2_parametre.csv
 
 ## ScanSpeak 15W/4434G00 — Midrange
 
-No official STEP/IGES added yet. Mounting dimensions needed to confirm c-c spacing once WG212 is printed.
+| File | What it is |
+|---|---|
+| [15W-4434G00.pdf](15W-4434G00.pdf) | Official ScanSpeak datasheet (319 KB). T-S parameters and mounting drawing. |
+| [15W-4434G00.md](15W-4434G00.md) | Datasheet reference extracted from the PDF + official ScanSpeak product page. Includes mechanical dims, T-S params, and open TODO items. |
+
+**Status: PARTIAL.** PDF datasheet + dimensional reference in place. STEP file NOT available from ScanSpeak (Discovery series does not publish STEP). Baffle cutout diameter (`mid_cut_d` in cabinet.scad, currently hardcoded 124 mm) needs verification — see TODO in `15W-4434G00.md`.
