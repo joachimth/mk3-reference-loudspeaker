@@ -32,3 +32,17 @@ Midwoofer VAS,12.8 L,assets/datasheets/15W-4434G00.md (scan-speak.dk)
 Midwoofer Sd,80 cm^2,assets/datasheets/15W-4434G00.md (scan-speak.dk)
 Midwoofer Bl,5.9 Tm,assets/datasheets/15W-4434G00.md (scan-speak.dk)
 Midwoofer baffle cutout,124 mm (hardkodet - VERIFICER mod 72 mm chassis dim),cabinet.scad:mid_cut_d (TODO)
+Woofer (GRS 8SW-4HE-8) Fs,48 Hz,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Re,3.8 ohm,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Qms,4.33,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Qes,1.13,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Qts,0.89,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Mms,33.2 g,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Cms,0.33 mm/N,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Sd,216.8 cm^2,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Vd,130 cm^3,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) BL,5.8 Tm,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) VAS,22 L,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) Xmax,6 mm,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer (GRS 8SW-4HE-8) VC diameter,38 mm,assets/datasheets/GRS-8SW-4HE-8.md
+Woofer baffle cutout,185 mm (hardkodet - VERIFICER mod tegning),cabinet.scad:woofer_cut_d (TODO)
