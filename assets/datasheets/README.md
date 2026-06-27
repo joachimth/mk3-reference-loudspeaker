@@ -36,9 +36,14 @@ The WG212 waveguide in `cad/mk2_waveguide_os.scad` is therefore an **extension w
 
 ---
 
-## GRS 8SW-4HE-8 — Woofer
+## GRS 8SW-4HE-8 — Woofer (Push-Push)
 
-No official STEP/IGES available yet. T-S parameters in `assets/mk2_parametre.csv` and `docs/03_woofer_selection.md`.
+| File | What it is |
+|---|---|
+| [GRS-8SW-4HE-8-spec-sheet.pdf](GRS-8SW-4HE-8-spec-sheet.pdf) | Official GRS spec sheet (721 KB). T-S parameters and mechanical drawing. |
+| [GRS-8SW-4HE-8.md](GRS-8SW-4HE-8.md) | Datasheet reference extracted from the PDF. Includes T-S params and open TODO items. |
+
+**Status: PARTIAL.** PDF datasheet + T-S parameters in place. Mechanical drawing dimensions not clearly extracted from PDF (embedded fonts). Baffle cutout diameter (`woofer_cut_d` in cabinet.scad, currently hardcoded 185 mm) needs verification — see TODO in `GRS-8SW-4HE-8.md`. No STEP file available from GRS.
 
 ## ScanSpeak 15W/4434G00 — Midrange
 
