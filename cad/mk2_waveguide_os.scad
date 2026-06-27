@@ -21,7 +21,7 @@
 //  $fn high = slow but smooth; drop to 64 while iterating.
 // =====================================================================
 
-$fn = 120;
+$fn = 128;
 
 // ----------------------- MAIN ACOUSTIC PARAMETERS --------------------
 throat_d   = 33;     // horn exit diameter of the H2606/920000 built-in horn.
@@ -34,20 +34,24 @@ throat_d   = 33;     // horn exit diameter of the H2606/920000 built-in horn.
 theta_h    = 50;     // horizontal half-angle (deg)  -> ~100 deg coverage
 theta_v    = 32;     // vertical   half-angle (deg)  -> ~64  deg coverage
 D_os       = 65;     // depth of the OS (constant-directivity) section
-Lr         = 10;     // forward depth of the mouth roundover
+Lr         = 25;     // forward depth of the mouth roundover
 wall       = 8;      // wall thickness
-protrusion = 22;     // cylindrical extension past the flange front face so
-                     // the waveguide tube ends FLUSH with the OUTSIDE of the
-                     // cabinet baffle.  Default 22 mm matches cabinet.scad's
-                     // `wall = 22;` (panel thickness).  If you change the
-                     // baffle thickness in cabinet.scad, change this to match
-                     // - or the waveguide will either disappear into the wall
-                     // or protrude past it.  Set to 0 for a flush-to-flange
-                     // termination (historical default; tube ends inside the
-                     // cabinet = the bug we just fixed).
+protrusion = 0;     // cylindrical extension past the flange front face.
+                     // Default 0: the waveguide tube ends FLUSH with the
+                     // cabinet baffle BACK face (z = 85) and the baffle has
+                     // a through-cutout exposing the waveguide mouth from
+                     // the outside.  The tube does NOT physically extend
+                     // through the baffle - the baffle hole is the aperture.
+                     // Set higher (e.g. 22 to match cabinet.scad's wall = 22)
+                     // only if you want the tube to physically protrude past
+                     // the baffle OUTSIDE face; in that case keep the two
+                     // values in sync so the waveguide tube ends flush with
+                     // the cabinet's outside surface.
 steps      = 96;     // loft resolution along depth
 
-// Derived mouth (computed below): ~211.7 x 121.0 mm, total depth 75 mm
+// Derived mouth (echoed on render): ~293.5 x 174.4 mm, total depth 90 mm
+// (D_tot = D_os + Lr = 65 + 25).  Tube extends from z=-5 (overlap with back plate)
+// to z=D_tot_ext-flange_thick=85 (flush with cabinet baffle back face).
 
 // ----------------------- FLANGE / MOUNTING ---------------------------
 flange_w     = 252;  // outer flange width  (baffle face)
@@ -55,7 +59,7 @@ flange_h     = 168;  // outer flange height
 flange_thick = 5;    // flange thickness — 5 mm is plenty for wood-screw mounting
                      // into the cabinet baffle (back plate still 8 mm thick,
                      // separate from this flange).
-corner_r     = 22;   // flange corner radius
+corner_r     = 4;   // flange corner radius
 
 // Tweeter (rear) mounting — all dimensions from official ScanSpeak datasheet
 // (H2606-920000.pdf + .STEP, assets/datasheets/). Do NOT edit without re-checking
@@ -134,8 +138,8 @@ module rounded_rect_2d(w,h,r){
 // continuation of the mouth since prof_r is constant there).
 module loft_bore(off=0){
     for(i=[0:steps-1]){
-        z1 = (i/steps)     * D_tot_ext;
-        z2 = ((i+1)/steps) * D_tot_ext;
+        z1 = (i/steps)     * D_tot_ext-flange_thick;
+        z2 = ((i+1)/steps) * D_tot_ext-flange_thick;
         rx1 = prof_r(z1,theta_h)+off; ry1 = prof_r(z1,theta_v)+off;
         rx2 = prof_r(z2,theta_h)+off; ry2 = prof_r(z2,theta_v)+off;
         hull(){
@@ -146,7 +150,7 @@ module loft_bore(off=0){
 }
 
 module countersunk(x,y,d,csd,csdepth,total){
-    translate([x,y,-1]) cylinder(d=d, h=total+3);
+    translate([x,y,-1]) cylinder(d=d, h=total);
     translate([x,y,total-csdepth]) cylinder(d1=d, d2=csd, h=csdepth+1);
 }
 
@@ -170,14 +174,14 @@ function wg_flange_t_fn() = flange_thick;            // flange thickness / reces
 module waveguide(){
     difference(){
         union(){
-            loft_bore(wall);                         // outer shell = bore + wall
+            loft_bore(wall+protrusion);                         // outer shell = bore + wall
             // Flange sits BEHIND the flush mouth plane (z = D_tot) so the bore
             // meets the baffle with no forward lip / sharp edge -> less mouth
             // diffraction. (Earlier the flange was forward of D_tot with a
             // straight mouth cut, leaving a sharp 90 deg edge at the baffle.)
             // See simulations/waveguide_profile.py. For an even gentler baffle
             // blend, increase Lr (bigger roundover) at the cost of depth.
-            translate([0,0,D_tot-flange_thick])
+            translate([0,0,D_tot-2*flange_thick])
                 linear_extrude(flange_thick)
                     rounded_rect_2d(flange_w, flange_h, corner_r);
 
@@ -193,7 +197,7 @@ module waveguide(){
 
         // clear the mouth opening through the rearward flange, up to the flush
         // plane at z = D_tot (the baffle face) - no forward straight lip
-        translate([0,0,D_tot-flange_thick-0.5])
+        translate([0,0,D_tot-flange_thick+0.05])
             linear_extrude(flange_thick+0.6)
                 ellipse_2d(mouth_rx, mouth_ry);
 
