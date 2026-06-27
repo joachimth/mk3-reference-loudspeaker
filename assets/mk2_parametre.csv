@@ -1,20 +1,22 @@
-Parameter,Værdi
-Kabinet højde,1050 mm
-Kabinet bredde,300 mm konstant
-Kabinet form,lige taarn med rundinger >=25 mm
-Dybde,370 mm
-Materiale,22 mm birkefiner (foretrukket) eller MDF
-Basvolumen,"ca. 64 L netto, lukket (84 L brutto)"
-Bas-alignment,Qtc ca. 0.75 / Fc ca. 54 Hz (Vas 94 L x2)
-Midkammer,"5-6 L lukket, kraftigt dæmpet, isoleret"
-Waveguide profil,OS (oblate spheroid) + rullet mund
-Waveguide coverage,ca. 100 grader H / 64 grader V
-Waveguide mund,211.7 x 121.0 mm
-Waveguide dybde,75 mm (65 OS + 10 roundover)
-Waveguide throat,28 mm (tilpasses H2606)
-Horisontal pattern-kontrol,ned til ca. 1620 Hz
-Diskant/mid centerafstand,160 mm
-Mid/diskant deling,ca. 1600 Hz LR4 (sættes endeligt af måling)
-Bas/mid deling,180 Hz LR4
-Sidebas center,310 mm fra bund
-Forventet on-axis,ca. +/-1 til 1.5 dB 100 Hz-10 kHz efter måling
+Parameter,Værdi,Kilde
+Kabinet højde,1050 mm,design_target
+Kabinet bredde,300 mm konstant,design_target
+Kabinet form,lige taarn med rundinger >=25 mm,design_target
+Dybde,370 mm,design_target
+Materiale,22 mm birkefiner (foretrukket) eller MDF,design_target
+Basvolumen,"ca. 64 L netto, lukket (84 L brutto)",T-S + sim
+Bas-alignment,Qtc ca. 0.75 / Fc ca. 54 Hz (Vas 94 L x2),T-S + sim
+Midkammer,"5-6 L lukket, kraftigt daempet, isoleret",design_target
+Waveguide profil,OS (oblate spheroid) + rullet mund,cad
+Waveguide coverage,ca. 100 grader H / 64 grader V,theta_h/v
+Waveguide mund,293.5 x 174.4 mm,echo paa render (cad)
+Waveguide dybde,90 mm (65 OS + 25 roundover),D_tot i cad
+Waveguide throat,33.0 mm (fra H2606 STEP),assets/datasheets/H2606-920000.STEP
+Waveguide flange,252 x 168 x 5 mm (corner_r 4 mm),cad
+Waveguide tube fysisk, z = -5..85 mm (overlap back plate 5 mm, end baffle back),cad
+Horisontal pattern-kontrol,ned til ca. 1620 Hz,cad/sim
+Diskant/mid centerafstand,150 mm,cabinet.scad (cc)
+Mid/diskant deling,1250 Hz LR4 (ubekraeftet - afhaenger af H2606 distortion i waveguide),REVIEW.md C2
+Bas/mid deling,150 Hz LR4,cabinet
+Sidebas center,520 mm fra bund,cabinet (woofer_z)
+Forventet on-axis,ca. +/-1 til 1.5 dB 100 Hz-10 kHz efter maaling,design_target

@@ -30,7 +30,7 @@ Official manufacturer datasheets and 3D CAD files for the drivers used in the Mk
 
 The H2606/920000 has a built-in horn in its faceplate. The dome effective diameter is 26 mm; the horn expands to **ø33.0 mm** at the front face of the faceplate. This was extracted from the STEP file by finding all circular features at Y=44.09 mm (the front face region, ~1 mm behind the mounting face at Y=45.1 mm): the unique small-radius circle at that level is r=16.5 mm → **d=33.0 mm**.
 
-The WG212 waveguide in `cad/mk2_waveguide_os.scad` is therefore an **extension waveguide**: it starts at the H2606's horn exit (ø33 mm) and continues the oblate-spheroid expansion to the full 212 mm mouth. The H2606 is not mounted directly to the baffle; it mounts to the rear plate of the WG212.
+The WG212 waveguide in `cad/mk2_waveguide_os.scad` is therefore an **extension waveguide**: it starts at the H2606's horn exit (ø33 mm) and continues the oblate-spheroid expansion to the full ~293 × 174 mm mouth (echoed on render). The H2606 is not mounted directly to the baffle; it mounts to the rear plate of the WG212.
 
 **Verify with calipers** on the physical tweeter before printing the final waveguide. The ø33 mm is derived from CAD geometry, not a directly dimensioned drawing callout.
 

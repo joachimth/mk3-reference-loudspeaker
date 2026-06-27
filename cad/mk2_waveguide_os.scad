@@ -116,12 +116,19 @@ function prof_r(z, th) =
 D_tot       = D_os + Lr;                  // acoustic mouth position (mm)
 D_tot_ext   = D_tot + protrusion;          // front face of the protrusion (mm)
 
-// Depth of the finished part's FRONT face, measured from the throat plane.
-// With protrusion > 0 this is past the flange, where the waveguide mouth
-// exits through the cabinet baffle cutout.  The flange itself is still
-// at z = D_tot - flange_thick .. D_tot.  Exposed so cabinet.scad can
-// seat the waveguide without a hard-coded number.
-function wg_front_z() = D_tot_ext;
+// Physical front face of the finished part, measured from the throat plane.
+// Returns z = D_tot_ext - flange_thick: the loft_bore tube terminates
+// flange_thick short of D_tot_ext (the tube is shifted back by flange_thick
+// so it overlaps the back plate by 5 mm and ends flush with the flange front
+// face, not with the acoustic mouth).  Cabinet.scad uses this to seat the
+// waveguide so the flange front face aligns with the baffle back face.
+// (D_tot_ext itself is only useful for the protrusion-style extrusion past
+// the flange, which this design no longer uses by default.)
+function wg_front_z() = D_tot_ext - flange_thick;
+
+// Back face of the finished part (rear of the back plate).
+// Useful for cabinet.scad to keep the back plate clear of the cabinet back wall.
+function wg_back_z() = -tw_ring_thick;
 
 // ----------------------- HELPERS -------------------------------------
 module ellipse_2d(rx, ry){ scale([rx, ry]) circle(r=1); }

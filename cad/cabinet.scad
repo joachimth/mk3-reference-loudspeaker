@@ -52,17 +52,29 @@ midchamber_d  = 210;   // internal depth of the mid chamber [mm] (<= inner depth
 show_internals = true; // true: cutaway with mid chamber + braces
 show_waveguide = false;// true: seat the WG212 model into the baffle (assembly view)
 
-// WG212 assembly placement. wg_front_z() is imported from mk2_waveguide_os.scad
-// and returns the waveguide's front (baffle) face depth, so the seating tracks
-// the waveguide automatically - no hard-coded number to drift out of sync.
-// (Flush-terminated waveguide -> 75 mm. If yours only sits flush near ~84.5 mm,
-//  your waveguide file is the old flange-forward / sharp-edged version.)
-wg_depth   = wg_front_z();
-wg_through = 0.3;      // how far the mouth pokes through the baffle [mm].
-                       // MUST be > 0: with the waveguide ending flush, a value of
-                       // 0 leaves the mouth coplanar with the baffle and OpenSCAD
-                       // renders the join as a non-manifold smear, not a clean
-                       // opening/seam. 0.3 mm is a safe overlap.
+// WG212 assembly placement. All positioning derives from mk2_waveguide_os.scad
+// exports so the cabinet tracks the waveguide automatically - no hard-coded
+// number to drift out of sync if you change Lr, flange_thick, or protrusion.
+//
+// wg_front_z()  = physical front face of the waveguide (z = D_tot_ext - flange_thick
+//                 in the current design: 85 mm).  The flange front face sits at this
+//                 z and is what we want flush with the baffle back face.
+// wg_back_z()   = rear of the back plate (z = -tw_ring_thick = -8 mm).  Useful for
+//                 keeping the assembly clear of the cabinet back wall.
+// wg_protrusion_fn() = protrusion past the flange front (0 by default - the tube
+//                 ends at the flange front, baffle hole is the aperture).
+//
+// The waveguide's throat (z=0) is positioned so the flange front face aligns
+// with the baffle back face:  Y(z=0) = (D/2 - wall) - wg_front_z().
+// With current numbers:  Y(z=0) = (185-22) - 85 = 78 ;  Y(z=85) = 163 (baffle back).
+//
+// wg_recess = small overlap so the flange and baffle material are not coplanar
+//             (OpenSCAD renders coplanar joins as non-manifold smears).  0.3 mm
+//             is safe and well below any acoustic concern.
+wg_front       = wg_front_z();
+wg_back        = wg_back_z();
+wg_protrusion  = wg_protrusion_fn();
+wg_recess      = 0.3;   // small overlap into the baffle material [mm] for clean CSG
 
 eps = 0.1;             // generic cut overshoot for clean booleans [mm]
 fn = 140;
@@ -91,14 +103,18 @@ module rrect2d(w, h, r)
     hull() for (sx=[-1,1]) for (sy=[-1,1])
         translate([sx*(w/2 - r), sy*(h/2 - r)]) circle(r, $fn = fn);
 
-// WG212 opening: elliptical mouth through the baffle + flange recess outside
-// (matches the asymmetric OS waveguide in mk2_waveguide_os.scad)
+// WG212 opening: elliptical mouth through the baffle + flange recess on the
+// INSIDE of the baffle (matches the asymmetric OS waveguide in
+// mk2_waveguide_os.scad, which mounts behind the baffle via the flange).
 module baffle_wg(z) {
     // elliptical mouth pierces the baffle (eps overshoot both faces)
     translate([0, D/2 - wall - eps, z]) rotate([-90,0,0])
         linear_extrude(wall + 2*eps) scale([wg_mouth_w/2, wg_mouth_h/2]) circle(1, $fn = fn);
-    // flange recess: a pocket of depth wg_flange_t in the outer baffle face
-    translate([0, D/2 - wg_flange_t, z]) rotate([-90,0,0])
+    // flange recess: pocket of depth wg_flange_t on the INNER baffle face so
+    // the waveguide flange (5 mm thick, sits at z = wg_front - wg_flange_t ..
+    // wg_front in the waveguide frame) lands flush against the baffle back face.
+    // Open toward the cabinet interior (Y = D/2 - wall - wg_flange_t .. D/2 - wall).
+    translate([0, D/2 - wall - wg_flange_t, z]) rotate([-90,0,0])
         linear_extrude(wg_flange_t + eps) rrect2d(wg_flange_w, wg_flange_h, wg_flange_r);
 }
 // woofer cut-out through a side panel (+/-X)
@@ -158,12 +174,21 @@ module coupling_block() {
 
 // ---- WG212 seated in the baffle (optional assembly) -----------------
 module wg_in_baffle() {
-    // waveguide frame: throat at z=0, flush mouth at z=wg_depth, opening toward +z.
-    // rotate([-90,0,0]) maps the waveguide axis (+z) to the cabinet baffle normal
-    // (+Y); seat the mouth at the baffle and poke through by wg_through so the
-    // waveguide and baffle overlap (no coincident faces).
+    // Waveguide frame: throat at z=0, flange front face at z=wg_front, opening
+    // toward +z.  rotate([-90,0,0]) maps the waveguide axis (+z) to the cabinet
+    // baffle normal (+Y).
+    //
+    // Position so the FLANGE FRONT FACE aligns with the BAFFLE BACK FACE,
+    // pushed in by wg_recess for a clean coplanar join (no coincident faces).
+    // Y(z=0) = baffle_back_y - wg_front + wg_recess
+    //       = (D/2 - wall) - wg_front + wg_recess
+    // Y(z=wg_front) = baffle_back_y + wg_recess
+    //
+    // For protrusion > 0 the tube extends past the flange through the baffle
+    // cutout; for protrusion = 0 (current default) the tube ends at the flange
+    // and the baffle hole is the radiating aperture.
     color("Gainsboro")
-    translate([0, D/2 - wg_depth + wg_through, tw_z]) rotate([-90,0,0])
+    translate([0, D/2 - wall - wg_front + wg_recess, tw_z]) rotate([-90,0,0])
         waveguide();
 }
 
