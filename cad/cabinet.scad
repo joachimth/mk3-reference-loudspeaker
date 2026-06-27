@@ -49,8 +49,9 @@ mid_cut_d     = 124;   // 15W/4434G00 cut-out diameter [mm]
 // ---- Internals ------------------------------------------------------
 midchamber_h  = 235;   // internal height of the sealed mid chamber [mm]
 midchamber_d  = 210;   // internal depth of the mid chamber [mm] (<= inner depth)
-show_internals = true; // true: cutaway with mid chamber + braces
-show_waveguide = false;// true: seat the WG212 model into the baffle (assembly view)
+show_internals = true;  // true: cutaway with mid chamber + braces
+show_waveguide = false; // true: seat the WG212 model into the baffle (assembly view)
+show_drivers = false;   // true: show placeholder driver disks for scale reference
 
 // WG212 assembly placement. All positioning derives from mk2_waveguide_os.scad
 // exports so the cabinet tracks the waveguide automatically - no hard-coded
@@ -174,38 +175,72 @@ module coupling_block() {
 
 // ---- WG212 seated in the baffle (optional assembly) -----------------
 module wg_in_baffle() {
-    // Waveguide frame: throat at z=0, flange front face at z=wg_front, opening
-    // toward +z.  rotate([-90,0,0]) maps the waveguide axis (+z) to the cabinet
-    // baffle normal (+Y).
-    //
-    // Position so the FLANGE FRONT FACE aligns with the BAFFLE BACK FACE,
-    // pushed in by wg_recess for a clean coplanar join (no coincident faces).
-    // Y(z=0) = baffle_back_y - wg_front + wg_recess
-    //       = (D/2 - wall) - wg_front + wg_recess
-    // Y(z=wg_front) = baffle_back_y + wg_recess
-    //
-    // For protrusion > 0 the tube extends past the flange through the baffle
-    // cutout; for protrusion = 0 (current default) the tube ends at the flange
-    // and the baffle hole is the radiating aperture.
-    color("Gainsboro")
-    translate([0, D/2 - wall - wg_front + wg_recess, tw_z]) rotate([-90,0,0])
-        waveguide();
-}
+      // Waveguide frame: throat at z=0, flange front face at z=wg_front, opening
+      // toward +z.  rotate([-90,0,0]) maps the waveguide axis (+z) to the cabinet
+      // baffle normal (+Y).
+      //
+      // Position so the FLANGE FRONT FACE aligns with the BAFFLE BACK FACE,
+      // pushed in by wg_recess for a clean coplanar join (no coincident faces).
+      // Y(z=0) = baffle_back_y - wg_front + wg_recess
+      //       = (D/2 - wall) - wg_front + wg_recess
+      // Y(z=wg_front) = baffle_back_y + wg_recess
+      //
+      // For protrusion > 0 the tube extends past the flange through the baffle
+      // cutout; for protrusion = 0 (current default) the tube ends at the flange
+      // and the baffle hole is the radiating aperture.
+      color("Gainsboro")
+      translate([0, D/2 - wall - wg_front + wg_recess, tw_z]) rotate([-90,0,0])
+          waveguide();
+  }
+
+  // ---- Placeholder driver disks for scale visualization ----------------
+  // Simple colored disks representing the physical driver sizes for render scale.
+  // These are NOT accurate driver models - just visual references for cabinet renders.
+  module driver_woofer_placeholder(sign) {
+      // GRS 8SW-4HE: ~200mm frame, ~120mm magnet depth
+      color("DarkSlateGray", 0.85)
+      translate([sign*(W/2 + 10), 0, woofer_z]) rotate([0, sign*90, 0])
+          cylinder(h = 25, r = 100, $fn = 64);
+  }
+  module driver_mid_placeholder() {
+      // 15W/4434G00: ~104mm faceplate
+      color("DimGray", 0.85)
+      translate([0, D/2 + 10, mid_z]) rotate([-90, 0, 0])
+          cylinder(h = 20, r = 52, $fn = 48);
+  }
+  module driver_tweeter_placeholder() {
+      // H2606/920000: ~25mm dome + small faceplate
+      color("Silver", 0.9)
+      translate([0, D/2 - wall - wg_front + wg_recess + 5, tw_z]) rotate([-90, 0, 0])
+          cylinder(h = 15, r = 35, $fn = 32);
+  }
 
 if (show_internals) {
-    difference() {
-        union() {
-            enclosure();
-            mid_chamber();
-            brace_window(woofer_z);
-            shelf_brace(mid_z - midchamber_h/2 - 30);
-            coupling_block();
-            if (show_waveguide) wg_in_baffle();
-        }
-        // cutaway: remove the +X half for an internal view
-        translate([0, -D, -10]) cube([W, 2*D, H + 20]);
-    }
-} else {
-    enclosure();
-    if (show_waveguide) wg_in_baffle();
-}
+      difference() {
+          union() {
+              enclosure();
+              mid_chamber();
+              brace_window(woofer_z);
+              shelf_brace(mid_z - midchamber_h/2 - 30);
+              coupling_block();
+              if (show_waveguide) wg_in_baffle();
+              if (show_drivers) {
+                  driver_woofer_placeholder(+1);
+                  driver_woofer_placeholder(-1);
+                  driver_mid_placeholder();
+                  if (show_waveguide) driver_tweeter_placeholder();
+              }
+          }
+          // cutaway: remove the +X half for an internal view
+          translate([0, -D, -10]) cube([W, 2*D, H + 20]);
+      }
+  } else {
+      enclosure();
+      if (show_waveguide) wg_in_baffle();
+      if (show_drivers) {
+          driver_woofer_placeholder(+1);
+          driver_woofer_placeholder(-1);
+          driver_mid_placeholder();
+          if (show_waveguide) driver_tweeter_placeholder();
+      }
+  }

@@ -65,10 +65,24 @@ on every push that changes a `.scad` file. It:
 
 | Preview | Description |
 |---------|-------------|
-| ![mouth](../assets/renders/waveguide_mouth.png) | Waveguide mouth view |
-| ![rear](../assets/renders/waveguide_rear.png) | Waveguide rear / back plate |
-| ![exterior](../assets/renders/cabinet_exterior.png) | Cabinet exterior |
-| ![cutaway](../assets/renders/cabinet_cutaway.png) | Cabinet cutaway |
+| **Waveguide (6 views)** ||
+| ![mouth](../assets/renders/waveguide_mouth.png) | Mouth (front view) |
+| ![rear](../assets/renders/waveguide_rear.png) | Rear / back plate + mounting |
+| ![side](../assets/renders/waveguide_side.png) | Side profile (OS bore curve) |
+| ![top](../assets/renders/waveguide_top.png) | Top (throat view) |
+| ![iso](../assets/renders/waveguide_iso.png) | Isometric 3/4 view |
+| ![cutaway](../assets/renders/waveguide_cutaway.png) | Half-section cutaway |
+| **Cabinet (10 views)** ||
+| ![front](../assets/renders/cabinet_front.png) | Front (baffle with driver placeholders) |
+| ![rear](../assets/renders/cabinet_rear.png) | Rear panel |
+| ![left](../assets/renders/cabinet_left.png) | Left side (woofer visible) |
+| ![right](../assets/renders/cabinet_right.png) | Right side (woofer visible) |
+| ![top](../assets/renders/cabinet_top.png) | Top view |
+| ![bottom](../assets/renders/cabinet_bottom.png) | Bottom view |
+| ![exterior](../assets/renders/cabinet_exterior.png) | 3/4 exterior perspective |
+| ![cutaway](../assets/renders/cabinet_cutaway.png) | Half-section cutaway (internals) |
+| ![assembly](../assets/renders/cabinet_assembly.png) | Assembly (with waveguide) |
+| ![full](../assets/renders/cabinet_full_cutaway.png) | Full assembly cutaway (all drivers) |
 
 A rendered profile of this waveguide is in
 [../assets/mk2_waveguide_profil.png](../assets/mk2_waveguide_profil.png).

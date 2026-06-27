@@ -48,6 +48,7 @@ protrusion = 0;     // cylindrical extension past the flange front face.
                      // values in sync so the waveguide tube ends flush with
                      // the cabinet's outside surface.
 steps      = 96;     // loft resolution along depth
+show_cutaway = false; // true: render half-section cutaway for profile view
 
 // Derived mouth (echoed on render): ~293.5 x 174.4 mm, total depth 90 mm
 // (D_tot = D_os + Lr = 65 + 25).  Tube extends from z=-5 (overlap with back plate)
@@ -237,7 +238,16 @@ module waveguide(){
     }
 }
 
-waveguide();
+// Render full or cutaway view based on show_cutaway parameter
+if (show_cutaway) {
+    difference() {
+        waveguide();
+        // Cut away right half (X>0) to show internal profile
+        translate([0, -200, -50]) cube([200, 400, 250]);
+    }
+} else {
+    waveguide();
+}
 
 echo(str("MOUTH       ", 2*mouth_rx, " x ", 2*mouth_ry, " mm"));
 echo(str("DEPTH       acoustic mouth at D_tot=", D_tot, " mm  |  front face (incl. protrusion) at D_tot+protrusion=", D_tot_ext, " mm  |  total incl. back plate ", D_tot_ext + tw_ring_thick, " mm"));
