@@ -21,11 +21,11 @@
 use <mk2_waveguide_os.scad>
 
 // ---- External shell -------------------------------------------------
-W      = 300;    // width  [mm]
+W      = 320;    // width  [mm]
 D      = 370;    // depth  [mm]
 H      = 1080;   // height [mm]
 wall   = 22;     // panel thickness [mm]
-round_r = 50;    // R50 front vertical roundovers [mm]
+round_r = 40;    // R50 front vertical roundovers [mm]
 
 // ---- Driver placement (estimates) -----------------------------------
 woofer_z      = 520;   // opposed push-push woofer centre height [mm]
@@ -38,8 +38,8 @@ mid_z         = tw_z - cc;
 // WG212 mouth and flange dimensions — derived from mk2_waveguide_os.scad via
 // exported functions so they stay in sync automatically when the waveguide
 // profile changes (throat_d, angles, etc.).  Do NOT hardcode these here.
-wg_mouth_w    = 2 * wg_mouth_rx();    // WG212 mouth width  (horizontal) [mm]
-wg_mouth_h    = 2 * wg_mouth_ry();    // WG212 mouth height (vertical)   [mm]
+wg_mouth_w    = wg_flange_w_fn();    // WG212 mouth width  (horizontal) [mm]
+wg_mouth_h    = wg_flange_h_fn();    // WG212 mouth height (vertical)   [mm]
 wg_flange_w   = wg_flange_w_fn();     // WG212 flange recess width  [mm]
 wg_flange_h   = wg_flange_h_fn();     // WG212 flange recess height [mm]
 wg_flange_r   = wg_flange_r_fn();     // flange corner radius [mm]
@@ -47,10 +47,10 @@ wg_flange_t   = wg_flange_t_fn();     // flange thickness / recess depth [mm]
 mid_cut_d     = 72;    // 15W/4434G00 cut-out diameter [mm] - from datasheet drawing (chassis/basket Ø72 mm)
 
 // ---- Internals ------------------------------------------------------
-midchamber_h  = 235;   // internal height of the sealed mid chamber [mm]
-midchamber_d  = 210;   // internal depth of the mid chamber [mm] (<= inner depth)
+midchamber_h  = 175;   // internal height of the sealed mid chamber [mm]
+midchamber_d  = 282;   // internal depth of the mid chamber [mm] (<= inner depth)
 show_internals = true;  // true: cutaway with mid chamber + braces
-show_waveguide = false; // true: seat the WG212 model into the baffle (assembly view)
+show_waveguide = true; // true: seat the WG212 model into the baffle (assembly view)
 show_drivers = false;   // true: show placeholder driver disks for scale reference
 
 // WG212 assembly placement. All positioning derives from mk2_waveguide_os.scad
@@ -75,10 +75,10 @@ show_drivers = false;   // true: show placeholder driver disks for scale referen
 wg_front       = wg_front_z();
 wg_back        = wg_back_z();
 wg_protrusion  = wg_protrusion_fn();
-wg_recess      = 0.3;   // small overlap into the baffle material [mm] for clean CSG
+wg_recess      = wall+0.01;   // small overlap into the baffle material [mm] for clean CSG //Editied since it needs to blend into the front baffel and not the back of the baffel.
 
 eps = 0.1;             // generic cut overshoot for clean booleans [mm]
-fn = 140;
+fn = 64;
 // ---------------------------------------------------------------------
 
 // 2D horizontal cross-section: rounded front (+Y) corners, square rear corners
