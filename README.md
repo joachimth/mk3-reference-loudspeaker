@@ -19,6 +19,36 @@ A DIY active 3-way reference loudspeaker project, inspired by Genelec 8361, Dutc
 | Bass alignment | Fc ~34.5 Hz, Qtc ~0.62 |
 | System type | Active, DSP-controlled |
 
+## CAD Renders
+
+Auto-generated on every CAD change. [Full documentation →](cad/)
+
+### Waveguide (WG212 for H2606/920000)
+
+| | |
+|:---:|:---:|
+| ![Mouth](assets/renders/waveguide_mouth.png) | ![Rear](assets/renders/waveguide_rear.png) |
+| Mouth (front) | Rear / back plate |
+| ![Side](assets/renders/waveguide_side.png) | ![Top](assets/renders/waveguide_top.png) |
+| Side profile (OS bore) | Top (throat view) |
+| ![Iso](assets/renders/waveguide_iso.png) | ![Cutaway](assets/renders/waveguide_cutaway.png) |
+| Isometric | Half-section cutaway |
+
+### Cabinet (v6b)
+
+| | |
+|:---:|:---:|
+| ![Front](assets/renders/cabinet_front.png) | ![Rear](assets/renders/cabinet_rear.png) |
+| Front (baffle with drivers) | Rear panel |
+| ![Left](assets/renders/cabinet_left.png) | ![Right](assets/renders/cabinet_right.png) |
+| Left side (woofer) | Right side (woofer) |
+| ![Top](assets/renders/cabinet_top.png) | ![Bottom](assets/renders/cabinet_bottom.png) |
+| Top | Bottom |
+| ![Exterior](assets/renders/cabinet_exterior.png) | ![Cutaway](assets/renders/cabinet_cutaway.png) |
+| 3/4 exterior | Half-section cutaway |
+| ![Assembly](assets/renders/cabinet_assembly.png) | ![Full](assets/renders/cabinet_full_cutaway.png) |
+| With waveguide mounted | Full assembly cutaway |
+
 ## Project Status
 
 [![Run simulations](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/simulations.yml/badge.svg)](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/simulations.yml)
