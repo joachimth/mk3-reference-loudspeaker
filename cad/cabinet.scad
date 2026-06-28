@@ -44,7 +44,7 @@ wg_flange_w   = wg_flange_w_fn();     // WG212 flange recess width  [mm]
 wg_flange_h   = wg_flange_h_fn();     // WG212 flange recess height [mm]
 wg_flange_r   = wg_flange_r_fn();     // flange corner radius [mm]
 wg_flange_t   = wg_flange_t_fn();     // flange thickness / recess depth [mm]
-mid_cut_d     = 124;   // 15W/4434G00 cut-out diameter [mm]
+mid_cut_d     = 72;    // 15W/4434G00 cut-out diameter [mm] - from datasheet drawing (chassis/basket Ø72 mm)
 
 // ---- Internals ------------------------------------------------------
 midchamber_h  = 235;   // internal height of the sealed mid chamber [mm]
