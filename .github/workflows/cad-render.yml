@@ -1,6 +1,5 @@
 name: Render CAD models
 
-# Triggers on any change to the .scad source files, or manually.
 on:
   push:
     branches: [main]
@@ -9,248 +8,185 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # needed to commit back PNG renders and create releases
+  contents: write
 
 jobs:
   render:
     runs-on: ubuntu-22.04
 
     steps:
-      # ------------------------------------------------------------------ #
-      #  1. Checkout                                                         #
-      # ------------------------------------------------------------------ #
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # ------------------------------------------------------------------ #
-      #  2. Install OpenSCAD + virtual display (needed for PNG rendering)   #
-      # ------------------------------------------------------------------ #
       - name: Install OpenSCAD and Xvfb
         run: |
           sudo apt-get update -q
           sudo apt-get install -y openscad xvfb
           openscad --version
 
-      # ------------------------------------------------------------------ #
-      #  3. Create output directories                                       #
-      # ------------------------------------------------------------------ #
       - name: Prepare output directories
         run: |
           mkdir -p assets/renders
           mkdir -p cad/exports
 
-      # ------------------------------------------------------------------ #
-      #  4. Render STL exports                                              #
-      # ------------------------------------------------------------------ #
       - name: Render waveguide STL
         run: |
           cd cad
-          openscad -o exports/mk2_waveguide_os.stl mk2_waveguide_os.scad 2>&1 \
-            | tee /tmp/wg_stl.log
+          openscad -o exports/mk2_waveguide_os.stl mk2_waveguide_os.scad 2>&1 | tee /tmp/wg_stl.log
           ls -lh exports/mk2_waveguide_os.stl
 
       - name: Render cabinet STL
         run: |
           cd cad
-          openscad -o exports/mk2_cabinet.stl cabinet.scad 2>&1 \
-            | tee /tmp/cab_stl.log
+          openscad -o exports/mk2_cabinet.stl cabinet.scad 2>&1 | tee /tmp/cab_stl.log
           ls -lh exports/mk2_cabinet.stl
 
-      # ------------------------------------------------------------------ #
-      #  5. Render waveguide PNGs (6 views)                                 #
-      #  Camera format: tx,ty,tz, rx,ry,rz, distance                        #
-      # ------------------------------------------------------------------ #
-      - name: Render waveguide - mouth view (front-on)
+      # Waveguide renders - centered on object, proper distance
+      - name: Render waveguide - mouth view
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=0,0,90,0,0,0,400 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/waveguide_mouth.png \
-            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+            --camera=0,0,45,0,0,0,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_mouth.png mk2_waveguide_os.scad
 
-      - name: Render waveguide - rear view (back plate + mounting)
+      - name: Render waveguide - rear view
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=0,0,0,115,0,195,400 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/waveguide_rear.png \
-            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+            --camera=0,0,45,180,0,0,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_rear.png mk2_waveguide_os.scad
 
-      - name: Render waveguide - side profile (OS bore curve)
+      - name: Render waveguide - side profile
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=0,-60,45,90,0,90,350 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/waveguide_side.png \
-            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+            --camera=0,0,45,90,0,90,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_side.png mk2_waveguide_os.scad
 
-      - name: Render waveguide - top view (looking down throat)
+      - name: Render waveguide - top view
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=0,-150,45,0,0,180,400 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/waveguide_top.png \
-            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+            --camera=0,0,45,0,0,180,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_top.png mk2_waveguide_os.scad
 
-      - name: Render waveguide - 3/4 perspective (isometric)
+      - name: Render waveguide - isometric
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=120,-120,60,55,0,35,450 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/waveguide_iso.png \
-            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+            --camera=200,-200,120,55,0,35,700 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
+            -o ../assets/renders/waveguide_iso.png mk2_waveguide_os.scad
 
-      - name: Render waveguide - cutaway half (internal profile)
+      - name: Render waveguide - cutaway
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=0,-80,45,90,0,90,350 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
+            --camera=0,0,45,90,0,90,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -D 'show_cutaway=true' \
-            -o ../assets/renders/waveguide_cutaway.png \
-            mk2_waveguide_os.scad 2>&1 | grep -v "^$"
+            -o ../assets/renders/waveguide_cutaway.png mk2_waveguide_os.scad
 
-      # ------------------------------------------------------------------ #
-      #  6. Render cabinet PNGs (10 views)                                  #
-      #  Model: 300 x 370 x 1080 mm, front baffle at +Y                   #
-      # ------------------------------------------------------------------ #
-      - name: Render cabinet - front view (baffle with drivers)
+      # Cabinet renders - centered with drivers visible
+      - name: Render cabinet - front view
         run: |
           cd cad
           xvfb-run -a openscad --render \
             -D 'show_drivers=true' \
-            --camera=0,600,540,0,0,0,2500 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_front.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=0,200,540,0,0,0,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_front.png cabinet.scad
 
-      - name: Render cabinet - rear view (back panel)
+      - name: Render cabinet - rear view
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=0,-600,540,180,0,180,2500 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_rear.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=0,-200,540,180,0,0,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_rear.png cabinet.scad
 
-      - name: Render cabinet - left side view (woofer visible)
+      - name: Render cabinet - left side
         run: |
           cd cad
           xvfb-run -a openscad --render \
             -D 'show_drivers=true' \
-            --camera=-500,0,540,0,-90,0,2200 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_left.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=0,90,540,0,-90,0,1400 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_left.png cabinet.scad
 
-      - name: Render cabinet - right side view (woofer visible)
+      - name: Render cabinet - right side
         run: |
           cd cad
           xvfb-run -a openscad --render \
             -D 'show_drivers=true' \
-            --camera=500,0,540,0,90,0,2200 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_right.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=0,90,540,0,90,0,1400 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_right.png cabinet.scad
 
-      - name: Render cabinet - top view (looking down)
+      - name: Render cabinet - top view
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=0,0,1200,0,0,0,2000 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_top.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=0,90,540,0,0,180,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_top.png cabinet.scad
 
-      - name: Render cabinet - bottom view (looking up)
+      - name: Render cabinet - bottom view
         run: |
           cd cad
           xvfb-run -a openscad --render \
-            --camera=0,0,-200,0,180,0,2000 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_bottom.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=0,90,540,0,180,0,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_bottom.png cabinet.scad
 
-      - name: Render cabinet - 3/4 exterior (no internals)
+      - name: Render cabinet - 3/4 exterior
         run: |
           cd cad
           xvfb-run -a openscad --render \
             -D 'show_drivers=true' \
-            --camera=250,400,750,55,0,25,2800 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_exterior.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=500,500,900,60,0,45,2000 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
+            -o ../assets/renders/cabinet_exterior.png cabinet.scad
 
-      - name: Render cabinet - cutaway half (internals visible)
+      - name: Render cabinet - cutaway
         run: |
           cd cad
           xvfb-run -a openscad --render \
             -D 'show_internals=true' -D 'show_drivers=true' \
-            --camera=160,0,540,65,0,350,2800 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_cutaway.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=0,90,540,70,0,0,1600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
+            -o ../assets/renders/cabinet_cutaway.png cabinet.scad
 
-      - name: Render cabinet - assembly with waveguide
+      - name: Render cabinet - assembly
         run: |
           cd cad
           xvfb-run -a openscad --render \
             -D 'show_drivers=true' -D 'show_waveguide=true' \
-            --camera=0,400,850,70,0,15,1800 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_assembly.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=400,500,700,70,0,20,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
+            -o ../assets/renders/cabinet_assembly.png cabinet.scad
 
-      - name: Render cabinet - full assembly cutaway
+      - name: Render cabinet - full cutaway
         run: |
           cd cad
           xvfb-run -a openscad --render \
             -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
-            --camera=200,200,600,60,0,40,2500 \
-            --imgsize=1920,1080 \
-            --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_full_cutaway.png \
-            cabinet.scad 2>&1 | grep -v "^$"
+            --camera=400,400,700,65,0,35,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
+            -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad
 
-      # ------------------------------------------------------------------ #
-      #  7. Commit rendered PNGs back to repo                              #
-      # ------------------------------------------------------------------ #
-      - name: Commit renders to assets/renders/
+      - name: Commit renders
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/renders/
-          git diff --staged --quiet && echo "No render changes." || \
-            git commit -m "ci(cad): auto-render preview images [skip ci]
+          git diff --staged --quiet && echo "No changes" || (git commit -m "ci(cad): auto-render preview images [skip ci]" && git push)
 
-          Triggered by: ${{ github.sha }}
-          Renders: waveguide (6 views), cabinet (10 views with driver placeholders)"
-          git push
-
-      # ------------------------------------------------------------------ #
-      #  8. Create GitHub Release with STL downloads                       #
-      # ------------------------------------------------------------------ #
       - name: Get short SHA
         id: sha
         run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
@@ -267,17 +203,12 @@ jobs:
             ## Downloads
             | File | Description |
             |------|-------------|
-            | `mk2_waveguide_os.stl` | WG212 oblate-spheroid waveguide for ScanSpeak H2606/920000 |
-            | `mk2_cabinet.stl` | v6b cabinet — 300 × 370 × 1080 mm, push-push GRS 8SW-4HE layout |
+            | `mk2_waveguide_os.stl` | WG212 for H2606/920000 |
+            | `mk2_cabinet.stl` | v6b cabinet — 300 × 370 × 1080 mm |
 
-            ## Rendered Views
-            ### Waveguide (6 views)
-            - Mouth (front), Rear (back plate), Side (profile)
-            - Top (throat), Isometric, Cutaway (half section)
-
-            ### Cabinet (10 views)
-            - Front, Rear, Left, Right, Top, Bottom
-            - 3/4 exterior, Cutaway internals, Assembly, Full cutaway with drivers
+            ## Views (16 total)
+            **Waveguide:** mouth, rear, side, top, iso, cutaway
+            **Cabinet:** front, rear, left, right, top, bottom, exterior, cutaway, assembly, full-cutaway
 
             Preview renders in [`assets/renders/`](../blob/main/assets/renders/).
           files: |
