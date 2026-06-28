@@ -25,10 +25,12 @@ jobs:
           sudo apt-get install -y openscad xvfb python3
           openscad --version
 
-      - name: Render all (STL + PNG batch)
+      - name: Render all (server mode with fallback)
         run: |
           mkdir -p assets/renders cad/exports
-          python3 scripts/render_cad.py --workers 4
+          python3 scripts/render_cad_server.py --workers 4 || \
+            (echo "Server failed, using batch fallback..." && \
+             python3 scripts/render_cad.py --workers 4)
           echo ""
           ls -lh cad/exports/
           ls -lh assets/renders/
@@ -53,7 +55,7 @@ jobs:
           body: |
             Automatically rendered STL + PNG exports from commit `${{ github.sha }}`.
             
-            Rendered via `scripts/render_cad.py` with 4 parallel workers.
+            Rendered via `scripts/render_cad_server.py` (server mode) or `render_cad.py` (batch fallback).
 
             ## Downloads
             | File | Description |
