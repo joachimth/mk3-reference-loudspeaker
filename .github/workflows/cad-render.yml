@@ -30,155 +30,51 @@ jobs:
           mkdir -p assets/renders
           mkdir -p cad/exports
 
-      - name: Render waveguide STL
+      # STLs are still sequential (fast enough)
+      - name: Render STLs
         run: |
           cd cad
           openscad -o exports/mk2_waveguide_os.stl mk2_waveguide_os.scad 2>&1 | tee /tmp/wg_stl.log
-          ls -lh exports/mk2_waveguide_os.stl
-
-      - name: Render cabinet STL
-        run: |
-          cd cad
           openscad -o exports/mk2_cabinet.stl cabinet.scad 2>&1 | tee /tmp/cab_stl.log
-          ls -lh exports/mk2_cabinet.stl
+          ls -lh exports/
 
-      # Waveguide renders - centered on object, proper distance
-      - name: Render waveguide - mouth view
+      # Parallel PNG renders - waveguide (6 views)
+      - name: Render waveguide PNGs (parallel)
         run: |
           cd cad
-          xvfb-run -a openscad --render \
-            --camera=0,0,45,0,0,0,600 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_mouth.png mk2_waveguide_os.scad
+          mkdir -p ../assets/renders
+          
+          # Start all 6 waveguide renders in parallel
+          xvfb-run -a openscad --render --camera=0,0,45,0,0,0,600 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/waveguide_mouth.png mk2_waveguide_os.scad &
+          xvfb-run -a openscad --render --camera=0,0,45,180,0,0,600 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/waveguide_rear.png mk2_waveguide_os.scad &
+          xvfb-run -a openscad --render --camera=0,0,45,90,0,90,600 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/waveguide_side.png mk2_waveguide_os.scad &
+          xvfb-run -a openscad --render --camera=0,0,45,0,0,180,600 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/waveguide_top.png mk2_waveguide_os.scad &
+          xvfb-run -a openscad --render --camera=200,-200,120,55,0,35,700 --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective -o ../assets/renders/waveguide_iso.png mk2_waveguide_os.scad &
+          xvfb-run -a openscad --render --camera=0,0,45,90,0,90,600 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -D 'show_cutaway=true' -o ../assets/renders/waveguide_cutaway.png mk2_waveguide_os.scad &
+          
+          wait
+          echo "Waveguide renders complete"
 
-      - name: Render waveguide - rear view
+      # Parallel PNG renders - cabinet (10 views)
+      - name: Render cabinet PNGs (parallel)
         run: |
           cd cad
-          xvfb-run -a openscad --render \
-            --camera=0,0,45,180,0,0,600 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_rear.png mk2_waveguide_os.scad
-
-      - name: Render waveguide - side profile
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            --camera=0,0,45,90,0,90,600 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_side.png mk2_waveguide_os.scad
-
-      - name: Render waveguide - top view
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            --camera=0,0,45,0,0,180,600 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_top.png mk2_waveguide_os.scad
-
-      - name: Render waveguide - isometric
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            --camera=200,-200,120,55,0,35,700 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
-            -o ../assets/renders/waveguide_iso.png mk2_waveguide_os.scad
-
-      - name: Render waveguide - cutaway
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            --camera=0,0,45,90,0,90,600 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -D 'show_cutaway=true' \
-            -o ../assets/renders/waveguide_cutaway.png mk2_waveguide_os.scad
-
-      # Cabinet renders - centered with drivers visible
-      - name: Render cabinet - front view
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            -D 'show_drivers=true' \
-            --camera=0,200,540,0,0,0,1800 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/cabinet_front.png cabinet.scad
-
-      - name: Render cabinet - rear view
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            --camera=0,-200,540,180,0,0,1800 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/cabinet_rear.png cabinet.scad
-
-      - name: Render cabinet - left side
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            -D 'show_drivers=true' \
-            --camera=0,90,540,0,-90,0,1400 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/cabinet_left.png cabinet.scad
-
-      - name: Render cabinet - right side
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            -D 'show_drivers=true' \
-            --camera=0,90,540,0,90,0,1400 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/cabinet_right.png cabinet.scad
-
-      - name: Render cabinet - top view
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            --camera=0,90,540,0,0,180,1800 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/cabinet_top.png cabinet.scad
-
-      - name: Render cabinet - bottom view
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            --camera=0,90,540,0,180,0,1800 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/cabinet_bottom.png cabinet.scad
-
-      - name: Render cabinet - 3/4 exterior
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            -D 'show_drivers=true' \
-            --camera=500,500,900,60,0,45,2000 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
-            -o ../assets/renders/cabinet_exterior.png cabinet.scad
-
-      - name: Render cabinet - cutaway
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            -D 'show_internals=true' -D 'show_drivers=true' \
-            --camera=0,90,540,70,0,0,1600 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
-            -o ../assets/renders/cabinet_cutaway.png cabinet.scad
-
-      - name: Render cabinet - assembly
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            -D 'show_drivers=true' -D 'show_waveguide=true' \
-            --camera=400,500,700,70,0,20,1800 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
-            -o ../assets/renders/cabinet_assembly.png cabinet.scad
-
-      - name: Render cabinet - full cutaway
-        run: |
-          cd cad
-          xvfb-run -a openscad --render \
-            -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
-            --camera=400,400,700,65,0,35,1800 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective \
-            -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad
+          
+          # Start all 10 cabinet renders in parallel
+          xvfb-run -a openscad --render -D 'show_drivers=true' --camera=0,200,540,0,0,0,1800 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/cabinet_front.png cabinet.scad &
+          xvfb-run -a openscad --render --camera=0,-200,540,180,0,0,1800 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/cabinet_rear.png cabinet.scad &
+          xvfb-run -a openscad --render -D 'show_drivers=true' --camera=0,90,540,0,-90,0,1400 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/cabinet_left.png cabinet.scad &
+          xvfb-run -a openscad --render -D 'show_drivers=true' --camera=0,90,540,0,90,0,1400 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/cabinet_right.png cabinet.scad &
+          xvfb-run -a openscad --render --camera=0,90,540,0,0,180,1800 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/cabinet_top.png cabinet.scad &
+          xvfb-run -a openscad --render --camera=0,90,540,0,180,0,1800 --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho -o ../assets/renders/cabinet_bottom.png cabinet.scad &
+          xvfb-run -a openscad --render -D 'show_drivers=true' --camera=500,500,900,60,0,45,2000 --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective -o ../assets/renders/cabinet_exterior.png cabinet.scad &
+          xvfb-run -a openscad --render -D 'show_internals=true' -D 'show_drivers=true' --camera=0,90,540,70,0,0,1600 --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective -o ../assets/renders/cabinet_cutaway.png cabinet.scad &
+          xvfb-run -a openscad --render -D 'show_drivers=true' -D 'show_waveguide=true' --camera=400,500,700,70,0,20,1800 --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective -o ../assets/renders/cabinet_assembly.png cabinet.scad &
+          xvfb-run -a openscad --render -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' --camera=400,400,700,65,0,35,1800 --imgsize=1920,1080 --colorscheme=Cornfield --projection=perspective -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad &
+          
+          wait
+          echo "Cabinet renders complete"
+          ls -lh ../assets/renders/
 
       - name: Commit renders
         run: |
