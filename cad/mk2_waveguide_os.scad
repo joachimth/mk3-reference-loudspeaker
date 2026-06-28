@@ -35,7 +35,7 @@ theta_h    = 50;     // horizontal half-angle (deg)  -> ~100 deg coverage
 theta_v    = 32;     // vertical   half-angle (deg)  -> ~64  deg coverage
 D_os       = 65;     // depth of the OS (constant-directivity) section
 Lr         = 25;     // forward depth of the mouth roundover
-wall       = 8;      // wall thickness
+wall       = 6;      // wall thickness
 protrusion = 0;     // cylindrical extension past the flange front face.
                      // Default 0: the waveguide tube ends FLUSH with the
                      // cabinet baffle BACK face (z = 85) and the baffle has
@@ -55,8 +55,8 @@ show_cutaway = false; // true: render half-section cutaway for profile view
 // to z=D_tot_ext-flange_thick=85 (flush with cabinet baffle back face).
 
 // ----------------------- FLANGE / MOUNTING ---------------------------
-flange_w     = 252;  // outer flange width  (baffle face)
-flange_h     = 168;  // outer flange height
+flange_w     = 242;  // outer flange width  (baffle face)
+flange_h     = 143;  // outer flange height
 flange_thick = 5;    // flange thickness — 5 mm is plenty for wood-screw mounting
                      // into the cabinet baffle (back plate still 8 mm thick,
                      // separate from this flange).
@@ -81,8 +81,8 @@ tw_ring_thick =   8;   // total plate thickness (z = -tw_ring_thick … 0)
 tw_fp_recess  =   4;   // depth of faceplate seating pocket (on rear face)
 
 // Baffle mounting (countersunk, front)
-baf_bcd_x    = 222;
-baf_bcd_y    = 142;
+baf_bcd_x    = 212;
+baf_bcd_y    = 128;
 baf_screw_d  = 4.5;
 baf_cs_d     = 9;
 baf_cs_depth = 3;
