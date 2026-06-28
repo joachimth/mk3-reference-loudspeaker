@@ -25,29 +25,20 @@ jobs:
           sudo apt-get install -y openscad xvfb python3
           openscad --version
 
-      - name: Prepare output directories
+      - name: Render all (STL + PNG batch)
         run: |
-          mkdir -p assets/renders
-          mkdir -p cad/exports
-
-      - name: Render STLs
-        run: |
-          cd cad
-          openscad -o exports/mk2_waveguide_os.stl mk2_waveguide_os.scad 2>&1 | tee /tmp/wg_stl.log
-          openscad -o exports/mk2_cabinet.stl cabinet.scad 2>&1 | tee /tmp/cab_stl.log
-          ls -lh exports/
-
-      - name: Render PNGs (Python batch)
-        run: |
+          mkdir -p assets/renders cad/exports
           python3 scripts/render_cad.py --workers 4
+          echo ""
+          ls -lh cad/exports/
           ls -lh assets/renders/
 
       - name: Commit renders
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/renders/
-          git diff --staged --quiet && echo "No changes" || (git commit -m "ci(cad): auto-render preview images [skip ci]" && git push)
+          git add assets/renders/ cad/exports/
+          git diff --staged --quiet && echo "No changes" || (git commit -m "ci(cad): auto-render STL + PNG images [skip ci]" && git push)
 
       - name: Get short SHA
         id: sha
@@ -60,7 +51,9 @@ jobs:
           name: "CAD Export #${{ github.run_number }} (${{ steps.sha.outputs.short }})"
           make_latest: true
           body: |
-            Automatically rendered STL exports from commit `${{ github.sha }}`.
+            Automatically rendered STL + PNG exports from commit `${{ github.sha }}`.
+            
+            Rendered via `scripts/render_cad.py` with 4 parallel workers.
 
             ## Downloads
             | File | Description |
@@ -69,8 +62,6 @@ jobs:
             | `mk2_cabinet.stl` | v6b cabinet — 300 × 370 × 1080 mm |
 
             ## Views (16 total)
-            Rendered via `scripts/render_cad.py` with 4 parallel workers.
-            
             **Waveguide:** mouth, rear, side, top, iso, cutaway
             **Cabinet:** front, rear, left, right, top, bottom, exterior, cutaway, assembly, full-cutaway
 

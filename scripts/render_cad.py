@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 CAD render orchestrator for Mk2 Reference Loudspeaker.
-Uses OpenSCAD with reusable process pools for faster batch rendering.
+Groups STL + PNG renders per model for efficient parallelization.
 """
 import subprocess
 import sys
@@ -9,137 +9,210 @@ import os
 from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import argparse
-
-# Camera definitions: (name, tx, ty, tz, rx, ry, rz, distance, projection, extra_defs)
-WAVEGUIDE_VIEWS = [
-    ("mouth", 0, 0, 45, 0, 0, 0, 600, "ortho", []),
-    ("rear", 0, 0, 45, 180, 0, 0, 600, "ortho", []),
-    ("side", 0, 0, 45, 90, 0, 90, 600, "ortho", []),
-    ("top", 0, 0, 45, 0, 0, 180, 600, "ortho", []),
-    ("iso", 200, -200, 120, 55, 0, 35, 700, "perspective", []),
-    ("cutaway", 0, 0, 45, 90, 0, 90, 600, "ortho", ["show_cutaway=true"]),
-]
-
-CABINET_VIEWS = [
-    ("front", 0, 200, 540, 0, 0, 0, 1800, "ortho", ["show_drivers=true"]),
-    ("rear", 0, -200, 540, 180, 0, 0, 1800, "ortho", []),
-    ("left", 0, 90, 540, 0, -90, 0, 1400, "ortho", ["show_drivers=true"]),
-    ("right", 0, 90, 540, 0, 90, 0, 1400, "ortho", ["show_drivers=true"]),
-    ("top", 0, 90, 540, 0, 0, 180, 1800, "ortho", []),
-    ("bottom", 0, 90, 540, 0, 180, 0, 1800, "ortho", []),
-    ("exterior", 500, 500, 900, 60, 0, 45, 2000, "perspective", ["show_drivers=true"]),
-    ("cutaway", 0, 90, 540, 70, 0, 0, 1600, "perspective", ["show_internals=true", "show_drivers=true"]),
-    ("assembly", 400, 500, 700, 70, 0, 20, 1800, "perspective", ["show_drivers=true", "show_waveguide=true"]),
-    ("full_cutaway", 400, 400, 700, 65, 0, 35, 1800, "perspective", ["show_internals=true", "show_waveguide=true", "show_drivers=true"]),
-]
+from dataclasses import dataclass
+from typing import List, Tuple, Optional
 
 
-def render_single(args):
-    """Render a single view. Designed to be run in parallel processes."""
-    scad_file, output_dir, name, tx, ty, tz, rx, ry, rz, dist, projection, extra_defs = args
+@dataclass
+class RenderJob:
+    name: str
+    scad_file: Path
+    output_file: Path
+    is_stl: bool
+    camera: Optional[Tuple] = None
+    projection: str = "ortho"
+    extra_defs: List[str] = None
     
-    output_file = Path(output_dir) / f"{name}.png"
+    def __post_init__(self):
+        if self.extra_defs is None:
+            self.extra_defs = []
+
+
+def build_job_list(cad_dir: Path, output_dir: Path, exports_dir: Path) -> List[RenderJob]:
+    """Build complete job list: STL exports + PNG renders for both models."""
+    jobs = []
     
-    # Build command
-    cmd = [
-        "xvfb-run", "-a",  # virtual display for headless
-        "openscad",
-        "--render",
-        "--camera", f"{tx},{ty},{tz},{rx},{ry},{rz},{dist}",
-        "--imgsize", "1920,1080",
-        "--colorscheme", "Cornfield",
-        "--projection", projection,
-        "-o", str(output_file),
+    # Waveguide model
+    wg_scad = cad_dir / "mk2_waveguide_os.scad"
+    wg_stl = exports_dir / "mk2_waveguide_os.stl"
+    
+    # Waveguide STL
+    jobs.append(RenderJob(
+        name="wg_stl",
+        scad_file=wg_scad,
+        output_file=wg_stl,
+        is_stl=True
+    ))
+    
+    # Waveguide PNGs: (name, tx, ty, tz, rx, ry, rz, distance, projection, extra_defs)
+    wg_views = [
+        ("waveguide_mouth", 0, 0, 45, 0, 0, 0, 600, "ortho", []),
+        ("waveguide_rear", 0, 0, 45, 180, 0, 0, 600, "ortho", []),
+        ("waveguide_side", 0, 0, 45, 90, 0, 90, 600, "ortho", []),
+        ("waveguide_top", 0, 0, 45, 0, 0, 180, 600, "ortho", []),
+        ("waveguide_iso", 200, -200, 120, 55, 0, 35, 700, "perspective", []),
+        ("waveguide_cutaway", 0, 0, 45, 90, 0, 90, 600, "ortho", ["show_cutaway=true"]),
     ]
     
-    # Add variable definitions
-    for d in extra_defs:
-        cmd.extend(["-D", d])
+    for name, tx, ty, tz, rx, ry, rz, dist, proj, defs in wg_views:
+        jobs.append(RenderJob(
+            name=name,
+            scad_file=wg_scad,
+            output_file=output_dir / f"{name}.png",
+            is_stl=False,
+            camera=(tx, ty, tz, rx, ry, rz, dist),
+            projection=proj,
+            extra_defs=defs
+        ))
     
-    cmd.append(scad_file)
+    # Cabinet model
+    cab_scad = cad_dir / "cabinet.scad"
+    cab_stl = exports_dir / "mk2_cabinet.stl"
+    
+    # Cabinet STL
+    jobs.append(RenderJob(
+        name="cab_stl",
+        scad_file=cab_scad,
+        output_file=cab_stl,
+        is_stl=True
+    ))
+    
+    # Cabinet PNGs
+    cab_views = [
+        ("cabinet_front", 0, 200, 540, 0, 0, 0, 1800, "ortho", ["show_drivers=true"]),
+        ("cabinet_rear", 0, -200, 540, 180, 0, 0, 1800, "ortho", []),
+        ("cabinet_left", 0, 90, 540, 0, -90, 0, 1400, "ortho", ["show_drivers=true"]),
+        ("cabinet_right", 0, 90, 540, 0, 90, 0, 1400, "ortho", ["show_drivers=true"]),
+        ("cabinet_top", 0, 90, 540, 0, 0, 180, 1800, "ortho", []),
+        ("cabinet_bottom", 0, 90, 540, 0, 180, 0, 1800, "ortho", []),
+        ("cabinet_exterior", 500, 500, 900, 60, 0, 45, 2000, "perspective", ["show_drivers=true"]),
+        ("cabinet_cutaway", 0, 90, 540, 70, 0, 0, 1600, "perspective", ["show_internals=true", "show_drivers=true"]),
+        ("cabinet_assembly", 400, 500, 700, 70, 0, 20, 1800, "perspective", ["show_drivers=true", "show_waveguide=true"]),
+        ("cabinet_full_cutaway", 400, 400, 700, 65, 0, 35, 1800, "perspective", ["show_internals=true", "show_waveguide=true", "show_drivers=true"]),
+    ]
+    
+    for name, tx, ty, tz, rx, ry, rz, dist, proj, defs in cab_views:
+        jobs.append(RenderJob(
+            name=name,
+            scad_file=cab_scad,
+            output_file=output_dir / f"{name}.png",
+            is_stl=False,
+            camera=(tx, ty, tz, rx, ry, rz, dist),
+            projection=proj,
+            extra_defs=defs
+        ))
+    
+    return jobs
+
+
+def execute_job(job: RenderJob) -> Tuple[str, bool, Optional[str]]:
+    """Execute a single render job (STL or PNG)."""
+    
+    if job.is_stl:
+        # STL export
+        cmd = [
+            "openscad",
+            "-o", str(job.output_file),
+            str(job.scad_file)
+        ]
+    else:
+        # PNG render
+        tx, ty, tz, rx, ry, rz, dist = job.camera
+        cmd = [
+            "xvfb-run", "-a",
+            "openscad",
+            "--render",
+            "--camera", f"{tx},{ty},{tz},{rx},{ry},{rz},{dist}",
+            "--imgsize", "1920,1080",
+            "--colorscheme", "Cornfield",
+            "--projection", job.projection,
+            "-o", str(job.output_file),
+        ]
+        for d in job.extra_defs:
+            cmd.extend(["-D", d])
+        cmd.append(str(job.scad_file))
     
     try:
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
-            timeout=300  # 5 min timeout per render
+            timeout=300
         )
         if result.returncode == 0:
-            return (name, True, str(output_file), None)
+            return (job.name, True, None)
         else:
-            return (name, False, None, result.stderr)
+            return (job.name, False, result.stderr[:200])
     except subprocess.TimeoutExpired:
-        return (name, False, None, "Timeout after 300s")
+        return (job.name, False, "Timeout after 300s")
     except Exception as e:
-        return (name, False, None, str(e))
-
-
-def render_batch(scad_file, output_dir, views, max_workers=4):
-    """Render a batch of views in parallel."""
-    scad_file = Path(scad_file)
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Build argument tuples for each render
-    render_args = [
-        (scad_file, output_dir, name, tx, ty, tz, rx, ry, rz, dist, proj, defs)
-        for name, tx, ty, tz, rx, ry, rz, dist, proj, defs in views
-    ]
-    
-    results = []
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(render_single, arg): arg for arg in render_args}
-        
-        for future in as_completed(futures):
-            name, success, path, error = future.result()
-            if success:
-                print(f"✓ {name}")
-                results.append((name, path))
-            else:
-                print(f"✗ {name}: {error}")
-                results.append((name, None))
-    
-    return results
+        return (job.name, False, str(e)[:200])
 
 
 def main():
     parser = argparse.ArgumentParser(description="Batch CAD renderer for Mk2")
-    parser.add_argument("--waveguide-only", action="store_true", help="Render only waveguide")
-    parser.add_argument("--cabinet-only", action="store_true", help="Render only cabinet")
-    parser.add_argument("--workers", type=int, default=4, help="Parallel workers (default: 4)")
+    parser.add_argument("--waveguide-only", action="store_true")
+    parser.add_argument("--cabinet-only", action="store_true")
+    parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--dry-run", action="store_true", help="List jobs without running")
     args = parser.parse_args()
     
     base_dir = Path(__file__).parent.parent
     cad_dir = base_dir / "cad"
     output_dir = base_dir / "assets" / "renders"
+    exports_dir = cad_dir / "exports"
     
-    all_results = []
+    output_dir.mkdir(parents=True, exist_ok=True)
+    exports_dir.mkdir(parents=True, exist_ok=True)
     
-    if not args.cabinet_only:
-        print("Rendering waveguide views (6 images)...")
-        wg_file = cad_dir / "mk2_waveguide_os.scad"
-        if wg_file.exists():
-            results = render_batch(wg_file, output_dir, WAVEGUIDE_VIEWS, args.workers)
-            all_results.extend(results)
-        else:
-            print(f"Waveguide file not found: {wg_file}")
+    # Build job list
+    all_jobs = build_job_list(cad_dir, output_dir, exports_dir)
     
-    if not args.waveguide_only:
-        print("Rendering cabinet views (10 images)...")
-        cab_file = cad_dir / "cabinet.scad"
-        if cab_file.exists():
-            results = render_batch(cab_file, output_dir, CABINET_VIEWS, args.workers)
-            all_results.extend(results)
-        else:
-            print(f"Cabinet file not found: {cab_file}")
+    # Filter if requested
+    if args.waveguide_only:
+        jobs = [j for j in all_jobs if "wg_" in j.name or "waveguide_" in j.name]
+    elif args.cabinet_only:
+        jobs = [j for j in all_jobs if "cab_" in j.name or "cabinet_" in j.name]
+    else:
+        jobs = all_jobs
+    
+    stl_jobs = [j for j in jobs if j.is_stl]
+    png_jobs = [j for j in jobs if not j.is_stl]
+    
+    print(f"Render plan: {len(stl_jobs)} STL + {len(png_jobs)} PNG = {len(jobs)} total jobs")
+    print(f"Workers: {args.workers}\n")
+    
+    if args.dry_run:
+        for job in jobs:
+            type_str = "STL" if job.is_stl else "PNG"
+            print(f"  [{type_str}] {job.name} -> {job.output_file.name}")
+        return 0
+    
+    # Execute all jobs in parallel
+    results = []
+    with ProcessPoolExecutor(max_workers=args.workers) as executor:
+        futures = {executor.submit(execute_job, job): job for job in jobs}
+        
+        for future in as_completed(futures):
+            name, success, error = future.result()
+            prefix = "✓" if success else "✗"
+            suffix = "" if success else f": {error}"
+            print(f"{prefix} {name}{suffix}")
+            results.append((name, success))
     
     # Summary
-    success = sum(1 for _, r in all_results if r is not None)
-    total = len(all_results)
-    print(f"\nDone: {success}/{total} renders successful")
+    success_count = sum(1 for _, s in results if s)
+    print(f"\nDone: {success_count}/{len(jobs)} jobs successful")
     
-    return 0 if success == total else 1
+    # List outputs
+    if success_count > 0:
+        print("\nOutputs:")
+        if stl_jobs:
+            print(f"  STL: {exports_dir}/")
+        if png_jobs:
+            print(f"  PNG: {output_dir}/")
+    
+    return 0 if success_count == len(jobs) else 1
 
 
 if __name__ == "__main__":
