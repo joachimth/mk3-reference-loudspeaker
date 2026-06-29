@@ -3,8 +3,8 @@ name: Render CAD models
 on:
   push:
     branches: [main]
-      paths:
-          - 'cad/**.scad'
+    paths:
+      - 'cad/**.scad'
   workflow_dispatch:
 
 permissions:
@@ -75,7 +75,6 @@ jobs:
           # Baffle is at Y=370 (front), woofers at X=±160
           
           # FRONT: looking at baffle from +Y toward -Y
-          # Need camera above, looking down and toward baffle
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
             --camera=0,600,540,70,0,180,800 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
