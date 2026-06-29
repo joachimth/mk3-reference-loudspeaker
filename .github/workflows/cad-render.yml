@@ -3,8 +3,8 @@ name: Render CAD models
 on:
   push:
     branches: [main]
-    paths:
-      - 'cad/**.scad'
+      paths:
+          - 'cad/**.scad'
   workflow_dispatch:
 
 permissions:
@@ -35,29 +35,35 @@ jobs:
         run: |
           mkdir -p assets/renders
           cd cad
-          # Waveguide: keep working settings (center 0,0,45)
+          # Waveguide centered at (0,0,45), size ~294x175x98mm
+          # Front (mouth): camera +Z looking down
           xvfb-run -a openscad --preview \
-            --camera=0,0,45,0,0,0,500 \
+            --camera=0,0,300,0,0,0,200 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/waveguide_mouth.png mk2_waveguide_os.scad
+          # Rear (back plate): camera -Z looking up  
           xvfb-run -a openscad --preview \
-            --camera=0,0,45,180,0,0,500 \
+            --camera=0,0,-300,180,0,0,200 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/waveguide_rear.png mk2_waveguide_os.scad
+          # Side: camera +X
           xvfb-run -a openscad --preview \
-            --camera=0,0,45,90,0,90,500 \
+            --camera=300,0,45,90,0,90,200 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/waveguide_side.png mk2_waveguide_os.scad
+          # Top: camera +Y looking toward -Y
           xvfb-run -a openscad --preview \
-            --camera=0,0,45,0,0,180,500 \
+            --camera=0,300,45,90,0,180,200 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/waveguide_top.png mk2_waveguide_os.scad
+          # Isometric: perspective from corner
           xvfb-run -a openscad --preview \
-            --camera=300,-300,150,55,0,35,600 \
+            --camera=400,-400,200,55,0,35,600 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/waveguide_iso.png mk2_waveguide_os.scad
+          # Cutaway: side view with show_cutaway
           xvfb-run -a openscad --preview \
-            --camera=0,0,45,90,0,90,500 \
+            --camera=300,0,45,90,0,90,200 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -D 'show_cutaway=true' \
             -o ../assets/renders/waveguide_cutaway.png mk2_waveguide_os.scad
@@ -65,56 +71,58 @@ jobs:
       - name: Render cabinet views
         run: |
           cd cad
-          # Cabinet views: adjusted for center (0,0,540), closer distances
-          # Cabinet dims: 320x370x1080, center at (0,0,540)
-          # Front: camera at +Y, looking toward -Y
+          # Cabinet: 320x370x1080mm, center at (0,185,540)
+          # Baffle is at Y=370 (front), woofers at X=±160
+          
+          # FRONT: looking at baffle from +Y toward -Y
+          # Need camera above, looking down and toward baffle
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
-            --camera=0,600,540,90,0,0,1000 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            --camera=0,600,540,70,0,180,800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_front.png cabinet.scad
-          # Rear: camera at -Y, looking toward +Y
+          # REAR: looking at back from -Y toward +Y
           xvfb-run -a openscad --preview \
-            --camera=0,-600,540,90,0,180,1000 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            --camera=0,-400,540,70,0,0,800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_rear.png cabinet.scad
-          # Left: camera at -X, looking toward +X
+          # LEFT: looking from -X toward +X, showing woofer
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
-            --camera=-600,0,540,90,0,-90,800 \
+            --camera=-500,185,540,90,0,-90,600 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/cabinet_left.png cabinet.scad
-          # Right: camera at +X, looking toward -X
+          # RIGHT: looking from +X toward -X
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
-            --camera=600,0,540,90,0,90,800 \
+            --camera=500,185,540,90,0,90,600 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/cabinet_right.png cabinet.scad
-          # Top: camera at +Z, looking down
+          # TOP: looking down from +Z
           xvfb-run -a openscad --preview \
-            --camera=0,0,1500,0,0,0,1000 \
+            --camera=0,185,1500,0,0,0,800 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/cabinet_top.png cabinet.scad
-          # Bottom: camera at -Z, looking up
+          # BOTTOM: looking up from -Z
           xvfb-run -a openscad --preview \
-            --camera=0,0,-300,180,0,0,1000 \
+            --camera=0,185,-400,180,0,0,800 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/cabinet_bottom.png cabinet.scad
-          # Exterior: perspective from front-top-right
+          # EXTERIOR: perspective from front-top-right
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
-            --camera=400,500,900,70,0,45,1200 \
+            --camera=400,600,900,60,0,30,1200 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_exterior.png cabinet.scad
-          # Cutaway: angled to show internals
+          # CUTAWAY: internals visible
           xvfb-run -a openscad --preview -D 'show_internals=true' -D 'show_drivers=true' \
-            --camera=200,400,700,60,0,30,900 \
+            --camera=300,500,700,55,0,25,1000 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_cutaway.png cabinet.scad
-          # Assembly: with waveguide
+          # ASSEMBLY: with waveguide
           xvfb-run -a openscad --preview -D 'show_drivers=true' -D 'show_waveguide=true' \
-            --camera=350,500,800,65,0,25,1100 \
+            --camera=350,600,800,60,0,25,1100 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_assembly.png cabinet.scad
-          # Full cutaway
+          # FULL CUTAWAY
           xvfb-run -a openscad --preview -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
-            --camera=400,400,800,60,0,30,1000 \
+            --camera=400,500,800,55,0,30,1000 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad
           ls -lh ../assets/renders/
