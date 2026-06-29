@@ -13,7 +13,7 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +23,6 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y openscad xvfb
 
-      # STL exports only - fast, reliable
       - name: Export STLs
         run: |
           mkdir -p cad/exports
@@ -32,44 +31,82 @@ jobs:
           openscad -o exports/mk2_cabinet.stl cabinet.scad
           ls -lh exports/
 
-      # Essential views only (4 waveguide + 4 cabinet = 8 total instead of 16)
-      # Full 16-view gallery can be generated locally with: make renders
-      - name: Render essential waveguide views
+      # All 16 PNG renders - use --preview for speed (still high quality with --imgsize)
+      - name: Render waveguide views
         run: |
           mkdir -p assets/renders
           cd cad
-          # ISO + cutaway only for waveguide (most useful)
-          xvfb-run -a openscad --render \
+          # Waveguide: 6 views (all --preview for speed)
+          xvfb-run -a openscad --preview \
+            --camera=0,0,45,0,0,0,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_mouth.png mk2_waveguide_os.scad
+          xvfb-run -a openscad --preview \
+            --camera=0,0,45,180,0,0,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_rear.png mk2_waveguide_os.scad
+          xvfb-run -a openscad --preview \
+            --camera=0,0,45,90,0,90,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_side.png mk2_waveguide_os.scad
+          xvfb-run -a openscad --preview \
+            --camera=0,0,45,0,0,180,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_top.png mk2_waveguide_os.scad
+          xvfb-run -a openscad --preview \
             --camera=200,-200,120,55,0,35,700 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/waveguide_iso.png mk2_waveguide_os.scad
-          xvfb-run -a openscad --render \
+          xvfb-run -a openscad --preview \
             --camera=0,0,45,90,0,90,600 \
-            --imgsize=1920,1080 --colorscheme=Cornfield \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -D 'show_cutaway=true' \
             -o ../assets/renders/waveguide_cutaway.png mk2_waveguide_os.scad
-          ls -lh ../assets/renders/waveguide_*.png
 
-      - name: Render essential cabinet views
+      - name: Render cabinet views
         run: |
           cd cad
-          # Front + exterior + cutaway + assembly
-          xvfb-run -a openscad --render -D 'show_drivers=true' \
+          # Cabinet: 10 views
+          xvfb-run -a openscad --preview -D 'show_drivers=true' \
             --camera=0,200,540,0,0,0,1800 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/cabinet_front.png cabinet.scad
-          xvfb-run -a openscad --render -D 'show_drivers=true' \
+          xvfb-run -a openscad --preview \
+            --camera=0,-200,540,180,0,0,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_rear.png cabinet.scad
+          xvfb-run -a openscad --preview -D 'show_drivers=true' \
+            --camera=0,90,540,0,-90,0,1400 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_left.png cabinet.scad
+          xvfb-run -a openscad --preview -D 'show_drivers=true' \
+            --camera=0,90,540,0,90,0,1400 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_right.png cabinet.scad
+          xvfb-run -a openscad --preview \
+            --camera=0,90,540,0,0,180,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_top.png cabinet.scad
+          xvfb-run -a openscad --preview \
+            --camera=0,90,540,0,180,0,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/cabinet_bottom.png cabinet.scad
+          xvfb-run -a openscad --preview -D 'show_drivers=true' \
             --camera=500,500,900,60,0,45,2000 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_exterior.png cabinet.scad
-          xvfb-run -a openscad --render -D 'show_internals=true' -D 'show_drivers=true' \
+          xvfb-run -a openscad --preview -D 'show_internals=true' -D 'show_drivers=true' \
             --camera=0,90,540,70,0,0,1600 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_cutaway.png cabinet.scad
-          xvfb-run -a openscad --render -D 'show_drivers=true' -D 'show_waveguide=true' \
+          xvfb-run -a openscad --preview -D 'show_drivers=true' -D 'show_waveguide=true' \
             --camera=400,500,700,70,0,20,1800 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_assembly.png cabinet.scad
+          xvfb-run -a openscad --preview -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
+            --camera=400,400,700,65,0,35,1800 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad
           ls -lh ../assets/renders/
 
       - name: Commit and release
@@ -77,7 +114,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/renders/ cad/exports/
-          git diff --staged --quiet || (git commit -m "ci(cad): auto-render STL + 8 essential views [skip ci]" && git push)
+          git diff --staged --quiet || (git commit -m "ci(cad): auto-render STL + 16 views [skip ci]" && git push)
 
       - name: Create release
         uses: softprops/action-gh-release@v2
@@ -92,11 +129,9 @@ jobs:
             | `mk2_waveguide_os.stl` | WG212 waveguide |
             | `mk2_cabinet.stl` | v6b cabinet |
             
-            ## Views (8 essential)
-            **Waveguide:** iso, cutaway  
-            **Cabinet:** front, exterior, cutaway, assembly  
-            
-            Full 16-view gallery: run `python3 scripts/render_all_views.py` locally
+            ## Views (16 total)
+            **Waveguide:** mouth, rear, side, top, iso, cutaway  
+            **Cabinet:** front, rear, left, right, top, bottom, exterior, cutaway, assembly, full-cutaway
           files: |
             cad/exports/mk2_waveguide_os.stl
             cad/exports/mk2_cabinet.stl
