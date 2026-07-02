@@ -74,64 +74,66 @@ jobs:
         run: |
           cd cad
           # Cabinet: 320x370x1080mm, center at (0,185,540)
-          # Defaults in cabinet.scad: show_internals=false, show_waveguide=false, show_drivers=false
+          # Defaults: show_internals=false, show_waveguide=false, show_drivers=false
           # Each view overrides only what it needs via -D flags
-            
+          # Camera distance ~2800mm to fit 1080mm tall cabinet in 1920x1080 frame
+          # (OpenSCAD default FOV ~22.5 deg: 540/tan(11.25deg) ≈ 2710mm)
+
           # FRONT (baffle with drivers, no cutaway)
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' \
-            --camera=0,700,540,0,185,540 \
+            --camera=0,2800,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_front.png cabinet.scad
           # REAR (plain back panel)
           xvfb-run -a openscad --preview \
-            --camera=0,-500,540,0,185,540 \
+            --camera=0,-2800,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_rear.png cabinet.scad
           # LEFT (woofer visible)
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' \
-            --camera=-700,185,540,0,185,540 \
+            --camera=-2800,185,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_left.png cabinet.scad
           # RIGHT (woofer visible)
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' \
-            --camera=700,185,540,0,185,540 \
+            --camera=2800,185,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_right.png cabinet.scad
           # TOP (plain, looking down)
           xvfb-run -a openscad --preview \
-            --camera=0,185,1200,0,185,540 \
+            --camera=0,185,2800,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_top.png cabinet.scad
           # BOTTOM (plain, looking up)
           xvfb-run -a openscad --preview \
-            --camera=0,185,-300,0,185,540 \
+            --camera=0,185,-2800,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_bottom.png cabinet.scad
           # EXTERIOR 3/4 (drivers visible, no cutaway)
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' \
-            --camera=600,800,1000,0,185,540 \
+            --camera=1200,1600,2000,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_exterior.png cabinet.scad
           # CUTAWAY (internals + drivers, half removed)
           xvfb-run -a openscad --preview \
             -D 'show_internals=true' -D 'show_drivers=true' \
-            --camera=500,700,700,0,185,540 \
+            --camera=1000,1400,1400,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_cutaway.png cabinet.scad
           # ASSEMBLY (waveguide + drivers, no cutaway)
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' -D 'show_waveguide=true' \
-            --camera=450,700,850,0,185,850 \
+            --camera=900,1400,1700,0,185,850 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_assembly.png cabinet.scad
           # FULL CUTAWAY (everything visible)
           xvfb-run -a openscad --preview \
             -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
-            --camera=500,600,800,0,185,600 \
+            --camera=1000,1200,1600,0,185,600 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad
           ls -lh ../assets/renders/
@@ -141,7 +143,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/renders/ cad/exports/
-          git diff --staged --quiet || (git commit -m "ci(cad): auto-render STL + 16 views [skip ci]" && git push)
+          git diff --staged --quiet || {
+            git commit -m "ci(cad): auto-render STL + 16 views [skip ci]"
+            # Retry push with rebase to handle concurrent workflow runs
+            for attempt in 1 2 3; do
+              git pull --rebase origin main && git push && break
+              echo "Push attempt $attempt failed, retrying..."
+              sleep 5
+            done
+          }
 
       - name: Create release
         uses: softprops/action-gh-release@v2
