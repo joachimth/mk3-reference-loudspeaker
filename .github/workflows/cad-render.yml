@@ -77,35 +77,35 @@ jobs:
           # Baffle at +Y (Y=370), woofers at X=±160, drivers extend ~100mm beyond sides
           # Using vector camera: --camera=eye_x,eye_y,eye_z,target_x,target_y,target_z
           
-          # FRONT (baffle from +Y): eye=(0,1200,540) target=(0,185,540)
+          # FRONT (baffle from +Y): perspective for proper framing
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
-            --camera=0,1200,540,0,185,540 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            --camera=0,700,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_front.png cabinet.scad
-          # REAR (back panel from -Y): eye=(0,-800,540) target=(0,185,540)
+          # REAR (back panel from -Y)
           xvfb-run -a openscad --preview \
-            --camera=0,-800,540,0,185,540 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            --camera=0,-500,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_rear.png cabinet.scad
-          # LEFT (woofer from -X): eye=(-1200,185,540) target=(0,185,540)
+          # LEFT (woofer from -X)
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
-            --camera=-1200,185,540,0,185,540 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            --camera=-700,185,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_left.png cabinet.scad
-          # RIGHT (woofer from +X): eye=(1200,185,540) target=(0,185,540)
+          # RIGHT (woofer from +X)
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
-            --camera=1200,185,540,0,185,540 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            --camera=700,185,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_right.png cabinet.scad
-          # TOP (looking down from +Z): eye=(0,185,1800) target=(0,185,540)
+          # TOP (looking down from +Z)
           xvfb-run -a openscad --preview \
-            --camera=0,185,1800,0,185,540 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            --camera=0,185,1200,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_top.png cabinet.scad
-          # BOTTOM (looking up from -Z): eye=(0,185,-500) target=(0,185,540)
+          # BOTTOM (looking up from -Z)
           xvfb-run -a openscad --preview \
-            --camera=0,185,-500,0,185,540 \
-            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            --camera=0,185,-300,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_bottom.png cabinet.scad
           # EXTERIOR 3/4: eye=(600,800,1000) target=(0,185,540)
           xvfb-run -a openscad --preview -D 'show_drivers=true' \
