@@ -74,56 +74,63 @@ jobs:
         run: |
           cd cad
           # Cabinet: 320x370x1080mm, center at (0,185,540)
-          # Baffle at +Y (Y=370), woofers at X=±160, drivers extend ~100mm beyond sides
-          # Using vector camera: --camera=eye_x,eye_y,eye_z,target_x,target_y,target_z
-          
-          # FRONT (baffle from +Y): perspective for proper framing
-          xvfb-run -a openscad --preview -D 'show_drivers=true' \
+          # Defaults in cabinet.scad: show_internals=false, show_waveguide=false, show_drivers=false
+          # Each view overrides only what it needs via -D flags
+            
+          # FRONT (baffle with drivers, no cutaway)
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' \
             --camera=0,700,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_front.png cabinet.scad
-          # REAR (back panel from -Y)
+          # REAR (plain back panel)
           xvfb-run -a openscad --preview \
             --camera=0,-500,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_rear.png cabinet.scad
-          # LEFT (woofer from -X)
-          xvfb-run -a openscad --preview -D 'show_drivers=true' \
+          # LEFT (woofer visible)
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' \
             --camera=-700,185,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_left.png cabinet.scad
-          # RIGHT (woofer from +X)
-          xvfb-run -a openscad --preview -D 'show_drivers=true' \
+          # RIGHT (woofer visible)
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' \
             --camera=700,185,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_right.png cabinet.scad
-          # TOP (looking down from +Z)
+          # TOP (plain, looking down)
           xvfb-run -a openscad --preview \
             --camera=0,185,1200,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_top.png cabinet.scad
-          # BOTTOM (looking up from -Z)
+          # BOTTOM (plain, looking up)
           xvfb-run -a openscad --preview \
             --camera=0,185,-300,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_bottom.png cabinet.scad
-          # EXTERIOR 3/4: eye=(600,800,1000) target=(0,185,540)
-          xvfb-run -a openscad --preview -D 'show_drivers=true' \
+          # EXTERIOR 3/4 (drivers visible, no cutaway)
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' \
             --camera=600,800,1000,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_exterior.png cabinet.scad
-          # CUTAWAY: eye=(500,700,700) target=(0,185,540)
-          xvfb-run -a openscad --preview -D 'show_internals=true' -D 'show_drivers=true' \
+          # CUTAWAY (internals + drivers, half removed)
+          xvfb-run -a openscad --preview \
+            -D 'show_internals=true' -D 'show_drivers=true' \
             --camera=500,700,700,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_cutaway.png cabinet.scad
-          # ASSEMBLY (focus upper area with waveguide): eye=(450,700,850) target=(0,185,850)
-          xvfb-run -a openscad --preview -D 'show_drivers=true' -D 'show_waveguide=true' \
+          # ASSEMBLY (waveguide + drivers, no cutaway)
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' -D 'show_waveguide=true' \
             --camera=450,700,850,0,185,850 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_assembly.png cabinet.scad
-          # FULL CUTAWAY: eye=(500,600,800) target=(0,185,600)
-          xvfb-run -a openscad --preview -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
+          # FULL CUTAWAY (everything visible)
+          xvfb-run -a openscad --preview \
+            -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
             --camera=500,600,800,0,185,600 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad

@@ -49,8 +49,8 @@ mid_cut_d     = 72;    // 15W/4434G00 cut-out diameter [mm] - from datasheet dra
 // ---- Internals ------------------------------------------------------
 midchamber_h  = 175;   // internal height of the sealed mid chamber [mm]
 midchamber_d  = 282;   // internal depth of the mid chamber [mm] (<= inner depth)
-show_internals = true;  // true: cutaway with mid chamber + braces
-show_waveguide = true; // true: seat the WG212 model into the baffle (assembly view)
+show_internals = false;  // true: cutaway with mid chamber + braces (CI overrides per view)
+show_waveguide = false; // true: seat the WG212 model into the baffle (CI overrides per view)
 show_drivers = false;   // true: show placeholder driver disks for scale reference
 
 // WG212 assembly placement. All positioning derives from mk2_waveguide_os.scad
