@@ -76,7 +76,7 @@ F_mesh, TH_mesh = np.meshgrid(f, theta)
 # ---------------------------------------------------------------------------
 #  Build 2D maps for each crossover frequency
 # ---------------------------------------------------------------------------
-xovers = {"1250 Hz": 1250, "1350 Hz": 1350, "1450 Hz": 1450, "1600 Hz": 1600}
+xovers = {"1100 Hz": 1100, "1250 Hz": 1250, "1350 Hz": 1350, "1450 Hz": 1450}
 maps = {}
 for name, fc in xovers.items():
     maps[name] = vertical_pattern(F_mesh, TH_mesh, d_cc, fc)
@@ -150,7 +150,7 @@ ax.legend(fontsize=8, loc="lower left")
 ax.grid(True, which="both", alpha=0.25)
 
 fig.suptitle(
-    "Mk2 Reference Loudspeaker – Vertical polar map & crossover comparison (simplified 2-point-source model)",
+    "Mk3 Reference Loudspeaker – Vertical polar map & crossover comparison (simplified 2-point-source model)",
     fontsize=13
 )
 fig.tight_layout(rect=[0, 0, 1, 0.96])

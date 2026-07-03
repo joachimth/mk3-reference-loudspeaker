@@ -1,29 +1,43 @@
-# Mk2 Reference Loudspeaker
+# Mk3 Reference Loudspeaker
 
 A DIY active 3-way reference loudspeaker project, inspired by Genelec 8361, Dutch & Dutch 8C, and Revel Salon2.
 
-## Current Design - v6b
+> **mk3 branch:** SB26STAC-C000-4 tweeter, 1100 Hz crossover. The `main` branch retains the original mk2 H2606/920000 design at 1250 Hz. See `docs/SB26STAC-C000-4_analysis.md` for the full comparison.
 
-| Parameter | Value |
-|---|---|
-| Woofers | 2 × GRS 8SW-4HE-8 (push-push, side-mounted) |
-| Midrange | ScanSpeak 15W/4434G00 |
-| Tweeter | ScanSpeak H2606/920000 in WG212 waveguide |
-| Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood |
-| Front edges | R50 vertical roundovers |
-| Bass volume | ~69 L sealed |
-| Mid chamber | ~5.7 L sealed |
-| Bass/mid xover | 150 Hz LR4 |
-| Mid/tweeter xover | 1250 Hz LR4 |
-| Mid/tweeter c-c | 140 mm |
-| Bass alignment | Fc ~34.5 Hz, Qtc ~0.62 |
-| System type | Active, DSP-controlled |
+## Current Design - v7 (mk3)
+
+| Parameter | Value | mk2 (main branch) |
+|---|---|---|
+| Woofers | 2 × GRS 8SW-4HE-8 (push-push, side-mounted) | same |
+| Midrange | ScanSpeak 15W/4434G00 | same |
+| Tweeter | **SB Acoustics SB26STAC-C000-4** in WG212 waveguide | ScanSpeak H2606/920000 |
+| Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood | same |
+| Front edges | R50 vertical roundovers | same |
+| Bass volume | ~69 L sealed | same |
+| Mid chamber | ~5.7 L sealed | same |
+| Bass/mid xover | 150 Hz LR4 | same |
+| Mid/tweeter xover | **1100 Hz LR4** | 1250 Hz LR4 |
+| Mid/tweeter c-c | 140 mm | same |
+| Bass alignment | Fc ~34.5 Hz, Qtc ~0.62 | same |
+| System type | Active, DSP-controlled | same |
+
+### Why mk3 — the SB26STAC advantage
+
+| Metric | mk2 (H2606) | mk3 (SB26STAC) | Improvement |
+|---|---|---|---|
+| Fs | 1030 Hz | 750 Hz | 280 Hz lower |
+| Crossover margin | 220 Hz (1250-1030) | 350 Hz (1100-750) | +130 Hz |
+| Xmax | 0.2 mm | 0.6 mm | 3× more |
+| Excursion headroom | 0 dB (ref) | +8.1 dB | +8.1 dB |
+| DI mismatch at crossover | 5.3 dB | 4.6 dB | -0.7 dB better |
+| Sensitivity vs 15W | +5.5 dB (needs -5.5 dB pad) | +1.8 dB (needs -1.8 dB pad) | Better match |
+| Broadside null (150mm c-c) | 1147 Hz (above 1250 xover) | 1147 Hz (above 1100 xover, LR4 suppresses) | Null fully outside band |
 
 ## CAD Renders
 
 Auto-generated on every CAD change. [Full documentation →](cad/)
 
-### Waveguide (WG212 for H2606/920000)
+### Waveguide (WG212 for SB26STAC-C000-4)
 
 | | |
 |:---:|:---:|
@@ -33,6 +47,10 @@ Auto-generated on every CAD change. [Full documentation →](cad/)
 | Side profile (OS bore) | Top (throat view) |
 | ![Iso](assets/renders/waveguide_iso.png) | ![Cutaway](assets/renders/waveguide_cutaway.png) |
 | Isometric | Half-section cutaway |
+
+> **CAD:** `cad/mk2_waveguide_sb26stac.scad` (SB26STAC version, mk3 primary)
+> **STL:** `cad/exports/sb26stac/waveguide_sb26stac.stl`
+> The H2606 version (`cad/mk2_waveguide_os.scad`) remains on the `main` branch.
 
 ### Cabinet (v6b)
 
@@ -54,10 +72,11 @@ Auto-generated on every CAD change. [Full documentation →](cad/)
 [![Run simulations](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/simulations.yml/badge.svg)](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/simulations.yml)
 [![Render CAD models](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/cad-render.yml/badge.svg)](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/cad-render.yml)
 
-Design candidate **v6b** is selected. CAD models and simulations are complete.
-Physical prototype not yet started.
+Design candidate **v7 (mk3)** is selected. CAD models and simulations are complete for the SB26STAC-C000-4 tweeter.
 
-**Current gate:** Print WG212 waveguide → measure H2606 distortion at 1250 Hz → confirm crossover frequency → build prototype.
+**Current gate:** Purchase SB26STAC-C000-4 → caliper verify dimensions → print WG212 (SB26STAC version) → measure distortion at 1100 Hz → build prototype.
+
+> The H2606/920000 design (v6b, mk2) remains on the `main` branch as the fallback path.
 
 See [`PROJECT_TODO.md`](PROJECT_TODO.md) for the full task list and dependency graph.
 

@@ -1,14 +1,14 @@
 """
-Mk2 Reference Loudspeaker - crossover simulation (LR4 filters + sum curve)
+Mk3 Reference Loudspeaker - crossover simulation (LR4 filters + sum curve)
 ==========================================================================
 
 Plots the theoretical amplitude and phase response of the two LR4 crossover
-sections used in the v6b design, plus the combined on-axis sum.
+sections used in the v7 (mk3) design, plus the combined on-axis sum.
 
 ASSUMPTIONS (theoretical filters, NOT measured data)
 - Low-pass  : 150 Hz LR4, applied to the woofer pair (2x GRS 8SW-4HE).
-- High-pass : 1250 Hz LR4, applied to the midrange (15W/4434G00).
-- High-pass2: 1250 Hz LR4, applied to the tweeter (H2606/920000 in WG212).
+- High-pass : 1100 Hz LR4, applied to the midrange (15W/4434G00).
+- High-pass2: 1100 Hz LR4, applied to the tweeter (SB26STAC-C000-4 in WG212).
 - All drivers are treated as ideal flat-bandwidth sources on their own.
   Real acoustic response (cone breakup, waveguide loading, baffle step)
   is NOT included — this is the electrical/acoustic filter topology only.
@@ -51,20 +51,20 @@ def lr4_hp(f, fc):
 f = np.logspace(np.log10(15), np.log10(20000), 1200)
 
 fc_bass = 150.0     # Hz  LR4 low-pass to mid
-fc_mid  = 1250.0    # Hz  LR4 high-pass to mid / low-pass to tweeter
+fc_mid  = 1100.0    # Hz  LR4 high-pass to mid / low-pass to tweeter
 
 # ---------------------------------------------------------------------------
 #  Compute per section
 # ---------------------------------------------------------------------------
 # Woofer: LP @ 150 Hz
 mag_w, ph_w = lr4_lp(f, fc_bass)
-# Midrange: HP @ 150 Hz + LP @ 1250 Hz
+# Midrange: HP @ 150 Hz + LP @ 1100 Hz
 mag_m_lp, ph_m_lp = lr4_lp(f, fc_mid)
 mag_m_hp, ph_m_hp = lr4_hp(f, fc_bass)
-# Combined mid = HP(150) * LP(1250)  -> add magnitudes in dB, phases in complex
+# Combined mid = HP(150) * LP(1100)  -> add magnitudes in dB, phases in complex
 mag_mid = mag_m_hp + mag_m_lp
 ph_mid = ph_m_hp + ph_m_lp
-# Tweeter: HP @ 1250 Hz
+# Tweeter: HP @ 1100 Hz
 mag_t, ph_t = lr4_hp(f, fc_mid)
 
 # On-axis sum: coherent addition (all in phase at crossover points for LR4)
@@ -85,8 +85,8 @@ fig, axes = plt.subplots(2, 2, figsize=(14, 9.5))
 # --- Amplitude per section ---
 ax = axes[0, 0]
 ax.semilogx(f, mag_w, lw=2.2, color="tab:red", label="Woofer (2x GRS) – LP 150 Hz")
-ax.semilogx(f, mag_mid, lw=2.2, color="tab:green", label="Midrange (15W) – HP 150 + LP 1250 Hz")
-ax.semilogx(f, mag_t, lw=2.2, color="tab:blue", label="Tweeter (H2606) – HP 1250 Hz")
+ax.semilogx(f, mag_mid, lw=2.2, color="tab:green", label="Midrange (15W) – HP 150 + LP 1100 Hz")
+ax.semilogx(f, mag_t, lw=2.2, color="tab:blue", label="Tweeter (SB26STAC) – HP 1100 Hz")
 ax.semilogx(f, mag_sum, lw=2.6, color="0.15", ls="--", label="Sum (coherent)")
 ax.axhline(-3, color="0.5", ls=":", lw=0.8, alpha=0.6)
 ax.axhline(-6, color="0.5", ls=":", lw=0.8, alpha=0.6)
@@ -126,23 +126,23 @@ ax.set_title("150 Hz LR4 crossover (bass → mid)")
 ax.legend(fontsize=8, loc="upper right")
 ax.grid(True, which="both", alpha=0.25)
 
-# --- Zoom: 1250 Hz crossover region ---
+# --- Zoom: 1100 Hz crossover region ---
 ax = axes[1, 1]
 zoom = (f >= 400) & (f <= 4000)
-ax.semilogx(f[zoom], mag_m_lp[zoom], lw=2.4, color="tab:green", label="Mid LP 1250")
-ax.semilogx(f[zoom], mag_t[zoom], lw=2.4, color="tab:blue", label="Tweeter HP 1250")
+ax.semilogx(f[zoom], mag_m_lp[zoom], lw=2.4, color="tab:green", label="Mid LP 1100")
+ax.semilogx(f[zoom], mag_t[zoom], lw=2.4, color="tab:blue", label="Tweeter HP 1100")
 ax.semilogx(f[zoom], (mag_m_lp[zoom] + mag_t[zoom]), lw=2.6, color="0.15", ls="--", label="Sum")
-ax.axvline(1250, color="0.4", ls=":", lw=1.2)
-ax.text(1250, 5.5, "1250 Hz", ha="center", fontsize=9, color="0.4")
+ax.axvline(1100, color="0.4", ls=":", lw=1.2)
+ax.text(1100, 5.5, "1100 Hz", ha="center", fontsize=9, color="0.4")
 ax.axhline(-3, color="0.5", ls=":", lw=0.8, alpha=0.6)
 ax.set_xlim(400, 4000); ax.set_ylim(-20, 7)
 ax.set_xlabel("Frequency [Hz]"); ax.set_ylabel("Magnitude [dB]")
-ax.set_title("1250 Hz LR4 crossover (mid → tweeter)")
+ax.set_title("1100 Hz LR4 crossover (mid → tweeter)")
 ax.legend(fontsize=8, loc="upper right")
 ax.grid(True, which="both", alpha=0.25)
 
 fig.suptitle(
-    "Mk2 Reference Loudspeaker – LR4 crossover simulation (150 Hz + 1250 Hz, ideal sources)",
+    "Mk3 Reference Loudspeaker – LR4 crossover simulation (150 Hz + 1100 Hz, ideal sources)",
     fontsize=13
 )
 fig.tight_layout(rect=[0, 0, 1, 0.96])

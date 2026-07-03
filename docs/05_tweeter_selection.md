@@ -1,4 +1,4 @@
-# Chapter 5 - Tweeter Investigations
+# Chapter 5 - Tweeter Investigations (mk3)
 
 ---
 
@@ -6,111 +6,147 @@
 
 The tweeter must:
 
-- Cover the range from 1250 Hz to beyond 20 kHz
-- Be suitable for mounting in a custom waveguide (WG212), or used with its built-in horn
-- Have sufficient power handling and headroom at 1250 Hz
-- Have low distortion at 1250 Hz and above
+- Cover the range from 1100 Hz to beyond 20 kHz
+- Be suitable for mounting in a custom waveguide (WG212)
+- Have sufficient power handling and headroom at 1100 Hz
+- Have low distortion at 1100 Hz and above
 - Have a dome/surround geometry compatible with the WG212 throat design
 - Fit within the 300 mm baffle at 140 mm c-c from the midrange
 
 ---
 
-## Investigated driver
+## Selected driver
 
-### ScanSpeak H2606/920000 (selected)
+### SB Acoustics SB26STAC-C000-4 (mk3 primary)
 
-The ScanSpeak Discovery H2606/920000 is a horn dome tweeter selected for this project. It is formerly known as the Vifa H26TG05-06.
+A 26mm soft dome tweeter with cast aluminium faceplate, copper-capped pole piece, and a non-reflective rear chamber with optimized damping.
 
 **Key specifications:**
 
 | Parameter | Value |
 |---|---|
-| Series | Discovery |
-| Type | Horn Dome Tweeter |
-| Dome diameter | 25 mm / 1" |
-| Dome material | Coated textile |
-| Impedance | 6 Ω |
-| Re | 4.7 Ω |
-| Fs | 1030 Hz |
-| Sensitivity | 95.2 dB / 2.83V / 1m |
-| Le | 0.05 mH |
-| Qms | 2.1 |
-| Qes | 1.2 |
-| Qts | 0.70 |
-| BL | 3.3 Tm |
-| Mms | 0.4 g |
-| Xmax | 0.2 mm |
-| Sd | 5.7 cm² |
-| Power (RMS) | 100 W |
-| Power (max) | 200 W |
-| Price | ~€44 |
+| Series | SB26 |
+| Type | Conventional soft dome (no built-in horn) |
+| Dome diameter | 26 mm / 1" |
+| Dome material | Fine weave fabric |
+| Impedance | 4 Ω |
+| Re | 3.2 Ω |
+| **Fs** | **750 Hz** |
+| **Sensitivity** | **91.5 dB / 2.83V / 1m** |
+| Le | 0.04 mH |
+| Qms | 3.0 |
+| Qes | 1.78 |
+| Qts | 1.12 |
+| BL | 1.6 Tm |
+| Mms | 0.3 g |
+| **Xmax (one-way)** | **0.6 mm** |
+| **Linear travel (p-p)** | **1.2 mm** |
+| Sd | 6.2 cm² |
+| Power (RMS) | 120 W |
+| Power test | IEC 268-5, HP Butterworth 2600 Hz 12 dB/oct |
+| Faceplate Ø | 100.0 ±0.35 mm |
+| BCD | 88.5 ±0.10 mm |
+| Mounting holes | 4-Ø4.0 + 4-Ø8.0 counterbore |
+| Recess Ø | 53.0 mm |
+| Total depth | 39.7 mm |
+| Net weight | 0.53 kg |
+| Price | ~€37 |
+| STEP file | **Not available** (manual caliper measurement required) |
+
+Datasheet: `assets/datasheets/SB26STAC-C000-4.pdf`
+
+---
+
+## Why the SB26STAC replaces the H2606/920000
+
+The mk2 design used the ScanSpeak H2606/920000 horn dome tweeter. The H2606's Fs of 1030 Hz with only 220 Hz margin to the 1250 Hz crossover was the project's critical risk — requiring a distortion test gate before the crossover could be confirmed.
+
+The SB26STAC solves this problem and improves on every acoustic metric:
+
+| Metric | H2606/920000 (mk2) | SB26STAC-C000-4 (mk3) | Improvement |
+|---|---|---|---|
+| Fs | 1030 Hz | 750 Hz | 280 Hz lower |
+| Crossover margin | 220 Hz (1250-1030) | 350 Hz (1100-750) | +130 Hz |
+| Xmax | 0.2 mm | 0.6 mm | 3× more |
+| Excursion headroom at crossover | 0 dB (ref) | +8.1 dB | +8.1 dB |
+| Sensitivity vs 15W (89.7 dB) | +5.5 dB gap | +1.8 dB gap | Better match |
+| DI mismatch at crossover | 5.3 dB | 4.6 dB | -0.7 dB |
+| Ferrofluid | Yes (aging concern) | No (vented pole piece) | No aging |
+| Price | ~€44 | ~€37 | €7 cheaper |
+
+The H2606's advantages (horn loading → higher sensitivity, STEP file availability) are outweighed by the SB26STAC's acoustic superiority. See `docs/SB26STAC-C000-4_analysis.md` for the full analysis and simulation results.
 
 ---
 
 ## Driver character
 
-The H2606/920000 is a horn-loaded tweeter. The built-in horn shapes its radiation pattern and provides acoustic loading, which:
+The SB26STAC is a conventional dome tweeter — no built-in horn. The dome radiates directly into the WG212 waveguide throat, which provides the acoustic loading and directivity control. This is a different approach from the H2606, which had a built-in horn that coupled to the WG212.
 
-- Increases sensitivity significantly (95.2 dB is very high for a 1" dome)
-- Reduces the excursion required near the crossover frequency
-- Narrows the radiation pattern even before any additional custom waveguide is applied
+The fine weave fabric dome produces a smooth, non-aggressive character. The copper-capped pole piece reduces voice coil inductance and phase shift, improving transient response. The non-reflective rear chamber with vented pole piece provides damping without ferrofluid, eliminating the long-term aging concern.
 
-The very limited Xmax of 0.2 mm is typical for a horn tweeter - the horn loading means that very little cone displacement is needed to produce significant acoustic output. The driver is not designed for large excursion but for efficient, low-distortion operation in its passband.
-
-The textile dome provides a softer character than metal or polymer horn tweeters. Combined with the horn loading, the result is a high-sensitivity, relatively smooth horn tweeter that is less aggressive-sounding than hard-dome horn designs.
+The 0.6mm one-way Xmax is exceptional for a 1" dome tweeter — 3× the H2606's 0.2mm. This directly translates to higher maximum SPL at the crossover frequency before distortion rises.
 
 ---
 
-## Sensitivity mismatch
+## Sensitivity matching
 
-At 95.2 dB / 2.83V / 1m, the H2606/920000 is significantly more sensitive than the ScanSpeak 15W/4434G00 midrange (~89.7 dB). This means the tweeter channel will require substantial gain reduction in the DSP - on the order of 5 to 7 dB of attenuation relative to the midrange channel - to achieve a flat summed response at the crossover. The exact pad is finalised from measurement (the tweeter gains some sensitivity in the waveguide, and baffle step lowers the mid's effective level).
+At 91.5 dB / 2.83V / 1m, the SB26STAC is 1.8 dB more sensitive than the 15W midrange (~89.7 dB). This requires only ~2 dB of DSP attenuation on the tweeter channel — a much more natural match than the H2606 which needed 5-7 dB of padding.
 
-This is handled in DSP and does not affect the acoustic design, but it must be accounted for in the level-matching step.
+In the WG212 waveguide, the SB26STAC will gain 2-3 dB of acoustic loading, bringing effective sensitivity to ~94 dB. The exact pad is finalized from measurement.
 
 ---
 
 ## Waveguide integration
 
-The H2606/920000 already has a built-in horn. The WG212 custom waveguide is designed to further control the radiation pattern and optimize the directivity match with the ScanSpeak 15W midrange.
+The SB26STAC has no built-in horn — the 26mm dome radiates directly. The WG212 waveguide (SB26STAC version: `cad/mk2_waveguide_sb26stac.scad`) starts its OS bore at Ø28mm (dome + ~1mm surround per side) and provides the full directivity control.
 
-Two approaches are possible:
+Key waveguide dimensions for the SB26STAC version:
 
-**Option A - Use built-in horn, no custom WG212**
-The tweeter is mounted directly in the baffle with its factory horn. No custom waveguide. The built-in horn provides some directivity control. This is simpler but may not achieve the target directivity match with the 15W at 1250 Hz.
+| Parameter | Value |
+|---|---|
+| Throat diameter | 28 mm (dome + surround) |
+| Coverage angles | 100° H × 64° V (same as H2606 version) |
+| Mouth size | 293 × 173 mm |
+| Total depth | 98 mm (same as H2606 version) |
+| Rear plate | Ø115 mm (vs Ø130 for H2606) |
+| Faceplate pocket | Ø101 × 4mm deep |
+| Baffle mounting | Identical to H2606 version |
 
-**Option B - Custom WG212 designed around H2606/920000 dome**
-The built-in horn is removed (or the driver is adapted) and the dome assembly is mounted into the custom WG212 waveguide. The WG212 provides a larger, optimized radiation pattern.
+The OS profile, coverage angles, mouth roundover, and baffle flange are identical to the H2606 version. Only the throat interface and rear mounting plate differ.
 
-The current design direction is Option B - the WG212 is designed specifically to work with this driver. The throat diameter of WG212 must be designed to accept the H2606/920000 dome and surround geometry.
-
----
-
-## Critical open question
-
-**Can the H2606/920000 in WG212 safely cross at 1250 Hz?**
-
-The Fs of 1030 Hz means the tweeter is resonating at 1030 Hz. The 1250 Hz LR4 crossover is only 220 Hz above resonance. The high-pass filter at 1250 Hz must provide sufficient protection below resonance.
-
-The distortion level at 1250 Hz in the actual WG212 must be measured on the prototype before the crossover frequency is confirmed. If distortion is too high, the crossover may need to be raised to 1350-1450 Hz.
+**Open item:** The throat diameter (28mm) is estimated from the 26mm dome + surround. The faceplate has a Ø53mm recess around the dome. Physical caliper measurement is needed to confirm the exact throat transition before the final print.
 
 ---
 
 ## Crossover integration
 
 The tweeter is:
-- High-pass at 1250 Hz LR4
-- Approximately -5 to -7 dB gain adjustment in DSP to match midrange sensitivity (finalised from measurement)
+- **High-pass at 1100 Hz LR4** (was 1250 Hz in mk2)
+- Approximately -2 dB gain adjustment in DSP to match midrange sensitivity (was -5 to -7 dB)
 - DSP delay applied to align acoustic center with midrange
+
+The 1100 Hz crossover is selected because:
+1. **Fs margin:** 350 Hz above the 750 Hz resonance — comfortable, no distortion test gate
+2. **Directivity:** Better DI match with the 15W at 1100 Hz (4.6 dB mismatch) vs 1250 Hz (5.3 dB)
+3. **Lobing:** The broadside null for 150mm c-c is at 1147 Hz — just above the 1100 Hz crossover, where LR4 suppression is strongest. ±15° ripple is under 0.7 dB.
 
 See Chapter 11 (Crossovers) and Chapter 14 (DSP) for detail.
 
 ---
 
+## Alternative: ScanSpeak H2606/920000 (mk2 fallback)
+
+The H2606/920000 remains documented as the mk2 fallback. If the SB26STAC path encounters unexpected issues (e.g., the dome doesn't couple well to the waveguide throat), the H2606 design on the `main` branch is ready to go. See `docs/SB26STAC-C000-4_analysis.md` for the complete comparison.
+
+---
+
 ## Open items
 
-- Complete WG212 CAD with throat geometry specific to H2606/920000 surround
-- Print WG212 prototype
-- Test fit H2606/920000 in WG212
-- Measure on-axis and off-axis response in WG212
-- Measure distortion at 1250 Hz - critical for crossover decision
-- Confirm c-c spacing to 15W midrange is achievable at 140 mm
+- [ ] Purchase SB26STAC-C000-4 physical unit
+- [ ] Caliper measurement: faceplate OD, BCD (88.5 from drawing — confirm), dome surround Ø, total depth, recess Ø, counterbore depth
+- [ ] Confirm throat diameter (estimated 28mm — dome + surround)
+- [ ] Print WG212 (SB26STAC version)
+- [ ] Test fit SB26STAC in WG212
+- [ ] Measure on-axis and off-axis response in WG212
+- [ ] Measure distortion at 1100 Hz (expected to pass comfortably)
+- [ ] Confirm c-c spacing to 15W midrange is achievable at 140 mm
