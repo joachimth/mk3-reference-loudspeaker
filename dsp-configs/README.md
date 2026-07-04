@@ -24,8 +24,8 @@ per side):
 ### Left Speaker
 | Input | Output | Driver | Filter |
 |---|---|---|---|
-| CH1 (Left) | Out 1 → Woofer L+ | GRS 8SW-4HE-8 (first) | Subsonic HP 18 Hz LR4, Linkwitz Transform, LP 150 Hz LR4 |
-| CH1 (Left) | Out 2 → Woofer L- | GRS 8SW-4HE-8 (second) | Same as Out 1 (wired in series = 8Ω) |
+| CH1 (Left) | Out 1 → Woofer L+ | GRS 12SW-4HE (first) | Subsonic HP 18 Hz LR4, Linkwitz Transform (39→28 Hz, Q 0.76→0.707), LP 150 Hz LR4 |
+| CH1 (Left) | Out 2 → Woofer L- | GRS 12SW-4HE (second) | Same as Out 1 (wired in series = 8Ω) |
 | CH1 (Left) | Out 3 → Mid L | 15W/4434G00 | HP 150 Hz LR4, LP 1100 Hz LR4 |
 | CH1 (Left) | Out 4 → Tweeter L | SB26STAC in waveguide | HP 1100 Hz LR4, level trim ~-1.8 dB |
 | CH1 (Left) | Out 5 → Tweeter L (#2) | — | Spare / biamp |
@@ -40,7 +40,7 @@ per side):
 
 ## Wiring Notes
 
-- Two GRS 8SW-4HE-8 woofers per speaker, wired in **series** → 8 Ω load.
+- Two GRS 12SW-4HE woofers per speaker, wired in **series** → 8 Ω load.
 - Each woofer gets its own output channel for individual EQ/delay if needed,
   or they can share a channel and be wired in parallel (2 Ω — verify amp stability).
 - **Default config: series wiring, individual channels with identical filters.**

@@ -34,13 +34,14 @@ For full spinorama measurements, a quiet room with a turntable setup is needed. 
 
 ## Driver measurements
 
-### Woofer (GRS 8SW-4HE-8)
+### Woofer (GRS 12SW-4HE)
 
 - Nearfield measurement of each woofer individually (microphone very close to cone, ~1 cm)
 - Combined nearfield response (both woofers driven together)
 - Polarity check: verify push-push wiring (both cones moving in same direction)
 - Impedance measurement
-- Distortion measurement at rated SPL levels (THD vs frequency)
+- Distortion measurement at rated SPL levels (THD vs frequency) — verify Klippel Xmax (12.5 mm) holds in cabinet
+- Verify Linkwitz Transform target (39→28 Hz, Q 0.76→0.707) against measured sealed response
 
 ### Midrange (ScanSpeak 15W/4434G00)
 

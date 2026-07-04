@@ -11,7 +11,7 @@ A DIY active 3-way reference loudspeaker, inspired by Genelec 8361, Dutch & Dutc
 
 | Parameter | Value |
 |---|---|
-| Woofers | 2 × GRS 12SW-4HE (push-push, side-mounted, 12" high excursion) |
+| Woofers | 2 × GRS 12SW-4HE (push-push, side-mounted) |
 | Midrange | ScanSpeak 15W/4434G00 |
 | Tweeter | SB Acoustics SB26STAC-C000-4 in custom waveguide |
 | Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood |
@@ -21,7 +21,7 @@ A DIY active 3-way reference loudspeaker, inspired by Genelec 8361, Dutch & Dutc
 | Bass / mid crossover | 150 Hz LR4 |
 | Mid / tweeter crossover | 1100 Hz LR4 |
 | Mid / tweeter c-c | 140 mm nominal (verify from physical parts) |
-| Bass alignment | Fc ~28 Hz (with LT), Qtc ~0.707 |
+| Bass alignment | Fc ~39 Hz sealed (→28 Hz, Q 0.707 via Linkwitz Transform) |
 | DSP | MiniDSP 4×10 HD |
 | System type | Active, DSP-controlled |
 
@@ -208,7 +208,7 @@ MiniDSP 4×10 HD with pre-built XML config.
 
 | Driver path | Filters |
 |---|---|
-| Woofer (×2) | Subsonic HP ~18 Hz LR4, Linkwitz Transform (Fc 39→28 Hz, Q 0.76→0.707), LP 150 Hz LR4 |
+| Woofer (×2) | Subsonic HP ~18 Hz LR4, Linkwitz Transform (39.0→28 Hz, Q 0.76→0.707), LP 150 Hz LR4 |
 | Midrange | HP 150 Hz LR4, LP 1100 Hz LR4 |
 | Tweeter | HP 1100 Hz LR4, level trim -1.8 dB |
 
@@ -263,7 +263,8 @@ The full design bible lives in the `docs/` folder:
 
 | Driver | Datasheet | Extracted data |
 |---|---|---|
-| GRS 12SW-4HE (woofer) | [PDF](assets/datasheets/GRS-12SW-4HE.pdf) | Fs 22 Hz, Qts 0.43, Xmax 12.5 mm, Sd 504 cm², 250W |
+| GRS 12SW-4HE (woofer) | [PDF](assets/datasheets/GRS-12SW-4HE.pdf) | Fs 22 Hz, Qts 0.43, Vas 80.4 L, Xmax 12.5 mm (Klippel), Sd 504 cm², Bl 16.2 Tm, 250 W, 84.5 dB |
+| GRS 8SW-4HE-8 (woofer, historical — superseded) | [PDF](assets/datasheets/GRS-8SW-4HE-8-spec-sheet.pdf) | [freq response](assets/datasheets/GRS-8SW-4HE-8_freq_response.csv), [impedance](assets/datasheets/GRS-8SW-4HE-8_impedance.csv), [T/S params](assets/datasheets/GRS-8SW-4HE-8_params.csv) |
 | ScanSpeak 15W/4434G00 (mid) | [PDF](assets/datasheets/15W-4434G00.pdf) | [freq response](assets/datasheets/15W-4434G00_freq_response.csv), [impedance](assets/datasheets/15W-4434G00_impedance.csv), [T/S params](assets/datasheets/15W-4434G00_params.csv) |
 | SB Acoustics SB26STAC-C000-4 (tweeter) | [PDF](assets/datasheets/SB26STAC-C000-4.pdf) | [freq response](assets/datasheets/SB26STAC-C000-4_freq_response.csv), [T/S params](assets/datasheets/SB26STAC-C000-4_params.csv) |
 

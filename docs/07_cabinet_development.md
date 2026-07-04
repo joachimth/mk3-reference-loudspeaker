@@ -35,7 +35,7 @@ The 300 mm wide front baffle was selected (DD-007) as the best compromise betwee
 - **Directivity:** A narrower baffle reduces baffle diffraction effects at high frequencies. 280 mm was investigated but showed only small additional benefits over 300 mm.
 - **Diffraction:** The R50 roundovers on the 300 mm baffle smooth diffraction more than was achievable on the narrower 280 mm version with practical roundover radii.
 - **Mechanical fit:** 300 mm provides enough width for the waveguide and the woofer cutouts while leaving adequate material for the box sides and bracing.
-- **Cabinet volume:** 300 mm provides more internal volume than 280 mm, easing the 69 L bass chamber requirement.
+- **Cabinet volume:** 300 mm provides more internal volume than 280 mm, easing the ~75 L bass chamber requirement (volume under the divider plate).
 - **Visual proportion:** 300 mm is a reasonable proportion for a tall reference loudspeaker.
 
 ---
@@ -66,9 +66,9 @@ The midrange operates in a dedicated sealed chamber (see Chapter 9: Volume calcu
 
 ### Woofers
 
-Two GRS 8SW-4HE-8 woofers are side-mounted in a push-push configuration, opposed
-at the same height on the two side panels (directly across from each other — see
-Chapter 8). The current placement targets:
+Two GRS 12SW-4HE woofers (12" high excursion) are side-mounted in a push-push
+configuration, opposed at the same height on the two side panels (directly across
+from each other — see Chapter 8). The current placement targets:
 
 - Both woofer centers: approximately 520 mm from the cabinet bottom (nominal;
   same height on both sides)
@@ -113,7 +113,7 @@ The mechanical tightness of this layout is a known constraint (DD-011). The wave
 | Region | Contents |
 |---|---|
 | Upper section | Mid chamber (5.7 L sealed) |
-| Main bass chamber | Bass volume (~69 L net) |
+| Main bass chamber | Bass volume (~75 L net, under divider plate) |
 | Woofer positions | Side walls, push-push |
 | Bracing | Shelf, window, vertical (see Chapter 10) |
 

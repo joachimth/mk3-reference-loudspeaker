@@ -24,12 +24,14 @@ Validate the simulated design with real acoustic measurements and use the data t
 
 # Driver Measurements
 
-## Woofer
+## Woofer (GRS 12SW-4HE)
 
-- Nearfield measurement of each woofer
+- Nearfield measurement of each woofer (12" high excursion, Fs 22 Hz, Xmax 12.5 mm)
 - Combined nearfield response
-- Check polarity and push-push wiring
-- Distortion measurement at relevant levels
+- Check polarity and push-push wiring (battery test — both cones move same direction)
+- Distortion measurement at relevant levels — verify Klippel Xmax holds in cabinet
+- Verify Linkwitz Transform target (39→28 Hz, Q 0.76→0.707) against measured sealed response
+- Measure max SPL @ 30 Hz — target +16 dB over the previous 8SW design
 
 ## Midrange
 

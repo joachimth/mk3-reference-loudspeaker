@@ -44,11 +44,15 @@ one driver higher than the other) offsets that line of action and re-introduces
 a rocking moment on the cabinet, so it is avoided. (An earlier layout proposed a
 ~350 mm / ~700 mm stagger; this has been dropped — see [REVIEW.md](../REVIEW.md) §C3.)
 
-The geometry fits: the GRS overall depth is ~117 mm, so in the ~256 mm internal
-width two opposed magnets leave roughly `256 − 2×117 ≈ 22 mm` of static clearance
-between them (the magnets are fixed to the baskets/walls and do not move). That
-gap is enough to bond a short rigid coupling block between the two magnet
-assemblies — see *Mechanical coupling* below.
+The geometry fits: the GRS 12SW-4HE overall depth is ~136 mm, so in the ~276 mm
+internal width two opposed magnets leave roughly `276 − 2×136 ≈ 4 mm` of static
+clearance between them (the magnets are fixed to the baskets/walls and do not
+move). This is a tight gap — much tighter than the ~22 mm available with the
+previous 8SW (~117 mm depth). A short rigid coupling block (h=20 mm, r=55 mm in
+the current CAD) is bonded across this gap between the two magnet assemblies — see
+*Mechanical coupling* below. The tight clearance means the coupling block
+dimensions and basket profile must be verified against a physical driver before
+committing the cabinet.
 
 ---
 
@@ -84,10 +88,10 @@ Push-pull cancels the acoustic output - it is not useful for producing bass. Pus
 ## Mechanical coupling
 
 With the two drivers opposed at the same height, a short rigid **coupling block**
-is bonded across the ~22 mm gap between the magnet assemblies. This ties the two
-motors together so they cannot independently excite the cabinet side panels — the
-ideal force-cancelling arrangement, and the main reason same-height opposed
-placement is preferred over a stagger.
+(h=20 mm, r=55 mm in the current CAD) is bonded across the ~4 mm gap between the
+magnet assemblies. This ties the two motors together so they cannot independently
+excite the cabinet side panels — the ideal force-cancelling arrangement, and the
+main reason same-height opposed placement is preferred over a stagger.
 
 The block must not significantly obstruct the bass chamber air flow. Its size and
 fixing are finalized in CAD and confirmed in the prototype phase.
@@ -105,6 +109,7 @@ fixing are finalized in CAD and confirmed in the prototype phase.
 ## Open items
 
 - Confirm the opposed woofer center height matches the bracing layout
-- Verify the coupling block fits the ~22 mm magnet gap in the 300 × 370 mm cross-section without choking air flow
+- Verify the coupling block (h=20 mm, r=55 mm) fits the ~4 mm magnet gap in the 300 × 370 mm cross-section without choking air flow — this is much tighter than the previous 8SW design and must be checked against a physical 12SW driver
+- Confirm 12SW basket depth (~136 mm) and frame (~332 mm) clear the cabinet internals
 - Develop polarity test procedure for prototype verification
 - Measure cabinet vibration with and without push-push coupling (optional)

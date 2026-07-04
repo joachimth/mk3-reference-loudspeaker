@@ -40,21 +40,25 @@ tweeter selection analysis:
 
 ## Current assumption
 
-- 2 x GRS 8SW-4HE-8
-- Sealed cabinet
-- Approx. 68-70 L net bass volume
-- Fs approx. 24.9 Hz
-- Vas approx. 31.7 L per driver
-- Qts approx. 0.45
+- 2 x GRS 12SW-4HE
+- Sealed cabinet, ~75 L net (volume under divider plate)
+- Fs 22 Hz
+- Vas 80.4 L per driver (160.8 L combined)
+- Qts 0.43
+- Xmax 12.5 mm (Klippel verified), Sd 504 cm²
 
 ## Current estimate
 
-- Fc approx. 34-35 Hz
-- Qtc approx. 0.62
+- Sealed Fc ~39 Hz, Qtc ~0.76
+- Linkwitz Transform target: Fc 39.0 → 28 Hz, Qtc 0.76 → 0.707
+- Max SPL @ 30 Hz: +16 dB over the previous 8SW design
+- Displacement: 12.6 cm³ (was 2.0 cm³ with the 8SW)
 
 ## Interpretation
 
-This is a low-Q sealed alignment that should respond well to moderate DSP bass extension.
+This is a low-Q sealed alignment with a Linkwitz Transform to 28 Hz / 0.707. The
+12SW's large Sd and high Xmax give substantially more low-frequency headroom than
+the previous 8SW.
 
 ---
 

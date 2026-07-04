@@ -1,6 +1,6 @@
 # Mk3 Reference Loudspeaker — Project TODO
 
-**Design version:** v7 | **Updated:** July 4, 2026
+**Design version:** v8 | **Updated:** July 5, 2026
 
 The design uses the SB Acoustics SB26STAC-C000-4 tweeter with a 1100 Hz LR4 crossover.
 
@@ -21,8 +21,9 @@ Grouped by area. The critical path to prototype is marked 🔴.
 ### Cabinet CAD
 
 - [ ] **Verify mid chamber net volume** from `cabinet.scad` solid model — target 5.7 L.
-- [ ] **Verify woofer mounting depth** fits 22 mm wall — check GRS 8SW-4HE-8 spec.
-- [ ] **Confirm driver cutout diameters** — woofer 185 mm and midrange 124 mm are estimates. Get exact values from datasheets / physical measurement.
+- [ ] **Verify woofer mounting depth** fits 22 mm wall — check GRS 12SW-4HE spec (~136 mm total depth, opposed magnets have only ~4 mm gap in 276 mm internal width).
+- [ ] **Confirm driver cutout diameters** — woofer 284 mm (GRS 12SW-4HE datasheet) and midrange 124 mm are estimates. Get exact values from datasheets / physical measurement.
+- [ ] **Verify divider plate position** in `cabinet.scad` — bass volume ~75 L is under the divider plate; confirm net volume accounts for 12SW basket displacement.
 - [ ] **Add vertical braces** to `cabinet.scad`.
 - [ ] **Export STEP file** from cabinet + waveguide models.
 
@@ -96,7 +97,7 @@ Grouped by area. The critical path to prototype is marked 🔴.
 
 *(Not started. Full sequence in `docs/16_build_guide.md`.)*
 
-- [ ] Order all drivers (2× GRS 8SW-4HE-8, 1× ScanSpeak 15W/4434G00, 1× SB26STAC-C000-4 per speaker)
+- [ ] Order all drivers (2× GRS 12SW-4HE, 1× ScanSpeak 15W/4434G00, 1× SB26STAC-C000-4 per speaker)
 - [ ] Order MiniDSP 4×10 HD
 - [ ] Order 22 mm birch plywood (~4 sheets per pair)
 - [ ] Order hardware (threaded inserts, gasket tape, terminal plate, cable)

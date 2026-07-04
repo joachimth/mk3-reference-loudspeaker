@@ -52,7 +52,7 @@
 
 | Driver | Cutout diameter | Status | Verify from |
 |---|---|---|---|
-| GRS 8SW-4HE-8 (woofer) | ø185 mm | ⚠️ Estimate — spec sheet embedded fonts block text extraction | ☐ Caliper on physical unit |
+| GRS 12SW-4HE (woofer) | ø284 mm | ⚠️ Estimate from datasheet (embedded fonts block text extraction) | ☐ Caliper on physical unit |
 | ScanSpeak 15W/4434G00 (mid) | ø72 mm | ✅ Corrected June 28 from 15W chassis drawing | ☐ Verify anyway |
 | SB26STAC waveguide mouth (baffle aperture) | from SCAD | ✅ Auto-propagating from waveguide.scad | ☐ Measure printed part |
 
@@ -109,7 +109,7 @@ The cabinet CAD is fully parametric. Once these 3 steps are done:
 | Model | File | Notes |
 |---|---|---|
 | `cad/waveguide.scad` | primary | SB26STAC waveguide: BCD 88.5 mm, throat 28 mm, no horn loading. STL rendered, manifold. |
-| `cad/cabinet.scad` | shared | Fully dynamic from waveguide.scad; waveguide recessed inside cabinet, baffle aperture model. |
+| `cad/cabinet.scad` | shared | Fully dynamic from waveguide.scad; waveguide recessed inside cabinet, baffle aperture model. Updated for GRS 12SW-4HE (284 mm cutout, ~332 mm frame, ~136 mm depth, 75 L bass under divider plate). |
 
 **Don't cut panels from SCAD outputs until parts are physically verified.**
 
@@ -120,7 +120,7 @@ The cabinet CAD is fully parametric. Once these 3 steps are done:
 | Item | Value |
 |---|---|
 | Cabinet W×D×H | 300 × 370 × 1080 mm (22 mm birch ply) |
-| Woofer (each) | GRS 8SW-4HE-8, 8 Ω, side-mounted push-push |
+| Woofer (each) | GRS 12SW-4HE, 4 Ω, 12" high excursion, side-mounted push-push |
 | Woofer centers | ~520 mm from bottom, opposed at same height |
 | Midrange | ScanSpeak 15W/4434G00, 8 Ω |
 | Tweeter | SB Acoustics SB26STAC-C000-4 in custom waveguide |

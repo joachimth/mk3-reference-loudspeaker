@@ -57,7 +57,7 @@ Before starting the build:
 
 | Driver | Quantity |
 |---|---|
-| GRS 8SW-4HE-8 | 2 |
+| GRS 12SW-4HE | 2 |
 | ScanSpeak 15W/4434G00 | 1 |
 | SB Acoustics SB26STAC-C000-4 | 1 |
 | Printed waveguide | 1 |
@@ -76,7 +76,7 @@ Before starting the build:
 
 ### Phase 2: Driver cutouts
 
-1. Cut woofer cutouts on side panels
+1. Cut woofer cutouts on side panels (284 mm diameter per GRS 12SW-4HE datasheet — verify on physical driver first)
 2. Cut midrange cutout on front baffle
 3. Cut waveguide cutout on front baffle
 4. Cut terminal/amplifier cutout on rear panel
@@ -110,11 +110,12 @@ Before starting the build:
 ### Phase 6: Woofer installation
 
 1. Install threaded inserts in side panels at woofer positions
-2. Apply gasket tape around woofer cutouts
-3. Install lower woofer
-4. Install upper woofer
-5. Check push-push wiring polarity (battery test)
-6. Run wiring to terminal area
+2. Apply gasket tape around woofer cutouts (284 mm)
+3. Install lower woofer (GRS 12SW-4HE)
+4. Install upper woofer (GRS 12SW-4HE)
+5. Check push-push wiring polarity (battery test) — both cones must move in the same direction
+6. Verify the coupling block (h=20 mm, r=55 mm) bridges the ~4 mm magnet gap without obstructing air flow
+7. Run wiring to terminal area
 
 ### Phase 7: Mid chamber installation
 
@@ -165,7 +166,7 @@ Before starting the build:
 | Mid chamber not fully sealed | Check all joints with smoke test or listen for leaks |
 | Push-push wiring reversed | Battery polarity test before full assembly |
 | SB26STAC distortion too high at 1100 Hz | Measure before committing to crossover frequency (expected comfortable — 350 Hz Fs margin) |
-| Woofer mounting depth too deep for 22 mm wall | Verify driver spec before cutting |
+| Woofer mounting depth too deep for 22 mm wall | Verify GRS 12SW-4HE spec (~136 mm total depth); opposed magnet gap is only ~4 mm — check basket profile |
 | R50 roundovers - router tear-out | Sharp bit, slow passes, backing board |
 | Waveguide print warping | Use PETG, print flat, allow to cool slowly |
 

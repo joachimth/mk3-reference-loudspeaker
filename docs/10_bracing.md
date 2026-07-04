@@ -76,7 +76,7 @@ In addition to structural bracing, internal damping material is applied to the b
 - **Bitumen or constrained-layer damping pads** - adhered to the inside faces of the panels, increasing the effective damping of panel resonances
 - **Acoustic fill** - open-cell foam, mineral wool, or long-fiber polyester in the bass chamber to moderate the Q of the bass alignment and reduce standing waves
 
-The level of bass chamber fill affects the acoustic volume: heavily stuffed chambers can appear acoustically larger than their physical dimensions. For a sealed design targeting Qtc ~0.62, moderate fill is recommended. The precise fill level is best optimized by measurement after the prototype is built.
+The level of bass chamber fill affects the acoustic volume: heavily stuffed chambers can appear acoustically larger than their physical dimensions. For a sealed design targeting Qtc ~0.707 (via Linkwitz Transform from a sealed Qtc ~0.76), moderate fill is recommended. The precise fill level is best optimized by measurement after the prototype is built.
 
 ---
 

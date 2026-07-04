@@ -4,13 +4,26 @@
 
 ## Version roadmap
 
-The Mk3 Reference Loudspeaker is designed to be an evolving platform. The v7 design (SB26STAC-C000-4 tweeter at 1100 Hz) is the current prototype candidate. Future versions will address remaining limitations and explore more advanced techniques.
+The Mk3 Reference Loudspeaker is designed to be an evolving platform. The v8 design (GRS 12SW-4HE woofer upgrade, SB26STAC-C000-4 tweeter at 1100 Hz) is the current prototype candidate. Future versions will address remaining limitations and explore more advanced techniques.
 
 ---
 
-## v8 - Measurement-validated design
+## v8 - GRS 12SW-4HE woofer upgrade
 
-The first physical prototype of the v7 design.
+Woofer upgraded from GRS 8SW-4HE-8 (8") to GRS 12SW-4HE (12" high excursion).
+
+**Changes:**
+- 2 × GRS 12SW-4HE push-push woofers (Fs 22 Hz, Xmax 12.5 mm, Sd 504 cm²)
+- Bass volume ~75 L under divider plate
+- Linkwitz Transform: Fc 39→28 Hz, Qtc 0.76→0.707
+- Max SPL @ 30 Hz: +16 dB over v7
+- See DD-015
+
+---
+
+## v9 - Measurement-validated design
+
+The first physical prototype of the v8 design.
 
 **Goals:**
 - Build prototype cabinet
@@ -29,7 +42,7 @@ The first physical prototype of the v7 design.
 
 ---
 
-## v9 - CAD and package refinement
+## v10 - CAD and package refinement
 
 After the prototype is validated acoustically, refine the physical design for a higher-quality final version.
 
@@ -42,7 +55,7 @@ After the prototype is validated acoustically, refine the physical design for a 
 
 ---
 
-## v10 - DSP implementation
+## v11 - DSP implementation
 
 Finalize the DSP implementation for long-term use.
 
@@ -55,7 +68,7 @@ Finalize the DSP implementation for long-term use.
 
 ---
 
-## v11 - FIR filters
+## v12 - FIR filters
 
 Upgrade the DSP from IIR (Linkwitz-Riley) to FIR (linear phase) crossovers.
 
@@ -72,7 +85,7 @@ Upgrade the DSP from IIR (Linkwitz-Riley) to FIR (linear phase) crossovers.
 
 ---
 
-## v12 - Integrated active electronics
+## v13 - Integrated active electronics
 
 Design and build an integrated amplifier module that fits inside the cabinet.
 

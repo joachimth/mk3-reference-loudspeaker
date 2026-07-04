@@ -30,8 +30,8 @@ current design values are captured by the scripts above.
 
 | Script | What it computes | Output |
 |---|---|---|
-| `bass_alignment_maxspl.py` | Sealed alignment table (2 × GRS 8SW-4HE) + excursion-limited max-SPL ceiling + sealed response with a Linkwitz-Transform target. | `plots/bass_alignment_maxspl.png` |
-| `bass_volume_compare.py` | Sealed alignment (Qtc / Fc / F3) and group delay for 64–72 L net, highlighting the 69 L target — shows the alignment is robust to box-volume tolerance. | `plots/bass_volume_compare.png` |
+| `bass_alignment_maxspl.py` | Sealed alignment table (2 × GRS 12SW-4HE) + excursion-limited max-SPL ceiling + sealed response with a Linkwitz-Transform target (39→28 Hz, Q 0.76→0.707). Includes comparison against the previous 2 × GRS 8SW-4HE-8. | `plots/bass_alignment_maxspl.png` |
+| `bass_volume_compare.py` | Sealed alignment (Qtc / Fc / F3) and group delay for 69–85 L net, highlighting the 75 L target — shows the alignment is robust to box-volume tolerance. | `plots/bass_volume_compare.png` |
 | `vertical_lobing.py` | First vertical interference-null angle vs frequency for c-c and crossover options. | `plots/vertical_lobing.png` |
 | `directivity_estimate.py` | Estimated directivity index (DI) of the 15W and the waveguide tweeter across the crossover — quantifies the DI step vs crossover frequency. | `plots/directivity_estimate.png` |
 | `waveguide_profile.py` | Waveguide mouth-to-baffle termination cross-section — shows the sharp-lip diffraction problem and the flush / blended fixes. | `plots/waveguide_termination.png` |
@@ -42,9 +42,10 @@ current design values are captured by the scripts above.
 | `design_versions_comparison.py` | Tabulates the design parameters for reference. | `design_versions.md`, `csv/design_versions.csv` |
 | `baffle_step.py` | Baffle-step diffraction model for the 300 mm wide cabinet: SPL correction curve, low-frequency level loss, and the full on-axis response before/after step correction. | `plots/baffle_step.png`, `csv/baffle_step.csv` |
 
-The GRS alignment script reproduces the repo's stated **Qtc ≈ 0.62 / Fc ≈ 34.5 Hz
-in ~69 L**. The lobing script confirms that even c-c 160 mm crossed at 1600 Hz keeps the
-first vertical null near 42° — far outside the listening window.
+The GRS alignment script reproduces the repo's stated **Qtc ≈ 0.76 / Fc ≈ 39 Hz
+in ~75 L** (12SW), transformed to 28 Hz / 0.707 via Linkwitz Transform. The lobing
+script confirms that even c-c 160 mm crossed at 1600 Hz keeps the first vertical
+null near 42° — far outside the listening window.
 
 ## Running
 

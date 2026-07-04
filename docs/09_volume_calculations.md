@@ -6,7 +6,7 @@
 
 The cabinet contains two distinct acoustically separate volumes:
 
-1. **Bass chamber** - main sealed enclosure for the two GRS woofers
+1. **Bass chamber** - main sealed enclosure for the two GRS 12SW-4HE woofers (volume under the divider plate)
 2. **Mid chamber** - sealed sub-enclosure for the ScanSpeak 15W midrange
 
 These two volumes must be designed independently. The mid chamber is fully sealed from the bass chamber.
@@ -17,16 +17,18 @@ These two volumes must be designed independently. The mid chamber is fully seale
 
 ### Target
 
-- Net bass volume: approximately 69 L
-- Sealed alignment: Fc ~34.5 Hz, Qtc ~0.62
+- Net bass volume: approximately 75 L (volume under the divider plate)
+- Sealed alignment: Fc ~39 Hz, Qtc ~0.76 → 28 Hz / 0.707 via Linkwitz Transform
 
-### Driver parameters (two GRS 8SW-4HE-8)
+### Driver parameters (two GRS 12SW-4HE)
 
 | Parameter | Per driver | Combined |
 |---|---|---|
-| Fs | ~24.9 Hz | ~24.9 Hz (unchanged) |
-| Vas | ~31.7 L | Equivalent pair: see below |
-| Qts | ~0.45 | ~0.45 (unchanged) |
+| Fs | 22 Hz | 22 Hz (unchanged) |
+| Vas | 80.4 L | Equivalent pair: see below |
+| Qts | 0.43 | 0.43 (unchanged) |
+| Sd | 504 cm² | 1008 cm² |
+| Xmax | 12.5 mm (Klippel) | — |
 
 For **N** identical drivers sharing one sealed enclosure, the system behaves like
 a single equivalent driver with N times the Sd and **N times the Vas**:
@@ -37,35 +39,34 @@ Qtc = Qts × sqrt(1 + Vas_total / Vb)
 Fc  = Fs  × sqrt(1 + Vas_total / Vb)
 ```
 
-For two GRS 8SW-4HE-8 (Vas ~31.7 L each), `Vas_total = 2 × 31.7 = 63.4 L`. In a
-~69 L net enclosure:
+For two GRS 12SW-4HE (Vas 80.4 L each), `Vas_total = 2 × 80.4 = 160.8 L`. In a
+~75 L net enclosure:
 
 ```
-Qtc = 0.45 × sqrt(1 + 63.4/69) ≈ 0.62
-Fc  = 24.9 × sqrt(1 + 63.4/69) ≈ 34.5 Hz
+Qtc = 0.43 × sqrt(1 + 160.8/75) ≈ 0.76
+Fc  = 22.0 × sqrt(1 + 160.8/75) ≈ 39.0 Hz
 ```
 
-This matches the target alignment and is consistent with Chapter 3. (An earlier
-version of this chapter stated the effective Vas was roughly the individual-driver
-Vas — that is incorrect and would give ~0.54 / ~30 Hz, not the values above.)
-The figures are simplified estimates — verified independently in
-[../REVIEW.md](../REVIEW.md) §A and reproduced by
+This gives a sealed Fc of ~39 Hz with Qtc ~0.76, which is then transformed via a
+Linkwitz Transform to Fc 28 Hz / Qtc 0.707 in the DSP. The figures are simplified
+estimates — reproduced by
 [../simulations/bass_alignment_maxspl.py](../simulations/bass_alignment_maxspl.py)
+and [../simulations/bass_volume_compare.py](../simulations/bass_volume_compare.py)
 — and should still be confirmed before construction.
 
 ### Gross vs. net volume
 
-The gross internal bass chamber volume must exceed 69 L by the volume displaced by:
+The gross internal bass chamber volume must exceed 75 L by the volume displaced by:
 
 - Driver motor assemblies extending into the cabinet (woofer displacement)
 - Bracing material inside the cabinet
 - Damping material
 - Mid chamber walls
 
-Deductions per 8-inch woofer depend strongly on motor depth. The GRS 8SW-4HE is
-a deep driver (~117 mm overall depth, large magnet), so each displaces roughly
-2-3 L inside the cabinet — budget ~5 L for the pair rather than the ~1 L typical
-of a shallow woofer.
+Deductions per 12-inch woofer depend strongly on motor depth. The GRS 12SW-4HE is
+a deep driver (~136 mm overall depth, large magnet), so each displaces roughly
+3-5 L inside the cabinet — budget ~8-10 L for the pair rather than the ~5 L for
+the previous 8SW pair.
 Bracing: estimate 2-5% of gross volume depending on brace density.
 
 The gross external volume of the main cabinet (minus walls and mid chamber) will need to be calculated from the final cabinet drawings.
@@ -84,13 +85,16 @@ Total gross internal volume = 256 × 326 × 1036 / 1,000,000 = ~86.5 L
 
 Deductions from gross total:
 - Mid chamber: ~5.7 L (net) + walls
-- Driver displacement (2 woofers): ~5 L estimated (deep GRS magnets, ~2-3 L each)
+- Driver displacement (2 woofers): ~8-10 L estimated (deep 12SW magnets, ~3-5 L each)
 - Bracing: ~4-6 L estimated
 - Damping material: minor
 
-Approximate remaining bass net volume: ~86.5 - 5.7 - 6 - 5 = ~70 L
+Approximate remaining bass net volume: ~86.5 - 5.7 - 6 - 9 = ~66 L
 
-This suggests the current external dimensions can support a ~69 L net bass volume with reasonable bracing. The exact figure must be calculated from the final CAD model.
+This is below the 75 L target, so the divider plate position must be set to
+allocate enough volume under it for the bass chamber. The exact figure must be
+calculated from the final CAD model — the divider plate height is the primary
+control for bass vs. the upper cabinet volume.
 
 ---
 
@@ -136,7 +140,7 @@ The mid chamber should be:
 
 | Volume | Target (net) | Status |
 |---|---|---|
-| Bass chamber | ~69 L | Estimated from external dimensions, pending CAD |
+| Bass chamber | ~75 L (under divider plate) | Estimated from external dimensions + divider plate, pending CAD |
 | Mid chamber | ~5.7 L | Pending CAD |
 
 Both volumes are to be verified in the final 3D CAD model before construction.

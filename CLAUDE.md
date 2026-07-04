@@ -14,7 +14,7 @@ the engineering reasoning behind the speaker design, captured as a living
 "Design Bible" plus supporting reference files.
 
 The project is currently at the **simulation / design-candidate stage** (design
-version **v7**). No physical prototype has been built yet. Most numbers are
+version **v8**). No physical prototype has been built yet. Most numbers are
 simplified simulation estimates, not measured data — preserve that distinction
 in any edits.
 
@@ -43,12 +43,12 @@ in any edits.
 │   ├── 16_build_guide.md
 │   └── 17_future_versions.md
 ├── DESIGN_REQUIREMENTS.md    # Acoustic + mechanical targets (the spec)
-├── DESIGN_DECISIONS.md       # Numbered decisions DD-001..DD-014 with rationale
+├── DESIGN_DECISIONS.md       # Numbered decisions DD-001..DD-015 with rationale
 ├── PARTS.md                  # Driver + materials list
 ├── SIMULATIONS.md            # Simulation work + assumptions (estimates, not measured)
 ├── MEASUREMENTS.md           # Measurement plan (not yet executed)
 ├── BUILD_LOG.md              # Physical build log (template; build not started)
-├── ROADMAP.md                # Version history v7+ + future plans
+├── ROADMAP.md                # Version history v8+ + future plans
 ├── CHANGELOG.md              # Design change log, newest version first
 ├── REFERENCES.md             # Books, researchers, software
 ├── LICENSE                   # MIT
@@ -61,7 +61,7 @@ in any edits.
 
 The whole project is organized around incrementing design versions, tracked in
 `ROADMAP.md` (full history) and `CHANGELOG.md` (changes, newest first). The
-current design candidate is **v7**. Further v8+ are planned/future and describe
+current design candidate is **v8**. Further v9+ are planned/future and describe
 intended work.
 
 When the design changes, bump or annotate the version and record it in both
@@ -81,16 +81,16 @@ This summary appears verbatim (or near-verbatim) in **multiple files**:
 **must update every place it appears** — otherwise the docs contradict each
 other.
 
-### Current spec (v7)
+### Current spec (v8)
 
 | Parameter | Value |
 |---|---|
-| Woofers | 2 × GRS 8SW-4HE-8 (push-push, side-mounted, series → 8 Ω) |
+| Woofers | 2 × GRS 12SW-4HE (push-push, side-mounted, 12" high excursion) |
 | Midrange | ScanSpeak 15W/4434G00 (sealed mid chamber ~5.7 L) |
 | Tweeter | SB Acoustics SB26STAC-C000-4 (bare dome, not horn-loaded) |
 | Tweeter waveguide | `cad/waveguide.scad` |
 | Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood, R50 front roundovers |
-| Bass volume | ~69 L sealed, Fc ~34.5 Hz, Qtc ~0.62 |
+| Bass volume | ~75 L sealed (under divider plate), sealed Fc ~39 Hz → 28 Hz via LT, Qtc ~0.707 |
 | Bass/mid xover | 150 Hz LR4 |
 | Mid/tweeter xover | 1100 Hz LR4 |
 | Mid/tweeter c-c | 140 mm |

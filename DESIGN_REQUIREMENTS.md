@@ -10,7 +10,7 @@
 
 ## Driver Layout
 
-- 2 × GRS 8SW-4HE-8
+- 2 × GRS 12SW-4HE
 - ScanSpeak 15W/4434G00
 - SB Acoustics SB26STAC-C000-4
 - Custom waveguide (SB26STAC version, no horn loading)
@@ -23,9 +23,10 @@
 
 ## Alignment
 
-- 69 L sealed bass chamber
-- Qtc ≈ 0.62
-- Fc ≈ 34.5 Hz
+- ~75 L sealed bass chamber (volume under divider plate)
+- Qtc ≈ 0.707 (via Linkwitz Transform target)
+- Sealed Fc ≈ 39 Hz → 28 Hz after LT
+- Woofer cutout: 284 mm (GRS 12SW-4HE)
 
 ## Crossovers
 

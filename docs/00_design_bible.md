@@ -8,14 +8,14 @@ The design bible is a living document. It will be updated as the project progres
 
 ---
 
-## Current design summary - v7
+## Current design summary - v8
 
 - Active 3-way loudspeaker with DSP crossovers
-- 2 × GRS 8SW-4HE-8 woofers (side-mounted push-push)
+- 2 × GRS 12SW-4HE woofers (side-mounted push-push, 12" high excursion)
 - ScanSpeak 15W/4434G00 midrange
 - SB Acoustics SB26STAC-C000-4 tweeter in a custom non-horn-loaded waveguide (`cad/waveguide.scad`)
 - Cabinet: 300 × 370 × 1080 mm, 22 mm birch plywood, R50 front roundovers
-- Bass: ~69 L sealed, Fc ~34.5 Hz, Qtc ~0.62
+- Bass: ~75 L sealed (under divider plate), Fc ~39 Hz → 28 Hz via LT, Qtc ~0.707
 - Crossovers: 150 Hz LR4 (bass/mid), 1100 Hz LR4 (mid/tweeter)
 - Mid/tweeter c-c: 140 mm
 

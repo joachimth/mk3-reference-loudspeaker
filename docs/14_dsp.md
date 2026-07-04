@@ -125,9 +125,9 @@ The waveguide may introduce small peaks or irregularities in the on-axis respons
 
 ### Bass shelf (Linkwitz Transform)
 
-To extend the bass response below the natural sealed rolloff frequency (Fc ~34.5 Hz), a shelving boost (Linkwitz Transform) can be applied. This trades excursion headroom for deeper extension.
+To extend the bass response below the natural sealed rolloff frequency (Fc ~39 Hz), a Linkwitz Transform is applied (target Fc 28 Hz, Qtc 0.707). This trades excursion headroom for deeper extension.
 
-The amount of bass shelf will be determined from measurements and the excursion limits of the GRS woofers at maximum listening level.
+The amount of bass extension will be determined from measurements and the excursion limits of the GRS 12SW-4HE woofers (12.5 mm Xmax, Klippel verified) at maximum listening level.
 
 ---
 

@@ -65,11 +65,13 @@ Woofer placement, wiring and mechanical coupling must be carefully planned.
 
 ---
 
-# DD-004 - Select GRS 8SW-4HE-8 woofers
+# DD-004 - Select GRS 8SW-4HE-8 woofers (superseded by DD-015)
 
 ## Decision
 
 Use 2 x GRS 8SW-4HE-8 per loudspeaker.
+
+**Superseded in v8 by DD-015** (GRS 12SW-4HE). Retained for historical reference.
 
 ## Reasoning
 
@@ -240,3 +242,47 @@ committing to 1100 Hz.
 ## Consequence
 
 The midrange low-pass and tweeter high-pass are both 1100 Hz LR4.
+
+---
+
+# DD-015 - Upgrade woofer to GRS 12SW-4HE
+
+## Decision
+
+Replace the GRS 8SW-4HE-8 (8") with the **GRS 12SW-4HE (12" high excursion)** as
+the push-push woofer, 2 per enclosure. Sealed alignment retained; bass volume
+increased to ~75 L under the divider plate.
+
+## Reasoning
+
+The 12SW-4HE offers a substantial low-frequency performance improvement over the
+8SW while keeping the push-push, sealed, DSP-controlled architecture:
+
+- **Fs 22 Hz** (vs 48 Hz) — much deeper native bass extension
+- **Xmax 12.5 mm Klippel-verified** (vs 4.5 mm) — 2.8× more linear excursion
+- **Sd 504 cm²** (vs 220 cm²) — 2.3× more radiating area
+- **Displacement 12.6 cm³** per pair (vs 2.0 cm³) — 6.3× more, giving **+16 dB
+  max SPL @ 30 Hz** over the previous design
+- **Bl 16.2 Tm** (vs 10.5) — stronger motor
+- **Vas 80.4 L** per driver (vs 28 L) — suits a ~75 L sealed chamber
+- **Qts 0.43** (vs 0.38) — works well with a Linkwitz Transform to 0.707
+- Cost increase is modest: ~€75 vs ~€45 per driver
+
+The push-push configuration, side mounting, sealed alignment, and 150 Hz LR4
+bass/mid crossover are all retained. Only the woofer driver and bass volume change.
+
+## Consequence
+
+- **Bass volume:** ~75 L under the divider plate (was ~69 L total).
+- **Sealed alignment:** Fc ~39 Hz, Qtc ~0.76 (was ~34.5 Hz / 0.62).
+- **Linkwitz Transform:** Fc 39.0 → 28 Hz, Qtc 0.76 → 0.707 (was 47.2 → 28 Hz,
+  0.63 → 0.707).
+- **Woofer cutout:** 284 mm (was 185 mm) — larger side-panel cutout.
+- **Opposed magnet clearance:** only ~4 mm at 276 mm internal width (vs ~22 mm
+  for the 8SW). The coupling block (h=20 mm, r=55 mm) and basket profile must be
+  verified against a physical 12SW before committing the cabinet.
+- **Sensitivity:** 84.5 dB (vs 85.0) — slightly more amplifier power needed, but
+  the displacement advantage dominates at low frequencies.
+- **Power handling:** 250 W (vs 100 W) — higher thermal capacity.
+- DD-004 (8SW selection) is superseded; the 8SW remains in the repo as a
+  historical comparison driver.

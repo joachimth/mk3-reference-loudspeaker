@@ -12,7 +12,8 @@ All frequency response and impedance curves have been extracted from the PDFs in
 |---|---|---|---|---|---|---|---|
 | SB Acoustics SB26STAC-C000-4 | Tweeter | YES | [SB26STAC-C000-4.md](SB26STAC-C000-4.md) | YES | NO | YES | Raster |
 | ScanSpeak 15W/4434G00 | Midrange | YES | [15W-4434G00.md](15W-4434G00.md) | YES | YES | YES | Raster |
-| GRS 8SW-4HE-8 | Woofer (push-push) | YES | [GRS-8SW-4HE-8.md](GRS-8SW-4HE-8.md) | YES | YES | YES | Vector |
+| GRS 12SW-4HE | Woofer (push-push, v8) | YES | — | — | — | — | — |
+| GRS 8SW-4HE-8 | Woofer (historical, v3–v7) | YES | [GRS-8SW-4HE-8.md](GRS-8SW-4HE-8.md) | YES | YES | YES | Vector |
 
 ---
 
@@ -47,7 +48,19 @@ All frequency response and impedance curves have been extracted from the PDFs in
 
 ---
 
-## GRS 8SW-4HE-8 — Woofer (Push-Push)
+## GRS 12SW-4HE — Woofer (Push-Push, v8)
+
+| File | What it is |
+|---|---|
+| [GRS-12SW-4HE.pdf](GRS-12SW-4HE.pdf) | Official GRS spec sheet |
+
+**Key parameters:** Fs=22 Hz, Qts=0.43, Vas=80.4 L, Sd=504 cm², Xmax=12.5 mm (Klippel verified), Bl=16.2 Tm, sensitivity 84.5 dB, 250 W, 4 Ω. Baffle cutout 284 mm. No STEP file from GRS.
+
+Frequency response / impedance / T/S params CSV extraction pending (spec sheet uses embedded custom fonts that block text extraction — see `DATASHEET_EXTRACTION_PLAN.md`).
+
+---
+
+## GRS 8SW-4HE-8 — Woofer (Historical, v3–v7, superseded by 12SW)
 
 | File | What it is |
 |---|---|
@@ -58,7 +71,7 @@ All frequency response and impedance curves have been extracted from the PDFs in
 | [GRS-8SW-4HE-8_params.csv](GRS-8SW-4HE-8_params.csv) | All T-S parameters |
 | [GRS-8SW-4HE-8_extraction_verify.png](GRS-8SW-4HE-8_extraction_verify.png) | Verification plot |
 
-**Key parameters:** Fs=48 Hz, Qts=0.89, Vas=22 L, Xmax=6 mm, sensitivity 89 dB. Baffle cutout 185 mm (needs physical verification). No STEP file from GRS.
+**Key parameters:** Fs=48 Hz, Qts=0.89, Vas=22 L, Xmax=6 mm, sensitivity 89 dB. Baffle cutout 185 mm. No STEP file from GRS. **Superseded by GRS 12SW-4HE in v8** — retained for historical comparison.
 
 ---
 
