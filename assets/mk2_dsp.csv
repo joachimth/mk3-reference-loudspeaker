@@ -1,9 +1,0 @@
-Vej,Filter,Frekvens,Type,Formål
-2 x SB23NRXS45-8,Subsonic HP,18 Hz,LR4,Beskyttelse
-2 x SB23NRXS45-8,Linkwitz Transform,ca. 30 Hz Q 0.7,LT,Dyb kontrolleret bas (udnytter headroom)
-2 x SB23NRXS45-8,LP (akustisk),180 Hz,LR4,Stejl overgang mod mid
-Scan-Speak 15W/4434G00,HP (akustisk),180 Hz,LR4,Ren summering med bas
-Scan-Speak 15W/4434G00,LP (akustisk),1600 Hz,LR4,Lander i WG-kontrolbånd
-H2606 + WG Mk2,HP (akustisk),1600 Hz,LR4,Directivity-match + lav forvrængning
-Tidsjustering,Delay,måles,-,Flugt akustiske centre (rent steprespons)
-Global,Rest-EQ,minimal,PEQ,Kun on-axis rest efter targets sidder

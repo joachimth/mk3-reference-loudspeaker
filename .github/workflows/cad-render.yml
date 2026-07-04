@@ -27,12 +27,10 @@ jobs:
         run: |
           mkdir -p cad/exports
           cd cad
-          openscad -o exports/mk2_waveguide_os.stl mk2_waveguide_os.scad
-          openscad -o exports/mk2_cabinet.stl cabinet.scad
+          openscad -o exports/waveguide.stl waveguide.scad
+          openscad -o exports/cabinet.stl cabinet.scad
           ls -lh exports/
 
-      # Vector camera format: --camera=eye_x,eye_y,eye_z,target_x,target_y,target_z
-      # Much simpler than gimbal - just position camera and look at target
       - name: Render waveguide views
         run: |
           mkdir -p assets/renders
@@ -42,42 +40,39 @@ jobs:
           xvfb-run -a openscad --preview \
             --camera=0,0,400,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_mouth.png mk2_waveguide_os.scad
+            -o ../assets/renders/waveguide_mouth.png waveguide.scad
           # Rear (from -Z): eye=(0,0,-300) target=(0,0,45)
           xvfb-run -a openscad --preview \
             --camera=0,0,-300,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_rear.png mk2_waveguide_os.scad
+            -o ../assets/renders/waveguide_rear.png waveguide.scad
           # Side (from +X): eye=(400,0,45) target=(0,0,45)
           xvfb-run -a openscad --preview \
             --camera=400,0,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_side.png mk2_waveguide_os.scad
+            -o ../assets/renders/waveguide_side.png waveguide.scad
           # Top (from +Y): eye=(0,400,45) target=(0,0,45)
           xvfb-run -a openscad --preview \
             --camera=0,400,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_top.png mk2_waveguide_os.scad
+            -o ../assets/renders/waveguide_top.png waveguide.scad
           # Isometric: eye=(400,-400,300) target=(0,0,45)
           xvfb-run -a openscad --preview \
             --camera=400,-400,300,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/waveguide_iso.png mk2_waveguide_os.scad
+            -o ../assets/renders/waveguide_iso.png waveguide.scad
           # Cutaway: side view with show_cutaway
           xvfb-run -a openscad --preview \
             --camera=400,0,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -D 'show_cutaway=true' \
-            -o ../assets/renders/waveguide_cutaway.png mk2_waveguide_os.scad
+            -o ../assets/renders/waveguide_cutaway.png waveguide.scad
 
       - name: Render cabinet views
         run: |
           cd cad
           # Cabinet: 320x370x1080mm, center at (0,185,540)
           # Defaults: show_internals=false, show_waveguide=false, show_drivers=false
-          # Each view overrides only what it needs via -D flags
-          # Camera distance ~2800mm to fit 1080mm tall cabinet in 1920x1080 frame
-          # (OpenSCAD default FOV ~22.5 deg: 540/tan(11.25deg) ≈ 2710mm)
 
           # FRONT (baffle with drivers, no cutaway)
           xvfb-run -a openscad --preview \
@@ -145,7 +140,6 @@ jobs:
           git add assets/renders/ cad/exports/
           git diff --staged --quiet || {
             git commit -m "ci(cad): auto-render STL + 16 views [skip ci]"
-            # Retry push with rebase to handle concurrent workflow runs
             for attempt in 1 2 3; do
               git pull --rebase origin main && git push && break
               echo "Push attempt $attempt failed, retrying..."
@@ -163,12 +157,12 @@ jobs:
             ## Downloads
             | File | Description |
             |------|-------------|
-            | `mk2_waveguide_os.stl` | WG212 waveguide |
-            | `mk2_cabinet.stl` | v6b cabinet |
-            
+            | `waveguide.stl` | SB26STAC waveguide |
+            | `cabinet.stl` | Cabinet |
+
             ## Views (16 total)
-            **Waveguide:** mouth, rear, side, top, iso, cutaway  
+            **Waveguide:** mouth, rear, side, top, iso, cutaway
             **Cabinet:** front, rear, left, right, top, bottom, exterior, cutaway, assembly, full-cutaway
           files: |
-            cad/exports/mk2_waveguide_os.stl
-            cad/exports/mk2_cabinet.stl
+            cad/exports/waveguide.stl
+            cad/exports/cabinet.stl

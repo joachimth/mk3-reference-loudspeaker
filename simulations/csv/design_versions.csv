@@ -1,8 +1,0 @@
-version,status,cabinet_W_mm,cabinet_H_mm,cabinet_D_mm,wall_mm,front_roundover_R_mm,woofer,woofer_qty,mid,tweeter,waveguide,xover_bass_Hz,xover_mid_Hz,cc_mid_tw_mm,bass_vol_L,mid_vol_L,Qtc,Fc_Hz,notes
-v1,concept,300,370,1080,22,50,SB23NRXS45-8,2,ScanSpeak 15W/4434G00,ScanSpeak H2606/920000,WG212,150,1600,150,69.0,5.7,0.56,31.9,Initial concept with SB23 woofer; directivity investigation started
-v2,concept,300,370,1080,22,50,SB23NRXS45-8,2,ScanSpeak 15W/4434G00,ScanSpeak H2606/920000,WG212,150,1500,150,69.0,5.7,0.56,31.9,Cabinet geometry defined; side-mounted push-push woofer layout introduced
-v3,investigation,300,370,1080,22,50,GRS 8SW-4HE-8,2,ScanSpeak 15W/4434G00,ScanSpeak H2606/920000,WG212,150,1500,150,69.0,5.7,0.62,34.5,GRS 8SW-4HE-8 introduced as woofer candidate; strong sealed alignment fit
-v4,exploration,280,370,1080,22,40,GRS 8SW-4HE-8,2,ScanSpeak 15W/4434G00,ScanSpeak H2606/920000,WG212,150,1400,150,65.0,5.7,0.65,35.8,Narrower 280 mm front explored; R40 roundover useful but mechanically constrained
-v5,candidate,300,370,1080,22,50,GRS 8SW-4HE-8,2,ScanSpeak 15W/4434G00,ScanSpeak H2606/920000,WG212,150,1300,150,68.0,5.7,0.63,34.8,300 mm / R50 selected; 68 L bass volume
-v6,candidate,300,370,1080,22,50,GRS 8SW-4HE-8,2,ScanSpeak 15W/4434G00,ScanSpeak H2606/920000,WG212,150,1250,140,69.0,5.7,0.62,34.5,Directivity optimization; c-c 140 mm target; WG212–WG240 compared
-v6b,CURRENT REFERENCE,300,370,1080,22,50,GRS 8SW-4HE-8,2,ScanSpeak 15W/4434G00,ScanSpeak H2606/920000,WG212,150,1250,150,69.0,5.7,0.62,34.5,c-c 150 mm practical minimum (15W frame). WG212 CAD + cabinet CAD complete. 1250 Hz target subject to WG212 distortion test (tweeter Fs 1030 Hz). Fallback: 1350-1450 Hz if 1250 Hz fails.

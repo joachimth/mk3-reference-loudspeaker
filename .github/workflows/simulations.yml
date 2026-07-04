@@ -1,7 +1,5 @@
 name: Run simulations
 
-# Triggers when any simulation script changes, or manually.
-# Also runs on changes to SIMULATIONS.md so docs stay in sync with plots.
 on:
   push:
     branches: [main]
@@ -11,37 +9,26 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # needed to commit updated plots back to repo
+  contents: write
 
 jobs:
   simulate:
     runs-on: ubuntu-22.04
 
     steps:
-      # ------------------------------------------------------------------ #
-      #  1. Checkout                                                         #
-      # ------------------------------------------------------------------ #
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # ------------------------------------------------------------------ #
-      #  2. Python + dependencies                                           #
-      #  Only numpy + matplotlib are used by the current scripts.          #
-      # ------------------------------------------------------------------ #
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Install Python dependencies
         run: |
-          pip install --quiet "numpy>=1.26,<3" "matplotlib>=3.8,<4"
+          pip install --quiet "numpy>=1.26,<3" "matplotlib>=3.8,<4" "scipy>=1.12"
 
-      # ------------------------------------------------------------------ #
-      #  3. Run all simulation scripts                                      #
-      #  Each script saves its plot(s) to simulations/plots/.              #
-      #  Run order: bass first (used as reference), then directivity etc.  #
-      # ------------------------------------------------------------------ #
+      # Bass alignment (crossover-agnostic)
       - name: Run bass_alignment_maxspl.py
         working-directory: simulations
         run: python bass_alignment_maxspl.py 2>&1
@@ -50,10 +37,16 @@ jobs:
         working-directory: simulations
         run: python bass_volume_compare.py 2>&1
 
+      # Baffle and waveguide
+      - name: Run baffle_step.py
+        working-directory: simulations
+        run: python baffle_step.py 2>&1
+
       - name: Run waveguide_profile.py
         working-directory: simulations
         run: python waveguide_profile.py 2>&1
 
+      # Directivity and lobing (1100 Hz crossover)
       - name: Run directivity_estimate.py
         working-directory: simulations
         run: python directivity_estimate.py 2>&1
@@ -62,65 +55,48 @@ jobs:
         working-directory: simulations
         run: python vertical_lobing.py 2>&1
 
-      # New scripts (added June 2026)
-      - name: Run crossover_simulation.py
+      - name: Run vertical_polar_map.py
         working-directory: simulations
-        run: python crossover_simulation.py 2>&1
-
-      - name: Run system_response.py
-        working-directory: simulations
-        run: python system_response.py 2>&1
+        run: python vertical_polar_map.py 2>&1
 
       - name: Run polar_response.py
         working-directory: simulations
         run: python polar_response.py 2>&1
 
-      - name: Run vertical_polar_map.py
+      # System response and crossover (1100 Hz, SB26STAC)
+      - name: Run system_response_realistic.py
         working-directory: simulations
-        run: python vertical_polar_map.py 2>&1
+        run: python system_response_realistic.py 2>&1
 
-      - name: Run design_versions_comparison.py
+      - name: Run spinorama_estimate.py
         working-directory: simulations
-        run: python design_versions_comparison.py 2>&1
+        run: python spinorama_estimate.py 2>&1
 
-      - name: Run baffle_step.py
+      - name: Run crossover_optimization.py
         working-directory: simulations
-        run: python baffle_step.py 2>&1
+        run: python crossover_optimization.py 2>&1
 
-      # ------------------------------------------------------------------ #
-      #  4. List generated plots and CSV files (sanity check)             #
-      # ------------------------------------------------------------------ #
+      - name: Run tweeter_comparison.py
+        working-directory: simulations
+        run: python tweeter_comparison.py 2>&1
+
       - name: List generated outputs
         run: |
           echo "=== simulations/plots/ ==="
           ls -lh simulations/plots/
           echo "=== simulations/csv/ ==="
           ls -lh simulations/csv/ 2>/dev/null || echo "(none yet)"
-          echo "=== simulations/design_versions.md ==="
-          ls -lh simulations/design_versions.md 2>/dev/null || echo "(none yet)"
 
-      # ------------------------------------------------------------------ #
-      #  5. Commit updated plots, CSVs and comparison table back to repo  #
-      # ------------------------------------------------------------------ #
       - name: Commit updated simulation outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add simulations/plots/ simulations/csv/ simulations/design_versions.md
+          git add simulations/plots/ simulations/csv/
           git diff --staged --quiet && echo "No output changes." || \
             git commit -m "ci(sims): update simulation outputs [skip ci]
 
-          Triggered by: ${{ github.sha }}
-          Scripts: bass_alignment_maxspl, bass_volume_compare, waveguide_profile,
-                   directivity_estimate, vertical_lobing,
-                   crossover_simulation, system_response, polar_response,
-                   vertical_polar_map, design_versions_comparison,
-                   baffle_step"
-          git push
+          Triggered by: ${{ github.sha }}" && git push
 
-      # ------------------------------------------------------------------ #
-      #  6. Upload plots as workflow artifact (90-day retention)           #
-      # ------------------------------------------------------------------ #
       - name: Upload simulation outputs as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -128,6 +104,5 @@ jobs:
           path: |
             simulations/plots/
             simulations/csv/
-            simulations/design_versions.md
           retention-days: 90
           if-no-files-found: error

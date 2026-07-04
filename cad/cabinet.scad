@@ -18,7 +18,7 @@
 
 // Pull in the waveguide model for the optional assembly view (only its
 // modules are imported; nothing renders unless show_waveguide = true).
-use <mk2_waveguide_os.scad>
+use <waveguide.scad>
 
 // ---- External shell -------------------------------------------------
 W      = 320;    // width  [mm]
