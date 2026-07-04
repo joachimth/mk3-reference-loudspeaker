@@ -55,9 +55,44 @@ The 15W midrange is high-passed at 150 Hz. This removes bass loading from the mi
 
 ## Midrange / tweeter: 1100 Hz
 
-The 1100 Hz crossover was selected for mk3 (v7) based on:
+The 1100 Hz crossover was selected for mk3 (v7) based on a systematic
+optimization sweep (see `simulations/mk3_crossover_optimization.py`)
+that scored crossover frequencies from 800 to 1600 Hz against five
+criteria: Fs margin, excursion headroom, directivity match, vertical
+lobing, and system sum flatness.
 
-- **Fs margin:** The SB26STAC-C000-4 has Fs=750 Hz, giving 350 Hz margin at 1100 Hz. This is comfortable — no distortion test gate required (unlike mk2's H2606 at 1250 Hz with only 220 Hz margin).
+### Optimization results
+
+| Fc [Hz] | Fs margin | Excursion | DI mismatch | ±15° ripple | Score | Broadside |
+|---|---|---|---|---|---|---|
+| 1000 | 250 Hz | +6.4 dB | 4.3 dB | -0.6 dB | 6.9 | below |
+| 1050 | 300 Hz | +7.2 dB | 4.5 dB | -0.6 dB | 7.7 | below |
+| **1100** | **350 Hz** | **+8.1 dB** | **4.6 dB** | **-0.7 dB** | **8.1** | **below** |
+| 1150 | 400 Hz | +8.8 dB | 4.9 dB | -0.7 dB | 8.2 | above |
+| 1200 | 450 Hz | +9.6 dB | 5.1 dB | -0.8 dB | 8.2 | above |
+| 1250 | 500 Hz | +10.3 dB | 5.3 dB | -0.9 dB | 8.1 | above |
+| 1300 | 550 Hz | +11.0 dB | 5.5 dB | -1.0 dB | 8.1 | above |
+
+**Optimal band: 1100-1200 Hz** (scores 8.1-8.2, statistically tied).
+
+**Why 1100 Hz is chosen over 1200 Hz despite identical scores:**
+- Below broadside null (1147 Hz for 150mm c-c) — the null is fully outside
+  the active crossover band, not partially inside it
+- Better DI match (4.6 vs 5.1 dB) — closer to 15W's near-omni region
+- Fs margin of 350 Hz is already comfortable — additional margin has
+  diminishing returns (the sigmoid scoring reflects this)
+
+The crossover could be raised to 1150-1200 Hz with negligible penalty if
+measurement shows the 15W has cone breakup or directivity issues at 1100 Hz.
+
+> **mk2 comparison:** H2606 @ 1250 Hz scored 8.1 — but with Fs margin of only
+> 220 Hz (vs 350 Hz for SB26STAC @ 1100) and +0.0 dB excursion headroom
+> (vs +8.1 dB). The SB26STAC wins on the two safety criteria while matching
+> on the acoustic criteria.
+
+### Selection rationale
+
+- **Fs margin:** 350 Hz above the 750 Hz resonance — comfortable, no distortion test gate required (unlike mk2's H2606 at 1250 Hz with only 220 Hz margin).
 - **Directivity match:** At 1100 Hz the 15W midrange is closer to omni, giving a smaller DI step (4.6 dB mismatch vs 5.3 dB at 1250 Hz).
 - **Vertical lobing:** The broadside null for 150mm c-c is at 1147 Hz — just above the 1100 Hz crossover. The LR4 rolloff suppresses the null almost entirely. At ±15° the ripple is under 0.7 dB.
 - **Excursion headroom:** The SB26STAC's 0.6mm Xmax gives +8.1 dB more max SPL at 1100 Hz than the H2606 at 1250 Hz.
