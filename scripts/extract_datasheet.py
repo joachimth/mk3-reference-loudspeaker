@@ -330,7 +330,7 @@ DRIVER_CONFIGS = {
             "ohm_grid_y": [22, 73, 123, 174, 224, 274, 325, 375, 426, 476, 527, 577, 627],
             "ohm_grid_v": [16.0, 14.7, 13.3, 12.0, 10.7, 9.3, 8.0, 6.7, 5.3, 4.0, 2.7, 1.3, 0.0],
             "spl_colors": {
-                "blue": {"h_min": 0.50, "h_max": 0.70, "s_min": 0.25, "v_min": 0.2, "label": "onaxis"},
+                "blue": {"h_min": 0.55, "h_max": 0.68, "s_min": 0.45, "v_min": 0.35, "label": "onaxis"},
                 "green": {"h_min": 0.25, "h_max": 0.45, "s_min": 0.25, "v_min": 0.2, "label": "30deg"},
                 "red": {"h_min_red": True, "s_min": 0.25, "v_min": 0.2, "label": "60deg"},
             },
@@ -633,14 +633,52 @@ def extract_raster_driver(pdf_path, config, output_dir, model_name):
             print(f"  {color_name}: too few pixels ({n_pixels}), skipping")
             continue
 
-        # Extract curve: for each column, take median y
+        # Extract curve using cluster tracking for robustness against JPEG noise
+        from scipy.ndimage import label as _label  # not used, but available
+
         curve_x = []
         curve_y = []
+        prev_y = None
+        track_gap = 30  # max vertical jump between adjacent columns
+
         for x in range(x_min, x_max + 1):
             ys = np.where(mask[:, x])[0]
-            if len(ys) > 0:
-                curve_x.append(x)
-                curve_y.append(float(np.median(ys)))
+            if len(ys) == 0:
+                continue
+
+            # Cluster y-values into groups (gap > 10 pixels = new cluster)
+            clusters = []
+            cluster_start = ys[0]
+            prev = ys[0]
+            for y in ys[1:]:
+                if y - prev > 10:
+                    clusters.append((cluster_start, prev))
+                    cluster_start = y
+                prev = y
+            clusters.append((cluster_start, prev))
+
+            # Pick the cluster closest to previous y (curve tracking)
+            if prev_y is not None:
+                best_cluster = None
+                best_dist = track_gap
+                for cs, ce in clusters:
+                    cm = (cs + ce) // 2
+                    d = abs(cm - prev_y)
+                    if d < best_dist:
+                        best_dist = d
+                        best_cluster = (cs, ce)
+                if best_cluster is None:
+                    continue
+                y_val = (best_cluster[0] + best_cluster[1]) // 2
+            else:
+                # Start: pick cluster nearest to expected curve position
+                # For SPL curves, start near the top (high SPL = low y)
+                best_cluster = min(clusters, key=lambda c: abs((c[0]+c[1])//2 - y_min - 50))
+                y_val = (best_cluster[0] + best_cluster[1]) // 2
+
+            curve_x.append(x)
+            curve_y.append(float(y_val))
+            prev_y = y_val
 
         # Convert to freq and SPL
         freqs = 10 ** (a_freq + b_freq * np.array(curve_x))
@@ -672,13 +710,46 @@ def extract_raster_driver(pdf_path, config, output_dir, model_name):
     imp_mask[:, x_max:] = False
 
     if np.sum(imp_mask) > 100:
+        # Use cluster tracking for impedance curve too
         curve_x = []
         curve_y = []
+        prev_y = None
+        track_gap = 30
+
         for x in range(x_min, x_max + 1):
             ys = np.where(imp_mask[:, x])[0]
-            if len(ys) > 0:
-                curve_x.append(x)
-                curve_y.append(float(np.median(ys)))
+            if len(ys) == 0:
+                continue
+
+            clusters = []
+            cluster_start = ys[0]
+            prev = ys[0]
+            for y in ys[1:]:
+                if y - prev > 10:
+                    clusters.append((cluster_start, prev))
+                    cluster_start = y
+                prev = y
+            clusters.append((cluster_start, prev))
+
+            if prev_y is not None:
+                best_cluster = None
+                best_dist = track_gap
+                for cs, ce in clusters:
+                    cm = (cs + ce) // 2
+                    d = abs(cm - prev_y)
+                    if d < best_dist:
+                        best_dist = d
+                        best_cluster = (cs, ce)
+                if best_cluster is None:
+                    continue
+                y_val = (best_cluster[0] + best_cluster[1]) // 2
+            else:
+                best_cluster = min(clusters, key=lambda c: abs((c[0]+c[1])//2 - (y_min+y_max)//2))
+                y_val = (best_cluster[0] + best_cluster[1]) // 2
+
+            curve_x.append(x)
+            curve_y.append(float(y_val))
+            prev_y = y_val
 
         if len(curve_x) > 20:
             imp_freqs = 10 ** (a_freq + b_freq * np.array(curve_x))
