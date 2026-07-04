@@ -1,14 +1,11 @@
 """
-Mk2 Reference Loudspeaker - sealed bass volume comparison (65 / 68 / 70 L ...)
-=============================================================================
-
-Closes the TODO "Compare 65 L / 68 L / 70 L / Compare Qtc / Compare group delay".
+Mk3 Reference Loudspeaker - sealed bass volume comparison (70-85 L)
+===================================================================
 
 ASSUMPTIONS (simplified, small-signal, sealed box)
-- Two GRS 8SW-4HE in one sealed box behave as one equivalent driver with
-  Vas_total = 2 * Vas_single (see docs/03, docs/09). T/S from the SoundImports
-  datasheet (verify against the official GRS sheet):
-      Fs = 24.9 Hz, Qts = 0.45, Vas_single = 31.7 L  ->  Vas_total = 63.4 L
+- Two GRS 12SW-4HE in one sealed box behave as one equivalent driver with
+  Vas_total = 2 * Vas_single. T/S from GRS 12SW-4HE datasheet:
+      Fs = 22.0 Hz, Qts = 0.43, Vas_single = 80.4 L  ->  Vas_total = 160.8 L
 - Sealed alignment:  Qtc = Qts*sqrt(1 + Vas_total/Vb),  Fc = Fs*sqrt(1 + ...).
 - Acoustic roll-off is the ideal 2nd-order high-pass set by (Fc, Qtc); real
   output adds box losses, leakage and room gain. This compares alignments; it is
@@ -23,24 +20,22 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # --- driver / system constants ---
-Fs        = 24.9      # Hz
-Qts       = 0.45
-Vas_total = 63.4      # L  (2 x 31.7)
+Fs        = 22.0      # Hz
+Qts       = 0.43
+Vas_total = 160.8     # L  (2 x 80.4)
 
-volumes = [64, 66, 68, 69, 70, 72]   # L net, 69 L is the v6b target
-highlight = 69
+volumes = [69, 72, 75, 78, 80, 85]   # L net, 75 L is the target
+highlight = 75
 
 def alignment(Vb):
     k   = np.sqrt(1.0 + Vas_total / Vb)
     Qtc = Qts * k
     Fc  = Fs * k
-    # closed-box -3 dB frequency (2nd-order high-pass)
     a   = 1.0 / Qtc**2 - 2.0
     f3  = Fc * np.sqrt((a + np.sqrt(a*a + 4.0)) / 2.0)
     return Qtc, Fc, f3
 
 def hp2(f, Fc, Qtc):
-    # 2nd-order high-pass transfer function, s = j*w/wc
     s = 1j * (f / Fc)
     return (s*s) / (s*s + (1.0/Qtc)*s + 1.0)
 
@@ -58,7 +53,7 @@ for Vb in volumes:
     Qtc, Fc, f3 = alignment(Vb)
     gd = group_delay_ms(f, Fc, Qtc)
     results[Vb] = (Qtc, Fc, f3, gd)
-    tag = "  <- v6b" if Vb == highlight else ""
+    tag = "  <- target" if Vb == highlight else ""
     print(f"{Vb:>7} {Qtc:>6.3f} {Fc:>8.1f} {f3:>8.1f} {gd.max():>12.1f}{tag}")
 
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(9, 8.2), sharex=True)
@@ -76,13 +71,13 @@ for Vb in volumes:
 ax1.axhline(-3, color="0.6", ls=":", lw=1)
 ax1.text(11, -3.4, "-3 dB", fontsize=8, color="0.4")
 ax1.set_ylim(-18, 3); ax1.set_ylabel("Relative SPL [dB]")
-ax1.set_title("Sealed alignment vs net box volume (2 x GRS 8SW-4HE, ideal 2nd-order)")
+ax1.set_title("Sealed alignment vs net box volume (2 x GRS 12SW-4HE, ideal 2nd-order)")
 ax1.grid(True, which="both", alpha=0.25); ax1.legend(fontsize=7.5, loc="lower right")
 
 ax2.set_ylabel("Group delay [ms]"); ax2.set_xlabel("Frequency [Hz]")
 ax2.set_xlim(10, 300); ax2.grid(True, which="both", alpha=0.25)
 ax2.text(11, 0.3, "Qtc < 0.707 -> no peaking; group delay stays low and smooth.\n"
-                  "65 -> 72 L barely moves Fc/Qtc: the alignment is robust to build tolerance.",
+                  "69 -> 85 L barely moves Fc/Qtc: the alignment is robust to build tolerance.",
          fontsize=8, color="0.3", va="bottom")
 
 out = os.path.join(os.path.dirname(__file__), "plots", "bass_volume_compare.png")

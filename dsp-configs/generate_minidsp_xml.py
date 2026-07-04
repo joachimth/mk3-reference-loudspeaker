@@ -135,9 +135,9 @@ def build_mk2_config(
     tweeter_trim: float = -5.5,
     subsonic_hp: float = 18,
     subsonic_hp_type: str = "lr4",
-    woofer_lt_fc: Optional[float] = 47.2,
+    woofer_lt_fc: Optional[float] = 39.0,
     woofer_lt_fs: Optional[float] = 28.0,
-    woofer_lt_qc: Optional[float] = 0.63,
+    woofer_lt_qc: Optional[float] = 0.76,
     woofer_lt_qs: Optional[float] = 0.707,
 ) -> list[OutputChannel]:
     """Build the complete channel configuration for the Mk2 3-way + push-push woofer."""
@@ -156,7 +156,7 @@ def build_mk2_config(
 
     if woofer_lt_fc and woofer_lt_fs:
         coeffs = build_linkwitz_transform(
-            fc=woofer_lt_fc, Qc=woofer_lt_qc or 0.63,
+            fc=woofer_lt_fc, Qc=woofer_lt_qc or 0.76,
             fs_target=woofer_lt_fs, Q_target=woofer_lt_qs or 0.707,
             sample_rate=sample_rate,
         )
@@ -190,13 +190,13 @@ def build_mk2_config(
     # Tweeter is physically shallower → needs delayed by ~0.12 ms to align
 
     return [
-        OutputChannel(label="GRS Woofer L Top",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
-        OutputChannel(label="GRS Woofer L Bot",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
+        OutputChannel(label="12SW Woofer L Top",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
+        OutputChannel(label="12SW Woofer L Bot",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
         OutputChannel(label="15W/4434G00 Mid L", gain_db=0.0,  delay_ms=0.0,    biquads=mid_biquads),
         OutputChannel(label="H2606 Tweeter L",   gain_db=tweeter_trim, delay_ms=0.12, biquads=tweeter_biquads),
         OutputChannel(label="(Spare input)",     gain_db=0.0,  delay_ms=0.0,    biquads=[]),
-        OutputChannel(label="GRS Woofer R Top",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
-        OutputChannel(label="GRS Woofer R Bot",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
+        OutputChannel(label="12SW Woofer R Top",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
+        OutputChannel(label="12SW Woofer R Bot",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
         OutputChannel(label="15W/4434G00 Mid R", gain_db=0.0,  delay_ms=0.0,    biquads=mid_biquads),
         OutputChannel(label="H2606 Tweeter R",   gain_db=tweeter_trim, delay_ms=0.12, biquads=tweeter_biquads),
         OutputChannel(label="(Spare output)",    gain_db=0.0,  delay_ms=0.0,    biquads=[]),
@@ -293,7 +293,7 @@ def generate_xml(
     mid_lp: float = 1250,
     tweeter_hp: float = 1250,
     subsonic_hp: float = 18,
-    woofer_lt_fc: Optional[float] = 47.2,
+    woofer_lt_fc: Optional[float] = 39.0,
     woofer_lt_fs: Optional[float] = 28.0,
 ) -> str:
     """Generate complete MiniDSP plugin XML from channel config."""
@@ -308,7 +308,7 @@ def generate_xml(
     lt_str = f"LT {woofer_lt_fc}->{woofer_lt_fs}" if woofer_lt_fc and woofer_lt_fs else "no LT"
     desc_parts = [
         f"3-way + push-push woofer.",
-        f"GRS 8SW-4HE-8 ×2 | ScanSpeak 15W/4434G00 | {tweeter_name}.",
+        f"GRS 12SW-4HE ×2 | ScanSpeak 15W/4434G00 | {tweeter_name}.",
         f"XO: {woofer_lp}/{mid_hp}-{mid_lp}/{tweeter_hp} Hz LR4.",
         f"Sub HP {subsonic_hp} Hz {lt_str}.",
         f"Sample rate: {sample_rate} Hz.",
@@ -430,7 +430,7 @@ Examples:
             tweeter_hp_type=args.tweeter_hp_type,
             tweeter_trim=args.tweeter_trim,
             subsonic_hp=sub_hp,
-            woofer_lt_fc=None if args.no_lt else 47.2,
+            woofer_lt_fc=None if args.no_lt else 39.0,
             woofer_lt_fs=None if args.no_lt else 28.0,
         )
 
@@ -440,7 +440,7 @@ Examples:
     mid_lp_val = args.mid_lp if not args.two_way else 0
     tweeter_hp_val = args.tweeter_hp
     sub_hp_val = 0 if args.no_subsonic else args.subsonic_hp
-    lt_fc_val = None if args.no_lt else 47.2
+    lt_fc_val = None if args.no_lt else 39.0
     lt_fs_val = None if args.no_lt else 28.0
 
     xml = generate_xml(channels, sr,

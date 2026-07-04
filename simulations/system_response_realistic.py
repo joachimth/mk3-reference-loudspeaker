@@ -7,7 +7,7 @@ datasheets (digitized from the PDF graphs), combined with:
 
   1. Baffle step (Vanderkooy model, 300mm cabinet baffle)
   2. Waveguide loading (WG212 acoustic gain above control limit)
-  3. Sealed woofer alignment (2x GRS 8SW-4HE, Fc=34.5 Hz, Qtc=0.62)
+  3. Sealed woofer alignment (2x GRS 12SW-4HE, Fc=28 Hz with LT, Qtc=0.707)
   4. LR4 crossover filters (150 Hz + 1100 Hz)
   5. DSP level matching (tweeter pad to match midrange)
 
@@ -139,13 +139,15 @@ def wg_loading_db(f, gain_db, f_low=1000, f_high=2000):
 # ============================================================
 #  Woofer model: sealed alignment
 # ============================================================
-# 2x GRS 8SW-4HE-8 in ~69L sealed
-# Fc = 34.5 Hz, Qtc = 0.62, sensitivity 85 dB (2 drivers + 3dB = 88 dB half-space)
-Fc_w = 34.5; Qtc_w = 0.62; sens_w = 85.0  # per driver, 2 drivers ≈ +3 dB
-# Note: datasheet sensitivity for GRS is ~85 dB, two in push-push = +3 dB = 88 dB
+# 2x GRS 12SW-4HE in ~75L sealed (bass volume under divider plate)
+# Fs=22, Qts=0.43, Vas=80.4L per driver -> Vas_total=160.8L
+# In 75L: Qtc=0.76, Fc=39.0 Hz
+# With Linkwitz Transform: Fc=28 Hz, Qtc=0.707
+# Sensitivity 84.5 dB per driver, 2 in push-push = +3 dB = 87.5 dB half-space
+Fc_w = 28.0; Qtc_w = 0.707; sens_w = 84.5  # per driver, 2 drivers ≈ +3 dB (with LT)
 
 def woofer_response(f):
-    """Sealed woofer pair response."""
+    """Sealed woofer pair response with Linkwitz Transform."""
     s = 1j * f / Fc_w
     H_sealed = s**2 / (s**2 + s/Qtc_w + 1)
     mag = 20*np.log10(np.abs(H_sealed) + 1e-12) + (sens_w + 3.0)  # +3 dB for 2 drivers
@@ -232,7 +234,7 @@ fig, axes = plt.subplots(3, 1, figsize=(15, 13), gridspec_kw={"height_ratios": [
 # --- Panel 1: Individual drivers + system sum ---
 ax = axes[0]
 ax.semilogx(f, mag_sum, lw=3.0, color="tab:blue", label="System sum")
-ax.semilogx(f, mag_w, lw=1.2, color="tab:red", alpha=0.4, label="Woofer (2×GRS sealed + baffle step)")
+ax.semilogx(f, mag_w, lw=1.2, color="tab:red", alpha=0.4, label="Woofer (2×GRS 12SW sealed + LT + baffle step)")
 ax.semilogx(f, mag_m, lw=1.2, color="tab:green", alpha=0.4, label="Mid (15W real curve + baffle step + LR4)")
 ax.semilogx(f, mag_t_trimmed, lw=1.2, color="tab:purple", alpha=0.4, label="Tweeter (SB26STAC real curve + WG loading + pad)")
 

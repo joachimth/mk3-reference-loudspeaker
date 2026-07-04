@@ -2,9 +2,10 @@
 // Mk2 Reference Loudspeaker - cabinet (parametric, simulation-stage)
 // =====================================================================
 //
-// v6b enclosure: 300 x 370 x 1080 mm, 22 mm birch ply, R50 front vertical
-// roundovers, side-mounted push-push woofers opposed at the same height, sealed
-// midrange chamber, WG212 + 15W on the front baffle at ~150 mm c-c.
+// v6b enclosure: 320 x 370 x 1080 mm, 22 mm birch ply, R50 front vertical
+// roundovers, side-mounted push-push GRS 12SW-4HE woofers opposed at the same
+// height, sealed midrange chamber above a full-width divider plate (bass volume
+// below), WG212 + 15W on the front baffle at ~150 mm c-c.
 //
 // This is a DESIGN-CANDIDATE model for visualisation and dimension checking,
 // NOT a cut list. Driver cut-outs and the mid-chamber volume are estimates and
@@ -29,7 +30,10 @@ round_r = 40;    // R50 front vertical roundovers [mm]
 
 // ---- Driver placement (estimates) -----------------------------------
 woofer_z      = 520;   // opposed push-push woofer centre height [mm]
-woofer_cut_d  = 185;   // GRS 8SW-4HE cut-out diameter [mm]
+                      //   284 mm cutout on the 370 mm deep side panel leaves
+                      //   ~43 mm margin each side; 520 mm keeps the woofer clear
+                      //   of the mid-chamber divider plate above.
+woofer_cut_d  = 284;   // GRS 12SW-4HE cut-out diameter [mm] (datasheet Ø284)
 
 tw_z          = 900;   // WG212/tweeter acoustic centre height [mm]
 cc            = 150;   // mid/tweeter centre-to-centre [mm] (DD-011 realistic)
@@ -139,17 +143,15 @@ module enclosure() {
 
 // ---- Internal structure (representative) ----------------------------
 module mid_chamber() {
-    // sealed box behind the midrange, sitting just under the top
+    // Sealed mid chamber above a full-width divider plate. The divider runs the
+    // full internal width and depth at z0 (bottom of the mid chamber), so ALL
+    // volume below the plate is bass volume (for the GRS 12SW-4HE push-push
+    // woofers) and the volume above the plate — bounded by the cabinet walls,
+    // the divider, and the top panel, around the midrange driver — is the sealed
+    // mid chamber. The divider is rendered by shelf_brace() so the two volumes
+    // are structurally and acoustically isolated.
     z0 = mid_z - midchamber_h/2;
-    color("LightSteelBlue", 0.65)
-    translate([0, D/2 - wall - midchamber_d, z0])
-        difference() {
-            translate([-(mid_cut_d/2 + 18), 0, 0])
-                cube([mid_cut_d + 36, midchamber_d, midchamber_h]);
-            // open the front toward the baffle (where the mid mounts)
-            translate([-mid_cut_d/2, -2, midchamber_h/2 - mid_cut_d/2])
-                cube([mid_cut_d, wall + 4, mid_cut_d]);
-        }
+    shelf_brace(z0);
 }
 
 module brace_window(z) {
@@ -161,16 +163,21 @@ module brace_window(z) {
 }
 
 module shelf_brace(z) {
-    // bass/mid divider shelf
+    // Full-width divider plate separating the bass volume (below) from the
+    // sealed mid chamber (above). Runs the full internal width and depth so the
+    // two volumes are structurally and acoustically isolated.
     color("Tan", 0.85)
     translate([0,0,z]) linear_extrude(wall) offset(-wall) profile2d(W, D, round_r);
 }
 
 module coupling_block() {
-    // rigid block bonded across the ~22 mm gap between the opposed magnets
+    // rigid block bonded across the gap between the opposed 12SW magnet back
+    // plates. With ~136 mm mounting depth each and 276 mm internal width
+    // (W - 2*wall) the magnets nearly meet (~4 mm gap); the block overlaps both
+    // back plates to tie the push-push pair together rigidly.
     color("IndianRed", 0.9)
     translate([0, 0, woofer_z]) rotate([0,90,0])
-        cylinder(h = 26, r = 28, center = true, $fn = 48);
+        cylinder(h = 20, r = 55, center = true, $fn = 48);
 }
 
 // ---- WG212 seated in the baffle (optional assembly) -----------------
@@ -197,10 +204,16 @@ module wg_in_baffle() {
   // Simple colored disks representing the physical driver sizes for render scale.
   // These are NOT accurate driver models - just visual references for cabinet renders.
   module driver_woofer_placeholder(sign) {
-      // GRS 8SW-4HE: ~200mm frame, ~120mm magnet depth
+      // GRS 12SW-4HE: ~332mm overall frame, Ø284mm cutout, ~136mm total depth.
+      // Frame disk sits in the side-panel plane; basket/magnet extends inward.
       color("DarkSlateGray", 0.85)
-      translate([sign*(W/2 + 10), 0, woofer_z]) rotate([0, sign*90, 0])
-          cylinder(h = 25, r = 100, $fn = 64);
+      translate([sign*(W/2), 0, woofer_z]) rotate([0, -sign*90, 0]) {
+          // frame/faceplate disk at the side-panel plane
+          cylinder(h = 8, r = 166, $fn = 64);
+          // basket + magnet depth extending inward toward cabinet centre
+          translate([0, 0, 8])
+              cylinder(h = 128, r = 70, $fn = 48);
+      }
   }
   module driver_mid_placeholder() {
       // 15W/4434G00: ~104mm faceplate
@@ -221,7 +234,6 @@ if (show_internals) {
               enclosure();
               mid_chamber();
               brace_window(woofer_z);
-              shelf_brace(mid_z - midchamber_h/2 - 30);
               coupling_block();
               if (show_waveguide) wg_in_baffle();
               if (show_drivers) {
