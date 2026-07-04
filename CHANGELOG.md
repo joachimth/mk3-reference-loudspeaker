@@ -15,6 +15,6 @@ All notable design changes for the Mk3 Reference Loudspeaker are documented here
 - **+8.1 dB excursion headroom** at the crossover frequency — the lower Fs
   (750 Hz) and 1100 Hz crossover place the operating point at ~1.47 × Fs,
   reducing distortion/excursion risk.
-- New simulation scripts: `mk2_vs_mk3_realistic_response.py`,
-  `mk2_vs_mk3_spinorna.py`, `mk3_crossover_optimization.py`,
-  `h2606_vs_sb26stac_comparison.py` (see `simulations/`).
+- New simulation scripts: `system_response_realistic.py`,
+  `spinorama_estimate.py`, `crossover_optimization.py`,
+  `tweeter_comparison.py` (see `simulations/`).

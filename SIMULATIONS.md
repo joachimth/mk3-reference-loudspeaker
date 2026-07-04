@@ -14,8 +14,8 @@ Version-controlled, assumption-headed scripts and their plots now live in
 [`simulations/`](simulations/) (`bass_alignment_maxspl.py`, `bass_volume_compare.py`,
 `vertical_lobing.py`, `directivity_estimate.py`, `crossover_simulation.py`,
 `system_response.py`, `polar_response.py`, `vertical_polar_map.py`,
-`mk2_vs_mk3_realistic_response.py`, `mk2_vs_mk3_spinorna.py`,
-`mk3_crossover_optimization.py`, `h2606_vs_sb26stac_comparison.py`); parametric
+`system_response_realistic.py`, `spinorama_estimate.py`,
+`crossover_optimization.py`, `tweeter_comparison.py`); parametric
 OpenSCAD geometry lives in [`cad/`](cad/) (waveguide + cabinet).
 
 ### Current design scripts
@@ -23,15 +23,15 @@ OpenSCAD geometry lives in [`cad/`](cad/) (waveguide + cabinet).
 The following scripts document the current SB26STAC / 1100 Hz design and the
 tweeter selection analysis:
 
-- `mk2_vs_mk3_realistic_response.py` — realistic system response using actual
+- `system_response_realistic.py` — realistic system response using actual
   digitized datasheet frequency-response curves, baffle step, waveguide loading
   and LR4 crossovers.
-- `mk2_vs_mk3_spinorna.py` — spinorama estimate (on-axis, listening window,
+- `spinorama_estimate.py` — spinorama estimate (on-axis, listening window,
   early reflections, sound power, DI, PIR) using real datasheet curves.
-- `mk3_crossover_optimization.py` — systematic crossover-frequency sweep for
+- `crossover_optimization.py` — systematic crossover-frequency sweep for
   the SB26STAC scoring Fs margin, excursion headroom, directivity match,
   vertical lobing ripple and system-sum flatness. Confirms 1100 Hz as optimal.
-- `h2606_vs_sb26stac_comparison.py` — tweeter selection analysis (excursion,
+- `tweeter_comparison.py` — tweeter selection analysis (excursion,
   distortion, sensitivity) documenting why the SB26STAC was chosen.
 
 ---

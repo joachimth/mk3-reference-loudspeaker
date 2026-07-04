@@ -10,7 +10,7 @@
 
 | Property | Current value | Status |
 |---|---|---|
-| STL source | `cad/exports/sb26stac/waveguide_sb26stac.stl` (or local: `openscad -o wg_sb26stac.stl cad/waveguide.scad`) | ✅ Ready |
+| STL source | `cad/exports/waveguide.stl` (or local: `openscad -o waveguide.stl cad/waveguide.scad`) | ✅ Ready |
 | Material | PETG recommended | |
 | Orientation | Print flat — flange down, throat up | |
 | Post-print | Slow cool to avoid warping | |
@@ -75,7 +75,7 @@ This is **the design gate**. If the SB26STAC can't do 1100 Hz with low distortio
 | 1100 Hz | < 2% | ✅ Crossover target confirmed at 1100 Hz LR4 |
 | 1300 Hz | < 2% | Shift crossover up; update fc_mid in all simulation scripts |
 | 1500 Hz | < 2% | Same as above |
-| 1800 Hz | < 1% | Safe fallback position |
+| 1800 Hz | < 1% | Safe upper limit |
 
 **Why 1100 Hz specifically:** SB26STAC Fs = 750 Hz. Crossover at 1100 Hz is 350 Hz above resonance. The SB26STAC has 0.6 mm Xmax, giving +8.1 dB excursion headroom at crossover. This is a comfortable margin. If distortion is too high, raise to 1300-1500 Hz.
 

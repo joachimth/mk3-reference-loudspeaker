@@ -4,29 +4,19 @@
 
 ## Version roadmap
 
-The Mk2/Mk3 Reference Loudspeaker is designed to be an evolving platform. The v6b design (mk2) is the current prototype candidate on the `main` branch. The v7 (mk3) design on the `mk3-sb26stac` branch uses the SB26STAC-C000-4 tweeter at 1100 Hz. Future versions will address remaining limitations and explore more advanced techniques.
+The Mk3 Reference Loudspeaker is designed to be an evolving platform. The v7 design (SB26STAC-C000-4 tweeter at 1100 Hz) is the current prototype candidate. Future versions will address remaining limitations and explore more advanced techniques.
 
 ---
 
-## v7 - Mk3 (SB26STAC-C000-4, 1100 Hz crossover)
+## v8 - Measurement-validated design
 
-> **mk3-sb26stac branch.** This is the current branch's design direction.
-> Parallel design variant, created July 3 2026.
-
-The mk3 variant swaps the tweeter to the SB Acoustics SB26STAC-C000-4 and lowers the mid/tweeter crossover to 1100 Hz, removing the H2606 distortion-test gate. See DD-013 and DD-014.
-
-**Changes from v6b (mk2):**
-- Tweeter: SB Acoustics SB26STAC-C000-4 (replaces ScanSpeak H2606/920000)
-- Crossover: 1100 Hz LR4 (lower than mk2's 1250 Hz)
-- Waveguide: custom non-horn-loaded (`cad/mk2_waveguide_sb26stac.scad`)
-- +8.1 dB excursion headroom at crossover vs H2606
-- No distortion-test gate required (Fs 750 Hz, 350 Hz margin)
+The first physical prototype of the v7 design.
 
 **Goals:**
-- Build prototype cabinet (mk3 spec)
-- Measure SB26STAC in waveguide response/directivity at 1100 Hz
+- Build prototype cabinet
+- Measure all drivers in cabinet
 - Import measurements into VituixCAD
-- Validate the 1100 Hz crossover (expected comfortable — 350 Hz Fs margin, no distortion gate)
+- Validate or revise the 1100 Hz crossover
 - Validate the vertical listening window
 - Finalize DSP crossover settings
 - Document all measurements
@@ -36,30 +26,6 @@ The mk3 variant swaps the tweeter to the SB Acoustics SB26STAC-C000-4 and lowers
 - DI smooth and rising
 - No lobing artifacts in ±15° vertical listening window
 - SB26STAC distortion acceptable at 1100 Hz (expected)
-
----
-
-## v8 - Mk2 measurement-validated design (main branch)
-
-> **main branch (mk2).** The original v6b-based prototype using the ScanSpeak
-> H2606/920000 at 1250 Hz. Retained on main as the mk2 fallback.
-
-The first physical prototype of the mk2 design.
-
-**Goals:**
-- Build prototype v6b cabinet
-- Measure all drivers in cabinet
-- Import measurements into VituixCAD
-- Validate or revise the 1250 Hz crossover based on H2606 distortion
-- Validate the vertical listening window
-- Finalize DSP crossover settings
-- Document all measurements
-
-**Success criteria:**
-- On-axis response ±1.5 dB after DSP
-- DI smooth and rising
-- No lobing artifacts in ±15° vertical listening window
-- H2606 distortion acceptable at crossover frequency
 
 ---
 
@@ -127,7 +93,7 @@ Design and build an integrated amplifier module that fits inside the cabinet.
 
 ## Advanced investigations (Nice To Have)
 
-### Cardioid bass (v7 / separate experiment)
+### Cardioid bass (separate experiment)
 
 Cardioid bass uses a rear-facing woofer with a delay and polarity inversion to produce partial cancellation of the rear wave. This can reduce room excitation by the bass system and improve the in-room bass response.
 
@@ -136,10 +102,6 @@ Inspired by Dutch & Dutch 8C. Requires additional amplifier channel and DSP filt
 ### Purifi midrange
 
 The Purifi PTT6.5W04-NFA-01 is a 6.5-inch midrange driver with exceptionally low distortion. It would be a candidate to replace the ScanSpeak 15W in a higher-performance version.
-
-### Bliesma tweeter
-
-The Bliesma T25B or T34A are high-performance dome tweeters with very low distortion and extended frequency response. A potential replacement for the ScanSpeak H2606/920000 in a higher-performance version.
 
 ### Klippel NFS measurements
 
@@ -153,5 +115,5 @@ A GitHub Pages static site with the design documentation, measurement results, a
 
 ## Version history
 
-See [ROADMAP.md](../ROADMAP.md) for the full version history from v1 to v6b.
+See [ROADMAP.md](../ROADMAP.md) for the full version history.
 See [CHANGELOG.md](../CHANGELOG.md) for detailed design changes per version.

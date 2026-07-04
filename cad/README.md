@@ -1,42 +1,38 @@
 # CAD
 
-Parametric CAD models for the Mk2 Reference Loudspeaker.
+Parametric CAD models for the Mk3 Reference Loudspeaker.
 
-> **mk3 branch note:** On the `mk3-sb26stac` branch, the primary waveguide is
-> [`mk2_waveguide_sb26stac.scad`](mk2_waveguide_sb26stac.scad) — a non-horn-loaded
-> waveguide for the SB Acoustics SB26STAC-C000-4 dome tweeter (1100 Hz crossover).
-> `mk2_waveguide_os.scad` (below) is the mk2-main-line waveguide for the
-> horn-loaded ScanSpeak H2606/920000.
-
-## `mk2_waveguide_os.scad`
+## `waveguide.scad`
 
 A fully parametric **OpenSCAD** model of the tweeter waveguide for the
-ScanSpeak **H2606/920000** — an oblate-spheroid (OS) constant-directivity bore
-with a tangent rolled mouth. The waveguide mounts **behind the cabinet baffle**
-via a 5 mm-thick rectangular flange; the cabinet has an elliptical hole
-through the baffle exposing the waveguide mouth from the front. Visually
-flush with the baffle from the outside (the waveguide itself sits inside the
-cabinet, terminating at the baffle back face).
+SB Acoustics **SB26STAC-C000-4** — an oblate-spheroid (OS) constant-directivity
+bore with a tangent rolled mouth. The SB26STAC is a conventional 26 mm soft
+dome tweeter with **no built-in horn**, so the OS bore starts directly at the
+dome (throat Ø28 mm = dome + ~1 mm surround per side) rather than at a horn
+exit. The waveguide mounts **behind the cabinet baffle** via a 5 mm-thick
+rectangular flange; the cabinet has an elliptical hole through the baffle
+exposing the waveguide mouth from the front. Visually flush with the baffle
+from the outside (the waveguide itself sits inside the cabinet, terminating at
+the baffle back face).
 
-- Mouth ≈ **293.5 × 174.4 mm**, acoustic depth **90 mm**, tube physical extent
-  **z = -5 .. 85 mm** (overlaps the back plate by 5 mm at the throat end, ends
-  flush with the baffle back face at z=85). Total part depth **98 mm** including
-  back plate.
-- Asymmetric coverage ≈ **100° horizontal / 64° vertical**.
-- Horizontal pattern control down to ≈ **1620 Hz**, i.e. designed to support a
-  clean LR4 crossover to the 15W/4434G00 **near the waveguide's control limit**
-  rather than well below it (this relates to the crossover discussion in
-  [../REVIEW.md](../REVIEW.md) §C2 — the repo's current target is 1250 Hz LR4).
+- Mouth ≈ **~289 × 172 mm**, acoustic depth **90 mm** (`D_os + Lr` = 65 + 25),
+  tube physical extent **z = -5 .. 85 mm** (overlaps the back plate by 5 mm at
+  the throat end, ends flush with the baffle back face at z=85). Total part
+  depth **98 mm** including back plate.
+- Asymmetric coverage ≈ **100° horizontal / 64° vertical** (θh=50°, θv=32°).
+- Horizontal pattern control down to ≈ **1620 Hz**.
+- Crossover target: **1100 Hz LR4** (the SB26STAC's Fs=750 Hz gives a 350 Hz
+  margin — no distortion-test gate required).
 
 ### Critical tunables (verify before printing)
 
-- `throat_d` (33.0 mm from official H2606/920000 STEP geometry) **must be
+- `throat_d` (28 mm from SB26STAC datasheet + surround estimate) **must be
   caliper-verified on the physical unit before final print** — this sets whether
   you get a throat resonance. Print throat test pieces against the physical
-  tweeter first.
+  tweeter first. SB Acoustics does not supply a STEP file for this tweeter.
 - `Lr` (default **25 mm**) — depth of the mouth roundover. Larger = gentler
   baffle blend + less mouth diffraction, at the cost of total waveguide depth.
-  With `Lr = 25` the tube is 90 mm long; with `Lr = 10` it was 75 mm.
+  With `Lr = 25` the tube is 90 mm long.
 - `protrusion` (default **0 mm**) — cylindrical extension past the flange
   front face. With `protrusion = 0` the waveguide tube ends **flush with the
   cabinet baffle back face** (z = 85) — the baffle has a through-cutout
@@ -90,48 +86,30 @@ on every push that changes a `.scad` file. It:
 | ![assembly](../assets/renders/cabinet_assembly.png) | Assembly (with waveguide) |
 | ![full](../assets/renders/cabinet_full_cutaway.png) | Full assembly cutaway (all drivers) |
 
-A rendered profile of this waveguide is in
-[../assets/mk2_waveguide_profil.png](../assets/mk2_waveguide_profil.png).
-
 These are **design-direction geometry, not validated by measurement.** Mouth
-size, throat and coverage must be confirmed against H2606-in-waveguide
+size, throat and coverage must be confirmed against SB26STAC-in-waveguide
 measurements.
-
-## `mk2_waveguide_sb26stac.scad`
-
-The **mk3 primary waveguide** on the `mk3-sb26stac` branch — a non-horn-loaded
-waveguide for the SB Acoustics **SB26STAC-C000-4** conventional dome tweeter.
-
-Unlike the H2606 (a horn-loaded ring-radiator with a 33 mm throat exit), the
-SB26STAC is a bare 26 mm dome and is **not horn-loaded**, so this waveguide is a
-shallow baffle-mount profile rather than a deep constant-directivity bore. It
-supports the mk3 **1100 Hz LR4** crossover (vs mk2's 1250 Hz), giving the
-SB26STAC +8.1 dB excursion headroom over the H2606 at the crossover frequency.
-
-Verify throat and flange dimensions against the physical SB26STAC before
-printing (SB Acoustics does not supply a STEP file for this tweeter).
 
 ## `cabinet.scad`
 
-A fully parametric **OpenSCAD** model of the v6b enclosure — the first cabinet
-geometry in the repo.
+A fully parametric **OpenSCAD** model of the enclosure — the cabinet
+geometry for the repo.
 
 - External **300 × 370 × 1080 mm**, 22 mm walls, **R50** front vertical
   roundovers (rear edges square).
 - **Side-mounted push-push** woofer cut-outs, opposed at the same height
   (~520 mm), with the rigid coupling block between the magnets (see
   [Chapter 8](../docs/08_push_push_bass.md)).
-- Front baffle cut-outs for the **WG212** (elliptical mouth + rounded flange
-  recess, matched to `mk2_waveguide_os.scad`) and the **15W/4434G00** midrange at
+- Front baffle cut-outs for the **waveguide** (elliptical mouth + rounded flange
+  recess, matched to `waveguide.scad`) and the **15W/4434G00** midrange at
   **~150 mm c-c**.
 - `show_internals = true` renders a cut-away with the sealed mid chamber, a
   window brace at the woofer line and the bass/mid shelf brace.
-- `show_waveguide = true` drops the WG212 model into the baffle (it `use`s
-  `mk2_waveguide_os.scad`, so keep both files together). The waveguide is seated
+- `show_waveguide = true` drops the waveguide model into the baffle (it `use`s
+  `waveguide.scad`, so keep both files together). The waveguide is seated
   with its mouth poking `wg_through` (default 0.3 mm) **through** the baffle. Its
   seating depth is read from the waveguide via `wg_front_z()`, so it can't drift
-  out of sync. (If it only sits flush near ~84.5 mm, your waveguide file is the
-  old flange-forward version — the flush model seats at `D_tot` = 75 mm.)
+  out of sync.
 
 ### Assembly and the coincident-face rule
 

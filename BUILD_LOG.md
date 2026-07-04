@@ -1,6 +1,6 @@
 # Build Log
 
-This file will track the physical build of Mk2 Reference Loudspeaker.
+This file will track the physical build of the Mk3 Reference Loudspeaker.
 
 ---
 
@@ -14,7 +14,7 @@ Not started.
 
 - Validate cabinet geometry
 - Validate woofer fit
-- Validate WG212 and 15W spacing
+- Validate waveguide and 15W spacing
 - Validate mid chamber volume
 - Validate bracing layout
 - Prepare for acoustic measurements
@@ -38,7 +38,7 @@ Not started.
 
 ## Mid/tweeter layout
 
-- WG212 waveguide
+- Waveguide
 - ScanSpeak 15W/4434G00 below waveguide
 - Target c-c spacing: 140 mm
 

@@ -37,7 +37,7 @@ For the mid/tweeter crossover at 1100 Hz:
 - The SB Acoustics SB26STAC-C000-4 is a conventional dome with no built-in horn, so the custom waveguide provides all of the directivity control
 - Without the waveguide, a directivity step would be present at the crossover frequency
 
-The custom SB26STAC waveguide (`cad/mk2_waveguide_sb26stac.scad`) is designed to provide directivity control matching the 15W midrange at the crossover frequency. Unlike the WG212 (which horn-loads the H2606 on the mk2 main branch), this is a non-horn-loaded waveguide.
+The custom SB26STAC waveguide (`cad/waveguide.scad`) is designed to provide directivity control matching the 15W midrange at the crossover frequency. Because the SB26STAC is a conventional dome (no built-in horn), this is a non-horn-loaded waveguide.
 
 ### Vertical lobing
 
@@ -63,7 +63,7 @@ The ScanSpeak 15W begins to beam above approximately 1500-2000 Hz in free-field.
 
 | Problem | Solution | Status |
 |---|---|---|
-| Mid/tweeter directivity mismatch | WG212 waveguide | In development |
+| Mid/tweeter directivity mismatch | Custom SB26STAC waveguide | In development |
 | Vertical lobing | 140 mm c-c + 1100 Hz crossover | Simulated |
 | Cabinet diffraction | R50 front roundovers | Selected |
 | Midrange beaming | Cross at 1100 Hz | Simulated |
@@ -73,13 +73,13 @@ The ScanSpeak 15W begins to beam above approximately 1500-2000 Hz in free-field.
 ## Simulation results summary
 
 The simplified simulations explored multiple combinations of:
-- Waveguide size (WG212 to WG240)
-- Crossover frequency (1250 to 1600 Hz)
+- Waveguide size (~212 to ~240 mm mouth)
+- Crossover frequency (1100 to 1600 Hz)
 - C-c spacing (140 to 157 mm)
 
 Key finding: **lower crossover frequency and shorter c-c spacing produced more consistent benefit than larger waveguide mouth diameter.**
 
-SB26STAC waveguide with 1100 Hz and 140 mm c-c is the current best candidate. This must be verified with real measurements of the physical prototype.
+The SB26STAC waveguide with 1100 Hz and 140 mm c-c is the current best candidate. This must be verified with real measurements of the physical prototype.
 
 ---
 
@@ -89,7 +89,7 @@ SB26STAC waveguide with 1100 Hz and 140 mm c-c is the current best candidate. Th
 |---|---|
 | Below 150 Hz | Omnidirectional (woofers, long wavelengths) |
 | 150 Hz - 1 kHz | Gradually narrowing (midrange, baffle loading) |
-| 1 kHz - 3 kHz | Controlled by WG212 waveguide |
+| 1 kHz - 3 kHz | Controlled by custom waveguide |
 | 3 kHz - 20 kHz | Gradually narrowing (tweeter in waveguide) |
 
 The horizontal polar pattern should be smooth and symmetrical. The vertical polar pattern should be usable over at least ±15° without major lobing artifacts in the crossover region.

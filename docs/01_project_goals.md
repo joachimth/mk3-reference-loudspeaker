@@ -4,7 +4,7 @@
 
 ## The goal
 
-The Mk2 Reference Loudspeaker is a DIY active 3-way loudspeaker designed to perform at reference level. The design should be able to stand alongside the best commercial studio monitors and high-end home speakers in terms of directivity, distortion, and tonal accuracy.
+The Mk3 Reference Loudspeaker is a DIY active 3-way loudspeaker designed to perform at reference level. The design should be able to stand alongside the best commercial studio monitors and high-end home speakers in terms of directivity, distortion, and tonal accuracy.
 
 The goal is not to build the cheapest possible speaker. The goal is to build the best loudspeaker achievable with careful engineering, thoughtful driver selection, and modern DSP.
 

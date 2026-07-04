@@ -144,9 +144,9 @@ At low frequencies the measurement window is too short for accurate farfield mea
 
 | Question | How to answer |
 |---|---|
-| Can SB26STAC in waveguide cross at 1100 Hz? | Measure distortion in WG212 |
+| Can SB26STAC in waveguide cross at 1100 Hz? | Measure distortion in waveguide |
 | Is 140 mm c-c achievable mechanically? | Verify in cabinet construction |
-| Does WG212 response match simulation? | Measure WG212 on/off-axis |
+| Does waveguide response match simulation? | Measure waveguide on/off-axis |
 | How much EQ is needed at baffle/waveguide transition? | Measure on-axis and compare to target |
 | Does push-push reduce cabinet vibration? | Measure cabinet acceleration (optional) |
 | What is the optimal bass shelf amount? | Measure excursion at maximum SPL |

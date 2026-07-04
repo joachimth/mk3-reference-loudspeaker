@@ -37,7 +37,7 @@ For the prototype phase, a MiniDSP or Hypex FusionAmp is the likely first implem
 ```
 Source → DSP input → [Bass LP filter] → Bass amplifier → Woofers (series)
                    → [Mid HP filter]  → [Mid LP filter] → Mid amplifier → Midrange
-                   → [Tweeter HP filter] → [Tweeter EQ] → Tweeter amplifier → SB26STAC / WG212
+                   → [Tweeter HP filter] → [Tweeter EQ] → Tweeter amplifier → SB26STAC / waveguide
 ```
 
 ---
@@ -121,7 +121,7 @@ In practice, the transition is gradual and the exact correction shape depends on
 
 ### Waveguide correction
 
-The WG212 waveguide may introduce small peaks or irregularities in the on-axis response of the SB26STAC. These will be measured and corrected with targeted EQ notch filters in the tweeter channel.
+The waveguide may introduce small peaks or irregularities in the on-axis response of the SB26STAC. These will be measured and corrected with targeted EQ notch filters in the tweeter channel.
 
 ### Bass shelf (Linkwitz Transform)
 
@@ -151,7 +151,7 @@ The three driver channels must be level-matched so that the crossover sums corre
 1. Measuring the on-axis sensitivity of each driver
 2. Applying gain reduction in the DSP to match levels at the crossover frequencies
 
-**Expected level adjustment:** The SB Acoustics SB26STAC-C000-4 has a rated sensitivity of 91.5 dB / 2.83V / 1m, compared with approximately 89.7 dB for the ScanSpeak 15W midrange. This means the tweeter channel will require only roughly -2 dB of gain reduction relative to the midrange channel — a much more natural match than the H2606 (which needed -5 to -7 dB). In the WG212 waveguide, the SB26STAC will gain 2-3 dB of acoustic loading, bringing effective sensitivity to ~94 dB. The exact pad is set from measurement.
+**Expected level adjustment:** The SB Acoustics SB26STAC-C000-4 has a rated sensitivity of 91.5 dB / 2.83V / 1m, compared with approximately 89.7 dB for the ScanSpeak 15W midrange. This means the tweeter channel will require only roughly -2 dB of gain reduction relative to the midrange channel — a natural match. In the waveguide, the SB26STAC will gain 2-3 dB of acoustic loading, bringing effective sensitivity to ~94 dB. The exact pad is set from measurement.
 
 ---
 

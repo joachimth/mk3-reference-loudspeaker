@@ -64,7 +64,7 @@ The midrange is crossed:
 
 The 150 Hz crossover point is low enough that the 15W does not need to produce significant bass output. The 1100 Hz crossover point is within the normal operating range of this driver with the cabinet geometry.
 
-**Vertical lobing:** The 140 mm c-c spacing between the 15W midrange and the WG212 tweeter determines the vertical lobing pattern at the mid/tweeter crossover. See Chapter 11 (Crossovers) and Chapter 12 (Directivity) for detail.
+**Vertical lobing:** The 140 mm c-c spacing between the 15W midrange and the waveguide tweeter determines the vertical lobing pattern at the mid/tweeter crossover. See Chapter 11 (Crossovers) and Chapter 12 (Directivity) for detail.
 
 ---
 

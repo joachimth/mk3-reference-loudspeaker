@@ -1,15 +1,19 @@
-# MiniDSP 4×10 HD Configurations for Mk2 Reference Loudspeaker
+# MiniDSP 4×10 HD Configurations for Mk3 Reference Loudspeaker
 
 This directory holds MiniDSP 4×10 HD XML configuration files for active DSP
-crossover / EQ on the Mk2 loudspeaker. Each XML file is a complete plugin
+crossover / EQ on the Mk3 loudspeaker. Each XML file is a complete plugin
 configuration that can be loaded via MiniDSP's plugin software.
 
 ## Current Configs
 
 | File | Crossover | Status |
 |---|---|---|
-| `mk2-150-1250-lr4.xml` | 150 Hz LR4 + 1250 Hz LR4 | ✅ Design target |
+| `mk3-sb26stac-1100hz.xml` | 150 Hz LR4 + 1100 Hz LR4 | ✅ Design target |
 | ... | (add more as measurements refine) | |
+
+A reusable generator is provided: `generate_minidsp_xml.py` (3-way + push-push
+woofer, 2-way, subsonic HP, Linkwitz Transform, variable sample rate, per-channel
+gain/delay). Biquad coefficients can be generated with `generate_biquads.py`.
 
 ## Input → Output Mapping
 
@@ -20,10 +24,10 @@ per side):
 ### Left Speaker
 | Input | Output | Driver | Filter |
 |---|---|---|---|
-| CH1 (Left) | Out 1 → Woofer L+ | GRS 8SW-4HE-8 (first) | Subsonic HP 18 Hz LR4, LP 150 Hz LR4 |
+| CH1 (Left) | Out 1 → Woofer L+ | GRS 8SW-4HE-8 (first) | Subsonic HP 18 Hz LR4, Linkwitz Transform, LP 150 Hz LR4 |
 | CH1 (Left) | Out 2 → Woofer L- | GRS 8SW-4HE-8 (second) | Same as Out 1 (wired in series = 8Ω) |
-| CH1 (Left) | Out 3 → Mid L | 15W/4434G00 | HP 150 Hz LR4, LP 1250 Hz LR4 |
-| CH1 (Left) | Out 4 → Tweeter L | H2606 in WG212 | HP 1250 Hz LR4, level trim |
+| CH1 (Left) | Out 3 → Mid L | 15W/4434G00 | HP 150 Hz LR4, LP 1100 Hz LR4 |
+| CH1 (Left) | Out 4 → Tweeter L | SB26STAC in waveguide | HP 1100 Hz LR4, level trim ~-1.8 dB |
 | CH1 (Left) | Out 5 → Tweeter L (#2) | — | Spare / biamp |
 
 ### Right Speaker
@@ -46,6 +50,6 @@ per side):
 
 1. Open MiniDSP 4×10 HD plugin
 2. Connect to device
-3. File → Load Configuration → choose XML
+3. File → Import → choose XML
 4. Upload to device
 5. Verify with pink noise + REW measurement

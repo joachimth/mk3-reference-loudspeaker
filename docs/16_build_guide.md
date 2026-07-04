@@ -16,7 +16,7 @@ Before starting the build:
 
 - [ ] Finalize cabinet CAD drawings
 - [ ] Verify all driver dimensions (cutout, frame, mounting depth)
-- [ ] Verify WG212 waveguide CAD and print prototype
+- [ ] Verify waveguide CAD and print prototype
 - [ ] Confirm mid chamber dimensions
 - [ ] Order all materials and drivers
 - [ ] Confirm DSP/amplifier platform
@@ -60,7 +60,7 @@ Before starting the build:
 | GRS 8SW-4HE-8 | 2 |
 | ScanSpeak 15W/4434G00 | 1 |
 | SB Acoustics SB26STAC-C000-4 | 1 |
-| WG212 printed waveguide | 1 |
+| Printed waveguide | 1 |
 
 ---
 
@@ -78,7 +78,7 @@ Before starting the build:
 
 1. Cut woofer cutouts on side panels
 2. Cut midrange cutout on front baffle
-3. Cut WG212 waveguide cutout on front baffle
+3. Cut waveguide cutout on front baffle
 4. Cut terminal/amplifier cutout on rear panel
 5. Deburr and sand all cutouts smooth
 
@@ -125,10 +125,10 @@ Before starting the build:
 
 ### Phase 8: Waveguide and tweeter
 
-1. Test fit printed WG212 waveguide in front baffle cutout
+1. Test fit printed waveguide in front baffle cutout
 2. Confirm c-c spacing to midrange (target: 140 mm)
 3. Mount SB26STAC tweeter into waveguide
-4. Install WG212 + tweeter assembly in front baffle
+4. Install waveguide + tweeter assembly in front baffle
 5. Run tweeter wiring to terminal area
 
 ### Phase 9: Finishing
@@ -167,7 +167,7 @@ Before starting the build:
 | SB26STAC distortion too high at 1100 Hz | Measure before committing to crossover frequency (expected comfortable — 350 Hz Fs margin) |
 | Woofer mounting depth too deep for 22 mm wall | Verify driver spec before cutting |
 | R50 roundovers - router tear-out | Sharp bit, slow passes, backing board |
-| WG212 print warping | Use PETG, print flat, allow to cool slowly |
+| Waveguide print warping | Use PETG, print flat, allow to cool slowly |
 
 ---
 

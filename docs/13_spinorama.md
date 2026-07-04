@@ -1,6 +1,6 @@
 # Chapter 13 - Spinorama
 
-> **Note:** All spinorama and directivity-index curves discussed for the Mk2 in
+> **Note:** All spinorama and directivity-index curves discussed in
 > this repository are **simplified power-response estimates from simulation, not
 > CEA-2034 data measured on a turntable.** They indicate design direction only;
 > the true spinorama can only come from gated anechoic/quasi-anechoic
@@ -89,7 +89,7 @@ Simplified spinorama curves were generated during the design optimization phase 
 
 The simulation results were used to:
 - Compare cabinet width and roundover options
-- Compare waveguide sizes (WG212 to WG240)
+- Compare waveguide sizes (~212 to ~240 mm mouth)
 - Compare crossover frequencies and c-c spacings
 - Identify the most impactful design variables
 

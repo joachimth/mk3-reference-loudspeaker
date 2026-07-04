@@ -4,14 +4,14 @@
 
 ## Design history
 
-The cabinet geometry was developed iteratively across versions v2 through v6b.
+The cabinet geometry was developed iteratively across the early concept versions.
 
-| Version | Width | Roundover | Notes |
-|---|---|---|---|
-| v2 | Initial concept | - | Active 3-way with push-push woofers |
-| v4 | 280 mm | R20-R40 | Narrower baffle explored, R40 promising |
-| v5 | 300 mm | R50 | 300/R50 selected as best compromise |
-| v6b | 300 mm | R50 | Retained through directivity optimization |
+| Width | Roundover | Notes |
+|---|---|---|
+| Initial concept | - | Active 3-way with push-push woofers |
+| 280 mm | R20-R40 | Narrower baffle explored, R40 promising |
+| 300 mm | R50 | 300/R50 selected as best compromise |
+| 300 mm | R50 | Retained through directivity optimization (current cabinet) |
 
 ---
 
@@ -30,11 +30,11 @@ The cabinet geometry was developed iteratively across versions v2 through v6b.
 
 ## Cabinet width: 300 mm
 
-The 300 mm wide front baffle was selected in v5 (DD-007) as the best compromise between:
+The 300 mm wide front baffle was selected (DD-007) as the best compromise between:
 
 - **Directivity:** A narrower baffle reduces baffle diffraction effects at high frequencies. 280 mm was investigated but showed only small additional benefits over 300 mm.
 - **Diffraction:** The R50 roundovers on the 300 mm baffle smooth diffraction more than was achievable on the narrower 280 mm version with practical roundover radii.
-- **Mechanical fit:** 300 mm provides enough width for the waveguide (WG212) and the woofer cutouts while leaving adequate material for the box sides and bracing.
+- **Mechanical fit:** 300 mm provides enough width for the waveguide and the woofer cutouts while leaving adequate material for the box sides and bracing.
 - **Cabinet volume:** 300 mm provides more internal volume than 280 mm, easing the 69 L bass chamber requirement.
 - **Visual proportion:** 300 mm is a reasonable proportion for a tall reference loudspeaker.
 
@@ -54,13 +54,13 @@ The roundover applies to the vertical front edges only. The horizontal top and b
 
 ### Tweeter / waveguide
 
-The WG212 waveguide is mounted at the top of the driver array on the front baffle. The tweeter dome center is approximately 140 mm above the midrange center.
+The waveguide is mounted at the top of the driver array on the front baffle. The tweeter dome center is approximately 140 mm above the midrange center.
 
 Exact height from the cabinet top is to be determined from the final front baffle layout, with the waveguide centered as close to the top as practical while leaving adequate material above the cutout.
 
 ### Midrange
 
-The ScanSpeak 15W is mounted directly below the WG212. The center-to-center spacing to the tweeter is 140 mm (design target).
+The ScanSpeak 15W is mounted directly below the waveguide. The center-to-center spacing to the tweeter is 140 mm (design target).
 
 The midrange operates in a dedicated sealed chamber (see Chapter 9: Volume calculations).
 
@@ -98,10 +98,10 @@ The front baffle may use a double layer (44 mm) around the driver cutouts for dr
 
 The front baffle must accommodate:
 
-- WG212 waveguide cutout
+- Waveguide cutout
 - ScanSpeak 15W midrange cutout
 - R50 vertical front edge roundovers
-- 140 mm c-c spacing between WG212 and 15W centers
+- 140 mm c-c spacing between waveguide and 15W centers
 - Adequate wood remaining between cutouts and edges for structural integrity
 
 The mechanical tightness of this layout is a known constraint (DD-011). The waveguide flange and midrange recess must be designed together.
@@ -125,5 +125,5 @@ The mechanical tightness of this layout is a known constraint (DD-011). The wave
 - Develop full 2D front baffle layout drawing
 - Verify woofer frame dimensions fit side walls
 - Determine front baffle thickness (single vs. double layer)
-- Confirm WG212 flange dimensions once CAD is complete
+- Confirm waveguide flange dimensions once CAD is complete
 - Generate OpenSCAD or STEP cabinet model

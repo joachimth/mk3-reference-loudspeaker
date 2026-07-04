@@ -13,7 +13,7 @@ Grouped by area. The critical path to prototype is marked 🔴.
 ### SB26STAC waveguide
 
 - [ ] **Caliper-verify SB26STAC-C000-4 dimensions** — throat/dome diameter, faceplate OD, mounting screw BCD, recess depth. The SCAD model (`cad/waveguide.scad`) uses datasheet values but none have been physically verified yet.
-- [ ] **Print SB26STAC waveguide prototype** (PETG recommended, print flat, slow cool). STL at `cad/exports/sb26stac/waveguide_sb26stac.stl`.
+- [ ] **Print SB26STAC waveguide prototype** (PETG recommended, print flat, slow cool). STL at `cad/exports/waveguide.stl`.
 - [ ] **Test-fit SB26STAC in printed waveguide** — verify faceplate seating, throat alignment, screw positions.
 - [ ] **Measure SB26STAC distortion at 1100 Hz in waveguide** — this is the gate. Target: ≤2% THD at 1100 Hz / 96 dB SPL. If >3%, raise crossover to 1300-1400 Hz and update all simulation scripts. See `MEASUREMENTS.md` for the distortion test protocol.
 - [ ] **Confirm realistic c-c spacing** from printed waveguide flange + 15W frame. Expected ~150-155 mm, not 140 mm nominal. Update `cc_mid_tw_mm` in simulation scripts and DESIGN_DECISIONS.md.
@@ -40,16 +40,16 @@ Grouped by area. The critical path to prototype is marked 🔴.
 
 | Script | What it does | Status |
 |---|---|---|
-| `mk2_vs_mk3_realistic_response.py` | Real datasheet curves + baffle step + WG loading. **Fixed July 4:** wg_loading transition formula corrected (parenthesization bug caused smeared gain). 15W datasheet extraction artifact at 400 Hz identified and fixed. | ✅ Verified |
-| `mk2_vs_mk3_spinorna.py` | Spinorama estimate (on-axis, listening window, early reflections, sound power, DI) using simplified driver models. | ✅ |
-| `mk3_crossover_optimization.py` | Systematic crossover frequency sweep for SB26STAC (800-1600 Hz). Confirms 1100 Hz as optimal. | ✅ |
-| `h2606_vs_sb26stac_comparison.py` | Tweeter selection analysis (excursion, sensitivity, directivity, Fs margin). | ✅ |
+| `system_response_realistic.py` | Real datasheet curves + baffle step + WG loading. **Fixed July 4:** wg_loading transition formula corrected (parenthesization bug caused smeared gain). 15W datasheet extraction artifact at 400 Hz identified and fixed. | ✅ Verified |
+| `spinorama_estimate.py` | Spinorama estimate (on-axis, listening window, early reflections, sound power, DI) using simplified driver models. | ✅ |
+| `crossover_optimization.py` | Systematic crossover frequency sweep for SB26STAC (800-1600 Hz). Confirms 1100 Hz as optimal. | ✅ |
+| `tweeter_comparison.py` | Tweeter selection analysis (excursion, sensitivity, directivity, Fs margin). | ✅ |
 | `directivity_estimate.py` | DI mismatch across crossover. Updated for SB26STAC. | ✅ |
 | `vertical_polar_map.py` | Vertical lobing heat-map. Updated for 1100 Hz crossover. | ✅ |
 
 ### Simulation issues found and fixed (July 4, 2026)
 
-- [x] **wg_loading_db() parenthesization bug** — `np.log10(f_low) * 0.3` should have been `(np.log10(f_high) - np.log10(f_low)) * 0.3`. This caused the waveguide loading gain to smear across 500-5000 Hz instead of transitioning sharply at the control frequency. Fixed in `mk2_vs_mk3_realistic_response.py`.
+- [x] **wg_loading_db() parenthesization bug** — `np.log10(f_low) * 0.3` should have been `(np.log10(f_high) - np.log10(f_low)) * 0.3`. This caused the waveguide loading gain to smear across 500-5000 Hz instead of transitioning sharply at the control frequency. Fixed in `system_response_realistic.py`.
 - [x] **15W datasheet extraction artifact** — The npz data file had a 27 dB V-shaped dip at 400 Hz (62.5 dB floor) caused by PDF grid-line misread. The clean CSV source (`assets/datasheets/15W-4434G00_freq_response.csv`) shows flat 90.8 dB at 400 Hz. Fixed by regenerating npz from CSV.
 
 ### Simulation results (pre-DSP, anechoic)

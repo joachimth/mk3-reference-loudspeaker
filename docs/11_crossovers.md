@@ -4,7 +4,7 @@
 
 ## Approach
 
-The Mk2 Reference Loudspeaker uses an active DSP crossover. There is no passive crossover. Each driver has its own amplifier channel.
+The Mk3 Reference Loudspeaker uses an active DSP crossover. There is no passive crossover. Each driver has its own amplifier channel.
 
 See Chapter 14 (DSP) for the full DSP implementation. This chapter covers the crossover topology and the acoustic targets.
 
@@ -15,7 +15,7 @@ See Chapter 14 (DSP) for the full DSP implementation. This chapter covers the cr
 | Crossover | Frequency | Slope | Drivers |
 |---|---|---|---|
 | Bass / midrange | 150 Hz | LR4 (24 dB/oct) | GRS woofers → ScanSpeak 15W |
-| Midrange / tweeter | **1100 Hz** | LR4 (24 dB/oct) | ScanSpeak 15W → SB26STAC-C000-4 / WG212 |
+| Midrange / tweeter | **1100 Hz** | LR4 (24 dB/oct) | ScanSpeak 15W → SB26STAC-C000-4 / waveguide |
 
 ---
 
@@ -55,11 +55,10 @@ The 15W midrange is high-passed at 150 Hz. This removes bass loading from the mi
 
 ## Midrange / tweeter: 1100 Hz
 
-The 1100 Hz crossover was selected for mk3 (v7) based on a systematic
-optimization sweep (see `simulations/mk3_crossover_optimization.py`)
-that scored crossover frequencies from 800 to 1600 Hz against five
-criteria: Fs margin, excursion headroom, directivity match, vertical
-lobing, and system sum flatness.
+The 1100 Hz crossover was selected based on a systematic optimization sweep
+(see `simulations/mk3_crossover_optimization.py`) that scored crossover
+frequencies from 800 to 1600 Hz against five criteria: Fs margin, excursion
+headroom, directivity match, vertical lobing, and system sum flatness.
 
 ### Optimization results
 
@@ -70,7 +69,7 @@ lobing, and system sum flatness.
 | **1100** | **350 Hz** | **+8.1 dB** | **4.6 dB** | **-0.7 dB** | **8.1** | **below** |
 | 1150 | 400 Hz | +8.8 dB | 4.9 dB | -0.7 dB | 8.2 | above |
 | 1200 | 450 Hz | +9.6 dB | 5.1 dB | -0.8 dB | 8.2 | above |
-| 1250 | 500 Hz | +10.3 dB | 5.3 dB | -0.9 dB | 8.1 | above |
+| 1100 | 350 Hz | +10.3 dB | 5.3 dB | -0.9 dB | 8.1 | above |
 | 1300 | 550 Hz | +11.0 dB | 5.5 dB | -1.0 dB | 8.1 | above |
 
 **Optimal band: 1100-1200 Hz** (scores 8.1-8.2, statistically tied).
@@ -85,27 +84,20 @@ lobing, and system sum flatness.
 The crossover could be raised to 1150-1200 Hz with negligible penalty if
 measurement shows the 15W has cone breakup or directivity issues at 1100 Hz.
 
-> **mk2 comparison:** H2606 @ 1250 Hz scored 8.1 — but with Fs margin of only
-> 220 Hz (vs 350 Hz for SB26STAC @ 1100) and +0.0 dB excursion headroom
-> (vs +8.1 dB). The SB26STAC wins on the two safety criteria while matching
-> on the acoustic criteria.
-
 ### Selection rationale
 
-- **Fs margin:** 350 Hz above the 750 Hz resonance — comfortable, no distortion test gate required (unlike mk2's H2606 at 1250 Hz with only 220 Hz margin).
-- **Directivity match:** At 1100 Hz the 15W midrange is closer to omni, giving a smaller DI step (4.6 dB mismatch vs 5.3 dB at 1250 Hz).
+- **Fs margin:** 350 Hz above the 750 Hz resonance — comfortable, no distortion test gate required.
+- **Directivity match:** At 1100 Hz the 15W midrange is closer to omni, giving a smaller DI step (4.6 dB mismatch).
 - **Vertical lobing:** The broadside null for 150mm c-c is at 1147 Hz — just above the 1100 Hz crossover. The LR4 rolloff suppresses the null almost entirely. At ±15° the ripple is under 0.7 dB.
-- **Excursion headroom:** The SB26STAC's 0.6mm Xmax gives +8.1 dB more max SPL at 1100 Hz than the H2606 at 1250 Hz.
+- **Excursion headroom:** The SB26STAC's 0.6mm Xmax gives +8.1 dB more max SPL at 1100 Hz.
 
 **Midrange low-pass:** 1100 Hz LR4
 The 15W is rolled off above 1100 Hz.
 
 **Tweeter high-pass:** 1100 Hz LR4
-The SB26STAC in WG212 is high-passed at 1100 Hz.
+The SB26STAC in the waveguide is high-passed at 1100 Hz.
 
 **Phase alignment:** The acoustic centers of the midrange and the tweeter/waveguide are at different positions. DSP delay will be used to align them. The waveguide also adds physical depth to the tweeter's acoustic center.
-
-> **mk2 comparison:** The original v6b design crossed at 1250 Hz with the H2606/920000. The 1250 Hz crossover was unconfirmed pending a distortion test due to the H2606's Fs=1030 Hz (220 Hz margin). The mk3 crossover at 1100 Hz with Fs=750 Hz removes this gate entirely.
 
 ---
 
@@ -135,9 +127,7 @@ For d = 150 mm (practical minimum before 15W frames touch):
 f_null = 344 / (2 × 0.15) ≈ 1147 Hz
 ```
 
-At the mk3 crossover of 1100 Hz, the broadside null (1147 Hz for 150mm c-c) sits **just above** the crossover frequency. The LR4 rolloff means the tweeter is already -6 dB at 1100 Hz and dropping fast, so the null at 1147 Hz is strongly suppressed. At ±15° the ripple is under 0.7 dB.
-
-This is an improvement over the mk2 design (1250 Hz), where the broadside null (1147 Hz) fell **below** the crossover — in the active band where both drivers are contributing.
+At the 1100 Hz crossover, the broadside null (1147 Hz for 150mm c-c) sits **just above** the crossover frequency. The LR4 rolloff means the tweeter is already -6 dB at 1100 Hz and dropping fast, so the null at 1147 Hz is strongly suppressed. At ±15° the ripple is under 0.7 dB.
 
 Shorter c-c spacing reduces lobing severity and pushes the null higher. Increasing the crossover frequency with the same c-c spacing worsens the lobing.
 

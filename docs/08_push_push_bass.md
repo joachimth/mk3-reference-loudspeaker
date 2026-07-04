@@ -30,7 +30,7 @@ Two symmetrically placed woofers produce a mechanically symmetric cabinet struct
 
 ## Physical arrangement
 
-For the Mk2 Reference Loudspeaker, both woofers are mounted on the side panels:
+For the Mk3 Reference Loudspeaker, both woofers are mounted on the side panels:
 
 - One woofer on the left side panel
 - One woofer on the right side panel
