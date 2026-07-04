@@ -273,7 +273,7 @@ fig.suptitle("System response — SB26STAC-C000-4 @ 1100 Hz (real datasheet curv
              fontsize=13, fontweight="bold")
 fig.tight_layout(rect=[0, 0, 1, 0.94])
 
-script_dir = os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() else '/workspace/mk2-reference-loudspeaker/simulations'
+script_dir = os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() else '/workspace/mk3-reference-loudspeaker/simulations'
 out = os.path.join(script_dir, 'plots', 'system_response_realistic.png')
 os.makedirs(os.path.dirname(out), exist_ok=True)
 fig.savefig(out, dpi=150)

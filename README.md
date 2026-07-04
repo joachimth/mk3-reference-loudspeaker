@@ -62,8 +62,8 @@ Auto-generated on every CAD change. [Full documentation →](cad/)
 
 ## Project Status
 
-[![Run simulations](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/simulations.yml/badge.svg)](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/simulations.yml)
-[![Render CAD models](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/cad-render.yml/badge.svg)](https://github.com/joachimth/mk2-reference-loudspeaker/actions/workflows/cad-render.yml)
+[![Run simulations](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/simulations.yml/badge.svg)](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/simulations.yml)
+[![Render CAD models](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/cad-render.yml/badge.svg)](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/cad-render.yml)
 
 Design candidate **v7** is selected. CAD models and simulations are complete for the SB26STAC-C000-4 tweeter.
 

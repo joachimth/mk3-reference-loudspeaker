@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Datasheet extraction tool for mk2-reference-loudspeaker.
+Datasheet extraction tool for mk3-reference-loudspeaker.
 
 Extracts frequency response, impedance/phase, and off-axis curves
 from manufacturer PDF datasheets. Handles both vector PDFs (curve
