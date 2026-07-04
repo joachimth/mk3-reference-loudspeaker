@@ -1,4 +1,4 @@
-# Parts — Mk2 Reference Loudspeaker
+# Parts — Mk3 Reference Loudspeaker
 
 All quantities and prices are **per pair** unless noted otherwise.
 Prices are indicative (sourced June 2026); verify before ordering.
@@ -11,13 +11,15 @@ Prices are indicative (sourced June 2026); verify before ordering.
 |---|---|---|---|---|
 | GRS 8SW-4HE-8 (8" woofer) | 4 | ~€45 | Parts-Express | 2 per enclosure, push-push |
 | ScanSpeak 15W/4434G00 (midrange) | 2 | ~€120 | Scan-Speak / Hifi-Skabet | — |
-| ScanSpeak H2606/920000 (tweeter) | 2 | ~€90 | Scan-Speak / Hifi-Skabet | Mounted in WG212 waveguide |
+| ScanSpeak H2606/920000 (tweeter) | 2 | ~€90 | Scan-Speak / Hifi-Skabet | **Fallback** (mk2 main branch). Mounted in WG212 waveguide |
+| SB Acoustics SB26STAC-C000-4 (tweeter) | 2 | ~€35 | SB Acoustics / Parts-Express | **Mk3 primary**. Custom waveguide, no horn loading |
 
 ## Waveguide
 
 | Part | Qty/pair | Notes |
 |---|---|---|
-| WG212 oblate-spheroid waveguide | 2 | 3D print from `cad/mk2_waveguide_os.scad`. **throat_d = 28 mm is placeholder** — verify against physical H2606 dome before printing final version. Use SLA/MSLA for surface finish. |
+| SB26STAC custom waveguide (mk3 primary) | 2 | 3D print from `cad/mk2_waveguide_sb26stac.scad`. BCD 88.5 mm, throat 28 mm. No STEP file from SB Acoustics — caliper-verify all dimensions. |
+| WG212 oblate-spheroid waveguide (mk2 fallback) | 2 | 3D print from `cad/mk2_waveguide_os.scad` (main branch). For H2606. **throat_d = 28 mm is placeholder** — verify against physical H2606 dome. |
 
 ## Cabinet
 
@@ -30,37 +32,27 @@ Prices are indicative (sourced June 2026); verify before ordering.
 | Damping felt/foam | Mid chamber: fully lined. Bass chamber: 50 mm rear/top/sides. |
 | Terminal cup or amplifier plate cutout | Depends on DSP/amp selection |
 
-Approximate external dimensions (v6b): **300 × 370 × 1080 mm**, 22 mm walls, R50 front roundovers.
+Approximate external dimensions (v7): **300 × 370 × 1080 mm**, 22 mm walls, R50 front roundovers.
 
 ## Electronics / DSP
 
-Platform **not yet selected**. Three leading candidates:
+**MiniDSP 4×10 HD** selected as DSP platform for initial prototyping. USB/optical in, 10 outputs, well-documented with REW export. Pre-built XML config available (see DSP Filter Plan above).
 
-| Option | Notes |
-|---|---|
-| **MiniDSP 4×10 HD** | Easiest integration path. USB/optical in, 10 outputs. Well-documented with REW export. |
-| **Hypex FusionAmp FA123 / FA253** | Integrated DSP + plate amp. Clean install, higher cost. |
-| **ADAU1452-based custom board** | Full flexibility, lowest cost at scale, requires firmware work. |
-
-Select after prototype measurements. MiniDSP 4×10 HD is recommended for initial prototyping.
-
-## DSP Filter Plan (v6b target)
-
-From `assets/mk2_dsp.csv` (SB23 study reference — filter frequencies differ from v6b; use for structure only):
+## DSP Filter Plan (v7 / mk3 target)
 
 | Driver path | Filters |
 |---|---|
 | Woofer (×2) | Subsonic HP ~18 Hz LR4, Linkwitz Transform (Fc ~28 Hz, Q 0.71), LP 150 Hz LR4, polarity/delay |
-| Midrange | HP 150 Hz LR4, LP 1250 Hz LR4, delay |
-| Tweeter | HP 1250 Hz LR4, level trim ~-5 to -7 dB (sensitivity mismatch), delay |
+| Midrange | HP 150 Hz LR4, LP 1100 Hz LR4, delay |
+| Tweeter | HP 1100 Hz LR4, level trim ~-1.8 dB, delay |
 
-**Note:** 1250 Hz crossover frequency is **unconfirmed** — depends on H2606 distortion measurement in the WG212. Fallback options: 1350 / 1450 / 1600 Hz (see `simulations/vertical_polar_map.py`).
+**Note:** 1100 Hz crossover frequency is **unconfirmed** — depends on SB26STAC distortion measurement in the waveguide. If distortion is too high, raise to 1300-1500 Hz. Pre-built MiniDSP XML config: `dsp-configs/mk3-sb26stac-1100hz.xml` (on main branch, needs copying to mk3).
 
 ## Open Items
 
-- [ ] Confirm throat_d against physical H2606 → update `cad/mk2_waveguide_os.scad`
-- [ ] Print WG212 prototype → fit-check against H2606 and 15W/4434G00
-- [ ] Measure H2606 distortion at 1250 Hz → confirm or adjust crossover
-- [ ] Confirm actual c-c spacing (nominal 140 mm; expect ~150–155 mm from physical parts)
-- [ ] Select and order DSP/amplifier platform
+- [ ] Caliper-verify SB26STAC-C000-4 dimensions → update `cad/mk2_waveguide_sb26stac.scad`
+- [ ] Print SB26STAC waveguide prototype → fit-check against SB26STAC and 15W/4434G00
+- [ ] Measure SB26STAC distortion at 1100 Hz → confirm or adjust crossover
+- [ ] Confirm actual c-c spacing (nominal 140 mm; expect ~150-155 mm from physical parts)
+- [ ] Copy dsp-configs/ from main branch to mk3
 - [ ] Finalize cut list from CAD model before ordering sheet material
