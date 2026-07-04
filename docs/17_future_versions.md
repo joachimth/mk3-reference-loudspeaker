@@ -10,7 +10,10 @@ The Mk2/Mk3 Reference Loudspeaker is designed to be an evolving platform. The v6
 
 ## v7 - Mk3 (SB26STAC-C000-4, 1100 Hz crossover)
 
-Parallel design variant on the `mk3-sb26stac` branch, created July 3 2026.
+> **mk3-sb26stac branch.** This is the current branch's design direction.
+> Parallel design variant, created July 3 2026.
+
+The mk3 variant swaps the tweeter to the SB Acoustics SB26STAC-C000-4 and lowers the mid/tweeter crossover to 1100 Hz, removing the H2606 distortion-test gate. See DD-013 and DD-014.
 
 **Changes from v6b (mk2):**
 - Tweeter: SB Acoustics SB26STAC-C000-4 (replaces ScanSpeak H2606/920000)
@@ -18,14 +21,6 @@ Parallel design variant on the `mk3-sb26stac` branch, created July 3 2026.
 - Waveguide: custom non-horn-loaded (`cad/mk2_waveguide_sb26stac.scad`)
 - +8.1 dB excursion headroom at crossover vs H2606
 - No distortion-test gate required (Fs 750 Hz, 350 Hz margin)
-
----
-
-## v7 - Mk3 (SB26STAC-C000-4, 1100 Hz crossover)
-
-> **mk3-sb26stac branch.** This is the current branch's design direction.
-
-The mk3 variant swaps the tweeter to the SB Acoustics SB26STAC-C000-4 and lowers the mid/tweeter crossover to 1100 Hz, removing the H2606 distortion-test gate. See DD-013 and DD-014.
 
 **Goals:**
 - Build prototype cabinet (mk3 spec)
