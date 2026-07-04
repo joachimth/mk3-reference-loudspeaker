@@ -1,5 +1,10 @@
 # Technical Review — Mk2 Reference Loudspeaker
 
+> **mk3 branch note:** This review was written for the mk2 design (H2606, 1250 Hz).
+> On the mk3-sb26stac branch, the crossover is 1100 Hz and the tweeter is
+> SB26STAC-C000-4. Items questioning the 1250 Hz crossover and 140mm c-c are
+> partially resolved by the mk3 design (lower crossover, more excursion headroom).
+
 External review of the repository documentation and the "simulations" (the numbers and
 physics claims in the docs). Goal: flag anything incorrect, anything worth optimising,
 and confirm which numbers hold up.

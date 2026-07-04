@@ -2,6 +2,12 @@
 
 Parametric CAD models for the Mk2 Reference Loudspeaker.
 
+> **mk3 branch note:** On the `mk3-sb26stac` branch, the primary waveguide is
+> [`mk2_waveguide_sb26stac.scad`](mk2_waveguide_sb26stac.scad) — a non-horn-loaded
+> waveguide for the SB Acoustics SB26STAC-C000-4 dome tweeter (1100 Hz crossover).
+> `mk2_waveguide_os.scad` (below) is the mk2-main-line waveguide for the
+> horn-loaded ScanSpeak H2606/920000.
+
 ## `mk2_waveguide_os.scad`
 
 A fully parametric **OpenSCAD** model of the tweeter waveguide for the
@@ -90,6 +96,20 @@ A rendered profile of this waveguide is in
 These are **design-direction geometry, not validated by measurement.** Mouth
 size, throat and coverage must be confirmed against H2606-in-waveguide
 measurements.
+
+## `mk2_waveguide_sb26stac.scad`
+
+The **mk3 primary waveguide** on the `mk3-sb26stac` branch — a non-horn-loaded
+waveguide for the SB Acoustics **SB26STAC-C000-4** conventional dome tweeter.
+
+Unlike the H2606 (a horn-loaded ring-radiator with a 33 mm throat exit), the
+SB26STAC is a bare 26 mm dome and is **not horn-loaded**, so this waveguide is a
+shallow baffle-mount profile rather than a deep constant-directivity bore. It
+supports the mk3 **1100 Hz LR4** crossover (vs mk2's 1250 Hz), giving the
+SB26STAC +8.1 dB excursion headroom over the H2606 at the crossover frequency.
+
+Verify throat and flange dimensions against the physical SB26STAC before
+printing (SB Acoustics does not supply a STEP file for this tweeter).
 
 ## `cabinet.scad`
 

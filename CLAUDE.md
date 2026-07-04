@@ -14,9 +14,26 @@ the engineering reasoning behind the speaker design, captured as a living
 "Design Bible" plus supporting reference files.
 
 The project is currently at the **simulation / design-candidate stage** (design
-version **v6b**). No physical prototype has been built yet. Most numbers are
-simplified simulation estimates, not measured data — preserve that distinction
-in any edits.
+version **v6b** on the main line; **v7 / mk3** on the `mk3-sb26stac` branch).
+No physical prototype has been built yet. Most numbers are simplified simulation
+estimates, not measured data — preserve that distinction in any edits.
+
+> **You are on the `mk3-sb26stac` branch.** The current design on this branch is
+> **v7 / mk3**, which differs from the mk2 main line (v6b) in the tweeter and
+> mid/tweeter crossover only:
+
+| Parameter | mk2 main line (v6b) | mk3 (this branch, v7) |
+|---|---|---|
+| Tweeter | ScanSpeak H2606/920000 in WG212 waveguide | SB Acoustics SB26STAC-C000-4 (bare dome, not horn-loaded) |
+| Tweeter waveguide | `cad/mk2_waveguide_os.scad` (WG212) | `cad/mk2_waveguide_sb26stac.scad` (primary) |
+| Mid/tweeter xover | 1250 Hz LR4 | 1100 Hz LR4 |
+| Woofers / mid / cabinet / bass | unchanged | unchanged |
+
+The SB26STAC has a lower Fs (750 Hz vs 1030 Hz) and 3× the Xmax (0.6 mm vs
+0.2 mm), giving **+8.1 dB excursion headroom** at the crossover. See
+`ROADMAP.md` (v7/mk3), `CHANGELOG.md` (v7/mk3), and `PROJECT_TODO.md` for the
+mk3 task list. When editing on this branch, treat the mk3 values above as the
+current spec; the mk2 values are historical/comparison context.
 
 ## Repository layout
 
@@ -61,8 +78,9 @@ in any edits.
 
 The whole project is organized around incrementing design versions, tracked in
 `ROADMAP.md` (full history) and `CHANGELOG.md` (changes, newest first). The
-current reference candidate is **v6b**. v7+ are planned/future and describe
-intended work, not completed work.
+mk2 main-line reference candidate is **v6b**. On the `mk3-sb26stac` branch,
+**v7 / mk3** is completed design work (SB26STAC tweeter, 1100 Hz crossover).
+Further v8+ on the main line are planned/future and describe intended work.
 
 When the design changes, bump or annotate the version and record it in both
 `ROADMAP.md` and `CHANGELOG.md`.
@@ -73,13 +91,34 @@ When the design changes, bump or annotate the version and record it in both
 sections: **Decision**, **Reasoning**, and (usually) **Consequence**. The next
 new decision is `DD-013`. Keep this format when adding one.
 
-## The current spec (v6b) — keep it consistent
+## The current spec — keep it consistent
 
 This summary appears verbatim (or near-verbatim) in **multiple files**:
 `README.md`, `docs/00_design_bible.md`, `ROADMAP.md`, `CHANGELOG.md`,
 `DESIGN_REQUIREMENTS.md`, and `PARTS.md`. If you change any spec value, you
 **must update every place it appears** — otherwise the docs contradict each
 other.
+
+> On the `mk3-sb26stac` branch the current spec is **v7 / mk3** (below). The
+> v6b table is retained as historical/comparison context — see `ROADMAP.md` and
+> `CHANGELOG.md`.
+
+### mk3 spec (this branch, v7)
+
+| Parameter | Value |
+|---|---|
+| Woofers | 2 × GRS 8SW-4HE-8 (push-push, side-mounted, series → 8 Ω) |
+| Midrange | ScanSpeak 15W/4434G00 (sealed mid chamber ~5.7 L) |
+| Tweeter | SB Acoustics SB26STAC-C000-4 (bare dome, not horn-loaded) |
+| Tweeter waveguide | `cad/mk2_waveguide_sb26stac.scad` (primary) |
+| Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood, R50 front roundovers |
+| Bass volume | ~69 L sealed, Fc ~34.5 Hz, Qtc ~0.62 |
+| Bass/mid xover | 150 Hz LR4 |
+| Mid/tweeter xover | 1100 Hz LR4 |
+| Mid/tweeter c-c | 140 mm |
+| System | Active, DSP-controlled (no passive crossover) |
+
+### v6b spec (mk2 main line — historical/comparison)
 
 | Parameter | Value |
 |---|---|
@@ -93,9 +132,10 @@ other.
 | Mid/tweeter c-c | 140 mm |
 | System | Active, DSP-controlled (no passive crossover) |
 
-Note: the tweeter is **ScanSpeak** H2606/920000 — an earlier revision
+Note: the mk2 tweeter is **ScanSpeak** H2606/920000 — an earlier revision
 incorrectly attributed it to Seas; see commit `bc6c3df`. Do not reintroduce
-"Seas H2606".
+"Seas H2606". The mk3 tweeter (SB26STAC-C000-4) is **SB Acoustics**, not
+ScanSpeak.
 
 ## Writing conventions
 
@@ -161,7 +201,9 @@ still be new artifact types — confirm scope before creating those.
   is wired reversed polarity to achieve this (see Chapter 8).
 - **Spinorama** — the standardized set of curves (on-axis, listening window,
   early reflections, sound power, predicted in-room, directivity index).
-- **WG212** — the project's custom ~212 mm-mouth waveguide for the tweeter.
+- **WG212** — the project's custom ~212 mm-mouth waveguide for the mk2 tweeter
+  (H2606). On the mk3 branch the equivalent is the non-horn-loaded
+  `mk2_waveguide_sb26stac.scad` for the SB26STAC dome.
 - **Qtc / Fc** — total system Q and resonant frequency of the sealed bass alignment.
 - **LR4** — Linkwitz-Riley 4th-order (24 dB/oct) acoustic crossover target.
 - **DSP / active** — crossovers, delay, and EQ are done electronically per driver

@@ -50,12 +50,12 @@ For full spinorama measurements, a quiet room with a turntable setup is needed. 
 - Distortion in the 150-1500 Hz range
 - Impedance in cabinet
 
-### Tweeter / Waveguide (ScanSpeak H2606/920000 in WG212)
+### Tweeter / Waveguide (SB Acoustics SB26STAC-C000-4 in waveguide)
 
-- On-axis response in the WG212 waveguide mounted in cabinet
+- On-axis response in the waveguide mounted in cabinet
 - Horizontal off-axis: 0° to 60° in 10° steps
 - Vertical off-axis: -30° to +30° in 10° steps
-- **Distortion at 1250 Hz** - critical measurement, determines crossover viability
+- **Distortion at 1100 Hz** - confirms crossover viability (expected to pass comfortably given the 350 Hz Fs margin)
 - Impedance in waveguide
 
 ---
@@ -131,7 +131,7 @@ At low frequencies the measurement window is too short for accurate farfield mea
 
 1. Import all driver measurements (on-axis and off-axis)
 2. Enter acoustic offsets (driver center positions relative to a reference point)
-3. Build active crossover model (LR4 at 150 Hz and 1250 Hz)
+3. Build active crossover model (LR4 at 150 Hz and 1100 Hz)
 4. Add delay compensation values
 5. Optimize crossover frequency and slopes
 6. Compute CEA-2034 spinorama curves
@@ -144,7 +144,7 @@ At low frequencies the measurement window is too short for accurate farfield mea
 
 | Question | How to answer |
 |---|---|
-| Can H2606 in WG212 cross at 1250 Hz? | Measure distortion in WG212 |
+| Can SB26STAC in waveguide cross at 1100 Hz? | Measure distortion in WG212 |
 | Is 140 mm c-c achievable mechanically? | Verify in cabinet construction |
 | Does WG212 response match simulation? | Measure WG212 on/off-axis |
 | How much EQ is needed at baffle/waveguide transition? | Measure on-axis and compare to target |

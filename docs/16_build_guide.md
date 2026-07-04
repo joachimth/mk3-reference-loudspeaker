@@ -59,7 +59,7 @@ Before starting the build:
 |---|---|
 | GRS 8SW-4HE-8 | 2 |
 | ScanSpeak 15W/4434G00 | 1 |
-| ScanSpeak H2606/920000 | 1 |
+| SB Acoustics SB26STAC-C000-4 | 1 |
 | WG212 printed waveguide | 1 |
 
 ---
@@ -127,7 +127,7 @@ Before starting the build:
 
 1. Test fit printed WG212 waveguide in front baffle cutout
 2. Confirm c-c spacing to midrange (target: 140 mm)
-3. Mount H2606 tweeter into WG212
+3. Mount SB26STAC tweeter into waveguide
 4. Install WG212 + tweeter assembly in front baffle
 5. Run tweeter wiring to terminal area
 
@@ -153,7 +153,7 @@ Before starting the build:
 1. Apply signal and verify all three driver systems produce sound
 2. Run polarity test on woofers (battery test on each, verify push-push)
 3. Run initial frequency sweep - check for gross problems
-4. Run distortion measurement on tweeter at 1250 Hz
+4. Run distortion measurement on tweeter at 1100 Hz
 5. Proceed to full measurement campaign (Chapter 15)
 
 ---
@@ -164,7 +164,7 @@ Before starting the build:
 |---|---|
 | Mid chamber not fully sealed | Check all joints with smoke test or listen for leaks |
 | Push-push wiring reversed | Battery polarity test before full assembly |
-| H2606 distortion too high at 1250 Hz | Measure before committing to crossover frequency |
+| SB26STAC distortion too high at 1100 Hz | Measure before committing to crossover frequency (expected comfortable — 350 Hz Fs margin) |
 | Woofer mounting depth too deep for 22 mm wall | Verify driver spec before cutting |
 | R50 roundovers - router tear-out | Sharp bit, slow passes, backing board |
 | WG212 print warping | Use PETG, print flat, allow to cool slowly |

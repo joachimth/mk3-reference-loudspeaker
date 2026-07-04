@@ -12,8 +12,8 @@
 
 - 2 × GRS 8SW-4HE-8
 - ScanSpeak 15W/4434G00
-- ScanSpeak H2606/920000
-- WG212
+- SB Acoustics SB26STAC-C000-4
+- Custom waveguide (SB26STAC version, no horn loading)
 
 ## Cabinet
 
@@ -30,10 +30,8 @@
 ## Crossovers
 
 - 150 Hz LR4
-- 1250 Hz LR4
+- 1100 Hz LR4
 
 ## Geometry
 
-- Target c-c spacing: **140 mm nominal** (WG212 mouth radius ~55 mm + 15W flange radius ~62 mm + gap ~23 mm).
-  In practice ~150–155 mm is expected once the WG212 is printed and the 15W flange is physically measured.
-  Confirm from physical parts before locking the cabinet model.
+- Target c-c spacing: **140 mm nominal**. In practice ~150-155 mm is expected once the waveguide is printed and the 15W flange is physically measured. Confirm from physical parts before locking the cabinet model.

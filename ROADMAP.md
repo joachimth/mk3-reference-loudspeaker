@@ -110,3 +110,18 @@ write-up, drawings, parameters and parts list live in
 and [`assets/README.md`](assets/README.md)). Several of its directivity arguments
 (higher crossover near the waveguide control limit, ~157-160 mm c-c) align with
 the review caveats now recorded against DD-010 / DD-011.
+
+## v7 / mk3 — SB26STAC tweeter (mk3-sb26stac branch)
+
+A parallel design variant created July 3 2026 on the `mk3-sb26stac` branch:
+
+- **Tweeter:** SB Acoustics SB26STAC-C000-4 conventional dome tweeter selected
+  (replaces ScanSpeak H2606/920000 from the mk2 main line). Fs 750 Hz, 0.6 mm
+  Xmax, 91.5 dB, 4 Ω. Not horn-loaded — requires a different waveguide than
+  WG212.
+- **Crossover:** 1100 Hz LR4 mid/tweeter crossover (lower than mk2's 1250 Hz),
+  giving the tweeter more excursion headroom (+8.1 dB vs H2606 at the crossover
+  frequency).
+- **Waveguide:** Custom non-horn-loaded waveguide (`cad/mk2_waveguide_sb26stac.scad`).
+- **Branch:** `mk3-sb26stac` created July 3 2026. See `PROJECT_TODO.md` for the
+  mk3 task list and `CHANGELOG.md` for the v7/mk3 entry.

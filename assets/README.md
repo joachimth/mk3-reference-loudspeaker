@@ -6,7 +6,11 @@ These were imported from an external design session. They are kept here as
 **reference material**. Treat the numbers in them as simplified, physics-based
 **estimates / sketches — not measured data** and not the authoritative spec.
 
-## ⚠️ These files describe an SB23-based study, not the current v6b spec
+## ⚠️ These files describe an SB23-based study, not the current spec
+
+> **On this branch (mk3-sb26stac) the current spec is mk3 (v7): SB Acoustics
+> SB26STAC-C000-4 tweeter, 1100 Hz crossover.** The v6b spec referenced below
+> is on the main branch (mk2, H2606/920000 at 1250 Hz).
 
 The current reference candidate (**v6b**) uses **GRS 8SW-4HE-8** woofers (see
 `../DESIGN_DECISIONS.md` DD-004, and the v6b table in `../README.md`). The

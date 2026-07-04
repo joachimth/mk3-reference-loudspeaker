@@ -15,7 +15,7 @@ See Chapter 14 (DSP) for the full DSP implementation. This chapter covers the cr
 | Crossover | Frequency | Slope | Drivers |
 |---|---|---|---|
 | Bass / midrange | 150 Hz | LR4 (24 dB/oct) | GRS woofers → ScanSpeak 15W |
-| Midrange / tweeter | 1250 Hz | LR4 (24 dB/oct) | ScanSpeak 15W → ScanSpeak H2606/920000 / WG212 |
+| Midrange / tweeter | **1100 Hz** | LR4 (24 dB/oct) | ScanSpeak 15W → SB26STAC-C000-4 / WG212 |
 
 ---
 
@@ -53,20 +53,59 @@ The 15W midrange is high-passed at 150 Hz. This removes bass loading from the mi
 
 ---
 
-## Midrange / tweeter: 1250 Hz
+## Midrange / tweeter: 1100 Hz
 
-The 1250 Hz crossover was selected in v6b (DD-010) based on simplified directivity simulations showing that:
-- Lower crossover frequencies improve directivity matching between the midrange and the waveguide tweeter
-- The 140 mm c-c spacing produces acceptable vertical lobing at 1250 Hz but would produce worse lobing at higher frequencies
-- The H2606 in WG212 is expected to handle 1250 Hz LR4, but this must be verified by distortion measurement
+The 1100 Hz crossover was selected for mk3 (v7) based on a systematic
+optimization sweep (see `simulations/mk3_crossover_optimization.py`)
+that scored crossover frequencies from 800 to 1600 Hz against five
+criteria: Fs margin, excursion headroom, directivity match, vertical
+lobing, and system sum flatness.
 
-**Midrange low-pass:** 1250 Hz LR4
-The 15W is rolled off above 1250 Hz.
+### Optimization results
 
-**Tweeter high-pass:** 1250 Hz LR4
-The H2606 in WG212 is high-passed at 1250 Hz.
+| Fc [Hz] | Fs margin | Excursion | DI mismatch | ±15° ripple | Score | Broadside |
+|---|---|---|---|---|---|---|
+| 1000 | 250 Hz | +6.4 dB | 4.3 dB | -0.6 dB | 6.9 | below |
+| 1050 | 300 Hz | +7.2 dB | 4.5 dB | -0.6 dB | 7.7 | below |
+| **1100** | **350 Hz** | **+8.1 dB** | **4.6 dB** | **-0.7 dB** | **8.1** | **below** |
+| 1150 | 400 Hz | +8.8 dB | 4.9 dB | -0.7 dB | 8.2 | above |
+| 1200 | 450 Hz | +9.6 dB | 5.1 dB | -0.8 dB | 8.2 | above |
+| 1250 | 500 Hz | +10.3 dB | 5.3 dB | -0.9 dB | 8.1 | above |
+| 1300 | 550 Hz | +11.0 dB | 5.5 dB | -1.0 dB | 8.1 | above |
+
+**Optimal band: 1100-1200 Hz** (scores 8.1-8.2, statistically tied).
+
+**Why 1100 Hz is chosen over 1200 Hz despite identical scores:**
+- Below broadside null (1147 Hz for 150mm c-c) — the null is fully outside
+  the active crossover band, not partially inside it
+- Better DI match (4.6 vs 5.1 dB) — closer to 15W's near-omni region
+- Fs margin of 350 Hz is already comfortable — additional margin has
+  diminishing returns (the sigmoid scoring reflects this)
+
+The crossover could be raised to 1150-1200 Hz with negligible penalty if
+measurement shows the 15W has cone breakup or directivity issues at 1100 Hz.
+
+> **mk2 comparison:** H2606 @ 1250 Hz scored 8.1 — but with Fs margin of only
+> 220 Hz (vs 350 Hz for SB26STAC @ 1100) and +0.0 dB excursion headroom
+> (vs +8.1 dB). The SB26STAC wins on the two safety criteria while matching
+> on the acoustic criteria.
+
+### Selection rationale
+
+- **Fs margin:** 350 Hz above the 750 Hz resonance — comfortable, no distortion test gate required (unlike mk2's H2606 at 1250 Hz with only 220 Hz margin).
+- **Directivity match:** At 1100 Hz the 15W midrange is closer to omni, giving a smaller DI step (4.6 dB mismatch vs 5.3 dB at 1250 Hz).
+- **Vertical lobing:** The broadside null for 150mm c-c is at 1147 Hz — just above the 1100 Hz crossover. The LR4 rolloff suppresses the null almost entirely. At ±15° the ripple is under 0.7 dB.
+- **Excursion headroom:** The SB26STAC's 0.6mm Xmax gives +8.1 dB more max SPL at 1100 Hz than the H2606 at 1250 Hz.
+
+**Midrange low-pass:** 1100 Hz LR4
+The 15W is rolled off above 1100 Hz.
+
+**Tweeter high-pass:** 1100 Hz LR4
+The SB26STAC in WG212 is high-passed at 1100 Hz.
 
 **Phase alignment:** The acoustic centers of the midrange and the tweeter/waveguide are at different positions. DSP delay will be used to align them. The waveguide also adds physical depth to the tweeter's acoustic center.
+
+> **mk2 comparison:** The original v6b design crossed at 1250 Hz with the H2606/920000. The 1250 Hz crossover was unconfirmed pending a distortion test due to the H2606's Fs=1030 Hz (220 Hz margin). The mk3 crossover at 1100 Hz with Fs=750 Hz removes this gate entirely.
 
 ---
 
@@ -91,10 +130,14 @@ For d = 140 mm and θ = 90° (broadside null):
 f_null = 344 / (2 × 0.14) ≈ 1229 Hz
 ```
 
-This means the 140 mm c-c spacing produces a broadside null near 1229 Hz - close to the 1250 Hz crossover frequency. This is acceptable because:
-- LR4 slopes transition the energy between drivers over a wide range
-- The crossover suppresses the 15W output at 1250 Hz (it is already at -6 dB at the crossover frequency)
-- The lobing at the listening angle (±15° vertical) is much less severe than the theoretical broadside null
+For d = 150 mm (practical minimum before 15W frames touch):
+```
+f_null = 344 / (2 × 0.15) ≈ 1147 Hz
+```
+
+At the mk3 crossover of 1100 Hz, the broadside null (1147 Hz for 150mm c-c) sits **just above** the crossover frequency. The LR4 rolloff means the tweeter is already -6 dB at 1100 Hz and dropping fast, so the null at 1147 Hz is strongly suppressed. At ±15° the ripple is under 0.7 dB.
+
+This is an improvement over the mk2 design (1250 Hz), where the broadside null (1147 Hz) fell **below** the crossover — in the active band where both drivers are contributing.
 
 Shorter c-c spacing reduces lobing severity and pushes the null higher. Increasing the crossover frequency with the same c-c spacing worsens the lobing.
 
@@ -108,7 +151,7 @@ See Chapter 14 (DSP) for the filter coefficients, delay values, and EQ.
 
 ## Open items
 
-- Measure H2606 in WG212 distortion at 1250 Hz to confirm crossover viability
+- Measure SB26STAC in waveguide response/distortion at 1100 Hz (expected to pass comfortably — no Fs-margin gate)
 - Measure acoustic centers of all three driver systems in the final cabinet
 - Calculate and apply DSP delay values
 - Verify crossover summation in measurement (flat on-axis, smooth off-axis)

@@ -32,18 +32,18 @@ Irregularities in the DI (dips, steps, irregularities) indicate directivity prob
 
 At the crossover frequency, two drivers of different sizes transition between each other. If their off-axis responses do not match at the crossover frequency, the combined off-axis response will show a step or dip.
 
-For the mid/tweeter crossover at 1250 Hz:
-- The ScanSpeak 15W midrange at 1250 Hz radiates over a moderate angle (the ~120 mm cone diameter is beginning to narrow the pattern)
-- The ScanSpeak H2606/920000 already has a built-in horn that provides some directivity control, but its pattern may still be broader than the 15W midrange at 1250 Hz
-- Without the WG212, a directivity step may still be present at the crossover frequency
+For the mid/tweeter crossover at 1100 Hz:
+- The ScanSpeak 15W midrange at 1100 Hz radiates over a moderate angle (the ~120 mm cone diameter is beginning to narrow the pattern)
+- The SB Acoustics SB26STAC-C000-4 is a conventional dome with no built-in horn, so the custom waveguide provides all of the directivity control
+- Without the waveguide, a directivity step would be present at the crossover frequency
 
-The WG212 waveguide is designed to extend and optimize the H2606/920000 horn's directivity control, narrowing the pattern to better match the 15W at the crossover frequency.
+The custom SB26STAC waveguide (`cad/mk2_waveguide_sb26stac.scad`) is designed to provide directivity control matching the 15W midrange at the crossover frequency. Unlike the WG212 (which horn-loads the H2606 on the mk2 main branch), this is a non-horn-loaded waveguide.
 
 ### Vertical lobing
 
 Two vertically separated drivers produce an interference pattern in the vertical plane at frequencies where their separation is comparable to the wavelength. This appears as a lobe structure in the vertical polar plot.
 
-The 140 mm c-c spacing and 1250 Hz crossover were selected together to minimize the lobing impact within the ±15° listening window. See Chapter 11 for quantitative analysis.
+The 140 mm c-c spacing and 1100 Hz crossover were selected together to minimize the lobing impact within the ±15° listening window. See Chapter 11 for quantitative analysis.
 
 ### Cabinet diffraction
 
@@ -55,7 +55,7 @@ The R50 front edge roundovers minimize diffraction by presenting a smooth curve 
 
 At high frequencies, individual drivers become increasingly directional because their radiating diameter becomes large relative to the wavelength. This is called beaming.
 
-The ScanSpeak 15W begins to beam above approximately 1500-2000 Hz in free-field. The 1250 Hz crossover is designed to transition to the tweeter/waveguide before significant beaming occurs.
+The ScanSpeak 15W begins to beam above approximately 1500-2000 Hz in free-field. The 1100 Hz crossover is designed to transition to the tweeter/waveguide before significant beaming occurs.
 
 ---
 
@@ -64,9 +64,9 @@ The ScanSpeak 15W begins to beam above approximately 1500-2000 Hz in free-field.
 | Problem | Solution | Status |
 |---|---|---|
 | Mid/tweeter directivity mismatch | WG212 waveguide | In development |
-| Vertical lobing | 140 mm c-c + 1250 Hz crossover | Simulated |
+| Vertical lobing | 140 mm c-c + 1100 Hz crossover | Simulated |
 | Cabinet diffraction | R50 front roundovers | Selected |
-| Midrange beaming | Cross at 1250 Hz | Simulated |
+| Midrange beaming | Cross at 1100 Hz | Simulated |
 
 ---
 
@@ -79,7 +79,7 @@ The simplified simulations explored multiple combinations of:
 
 Key finding: **lower crossover frequency and shorter c-c spacing produced more consistent benefit than larger waveguide mouth diameter.**
 
-WG212 with 1250 Hz and 140 mm c-c is the current best candidate. This must be verified with real measurements of the physical prototype.
+SB26STAC waveguide with 1100 Hz and 140 mm c-c is the current best candidate. This must be verified with real measurements of the physical prototype.
 
 ---
 
