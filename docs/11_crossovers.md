@@ -151,7 +151,7 @@ See Chapter 14 (DSP) for the filter coefficients, delay values, and EQ.
 
 ## Open items
 
-- Measure H2606 in WG212 distortion at 1250 Hz to confirm crossover viability
+- Measure SB26STAC in waveguide response/distortion at 1100 Hz (expected to pass comfortably — no Fs-margin gate)
 - Measure acoustic centers of all three driver systems in the final cabinet
 - Calculate and apply DSP delay values
 - Verify crossover summation in measurement (flat on-axis, smooth off-axis)

@@ -16,6 +16,19 @@ Version-controlled, assumption-headed scripts and their plots now live in
 `system_response.py`, `polar_response.py`, `vertical_polar_map.py`); parametric
 OpenSCAD geometry lives in [`cad/`](cad/) (WG212 waveguide + cabinet).
 
+### mk3 (SB26STAC / 1100 Hz) scripts
+
+On the `mk3-sb26stac` branch, four additional scripts compare the mk2 (H2606,
+1250 Hz) and mk3 (SB26STAC, 1100 Hz) designs and optimise the mk3 crossover:
+
+- `mk2_vs_mk3_realistic_response.py` — realistic system response using actual
+  datasheet frequency-response curves for both designs.
+- `mk2_vs_mk3_spinorama.py` — spinorama comparison between mk2 and mk3.
+- `mk3_crossover_optimization.py` — systematic crossover-frequency sweep for
+  the SB26STAC.
+- `h2606_vs_sb26stac_comparison.py` — head-to-head tweeter comparison
+  (excursion, distortion, sensitivity) between H2606 and SB26STAC.
+
 ---
 
 # Bass Simulations

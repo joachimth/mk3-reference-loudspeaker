@@ -20,7 +20,7 @@ ASSUMPTIONS (simplified, NOT measured data — same as polar_response.py)
 - Baffle/edge effects IGNORED. Room gain not included.
 - Spinorama is 2D horizontal-plane approximation, NOT full CEA-2034.
 
-Output: simulations/plots/mk2_vs_mk3_spinorna.png
+Output: simulations/plots/mk2_vs_mk3_spinorama.png
         simulations/plots/mk2_vs_mk3_system_response.png
 """
 import os
@@ -189,7 +189,7 @@ for name, cfg in designs.items():
     # Combined directivity
     D_total = D_w + D_m + D_t
 
-    # Normalize on-axis to 0 dB (1.0 linear) — spinorna curves are relative
+    # Normalize on-axis to 0 dB (1.0 linear) — spinorama curves are relative
     on_axis_lin = D_total[:, 0]
     on_axis_lin = np.maximum(on_axis_lin, 1e-12)
     D_norm = D_total / on_axis_lin[:, None]
@@ -350,7 +350,7 @@ ax4.grid(True, which="both", alpha=0.25)
 fig.suptitle("Mk2 (H2606 @ 1250 Hz) vs Mk3 (SB26STAC @ 1100 Hz) — Spinorna Comparison",
              fontsize=14, fontweight="bold")
 fig.tight_layout(rect=[0, 0, 1, 0.96])
-out1 = os.path.join(os.path.dirname(__file__), "plots", "mk2_vs_mk3_spinorna.png")
+out1 = os.path.join(os.path.dirname(__file__), "plots", "mk2_vs_mk3_spinorama.png")
 fig.savefig(out1, dpi=150)
 print(f"\nwrote {out1}")
 
@@ -459,7 +459,7 @@ print(f"wrote {out2}")
 #  Console summary
 # ============================================================
 print("\n" + "=" * 70)
-print("SUMMARY: mk2 vs mk3 spinorna & system response")
+print("SUMMARY: mk2 vs mk3 spinorama & system response")
 print("=" * 70)
 
 for name, cfg in designs.items():
@@ -493,7 +493,7 @@ for name, cfg in designs.items():
 # CSV export
 csv_dir = os.path.join(os.path.dirname(__file__), "csv")
 os.makedirs(csv_dir, exist_ok=True)
-csv_out = os.path.join(csv_dir, "mk2_vs_mk3_spinorna.csv")
+csv_out = os.path.join(csv_dir, "mk2_vs_mk3_spinorama.csv")
 header = "freq_Hz,mk2_on_axis,mk2_LW,mk2_ER,mk2_SP,mk2_DI,mk2_PIR,mk3_on_axis,mk3_LW,mk3_ER,mk3_SP,mk3_DI,mk3_PIR"
 rows = [header]
 for i in range(len(f_spin)):

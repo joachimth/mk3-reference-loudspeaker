@@ -145,3 +145,39 @@ roundover.
 - Export STL, print and test-fit the prototype
 - Measure H2606 distortion + directivity in WG212 to confirm the crossover
   (1250 Hz nominal vs the ~1620 Hz control limit)
+
+---
+
+## SB26STAC waveguide (mk3)
+
+> **mk3-sb26stac branch.** The SB26STAC-C000-4 is a conventional dome tweeter
+> (no built-in horn), so the waveguide is a pure directivity device rather than
+> a horn extension. See DD-013 and DD-014.
+
+### Model
+
+[`../cad/mk2_waveguide_sb26stac.scad`](../cad/mk2_waveguide_sb26stac.scad)
+
+### Geometry
+
+| Parameter | Value |
+|---|---|
+| Throat diameter | 28 mm (SB26STAC dome + surround, no horn) |
+| Baffle cutout diameter (BCD) | 88.5 mm |
+| Profile | Same OS profile family as the H2606 WG212 |
+| Horn loading | None — conventional dome in waveguide |
+| Crossover | 1100 Hz LR4 (DD-014) |
+
+The throat is sized to the SB26STAC dome and surround rather than a horn exit,
+and the profile uses the same oblate-spheroid bore family as the WG212 so the
+directivity behavior is comparable. The 88.5 mm BCD matches the SB26STAC
+faceplate cutout requirement.
+
+### Open items (SB26STAC)
+
+- Caliper-verify the SB26STAC dome, surround, and faceplate cutout diameter
+  against `cad/mk2_waveguide_sb26stac.scad` before printing
+- Export STL, print, and test-fit the SB26STAC in the waveguide
+- Measure SB26STAC in-waveguide response and directivity at 1100 Hz to confirm
+  the crossover (expected to pass comfortably given the 350 Hz Fs margin — no
+  distortion-test gate required, unlike the H2606 at 1250 Hz)

@@ -108,6 +108,8 @@ The vertical c-c spacing to the tweeter/waveguide remains a critical design cons
 
 # DD-006 - Select ScanSpeak H2606/920000 tweeter in WG212 waveguide
 
+> **Superseded on mk3-sb26stac branch by DD-013/DD-014. Retained on main branch as mk2 fallback.**
+
 ## Decision
 
 Use ScanSpeak H2606/920000 (Discovery, horn dome, textile) in the custom WG212 waveguide.
@@ -178,6 +180,8 @@ Waveguide refinement should focus on profile, mouth termination, throat geometry
 
 # DD-010 - Target 1250 Hz mid/tweeter crossover
 
+> **Superseded on mk3-sb26stac branch by DD-013/DD-014. Retained on main branch as mk2 fallback.**
+
 ## Decision
 
 Use 1250 Hz LR4 acoustic crossover as the current simulation target.
@@ -232,6 +236,8 @@ in CAD rather than over-committing to 140 mm.
 
 # DD-012 - WG212 geometry: asymmetric oblate-spheroid waveguide
 
+> **Superseded on mk3-sb26stac branch by DD-013/DD-014. Retained on main branch as mk2 fallback.**
+
 ## Decision
 
 Define the WG212 as an **asymmetric oblate-spheroid (OS)** waveguide for the
@@ -263,3 +269,46 @@ printing. The mouth must terminate **flush** with the baffle (no forward lip or
 sharp edge) to avoid diffraction; the model was corrected to seat the flange
 behind the flush mouth plane (see docs/06 and `simulations/waveguide_profile.py`).
 This is simulation-stage geometry, not validated by measurement.
+
+---
+
+# DD-013 - Select SB Acoustics SB26STAC-C000-4 tweeter (mk3)
+
+> **mk3-sb26stac branch only. Replaces DD-006 on this branch; DD-006 is retained on main as the mk2 fallback.**
+
+## Decision
+
+Use SB Acoustics SB26STAC-C000-4 as the tweeter (mk3).
+
+## Reasoning
+
+The SB26STAC-C000-4 conventional dome tweeter is selected for mk3 over the ScanSpeak H2606/920000 (DD-006):
+
+- **Fs 750 Hz gives 350 Hz margin at the 1100 Hz crossover** (vs H2606's 220 Hz margin at 1250 Hz). The margin is comfortable enough that no distortion-test gate is required before committing to the crossover frequency.
+- **0.6 mm Xmax gives +8.1 dB excursion headroom** at 1100 Hz relative to the H2606 at 1250 Hz, substantially more maximum SPL capability near the crossover.
+- **91.5 dB sensitivity is a better match to the 15W/4434G00's 89.7 dB** — only -1.8 dB of DSP pad is needed, vs -5.5 dB for the H2606. This reduces wasted amplifier power and the thermal/level mismatch.
+- **No horn loading** — the SB26STAC is a conventional dome used in a custom waveguide rather than a horn-loaded tweeter. The waveguide provides directivity control without relying on the driver's built-in horn.
+
+## Consequence
+
+A new waveguide model (`cad/mk2_waveguide_sb26stac.scad`) is required with a throat sized for the SB26STAC dome and surround (28 mm) and no horn loading. The crossover drops to 1100 Hz (see DD-014). DD-006 (H2606 selection) is superseded on this branch; it is retained on main as the mk2 fallback.
+
+---
+
+# DD-014 - Target 1100 Hz LR4 mid/tweeter crossover (mk3)
+
+> **mk3-sb26stac branch only. Replaces DD-010 on this branch; DD-010 is retained on main as the mk2 fallback.**
+
+## Decision
+
+Use 1100 Hz LR4 acoustic crossover as the mk3 mid/tweeter target.
+
+## Reasoning
+
+The SB26STAC-C000-4's Fs of 750 Hz gives a comfortable 350 Hz margin at 1100 Hz. The crossover optimization sweep (`simulations/mk3_crossover_optimization.py`) confirms 1100 Hz as optimal, scoring 8.1 across Fs margin, excursion headroom, directivity match, vertical lobing, and system sum flatness. The 1100 Hz point sits below the broadside null (1147 Hz for 150 mm c-c) so the null is outside the active crossover band, and the LR4 rolloff suppresses it almost entirely (under 0.7 dB ripple at ±15°).
+
+Because the Fs margin is comfortable, no distortion-test gate is required before committing to 1100 Hz — unlike mk2's H2606 at 1250 Hz, which has only 220 Hz margin and must pass a distortion measurement before the crossover is confirmed (see DD-010 caveat).
+
+## Consequence
+
+The midrange low-pass and tweeter high-pass are both 1100 Hz LR4. DD-010 (1250 Hz target) is superseded on this branch; it is retained on main as the mk2 fallback.

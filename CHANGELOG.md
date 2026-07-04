@@ -2,6 +2,32 @@
 
 All notable design changes for Mk2 Reference Loudspeaker are documented here.
 
+## v7 / mk3 — SB26STAC tweeter (mk3-sb26stac branch)
+
+### Added
+
+- **SB Acoustics SB26STAC-C000-4** conventional dome tweeter selected as the mk3
+  tweeter (replaces ScanSpeak H2606/920000 from mk2). Fs 750 Hz, 0.6 mm Xmax,
+  91.5 dB, 4 Ω.
+- **1100 Hz LR4** mid/tweeter crossover selected (lower than mk2's 1250 Hz).
+- **Custom non-horn-loaded waveguide** (`cad/mk2_waveguide_sb26stac.scad`) — the
+  SB26STAC is a conventional dome and is not horn-loaded, unlike the H2606 in
+  WG212, so it requires a completely different waveguide geometry.
+- **+8.1 dB excursion headroom** vs H2606 at the crossover frequency — the lower
+  Fs (750 Hz vs 1030 Hz) and 1100 Hz crossover place the operating point at
+  ~1.47 × Fs instead of mk2's ~1.2 × Fs, reducing distortion/excursion risk.
+- `mk3-sb26stac` branch created July 3 2026.
+- New mk3 simulation scripts: `mk2_vs_mk3_realistic_response.py`,
+  `mk2_vs_mk3_spinorna.py`, `mk3_crossover_optimization.py`,
+  `h2606_vs_sb26stac_comparison.py` (see `simulations/`).
+
+### Notes
+
+This is a parallel design variant on its own branch, not a replacement of the
+mk2 main line. See `PROJECT_TODO.md` for the mk3 task list and `ROADMAP.md` for
+the v7/mk3 entry. mk2 (H2606, 1250 Hz) remains the main-line design pending the
+H2606 distortion test; mk3 is the fallback if that test fails.
+
 ## v6b - Current reference candidate
 
 ### Added

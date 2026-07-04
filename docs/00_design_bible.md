@@ -19,6 +19,13 @@ The design bible is a living document. It will be updated as the project progres
 - Crossovers: 150 Hz LR4 (bass/mid), 1250 Hz LR4 (mid/tweeter)
 - Mid/tweeter c-c: 140 mm
 
+> **mk3 branch note:** The above is the mk2 main-line design (H2606, 1250 Hz).
+> On the `mk3-sb26stac` branch, the tweeter is **SB Acoustics SB26STAC-C000-4**
+> with a **1100 Hz LR4** crossover and a non-horn-loaded waveguide
+> (`cad/mk2_waveguide_sb26stac.scad`). The woofer, midrange, cabinet and
+> bass/mid crossover are unchanged. See `ROADMAP.md` (v7/mk3 entry),
+> `CHANGELOG.md`, and `PROJECT_TODO.md` for the mk3 design.
+
 ---
 
 ## Chapters

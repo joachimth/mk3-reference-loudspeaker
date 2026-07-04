@@ -30,7 +30,7 @@ import matplotlib.pyplot as plt
 c_speed = 344.0
 
 # ============================================================
-#  Shared math (same as mk2_vs_mk3_spinorna.py)
+#  Shared math (same as mk2_vs_mk3_spinorama.py)
 # ============================================================
 def j1(x):
     x = np.asarray(x, dtype=float)

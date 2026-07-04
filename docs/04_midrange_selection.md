@@ -6,7 +6,7 @@
 
 The midrange driver must:
 
-- Cover the range from approximately 150 Hz to 1250 Hz
+- Cover the range from approximately 150 Hz to 1100 Hz
 - Be a 15 cm (6-inch class) driver with good off-axis response in the midrange
 - Have low distortion at normal listening levels in the 200-1000 Hz range
 - Fit within a 300 mm wide baffle with the waveguide above it at 140 mm c-c
@@ -40,7 +40,7 @@ The ScanSpeak Illuminator 15W/4434G00 is the midrange driver selected for this p
 
 - The Illuminator series is known for low distortion and smooth frequency response
 - The 15W cone area provides sufficient output from 150 Hz without requiring excessive amplifier power
-- The upper frequency limit in a baffle is well-suited to a 1250 Hz crossover with LR4 slopes
+- The upper frequency limit in a baffle is well-suited to a 1100 Hz crossover with LR4 slopes
 - ScanSpeak has detailed datasheet and measured data available, supporting simulation work
 - Good availability through European suppliers
 
@@ -60,9 +60,9 @@ The chamber must be:
 The midrange is crossed:
 
 - High-pass at 150 Hz (LR4) from the bass system
-- Low-pass at 1250 Hz (LR4) to the tweeter/waveguide
+- Low-pass at 1100 Hz (LR4) to the tweeter/waveguide
 
-The 150 Hz crossover point is low enough that the 15W does not need to produce significant bass output. The 1250 Hz crossover point is within the normal operating range of this driver with the cabinet geometry.
+The 150 Hz crossover point is low enough that the 15W does not need to produce significant bass output. The 1100 Hz crossover point is within the normal operating range of this driver with the cabinet geometry.
 
 **Vertical lobing:** The 140 mm c-c spacing between the 15W midrange and the WG212 tweeter determines the vertical lobing pattern at the mid/tweeter crossover. See Chapter 11 (Crossovers) and Chapter 12 (Directivity) for detail.
 
@@ -71,5 +71,5 @@ The 150 Hz crossover point is low enough that the 15W does not need to produce s
 ## Open items
 
 - Verify exact mounting depth to confirm fit with mid chamber dimensions
-- Verify off-axis response at 1250 Hz from measurements in finished cabinet
-- Confirm that 1250 Hz LR4 does not require excessive excursion from the 15W below the crossover
+- Verify off-axis response at 1100 Hz from measurements in finished cabinet
+- Confirm that 1100 Hz LR4 does not require excessive excursion from the 15W below the crossover

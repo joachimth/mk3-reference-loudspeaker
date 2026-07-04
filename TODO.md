@@ -1,5 +1,7 @@
 # Mk2 Reference Loudspeaker - TODO
 
+> **Note:** This file tracks mk2 (main branch) tasks. For mk3 tasks, see PROJECT_TODO.md.
+
 Inspired by Genelec 8361, Dutch & Dutch 8C and Revel Salon2.
 
 ---

@@ -44,7 +44,11 @@ Validate the simulated design with real acoustic measurements and use the data t
 - Horizontal off-axis response
 - Vertical off-axis response
 - Distortion around 1000-5000 Hz
-- Confirm whether 1250 Hz LR4 is practical
+- Confirm whether 1100 Hz LR4 is practical
+
+> **mk3 branch note:** On the `mk3-sb26stac` branch the tweeter is
+> SB26STAC-C000-4 (not H2606) and the distortion test target is **1100 Hz**
+> (not 1250 Hz). Confirm whether 1100 Hz LR4 is practical for the SB26STAC.
 
 ---
 
@@ -138,7 +142,8 @@ Target: useful listening window around +/-15 deg.
 
 # Open Questions
 
-- Can H2606 in WG212 safely cross at 1250 Hz?
+- Can H2606 in WG212 safely cross at 1250 Hz? (mk2 main line)
+- Can SB26STAC-C000-4 safely cross at 1100 Hz? (mk3-sb26stac branch)
 - Is 140 mm c-c mechanically achievable?
 - Does the measured WG212 response match the simplified simulation?
 - How much EQ is needed around the baffle/waveguide transition?
