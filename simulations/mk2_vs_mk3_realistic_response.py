@@ -107,10 +107,11 @@ print(f"  At 2000 Hz: {baffle_step_db(np.array([2000.0]))[0]:.1f} dB")
 F_CTRL = 1620.0
 
 def wg_loading_db(f, gain_db, f_low=1000, f_high=2000):
-    """Waveguide loading gain: 0 dB below f_low, gain_db above f_high."""
-    # Smooth transition using tanh
-    t = 0.5 * (1.0 + np.tanh((np.log10(f) - np.log10((f_low + f_high) / 2)) /
-                              (np.log10(f_high) - np.log10(f_low) * 0.3)))
+    """Waveguide loading gain: 0 dB below f_low, gain_db above f_high.
+    Smooth transition using tanh over ~0.3 octaves centered between f_low and f_high."""
+    f_mid = np.sqrt(f_low * f_high)  # geometric mean (log center)
+    spread = (np.log10(f_high) - np.log10(f_low)) * 0.3  # ~0.3 octave half-width
+    t = 0.5 * (1.0 + np.tanh((np.log10(f) - np.log10(f_mid)) / spread))
     return gain_db * t
 
 # ============================================================
