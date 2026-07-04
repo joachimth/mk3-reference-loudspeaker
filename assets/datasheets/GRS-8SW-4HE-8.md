@@ -59,5 +59,42 @@
 ## Source files in this repo
 
 - PDF: `assets/datasheets/GRS-8SW-4HE-8-spec-sheet.pdf` (721 KB, official GRS spec sheet from Parts Express)
+- Frequency response CSV: `assets/datasheets/GRS-8SW-4HE-8_freq_response.csv` (on-axis SPL, 20 Hz-10 kHz, extracted from vector PDF)
+- Impedance CSV: `assets/datasheets/GRS-8SW-4HE-8_impedance.csv` (impedance + phase, 20 Hz-20 kHz, extracted from vector PDF)
+- Parameters CSV: `assets/datasheets/GRS-8SW-4HE-8_params.csv` (all T-S parameters)
+- Verification plot: `assets/datasheets/GRS-8SW-4HE-8_extraction_verify.png`
 - Markdown reference: `assets/datasheets/GRS-8SW-4HE-8.md` (this file)
 - SCAD integration: pending (see TODO above)
+
+---
+
+## Frequency response (extracted from datasheet)
+
+On-axis SPL, measured at 2.83V/1m. Data extracted from vector PDF curves.
+
+| Frequency | SPL |
+|---|---|
+| 20 Hz | ~71 dB |
+| 30 Hz | ~80 dB |
+| 48 Hz (Fs) | ~89 dB (peak) |
+| 100 Hz | ~89 dB |
+| 500 Hz | ~89 dB |
+| 1 kHz | ~89 dB |
+| 2 kHz | ~88 dB |
+| 4 kHz | ~82 dB (roll-off begins) |
+| 8 kHz | ~65 dB |
+| 10 kHz | ~51 dB |
+
+Full curve: `GRS-8SW-4HE-8_freq_response.csv` (1/12 octave resolution, 20-20000 Hz)
+
+## Impedance / Phase (extracted from datasheet)
+
+| Frequency | Impedance | Phase |
+|---|---|---|
+| 20 Hz | 4.4 Ω | +30° |
+| 48 Hz (Fs) | 18.6 Ω (peak) | 0° |
+| 100 Hz | 5.3 Ω | -29° |
+| 1 kHz | 7.5 Ω | -33° |
+| 10 kHz | 25 Ω | +60° |
+
+Full curve: `GRS-8SW-4HE-8_impedance.csv` (1/12 octave resolution, 20-20000 Hz)

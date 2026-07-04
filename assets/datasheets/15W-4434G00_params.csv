@@ -1,0 +1,16 @@
+parameter,value,unit
+Size,15,cm
+Fs,43,Hz
+Re,3.0,ohm
+Qt,0.21,
+Sensitivity,89.5,dB@2.83V/1m
+VAS,12.8,L
+Sd,80,cm²
+Bl,5.9,Tm
+Faceplate_OD,104.0,mm
+Mounting_BCD,95.0,mm
+Mounting_hole_d,4.0,mm
+Mounting_holes,4,
+Basket_depth,45.1,mm
+Rear_cutout,72.0,mm
+Flange_thickness,4.0,mm

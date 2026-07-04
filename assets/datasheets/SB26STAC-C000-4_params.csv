@@ -1,0 +1,27 @@
+parameter,value,unit
+Type,Conventional soft dome tweeter,
+Dome,26,mm
+Impedance,4,ohm
+Re,3.2,ohm
+Fs,750,Hz
+Sensitivity,91.5,dB@2.83V/1m
+Le,0.04,mH
+Sd,6.2,cm²
+Xmax,0.6,mm
+Qms,3.0,
+Qes,1.78,
+Qts,1.12,
+Bl,1.6,Tm
+Mms,0.3,g
+Power,120,W
+Power_test_freq,2600,Hz
+Faceplate_OD,100.0,mm
+Baffle_cutout,88.5,mm
+Recess_OD,53.0,mm
+Mounting_BCD,88.5,mm
+Mounting_holes,4,
+Screw_hole_d,4.0,mm
+Counterbore_d,8.0,mm
+Total_depth,39.7,mm
+Net_weight,0.53,kg
+Ferrofluid,No,
