@@ -44,11 +44,37 @@ from scipy.ndimage import uniform_filter1d
 c_speed = 343.0
 
 # ============================================================
-#  Load digitized datasheet curves
+#  Load digitized datasheet curves from CSV files
 # ============================================================
-data = np.load('/workspace/scratch/datasheet_curves.npz')
-sb26_freq = data['sb26_freq']; sb26_spl = data['sb26_spl']
-w15_freq = data['w15_freq']; w15_spl = data['w15_spl']
+import csv
+
+def load_freq_response_csv(filepath, col_name="spl_db"):
+    """Load a datasheet frequency response CSV and return freq, spl arrays."""
+    freqs, spls = [], []
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root = os.path.dirname(script_dir)
+    full_path = os.path.join(repo_root, filepath)
+    with open(full_path) as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                freq = float(row["freq_hz"])
+                spl_str = row.get(col_name, "")
+                if spl_str and spl_str.strip():
+                    spl = float(spl_str)
+                    freqs.append(freq)
+                    spls.append(spl)
+            except (ValueError, KeyError):
+                continue
+    freqs = np.array(freqs)
+    spls = np.array(spls)
+    sort_idx = np.argsort(freqs)
+    return freqs[sort_idx], spls[sort_idx]
+
+sb26_freq, sb26_spl = load_freq_response_csv("assets/datasheets/SB26STAC-C000-4_freq_response.csv")
+w15_freq, w15_spl = load_freq_response_csv("assets/datasheets/15W-4434G00_freq_response.csv")
+print(f"  SB26STAC: {len(sb26_freq)} pts, {sb26_freq[0]:.0f}-{sb26_freq[-1]:.0f} Hz")
+print(f"  15W/4434G00: {len(w15_freq)} pts, {w15_freq[0]:.0f}-{w15_freq[-1]:.0f} Hz")
 
 # ============================================================
 #  Filter helpers
