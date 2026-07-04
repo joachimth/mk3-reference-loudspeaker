@@ -1,22 +1,22 @@
 """
-Mk2 Reference Loudspeaker - directivity (DI) estimate through the mid/tweeter xover
-==================================================================================
+Reference Loudspeaker - directivity (DI) estimate through the mid/tweeter xover
+================================================================================
 
 Supports the directivity discussion in docs/06, docs/12 and REVIEW.md C2:
 does crossing the WG212 + 15W near the waveguide's ~1620 Hz control limit give a
-better directivity match than the v6b nominal 1250 Hz target?
+better directivity match than the 1100 Hz design crossover?
 
 ASSUMPTIONS (simplified estimate, NOT a measured spinorama)
-- Midrange 15W/4434G00 modelled as a flat circular piston, effective radius
-  a = sqrt(Sd/pi) with Sd = 107 cm^2  ->  a ~ 58.3 mm. -6 dB beamwidth from the
-  piston directivity  D(theta) = |2*J1(k a sin theta)/(k a sin theta)|.
-- Tweeter in WG212 modelled as a constant-directivity source above the control
-  limit (~100 deg H / ~64 deg V, per cad/mk2_waveguide_os.scad) that broadens
-  below it toward the bare-dome pattern.
-- Directivity index from coverage angles:  Q ~ 41253 / (theta_h * theta_v)
-  [deg], DI = 10 log10(Q). This is the standard horn rule-of-thumb; it ignores
-  rear radiation / baffle effects, so absolute dB are approximate. The point is
-  the *match* between the two sources, not the absolute level.
+  - Midrange 15W/4434G00 modelled as a flat circular piston, effective radius
+    a = sqrt(Sd/pi) with Sd = 107 cm^2  ->  a ~ 58.3 mm. -6 dB beamwidth from the
+    piston directivity  D(theta) = |2*J1(k a sin theta)/(k a sin theta)|.
+  - Tweeter (SB26STAC-C000-4) in WG212 modelled as a constant-directivity source
+    above the control limit (~100 deg H / ~64 deg V) that broadens below it
+    toward the bare-dome pattern.
+  - Directivity index from coverage angles:  Q ~ 41253 / (theta_h * theta_v)
+    [deg], DI = 10 log10(Q). This is the standard horn rule-of-thumb; it ignores
+    rear radiation / baffle effects, so absolute dB are approximate. The point is
+    the *match* between the two sources, not the absolute level.
 
 J1 via the Abramowitz & Stegun 9.4 polynomial approximation (no scipy needed).
 
@@ -86,7 +86,7 @@ wg = np.array([wg_coverage_deg(fi) for fi in f])
 di_tw = di_from_coverage(wg[:,0], wg[:,1])
 
 print(f"{'f [Hz]':>8} {'DI_mid':>8} {'DI_tw':>8} {'mismatch':>9}")
-for fx in [1100, 1250, 1620, 2000]:
+for fx in [1100, 1620, 2000]:
     dm = di_from_coverage(piston_beamwidth_deg(fx), piston_beamwidth_deg(fx)); dm = max(dm, 0.0)
     th_h, th_v = wg_coverage_deg(fx); dt = di_from_coverage(th_h, th_v)
     print(f"{fx:>8} {dm:>8.1f} {dt:>8.1f} {dt-dm:>9.1f}")
@@ -95,21 +95,20 @@ fig, ax = plt.subplots(figsize=(9.2, 5.8))
 ax.semilogx(f, di_mid, lw=2.2, color="tab:blue", label="15W midrange (piston estimate)")
 ax.semilogx(f, di_tw, lw=2.2, color="tab:red", label="SB26STAC in WG212 (coverage estimate)")
 ax.axvline(1100, color="tab:blue", ls="--", lw=1.4)
-ax.axvline(1250, color="tab:purple", ls=":", lw=1.2, alpha=0.5)
-ax.text(1100, 10.4, "1100 Hz\n(mk3)", color="tab:blue", fontsize=8, ha="center")
-ax.text(1250, 8.8, "1250 Hz\n(mk2)", color="tab:purple", fontsize=7, ha="center", alpha=0.6)
+ax.text(1100, 10.4, "1100 Hz\n(design)", color="tab:blue", fontsize=8, ha="center")
 ax.axvline(F_CTRL, color="0.5", ls=":", lw=1.4)
 ax.text(F_CTRL, 11.2, "WG212 control\nlimit ~1620 Hz", color="0.4", fontsize=8, ha="left")
 ax.set_xlim(200, 20000); ax.set_ylim(0, 12)
 ax.set_xlabel("Frequency [Hz]"); ax.set_ylabel("Directivity index DI [dB] (estimate)")
-ax.set_title("Estimated directivity match across the mid/tweeter crossover")
+ax.set_title("Estimated directivity match across the mid/tweeter crossover (1100 Hz)")
 ax.grid(True, which="both", alpha=0.25); ax.legend(loc="upper left", fontsize=9)
 ax.text(210, 0.3,
         "The small 15W stays near-omni until ~2.5 kHz, so the WG tweeter is always more\n"
         "directional at the crossover -> an unavoidable DI step. The step is SMALLER at a\n"
-        "lower crossover (~5 dB at 1250 Hz vs ~7 dB at 1620) -> the directivity argument\n"
+        "lower crossover (~5 dB at 1100 Hz vs ~7 dB at 1620) -> the directivity argument\n"
         "behind DD-010. Countering it (REVIEW C2): below ~1620 Hz the WG is not yet pattern-\n"
-        "controlling and 1250 Hz stresses the tweeter (Fs 1030). Net optimum: set by measurement.",
+        "controlling and the tweeter must have the excursion headroom to cross low. The\n"
+        "SB26STAC (Fs 750, Xmax 0.6mm) has the margin to cross at 1100 Hz safely.",
         fontsize=7.5, color="0.3", va="bottom")
 
 out = os.path.join(os.path.dirname(__file__), "plots", "directivity_estimate.png")

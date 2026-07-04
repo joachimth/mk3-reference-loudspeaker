@@ -3,7 +3,7 @@ Mk2 Reference Loudspeaker - vertical polar map & crossover comparison
 =====================================================================
 
 2D heat-map of vertical polar SPL response vs frequency, and a direct
-comparison of the first null angle across the 1250 / 1350 / 1450 / 1600 Hz
+comparison of the first null angle across the 1100 / 1300 / 1500 Hz
 crossover options for the mid/tweeter transition.
 
 ASSUMPTIONS (simplified, NOT measured data)
@@ -76,7 +76,7 @@ F_mesh, TH_mesh = np.meshgrid(f, theta)
 # ---------------------------------------------------------------------------
 #  Build 2D maps for each crossover frequency
 # ---------------------------------------------------------------------------
-xovers = {"1100 Hz": 1100, "1250 Hz": 1250, "1350 Hz": 1350, "1450 Hz": 1450}
+xovers = {"1100 Hz": 1100, "1300 Hz": 1300, "1500 Hz": 1500}
 maps = {}
 for name, fc in xovers.items():
     maps[name] = vertical_pattern(F_mesh, TH_mesh, d_cc, fc)

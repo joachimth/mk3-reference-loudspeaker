@@ -97,32 +97,12 @@ Use ScanSpeak 15W/4434G00 as the midrange driver.
 The 15W size offers a useful balance between:
 
 - Low enough frequency range to meet the woofers around 150 Hz
-- Small enough radiating diameter to match a waveguide around 1.2-1.6 kHz
+- Small enough radiating diameter to match a waveguide around 1.1-1.6 kHz
 - Good expected distortion performance
 
 ## Consequence
 
 The vertical c-c spacing to the tweeter/waveguide remains a critical design constraint.
-
----
-
-# DD-006 - Select ScanSpeak H2606/920000 tweeter in WG212 waveguide
-
-> **Superseded on mk3-sb26stac branch by DD-013/DD-014. Retained on main branch as mk2 fallback.**
-
-## Decision
-
-Use ScanSpeak H2606/920000 (Discovery, horn dome, textile) in the custom WG212 waveguide.
-
-## Reasoning
-
-The H2606/920000 is a horn-loaded tweeter with high sensitivity (95.2 dB / 2.83V), low excursion requirements, and a soft textile dome character. The built-in horn already provides some directivity control. The custom WG212 extends this to better match the midrange directivity at 1250 Hz and optimizes the radiation pattern for the cabinet geometry.
-
-The driver's Fs of 1030 Hz means the 1250 Hz crossover is 220 Hz above resonance - this must be verified by distortion measurement.
-
-## Consequence
-
-The WG212 throat diameter must be designed specifically for the H2606/920000 dome and surround geometry. The high sensitivity (95.2 dB) requires roughly 5 to 7 dB of DSP attenuation relative to the midrange channel (~89.7 dB), finalised from measurement. The final crossover frequency must be validated by distortion measurements of the H2606/920000 in the actual printed waveguide.
 
 ---
 
@@ -162,11 +142,11 @@ The cabinet front construction must support a large radius, possibly through lam
 
 ---
 
-# DD-009 - Retain WG212 rather than larger WG230
+# DD-009 - Retain ~212 mm waveguide mouth rather than larger WG230
 
 ## Decision
 
-Keep the current direction around a 212 mm waveguide mouth.
+Keep the current direction around a ~212 mm waveguide mouth.
 
 ## Reasoning
 
@@ -175,35 +155,6 @@ The simplified directivity comparison suggested that larger waveguides did not p
 ## Consequence
 
 Waveguide refinement should focus on profile, mouth termination, throat geometry and physical integration rather than simply increasing mouth size.
-
----
-
-# DD-010 - Target 1250 Hz mid/tweeter crossover
-
-> **Superseded on mk3-sb26stac branch by DD-013/DD-014. Retained on main branch as mk2 fallback.**
-
-## Decision
-
-Use 1250 Hz LR4 acoustic crossover as the current simulation target.
-
-## Reasoning
-
-Lowering the mid/tweeter crossover improves the directivity match and vertical response in the simplified simulations.
-
-## Consequence
-
-The tweeter/waveguide combination must be measured carefully for distortion and headroom at 1250 Hz.
-
-## Caveat (review)
-
-[REVIEW.md](REVIEW.md) §C2 notes the directivity rationale is only half-right:
-1250 Hz sits roughly 300-450 Hz *below* the WG212's pattern-control limit
-(~1500-1700 Hz), so in that octave the waveguide is not yet controlling and the
-directivity-match benefit is limited — lowering the crossover mainly improves
-*lobing*, not constant directivity. It also asks the H2606 (Fs 1030 Hz) to work
-at only ~1.2 × Fs on an LR4 high-pass, which is a distortion/headroom risk. 1250
-Hz is retained as the pre-measurement target, but the usable value may land
-higher (expect ~1400-1700 Hz); set it from measured H2606-in-WG distortion and DI.
 
 ---
 
@@ -223,92 +174,69 @@ The front layout becomes mechanically tight. The waveguide flange and midrange r
 
 ## Caveat (review)
 
-[REVIEW.md](REVIEW.md) §C1 estimates the geometric minimum c-c at ~145-160 mm:
-the 15W frame is ~Ø149 (half ~74.5 mm) and a WG212 flange is ~140-150 mm tall
-(half ~70-75 mm), so 140 mm is only achievable with a deliberately compact /
-bottom-trimmed ("D-shaped") flange. The lobing analysis
-(`simulations/vertical_lobing.py`) shows ~155-160 mm crossed near the waveguide
-control limit is still clean vertically, so treat **~150-160 mm** as the
-realistic target and set the final value from the actual WG flange + mid recess
-in CAD rather than over-committing to 140 mm.
+The geometric minimum c-c is ~145-160 mm: the 15W frame is ~Ø149 (half ~74.5 mm)
+and a waveguide flange is ~140-150 mm tall (half ~70-75 mm), so 140 mm is only
+achievable with a deliberately compact / bottom-trimmed ("D-shaped") flange. The
+lobing analysis (`simulations/vertical_lobing.py`) shows ~155-160 mm crossed near
+the waveguide control limit is still clean vertically, so treat **~150-160 mm** as
+the realistic target and set the final value from the actual waveguide flange + mid
+recess in CAD rather than over-committing to 140 mm.
 
 ---
 
-# DD-012 - WG212 geometry: asymmetric oblate-spheroid waveguide
-
-> **Superseded on mk3-sb26stac branch by DD-013/DD-014. Retained on main branch as mk2 fallback.**
+# DD-013 - Select SB Acoustics SB26STAC-C000-4 tweeter
 
 ## Decision
 
-Define the WG212 as an **asymmetric oblate-spheroid (OS)** waveguide for the
-H2606/920000, parametrised in [`cad/mk2_waveguide_os.scad`](cad/mk2_waveguide_os.scad):
-
-- Throat ~28 mm (placeholder, to be matched to the real H2606 exit)
-- OS bore with a tangent rolled mouth that ends flush with the baffle
-- Nominal coverage ~100° horizontal / ~64° vertical
-- Mouth ~211.7 × 121.0 mm, total depth ~75 mm
-- Flange 252 × 168 mm, R22 corners
-- Horizontal pattern-control limit ~1620 Hz
+Use SB Acoustics SB26STAC-C000-4 as the tweeter.
 
 ## Reasoning
 
-A 5" midrange is still close to omnidirectional at the 1250-1600 Hz crossover, so
-the waveguide is matched **wide horizontally** rather than narrow. A **narrower
-vertical** coverage limits vertical lobing and lets the mid sit at a tight c-c.
-The OS profile gives a smooth throat (no diffraction edge) and the flush rolled
-mouth suppresses mouth-diffraction ripple. Terminating control at ~1620 Hz keeps
-the waveguide working in its controlled band for a crossover near that frequency.
+The SB26STAC-C000-4 conventional dome tweeter is selected for its acoustic
+advantages:
+
+- **Fs 750 Hz gives 350 Hz margin at the 1100 Hz crossover** — a comfortable
+  margin that requires no distortion-test gate before committing to the
+  crossover frequency.
+- **0.6 mm Xmax gives +8.1 dB excursion headroom** at 1100 Hz, substantially more
+  maximum SPL capability near the crossover.
+- **91.5 dB sensitivity is a better match to the 15W/4434G00's 89.7 dB** — only
+  -1.8 dB of DSP pad is needed. This reduces wasted amplifier power and the
+  thermal/level mismatch.
+- **No horn loading** — the SB26STAC is a conventional dome used in a custom
+  waveguide rather than a horn-loaded tweeter. The waveguide provides directivity
+  control without relying on the driver's built-in horn.
+
+The selection analysis comparing the SB26STAC against the earlier horn-dome
+candidate is documented in `docs/SB26STAC-C000-4_analysis.md`.
 
 ## Consequence
 
-The ~1620 Hz control limit sits above the v6b nominal 1250 Hz target, reinforcing
-the DD-010 caveat: the crossover may need to rise toward ~1500-1700 Hz once the
-printed waveguide is measured. The ~75 mm depth must be accommodated behind the
-baffle, and the 28 mm throat must be verified against the physical H2606 before
-printing. The mouth must terminate **flush** with the baffle (no forward lip or
-sharp edge) to avoid diffraction; the model was corrected to seat the flange
-behind the flush mouth plane (see docs/06 and `simulations/waveguide_profile.py`).
-This is simulation-stage geometry, not validated by measurement.
+A waveguide model (`cad/waveguide.scad`) is required with a throat sized for the
+SB26STAC dome and surround (28 mm) and no horn loading. The crossover is set at
+1100 Hz (see DD-014).
 
 ---
 
-# DD-013 - Select SB Acoustics SB26STAC-C000-4 tweeter (mk3)
-
-> **mk3-sb26stac branch only. Replaces DD-006 on this branch; DD-006 is retained on main as the mk2 fallback.**
+# DD-014 - Target 1100 Hz LR4 mid/tweeter crossover
 
 ## Decision
 
-Use SB Acoustics SB26STAC-C000-4 as the tweeter (mk3).
+Use 1100 Hz LR4 acoustic crossover as the mid/tweeter target.
 
 ## Reasoning
 
-The SB26STAC-C000-4 conventional dome tweeter is selected for mk3 over the ScanSpeak H2606/920000 (DD-006):
+The SB26STAC-C000-4's Fs of 750 Hz gives a comfortable 350 Hz margin at 1100 Hz.
+The crossover optimization sweep (`simulations/mk3_crossover_optimization.py`)
+confirms 1100 Hz as optimal, scoring 8.1 across Fs margin, excursion headroom,
+directivity match, vertical lobing, and system sum flatness. The 1100 Hz point
+sits below the broadside null (1147 Hz for 150 mm c-c) so the null is outside the
+active crossover band, and the LR4 rolloff suppresses it almost entirely (under
+0.7 dB ripple at ±15°).
 
-- **Fs 750 Hz gives 350 Hz margin at the 1100 Hz crossover** (vs H2606's 220 Hz margin at 1250 Hz). The margin is comfortable enough that no distortion-test gate is required before committing to the crossover frequency.
-- **0.6 mm Xmax gives +8.1 dB excursion headroom** at 1100 Hz relative to the H2606 at 1250 Hz, substantially more maximum SPL capability near the crossover.
-- **91.5 dB sensitivity is a better match to the 15W/4434G00's 89.7 dB** — only -1.8 dB of DSP pad is needed, vs -5.5 dB for the H2606. This reduces wasted amplifier power and the thermal/level mismatch.
-- **No horn loading** — the SB26STAC is a conventional dome used in a custom waveguide rather than a horn-loaded tweeter. The waveguide provides directivity control without relying on the driver's built-in horn.
-
-## Consequence
-
-A new waveguide model (`cad/mk2_waveguide_sb26stac.scad`) is required with a throat sized for the SB26STAC dome and surround (28 mm) and no horn loading. The crossover drops to 1100 Hz (see DD-014). DD-006 (H2606 selection) is superseded on this branch; it is retained on main as the mk2 fallback.
-
----
-
-# DD-014 - Target 1100 Hz LR4 mid/tweeter crossover (mk3)
-
-> **mk3-sb26stac branch only. Replaces DD-010 on this branch; DD-010 is retained on main as the mk2 fallback.**
-
-## Decision
-
-Use 1100 Hz LR4 acoustic crossover as the mk3 mid/tweeter target.
-
-## Reasoning
-
-The SB26STAC-C000-4's Fs of 750 Hz gives a comfortable 350 Hz margin at 1100 Hz. The crossover optimization sweep (`simulations/mk3_crossover_optimization.py`) confirms 1100 Hz as optimal, scoring 8.1 across Fs margin, excursion headroom, directivity match, vertical lobing, and system sum flatness. The 1100 Hz point sits below the broadside null (1147 Hz for 150 mm c-c) so the null is outside the active crossover band, and the LR4 rolloff suppresses it almost entirely (under 0.7 dB ripple at ±15°).
-
-Because the Fs margin is comfortable, no distortion-test gate is required before committing to 1100 Hz — unlike mk2's H2606 at 1250 Hz, which has only 220 Hz margin and must pass a distortion measurement before the crossover is confirmed (see DD-010 caveat).
+Because the Fs margin is comfortable, no distortion-test gate is required before
+committing to 1100 Hz.
 
 ## Consequence
 
-The midrange low-pass and tweeter high-pass are both 1100 Hz LR4. DD-010 (1250 Hz target) is superseded on this branch; it is retained on main as the mk2 fallback.
+The midrange low-pass and tweeter high-pass are both 1100 Hz LR4.

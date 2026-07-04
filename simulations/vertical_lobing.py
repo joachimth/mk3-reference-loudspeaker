@@ -11,7 +11,7 @@ ASSUMPTIONS (simplified, two in-phase point sources)
 
 Conclusion it supports (see REVIEW.md C2): even c-c 160 mm crossed at 1600 Hz keeps the
 first vertical null near 42 deg - far outside the +-15..30 deg listening window - so a
-buildable ~160 mm c-c does NOT force a 1250 Hz crossover.
+buildable ~160 mm c-c does NOT force a 1100 Hz crossover.
 
 Output: simulations/plots/vertical_lobing.png
 """
@@ -32,7 +32,7 @@ def null_angle(f, d):
     return out
 
 cc_options = {"c-c 140 mm": 0.140, "c-c 160 mm": 0.160}
-xovers = {"1250 Hz": 1250, "1500 Hz": 1500, "1600 Hz": 1600}
+xovers = {"1100 Hz": 1100, "1500 Hz": 1500, "1600 Hz": 1600}
 
 print("First vertical null angle [deg]:")
 for name, d in cc_options.items():

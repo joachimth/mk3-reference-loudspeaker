@@ -13,9 +13,9 @@ ASSUMPTIONS (theoretical, NOT measured data)
   because the two sources radiate in the same direction from opposite sides.
 - 15W/4434G00: flat circular piston, a=58.3 mm (from Sd=107 cm^2).  Directivity
   from |2 J1(ka sinθ)/(ka sinθ)|.  This is valid roughly to the cone breakup region
-  (~2 kHz).  Crossed at 1250 Hz, so the mid dominates below that and the tweeter
+  (~2 kHz).  Crossed at 1100 Hz, so the mid dominates below that and the tweeter
   above.
-- H2606/920000 in WG212: above the control limit (~1620 Hz) modelled as a
+- SB26STAC-C000-4 in WG212: above the control limit (~1620 Hz) modelled as a
   constant-directivity source with coverage 100°H × 64°V.  The transition from
   omni-dome to CD-horn is approximated by a smooth crossover function from the
   bare dome radius (~13 mm) to the waveguide mouth (~106×60 mm).  This is a very
@@ -102,7 +102,7 @@ def lr4_hp(f, fc):
 
 # Woofer: LP@150, diameter 200 mm -> a=0.1m, omni below 150
 a_w = 0.100   # 200 mm diameter
-# Mid: 15W, a=58.3 mm, HP@150 + LP@1250
+# Mid: 15W, a=58.3 mm, HP@150 + LP@1100
 a_m = 0.0583
 # Tweeter: dome radius ~13 mm, transitions to waveguide mouth ~106 mm at ~1620 Hz
 a_t_dome = 0.013
@@ -128,10 +128,10 @@ for i, fi in enumerate(f):
     D_m[i, :] = piston_d(theta, a_m, fi)
 D_m *= H_m_hp
 
-# Tweeter directivity: HP@1250, transition dome→waveguide
-H_t_hp = lr4_hp(f, 1250.0)[:, None]
-# transition: at 1250 Hz it's still dome-like, at 2000 Hz it's CD
-wg_weight = smoothstep(f, 1250.0, 2000.0)[:, None]
+# Tweeter directivity: HP@1100, transition dome→waveguide
+H_t_hp = lr4_hp(f, 1100.0)[:, None]
+# transition: at 1100 Hz it's still dome-like, at 2000 Hz it's CD
+wg_weight = smoothstep(f, 1100.0, 2000.0)[:, None]
 D_t = np.ones((len(f), len(theta)))
 for i, fi in enumerate(f):
     a_eff = (1 - wg_weight[i,0]) * a_t_dome + wg_weight[i,0] * a_t_wg
@@ -238,9 +238,9 @@ ax.set_title("Estimated Directivity Index (on-axis – sound power)")
 ax.grid(True, which="both", alpha=0.25)
 # annotations
 ax.axvline(150, color="0.4", ls=":", lw=0.8, alpha=0.5)
-ax.axvline(1250, color="0.4", ls=":", lw=0.8, alpha=0.5)
+ax.axvline(1100, color="0.4", ls=":", lw=0.8, alpha=0.5)
 ax.text(150, 11, "150 Hz", fontsize=8, color="0.4")
-ax.text(1250, 11, "1250 Hz", fontsize=8, color="0.4")
+ax.text(1100, 11, "1100 Hz", fontsize=8, color="0.4")
 
 # --- Horizontal polar cuts at key frequencies ---
 ax = fig.add_subplot(2, 2, 4, polar=True)

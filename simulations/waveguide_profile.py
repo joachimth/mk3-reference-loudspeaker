@@ -2,7 +2,7 @@
 Mk2 Reference Loudspeaker - WG212 mouth-to-baffle termination study
 ===================================================================
 
-Why: the current waveguide model (cad/mk2_waveguide_os.scad) rolls the bore to a
+Why: the current waveguide model (cad/waveguide.scad) rolls the bore to a
 flush tangent at z = D_tot, but then adds the mounting flange *forward* of that
 plane and cuts the mouth as a straight prism through it. The last `flange_thick`
 mm are therefore a straight, axial "lip" that ends in a sharp 90 deg edge at the
@@ -27,7 +27,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# --- geometry from cad/mk2_waveguide_os.scad (horizontal plane) ---
+# --- geometry from cad/waveguide.scad (horizontal plane) ---
 r_t       = 28/2.0
 theta     = 50.0           # theta_h [deg]
 D_os      = 65.0

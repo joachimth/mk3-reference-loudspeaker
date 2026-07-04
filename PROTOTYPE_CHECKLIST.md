@@ -1,4 +1,4 @@
-# Prototype Checklist — Next Gate (Mk3)
+# Prototype Checklist — Next Gate
 
 ## What you need to do before building the cabinet
 
@@ -6,11 +6,11 @@
 
 ---
 
-## Step 1 — Print the WG212-SB26STAC waveguide
+## Step 1 — Print the SB26STAC waveguide
 
 | Property | Current value | Status |
 |---|---|---|
-| STL source | `cad/exports/sb26stac/waveguide_sb26stac.stl` (or local: `openscad -o wg_sb26stac.stl cad/mk2_waveguide_sb26stac.scad`) | ✅ Ready |
+| STL source | `cad/exports/sb26stac/waveguide_sb26stac.stl` (or local: `openscad -o wg_sb26stac.stl cad/waveguide.scad`) | ✅ Ready |
 | Material | PETG recommended | |
 | Orientation | Print flat — flange down, throat up | |
 | Post-print | Slow cool to avoid warping | |
@@ -63,7 +63,7 @@
 This is **the design gate**. If the SB26STAC can't do 1100 Hz with low distortion, the crossover frequency shifts up.
 
 **Setup:**
-- Mount SB26STAC in the printed WG212-SB26STAC waveguide
+- Mount SB26STAC in the printed waveguide
 - Use a solid baffle (cardboard or ply test panel) with the waveguide aperture cut
 - Measure nearfield with measurement mic (UMIK-1 or similar)
 - Signal: 2.83 V sine sweep
@@ -77,7 +77,7 @@ This is **the design gate**. If the SB26STAC can't do 1100 Hz with low distortio
 | 1500 Hz | < 2% | Same as above |
 | 1800 Hz | < 1% | Safe fallback position |
 
-**Why 1100 Hz specifically:** SB26STAC Fs = 750 Hz. Crossover at 1100 Hz is 350 Hz above resonance. The SB26STAC has 0.6 mm Xmax (3× the H2606's 0.2 mm), giving +8.1 dB excursion headroom at crossover. This is a comfortable margin. If distortion is too high, raise to 1300-1500 Hz.
+**Why 1100 Hz specifically:** SB26STAC Fs = 750 Hz. Crossover at 1100 Hz is 350 Hz above resonance. The SB26STAC has 0.6 mm Xmax, giving +8.1 dB excursion headroom at crossover. This is a comfortable margin. If distortion is too high, raise to 1300-1500 Hz.
 
 **Recording (note these):**
 - Measured THD at 1100 Hz: _____ %
@@ -98,7 +98,7 @@ This is **the design gate**. If the SB26STAC can't do 1100 Hz with low distortio
 The cabinet CAD is fully parametric. Once these 3 steps are done:
 
 1. Order drivers (2× GRS, 1× 15W, 1× SB26STAC-C000-4 per speaker)
-2. DSP: MiniDSP 4×10 HD — import `mk3-sb26stac-1100hz.xml` (on main branch, copy to mk3)
+2. DSP: MiniDSP 4×10 HD — import `mk3-sb26stac-1100hz.xml`
 3. Follow `docs/16_build_guide.md` — 10 phases, build log in `BUILD_LOG.md`
 4. 22 mm birch plywood, ~4 sheets per pair
 
@@ -108,15 +108,14 @@ The cabinet CAD is fully parametric. Once these 3 steps are done:
 
 | Model | File | Notes |
 |---|---|---|
-| `cad/mk2_waveguide_sb26stac.scad` | mk3 primary | SB26STAC waveguide: BCD 88.5 mm, throat 28 mm, no horn loading. STL rendered, manifold. |
+| `cad/waveguide.scad` | primary | SB26STAC waveguide: BCD 88.5 mm, throat 28 mm, no horn loading. STL rendered, manifold. |
 | `cad/cabinet.scad` | shared | Fully dynamic from waveguide.scad; waveguide recessed inside cabinet, baffle aperture model. |
-| `cad/mk2_waveguide_os.scad` | mk2 (main branch) | WG212 for H2606. Not used on this branch. |
 
 **Don't cut panels from SCAD outputs until parts are physically verified.**
 
 ---
 
-## Quick reference — key dimensions (Mk3)
+## Quick reference — key dimensions
 
 | Item | Value |
 |---|---|
@@ -130,5 +129,3 @@ The cabinet CAD is fully parametric. Once these 3 steps are done:
 | Mid/tweeter crossover | 1100 Hz LR4 (unconfirmed — Step 3) |
 | FR roundovers | R50 on cabinet front vertical edges |
 | DSP | MiniDSP 4×10 HD |
-
-> **Fallback:** If the SB26STAC distortion test fails and crossover cannot be raised enough, the mk2 design (H2606/920000 at 1250 Hz) on the `main` branch remains the fallback path.

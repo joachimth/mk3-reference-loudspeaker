@@ -1,157 +1,20 @@
 # Changelog
 
-All notable design changes for Mk2 Reference Loudspeaker are documented here.
+All notable design changes for the Mk3 Reference Loudspeaker are documented here.
 
-## v7 / mk3 — SB26STAC tweeter (mk3-sb26stac branch)
+## v7 — SB26STAC tweeter, 1100 Hz crossover
 
 ### Added
 
-- **SB Acoustics SB26STAC-C000-4** conventional dome tweeter selected as the mk3
-  tweeter (replaces ScanSpeak H2606/920000 from mk2). Fs 750 Hz, 0.6 mm Xmax,
-  91.5 dB, 4 Ω.
-- **1100 Hz LR4** mid/tweeter crossover selected (lower than mk2's 1250 Hz).
-- **Custom non-horn-loaded waveguide** (`cad/mk2_waveguide_sb26stac.scad`) — the
-  SB26STAC is a conventional dome and is not horn-loaded, unlike the H2606 in
-  WG212, so it requires a completely different waveguide geometry.
-- **+8.1 dB excursion headroom** vs H2606 at the crossover frequency — the lower
-  Fs (750 Hz vs 1030 Hz) and 1100 Hz crossover place the operating point at
-  ~1.47 × Fs instead of mk2's ~1.2 × Fs, reducing distortion/excursion risk.
-- `mk3-sb26stac` branch created July 3 2026.
-- New mk3 simulation scripts: `mk2_vs_mk3_realistic_response.py`,
+- **SB Acoustics SB26STAC-C000-4** conventional dome tweeter selected as the
+  tweeter. Fs 750 Hz, 0.6 mm Xmax, 91.5 dB, 4 Ω.
+- **1100 Hz LR4** mid/tweeter crossover selected.
+- **Custom non-horn-loaded waveguide** (`cad/waveguide.scad`) — the SB26STAC is a
+  conventional dome and is not horn-loaded, so it uses a waveguide geometry that
+  provides directivity control without relying on a built-in horn.
+- **+8.1 dB excursion headroom** at the crossover frequency — the lower Fs
+  (750 Hz) and 1100 Hz crossover place the operating point at ~1.47 × Fs,
+  reducing distortion/excursion risk.
+- New simulation scripts: `mk2_vs_mk3_realistic_response.py`,
   `mk2_vs_mk3_spinorna.py`, `mk3_crossover_optimization.py`,
   `h2606_vs_sb26stac_comparison.py` (see `simulations/`).
-
-### Notes
-
-This is a parallel design variant on its own branch, not a replacement of the
-mk2 main line. See `PROJECT_TODO.md` for the mk3 task list and `ROADMAP.md` for
-the v7/mk3 entry. mk2 (H2606, 1250 Hz) remains the main-line design pending the
-H2606 distortion test; mk3 is the fallback if that test fails.
-
-## v6b - Current reference candidate
-
-### Added
-
-- WG212 selected as current waveguide direction.
-- 1250 Hz LR4 acoustic mid/tweeter crossover selected as current target.
-- 140 mm mid/tweeter c-c spacing selected as target.
-- 300 mm front baffle retained.
-- R50 vertical front roundovers retained.
-- Approx. 69 L sealed bass chamber target retained.
-
-### Notes
-
-The latest simplified spinorama/directivity simulations suggest that lowering the mid/tweeter crossover and reducing the c-c spacing are more important than increasing waveguide mouth size.
-
-### Refined and corrected (post-review)
-
-- Push-push woofers specified as **opposed at the same height with a rigid
-  coupling block**, replacing the earlier 350 mm / 700 mm vertical stagger (the
-  stagger re-introduced a rocking moment; same-height opposed cancels cleanly and
-  fits the ~22 mm magnet gap). See Chapter 8.
-- DD-010 (1250 Hz) and DD-011 (140 mm c-c) annotated with the review caveats:
-  1250 Hz sits below the WG212 control band, and ~150-160 mm is the realistic
-  buildable c-c. The nominal targets are retained pending measurement.
-- Corrected physics-doc errors flagged in `REVIEW.md`: the sealed-box formula and
-  T/S data (Chapter 3), the N-driver Vas relation (Chapter 9), and the LR4 phase
-  description (Chapter 11). Design numbers (Qtc ~0.62 / Fc ~34.5 Hz) are unchanged.
-- Registered the **SB23 line** as a parallel alternative variant (see `ROADMAP.md`
-  and `assets/`). The v6b GRS spec is unchanged.
-- Minor data polish (REVIEW §D): midrange sensitivity corrected ~88 → ~89.7 dB
-  with the tweeter pad widened to ~5-7 dB (measurement-dependent); deep-GRS driver
-  displacement raised ~1.5 → ~5 L for the pair (net bass still ~70 L); added a
-  4 Ω-vs-8 Ω impedance-confirmation note (Chapter 3) and a "simulated, not
-  CEA-2034" banner to Chapter 13.
-
-### Design-stage work (CAD + simulations)
-
-- WG212 geometry defined as an asymmetric oblate-spheroid waveguide and recorded
-  as **DD-012** (throat ~28 mm, ~100°/64° coverage, mouth ~211.7 × 121 mm, control
-  ~1620 Hz); Chapter 6 updated to reference `cad/mk2_waveguide_os.scad` and tick
-  the completed geometry tasks.
-- Added `cad/cabinet.scad` (first cabinet CAD): shell, R50 roundovers, opposed
-  push-push cut-outs + coupling block, WG/mid baffle cut-outs at 150 mm c-c,
-  sealed mid chamber and braces.
-- Added simulations `bass_volume_compare.py` (64–72 L alignment + group delay;
-  confirms Qtc ~0.62 / Fc ~34.5 at 69 L and tolerance-robustness) and
-  `directivity_estimate.py` (DI step vs crossover — quantifies DD-010 / REVIEW §C2).
-- Fixed a sharp waveguide-mouth-to-baffle edge in `cad/mk2_waveguide_os.scad`
-  (flange moved behind the flush mouth plane, removing the forward lip that would
-  diffract) and added `simulations/waveguide_profile.py` illustrating the issue
-  and the flush / blended fixes.
-- `cabinet.scad`: added an optional waveguide-in-baffle **assembly** view
-  (`show_waveguide`) and explicit `eps` cut overshoots so openings render cleanly
-  — coincident faces otherwise smear in OpenSCAD instead of showing a hole. The
-  seated mouth pokes `wg_through` mm through the baffle so the solids overlap.
-- All CAD/simulation outputs are simulation-stage estimates, not measured or final.
-
-## v6 - Directivity optimization
-
-### Added
-
-- Compared WG212, WG220, WG230 and WG240.
-- Compared 1300, 1400, 1500 and 1600 Hz mid/tweeter crossover targets.
-- Compared 140, 145, 150 and 157 mm c-c spacing.
-
-### Result
-
-The best candidates were concentrated around low crossover frequency and short c-c spacing.
-
-## v5b - Volume and placement refinement
-
-### Added
-
-- Refined woofer centers to 350 mm and 700 mm from cabinet bottom.
-- Refined mid chamber to approx. 5.7 L net.
-- Estimated net bass volume around 70 L.
-- Estimated sealed alignment around Fc 34-35 Hz and Qtc 0.62.
-
-## v5 - 300 mm / R50 cabinet
-
-### Added
-
-- Selected 300 mm cabinet width.
-- Selected R50 vertical front roundovers.
-- Retained 370 mm depth and approx. 1080 mm height.
-
-### Result
-
-300/R50 was selected as a better practical compromise than 280/R40 or wider variants.
-
-## v4 - 280 mm cabinet exploration
-
-### Added
-
-- Explored 280 mm wide cabinet.
-- Compared R20, R30, R40 and R50 roundovers.
-
-### Result
-
-R40 was promising, but 280 mm width was considered more mechanically constrained.
-
-## v3 - GRS woofer introduced
-
-### Added
-
-- Investigated GRS 8SW-4HE-8 as replacement woofer.
-- Simulated sealed box volumes around 55-75 L.
-
-### Result
-
-2 x GRS 8SW-4HE-8 in approx. 64-70 L sealed volume gave a low-Q alignment suitable for DSP.
-
-## v2 - Cabinet concept
-
-### Added
-
-- Active 3-way cabinet concept.
-- Push-push side woofers.
-- Dedicated sealed mid chamber.
-- H2606 waveguide tweeter.
-
-## v1 - Initial concept
-
-### Added
-
-- Initial Mk2 active reference loudspeaker direction.
-- SB23-based starting point.

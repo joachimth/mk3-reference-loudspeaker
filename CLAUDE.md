@@ -4,7 +4,7 @@ Guidance for AI assistants (and humans) working in this repository.
 
 ## What this repository is
 
-This is the **design documentation** for the *Mk2 Reference Loudspeaker* — a
+This is the **design documentation** for the *Mk3 Reference Loudspeaker* — a
 DIY active 3-way reference loudspeaker, inspired by the Genelec 8361,
 Dutch & Dutch 8C, and Revel Salon2.
 
@@ -14,26 +14,9 @@ the engineering reasoning behind the speaker design, captured as a living
 "Design Bible" plus supporting reference files.
 
 The project is currently at the **simulation / design-candidate stage** (design
-version **v6b** on the main line; **v7 / mk3** on the `mk3-sb26stac` branch).
-No physical prototype has been built yet. Most numbers are simplified simulation
-estimates, not measured data — preserve that distinction in any edits.
-
-> **You are on the `mk3-sb26stac` branch.** The current design on this branch is
-> **v7 / mk3**, which differs from the mk2 main line (v6b) in the tweeter and
-> mid/tweeter crossover only:
-
-| Parameter | mk2 main line (v6b) | mk3 (this branch, v7) |
-|---|---|---|
-| Tweeter | ScanSpeak H2606/920000 in WG212 waveguide | SB Acoustics SB26STAC-C000-4 (bare dome, not horn-loaded) |
-| Tweeter waveguide | `cad/mk2_waveguide_os.scad` (WG212) | `cad/mk2_waveguide_sb26stac.scad` (primary) |
-| Mid/tweeter xover | 1250 Hz LR4 | 1100 Hz LR4 |
-| Woofers / mid / cabinet / bass | unchanged | unchanged |
-
-The SB26STAC has a lower Fs (750 Hz vs 1030 Hz) and 3× the Xmax (0.6 mm vs
-0.2 mm), giving **+8.1 dB excursion headroom** at the crossover. See
-`ROADMAP.md` (v7/mk3), `CHANGELOG.md` (v7/mk3), and `PROJECT_TODO.md` for the
-mk3 task list. When editing on this branch, treat the mk3 values above as the
-current spec; the mk2 values are historical/comparison context.
+version **v7**). No physical prototype has been built yet. Most numbers are
+simplified simulation estimates, not measured data — preserve that distinction
+in any edits.
 
 ## Repository layout
 
@@ -60,27 +43,26 @@ current spec; the mk2 values are historical/comparison context.
 │   ├── 16_build_guide.md
 │   └── 17_future_versions.md
 ├── DESIGN_REQUIREMENTS.md    # Acoustic + mechanical targets (the spec)
-├── DESIGN_DECISIONS.md       # Numbered decisions DD-001..DD-011 with rationale
+├── DESIGN_DECISIONS.md       # Numbered decisions DD-001..DD-014 with rationale
 ├── PARTS.md                  # Driver + materials list
 ├── SIMULATIONS.md            # Simulation work + assumptions (estimates, not measured)
 ├── MEASUREMENTS.md           # Measurement plan (not yet executed)
 ├── BUILD_LOG.md              # Physical build log (template; build not started)
-├── ROADMAP.md                # Version history v1..v11 + future plans
+├── ROADMAP.md                # Version history v7+ + future plans
 ├── CHANGELOG.md              # Design change log, newest version first
 ├── REFERENCES.md             # Books, researchers, software
-├── TODO.md                   # Outstanding tasks (checkbox lists)
-└── LICENSE                   # MIT
+├── LICENSE                   # MIT
+└── dsp-configs/              # MiniDSP 4×10 HD XML configs + generator
 ```
 
 ## The two key conventions
 
-### 1. Design versions (vN / vNb)
+### 1. Design versions (vN)
 
 The whole project is organized around incrementing design versions, tracked in
 `ROADMAP.md` (full history) and `CHANGELOG.md` (changes, newest first). The
-mk2 main-line reference candidate is **v6b**. On the `mk3-sb26stac` branch,
-**v7 / mk3** is completed design work (SB26STAC tweeter, 1100 Hz crossover).
-Further v8+ on the main line are planned/future and describe intended work.
+current design candidate is **v7**. Further v8+ are planned/future and describe
+intended work.
 
 When the design changes, bump or annotate the version and record it in both
 `ROADMAP.md` and `CHANGELOG.md`.
@@ -88,8 +70,8 @@ When the design changes, bump or annotate the version and record it in both
 ### 2. Numbered design decisions (DD-NNN)
 
 `DESIGN_DECISIONS.md` records each significant choice as `DD-NNN` with three
-sections: **Decision**, **Reasoning**, and (usually) **Consequence**. The next
-new decision is `DD-013`. Keep this format when adding one.
+sections: **Decision**, **Reasoning**, and (usually) **Consequence**. Keep this
+format when adding one.
 
 ## The current spec — keep it consistent
 
@@ -99,43 +81,20 @@ This summary appears verbatim (or near-verbatim) in **multiple files**:
 **must update every place it appears** — otherwise the docs contradict each
 other.
 
-> On the `mk3-sb26stac` branch the current spec is **v7 / mk3** (below). The
-> v6b table is retained as historical/comparison context — see `ROADMAP.md` and
-> `CHANGELOG.md`.
-
-### mk3 spec (this branch, v7)
+### Current spec (v7)
 
 | Parameter | Value |
 |---|---|
 | Woofers | 2 × GRS 8SW-4HE-8 (push-push, side-mounted, series → 8 Ω) |
 | Midrange | ScanSpeak 15W/4434G00 (sealed mid chamber ~5.7 L) |
 | Tweeter | SB Acoustics SB26STAC-C000-4 (bare dome, not horn-loaded) |
-| Tweeter waveguide | `cad/mk2_waveguide_sb26stac.scad` (primary) |
+| Tweeter waveguide | `cad/waveguide.scad` |
 | Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood, R50 front roundovers |
 | Bass volume | ~69 L sealed, Fc ~34.5 Hz, Qtc ~0.62 |
 | Bass/mid xover | 150 Hz LR4 |
 | Mid/tweeter xover | 1100 Hz LR4 |
 | Mid/tweeter c-c | 140 mm |
 | System | Active, DSP-controlled (no passive crossover) |
-
-### v6b spec (mk2 main line — historical/comparison)
-
-| Parameter | Value |
-|---|---|
-| Woofers | 2 × GRS 8SW-4HE-8 (push-push, side-mounted, series → 8 Ω) |
-| Midrange | ScanSpeak 15W/4434G00 (sealed mid chamber ~5.7 L) |
-| Tweeter | ScanSpeak H2606/920000 in custom WG212 waveguide |
-| Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood, R50 front roundovers |
-| Bass volume | ~69 L sealed, Fc ~34.5 Hz, Qtc ~0.62 |
-| Bass/mid xover | 150 Hz LR4 |
-| Mid/tweeter xover | 1250 Hz LR4 |
-| Mid/tweeter c-c | 140 mm |
-| System | Active, DSP-controlled (no passive crossover) |
-
-Note: the mk2 tweeter is **ScanSpeak** H2606/920000 — an earlier revision
-incorrectly attributed it to Seas; see commit `bc6c3df`. Do not reintroduce
-"Seas H2606". The mk3 tweeter (SB26STAC-C000-4) is **SB Acoustics**, not
-ScanSpeak.
 
 ## Writing conventions
 
@@ -161,24 +120,21 @@ ScanSpeak.
 There is nothing to build, lint, or run. The workflow is purely editorial:
 
 1. Make the documentation change.
-2. Propagate any spec change to every file that repeats it (see the v6b table above).
+2. Propagate any spec change to every file that repeats it (see the spec table above).
 3. If it's a design change, update `CHANGELOG.md` and `ROADMAP.md`; if it's a
-   decision, add/extend a `DD-NNN` entry; tick or add items in `TODO.md`.
+   decision, add/extend a `DD-NNN` entry; tick or add items in `PROJECT_TODO.md`.
 4. Commit with a clear, conventional-style message and push.
 
 ### Git conventions
 
 - Commit messages follow a loose conventional style seen in history:
   `docs: ...`, `fix: ...`, or short imperative summaries (`Add chapter 3 woofer selection`).
-- **Do all work on the assigned feature branch** (currently
-  `claude/claude-md-docs-uigw74`). Create it locally if needed. Never push to
-  `main` without explicit permission.
 - Use `git push -u origin <branch>`.
 - **Do not open a pull request unless explicitly asked.**
 
 ## What does NOT exist yet (don't assume it does)
 
-These are referenced as aspirations in `TODO.md` / `SIMULATIONS.md` but are not
+These are referenced as aspirations in `PROJECT_TODO.md` / `SIMULATIONS.md` but are not
 in the repo:
 
 - CSV datasets or measured-data files
@@ -188,7 +144,7 @@ in the repo:
 
 Partially present (simulation-stage, estimates only — extend, don't assume
 finished): `simulations/` holds version-controlled Python scripts + plots, and
-`cad/` holds parametric OpenSCAD models for the WG212 waveguide and the cabinet.
+`cad/` holds parametric OpenSCAD models for the waveguide and the cabinet.
 
 If asked to "add the simulation" or "generate the CAD," check `simulations/` and
 `cad/` first and extend them; exported meshes, drawings and measured data would
@@ -201,9 +157,8 @@ still be new artifact types — confirm scope before creating those.
   is wired reversed polarity to achieve this (see Chapter 8).
 - **Spinorama** — the standardized set of curves (on-axis, listening window,
   early reflections, sound power, predicted in-room, directivity index).
-- **WG212** — the project's custom ~212 mm-mouth waveguide for the mk2 tweeter
-  (H2606). On the mk3 branch the equivalent is the non-horn-loaded
-  `mk2_waveguide_sb26stac.scad` for the SB26STAC dome.
+- **Waveguide** — the project's custom ~212 mm-mouth non-horn-loaded waveguide
+  for the SB26STAC-C000-4 dome tweeter (`cad/waveguide.scad`).
 - **Qtc / Fc** — total system Q and resonant frequency of the sealed bass alignment.
 - **LR4** — Linkwitz-Riley 4th-order (24 dB/oct) acoustic crossover target.
 - **DSP / active** — crossovers, delay, and EQ are done electronically per driver

@@ -1,6 +1,6 @@
 # Simulations
 
-This file tracks simulation work and assumptions for Mk2 Reference Loudspeaker.
+This file tracks simulation work and assumptions for the Mk3 Reference Loudspeaker.
 
 ---
 
@@ -13,21 +13,26 @@ Final crossover and DSP decisions must be based on real measurements in the fini
 Version-controlled, assumption-headed scripts and their plots now live in
 [`simulations/`](simulations/) (`bass_alignment_maxspl.py`, `bass_volume_compare.py`,
 `vertical_lobing.py`, `directivity_estimate.py`, `crossover_simulation.py`,
-`system_response.py`, `polar_response.py`, `vertical_polar_map.py`); parametric
-OpenSCAD geometry lives in [`cad/`](cad/) (WG212 waveguide + cabinet).
+`system_response.py`, `polar_response.py`, `vertical_polar_map.py`,
+`mk2_vs_mk3_realistic_response.py`, `mk2_vs_mk3_spinorna.py`,
+`mk3_crossover_optimization.py`, `h2606_vs_sb26stac_comparison.py`); parametric
+OpenSCAD geometry lives in [`cad/`](cad/) (waveguide + cabinet).
 
-### mk3 (SB26STAC / 1100 Hz) scripts
+### Current design scripts
 
-On the `mk3-sb26stac` branch, four additional scripts compare the mk2 (H2606,
-1250 Hz) and mk3 (SB26STAC, 1100 Hz) designs and optimise the mk3 crossover:
+The following scripts document the current SB26STAC / 1100 Hz design and the
+tweeter selection analysis:
 
 - `mk2_vs_mk3_realistic_response.py` — realistic system response using actual
-  datasheet frequency-response curves for both designs.
-- `mk2_vs_mk3_spinorama.py` — spinorama comparison between mk2 and mk3.
+  digitized datasheet frequency-response curves, baffle step, waveguide loading
+  and LR4 crossovers.
+- `mk2_vs_mk3_spinorna.py` — spinorama estimate (on-axis, listening window,
+  early reflections, sound power, DI, PIR) using real datasheet curves.
 - `mk3_crossover_optimization.py` — systematic crossover-frequency sweep for
-  the SB26STAC.
-- `h2606_vs_sb26stac_comparison.py` — head-to-head tweeter comparison
-  (excursion, distortion, sensitivity) between H2606 and SB26STAC.
+  the SB26STAC scoring Fs margin, excursion headroom, directivity match,
+  vertical lobing ripple and system-sum flatness. Confirms 1100 Hz as optimal.
+- `h2606_vs_sb26stac_comparison.py` — tweeter selection analysis (excursion,
+  distortion, sensitivity) documenting why the SB26STAC was chosen.
 
 ---
 
@@ -74,11 +79,8 @@ Variants explored:
 
 Variants explored:
 
-- WG212
-- WG220
-- WG230
-- WG240
-- 1250-1600 Hz mid/tweeter crossover region
+- ~212 to ~240 mm waveguide mouths
+- 1100-1600 Hz mid/tweeter crossover region
 - 140-157 mm c-c spacing
 
 ## Current conclusion
@@ -89,7 +91,7 @@ The strongest improvement comes from:
 - Shorter c-c spacing
 - Smooth baffle/waveguide integration
 
-WG212 with approx. 1250 Hz LR4 and 140 mm c-c is the current best simplified candidate.
+The custom SB26STAC waveguide with approx. 1100 Hz LR4 and 140 mm c-c is the current best simplified candidate.
 
 ---
 

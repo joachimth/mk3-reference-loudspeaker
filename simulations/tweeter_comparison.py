@@ -1,23 +1,28 @@
 """
-Mk2 Reference Loudspeaker - H2606 vs SB26STAC-C000-4 tweeter comparison
+Tweeter selection analysis — why SB26STAC-C000-4 was chosen (historical)
 =======================================================================
 
-Side-by-side comparison of the two tweeter options across the critical
-design parameters: crossover margin, excursion headroom, directivity
-match, and vertical lobing.
+Historical record of the tweeter selection for the mk3 design. This compares
+the two candidate tweeters across the critical design parameters: crossover
+margin, excursion headroom, directivity match, and vertical lobing.
+
+The SB26STAC-C000-4 is the selected tweeter for the mk3 design (1100 Hz
+crossover). The ScanSpeak H2606/920000 was the earlier candidate; it is
+retained here only as the historical baseline that the selection was made
+against — it is NOT a current design option.
 
 Key physical differences:
   H2606/920000:   Fs=1030 Hz, Xmax=0.2mm, 95.2 dB, horn exit Ø33mm, 6Ω
-  SB26STAC-C000-4: Fs=750 Hz,  Xmax=0.6mm, 91.5 dB, bare dome Ø26mm, 4Ω
+  SB26STAC-C000-4: Fs=750 Hz, Xmax=0.6mm, 91.5 dB, bare dome Ø26mm, 4Ω
 
-Crossover scenarios:
-  H2606 @ 1250 Hz:  220 Hz margin (current design — unconfirmed)
-  H2606 @ 1450 Hz:  420 Hz margin (fallback if 1250 fails)
+Crossover scenarios examined:
+  H2606 @ 1250 Hz:  220 Hz margin (earlier candidate — superseded)
+  H2606 @ 1450 Hz:  420 Hz margin (earlier fallback — superseded)
   SB26STAC @ 1000 Hz: 250 Hz margin (aggressive, below broadside null)
-  SB26STAC @ 1100 Hz: 350 Hz margin (balanced)
+  SB26STAC @ 1100 Hz: 350 Hz margin (balanced — SELECTED)
   SB26STAC @ 1250 Hz: 500 Hz margin (same crossover, much safer)
 
-Output: simulations/plots/h2606_vs_sb26stac_comparison.png
+Output: simulations/plots/tweeter_comparison.png
 """
 import os
 import numpy as np
@@ -219,7 +224,7 @@ for drv_key, d in drivers.items():
 for name, drv_key, fc, col, ls in xover_scenarios:
     ax1.axvline(fc, color=col, ls=ls, lw=1.0, alpha=0.5)
 ax1.axvline(1250, color="tab:purple", ls="--", lw=1.5, alpha=0.6)
-ax1.text(1255, 10, "1250 Hz\n(current)", color="tab:purple", fontsize=7, ha="left")
+ax1.text(1255, 10, "1250 Hz\n(superseded)", color="tab:purple", fontsize=7, ha="left")
 ax1.set_xlabel("Frequency [Hz]")
 ax1.set_ylabel("Relative max SPL before distortion [dB]")
 ax1.set_title("Excursion Headroom (H2606 @ 1250 = 0 dB reference)")
@@ -252,9 +257,9 @@ ax2.grid(True, which="both", alpha=0.25); ax2.legend(fontsize=8, loc="upper left
 ax3 = fig.add_subplot(2, 2, 3)
 theta_plot = np.linspace(-60, 60, 300)
 for fc, col, ls, lbl in [(1000, "tab:blue", "-", "1000 Hz (SB26 aggressive)"),
-                          (1100, "tab:blue", "-.", "1100 Hz (SB26 balanced)"),
-                          (1250, "tab:purple", "--", "1250 Hz (H2606 current)"),
-                          (1450, "tab:red", ":", "1450 Hz (H2606 fallback)")]:
+                          (1100, "tab:blue", "-.", "1100 Hz (SB26 — SELECTED)"),
+                          (1250, "tab:purple", "--", "1250 Hz (H2606 superseded)"),
+                          (1450, "tab:red", ":", "1450 Hz (H2606 superseded)")]:
     pattern = vertical_pattern(fc, theta_plot, d_cc, fc)
     pattern = pattern / np.max(pattern)
     ax3.plot(theta_plot, 20*np.log10(pattern), lw=2.0, color=col, ls=ls, label=lbl)
@@ -290,11 +295,11 @@ for i, (h, s) in enumerate(zip(h2606_vals, sb26_vals)):
     ax4.text(h_norm[i]+0.3, i-width/2, str(h), fontsize=7, va="center", color="tab:red")
     ax4.text(s_norm[i]+0.3, i+width/2, str(s), fontsize=7, va="center", color="tab:blue")
 
-fig.suptitle("Mk2 Reference Loudspeaker — H2606/920000 vs SB26STAC-C000-4 Tweeter Comparison",
+fig.suptitle("Tweeter selection analysis — SB26STAC-C000-4 (selected) vs H2606/920000 (superseded baseline)",
              fontsize=14, fontweight="bold")
 fig.tight_layout(rect=[0, 0, 1, 0.96])
 
-out = os.path.join(os.path.dirname(__file__), "plots", "h2606_vs_sb26stac_comparison.png")
+out = os.path.join(os.path.dirname(__file__), "plots", "tweeter_comparison.png")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 fig.savefig(out, dpi=150)
 print(f"\nwrote {out}")
