@@ -1,0 +1,231 @@
+name: Build and deploy
+
+# Unified workflow: runs all simulations, renders CAD, commits outputs,
+# and triggers GitHub Pages rebuild. Replaces separate simulations.yml
+# and cad-render.yml with a single pipeline that keeps everything in sync.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'simulations/**.py'
+      - 'cad/**.scad'
+      - 'assets/datasheets/**'
+      - 'SIMULATIONS.md'
+      - 'README.md'
+      - 'docs/**'
+      - '.github/workflows/build-and-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "build-and-deploy"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ============================================================
+      #  1. Python + dependencies
+      # ============================================================
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: |
+          pip install --quiet "numpy>=1.26,<3" "matplotlib>=3.8,<4" "scipy>=1.12"
+
+      # ============================================================
+      #  2. Run all simulation scripts
+      # ============================================================
+      - name: Run all simulations
+        working-directory: simulations
+        run: |
+          for script in \
+            bass_alignment_maxspl.py \
+            bass_volume_compare.py \
+            baffle_step.py \
+            waveguide_profile.py \
+            directivity_estimate.py \
+            vertical_lobing.py \
+            vertical_polar_map.py \
+            polar_response.py \
+            system_response_realistic.py \
+            spinorama_estimate.py \
+            crossover_optimization.py \
+            tweeter_comparison.py
+          do
+            echo "::group::Running $script"
+            python "$script" 2>&1 || echo "::warning::$script failed (non-blocking)"
+            echo "::endgroup::"
+          done
+
+      - name: List simulation outputs
+        run: |
+          echo "=== simulations/plots/ ==="
+          ls -lh simulations/plots/
+          echo "=== simulations/csv/ ==="
+          ls -lh simulations/csv/ 2>/dev/null || echo "(none)"
+
+      # ============================================================
+      #  3. Install OpenSCAD + render CAD
+      # ============================================================
+      - name: Install OpenSCAD
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y openscad xvfb
+
+      - name: Export STLs
+        run: |
+          mkdir -p cad/exports
+          cd cad
+          openscad -o exports/waveguide.stl waveguide.scad 2>&1 || echo "::warning::waveguide STL export failed"
+          openscad -o exports/cabinet.stl cabinet.scad 2>&1 || echo "::warning::cabinet STL export failed"
+          ls -lh exports/
+
+      - name: Render waveguide views
+        run: |
+          mkdir -p assets/renders
+          cd cad
+          # Waveguide: center (0,0,45), size ~294x175x98mm
+          xvfb-run -a openscad --preview \
+            --camera=0,0,400,0,0,45 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_mouth.png waveguide.scad 2>&1 || echo "::warning::waveguide_mouth failed"
+          xvfb-run -a openscad --preview \
+            --camera=0,0,-300,0,0,45 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_rear.png waveguide.scad 2>&1 || echo "::warning::waveguide_rear failed"
+          xvfb-run -a openscad --preview \
+            --camera=400,0,45,0,0,45 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_side.png waveguide.scad 2>&1 || echo "::warning::waveguide_side failed"
+          xvfb-run -a openscad --preview \
+            --camera=0,400,45,0,0,45 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/waveguide_top.png waveguide.scad 2>&1 || echo "::warning::waveguide_top failed"
+          xvfb-run -a openscad --preview \
+            --camera=400,-400,300,0,0,45 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/waveguide_iso.png waveguide.scad 2>&1 || echo "::warning::waveguide_iso failed"
+          xvfb-run -a openscad --preview \
+            --camera=400,0,45,0,0,45 \
+            --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
+            -D 'show_cutaway=true' \
+            -o ../assets/renders/waveguide_cutaway.png waveguide.scad 2>&1 || echo "::warning::waveguide_cutaway failed"
+
+      - name: Render cabinet views
+        run: |
+          cd cad
+          # Cabinet: 320x370x1080mm, center at (0,185,540)
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' \
+            --camera=0,2800,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_front.png cabinet.scad 2>&1 || echo "::warning::cabinet_front failed"
+          xvfb-run -a openscad --preview \
+            --camera=0,-2800,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_rear.png cabinet.scad 2>&1 || echo "::warning::cabinet_rear failed"
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' \
+            --camera=-2800,185,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_left.png cabinet.scad 2>&1 || echo "::warning::cabinet_left failed"
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' \
+            --camera=2800,185,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_right.png cabinet.scad 2>&1 || echo "::warning::cabinet_right failed"
+          xvfb-run -a openscad --preview \
+            --camera=0,185,2800,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_top.png cabinet.scad 2>&1 || echo "::warning::cabinet_top failed"
+          xvfb-run -a openscad --preview \
+            --camera=0,185,-2800,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_bottom.png cabinet.scad 2>&1 || echo "::warning::cabinet_bottom failed"
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' \
+            --camera=1200,1600,2000,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_exterior.png cabinet.scad 2>&1 || echo "::warning::cabinet_exterior failed"
+          xvfb-run -a openscad --preview \
+            -D 'show_internals=true' -D 'show_drivers=true' \
+            --camera=1000,1400,1400,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_cutaway.png cabinet.scad 2>&1 || echo "::warning::cabinet_cutaway failed"
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' -D 'show_waveguide=true' \
+            --camera=900,1400,1700,0,185,850 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_assembly.png cabinet.scad 2>&1 || echo "::warning::cabinet_assembly failed"
+          xvfb-run -a openscad --preview \
+            -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
+            --camera=1000,1200,1600,0,185,600 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad 2>&1 || echo "::warning::cabinet_full_cutaway failed"
+          ls -lh ../assets/renders/
+
+      # ============================================================
+      #  4. Commit all generated outputs back to repo
+      # ============================================================
+      - name: Commit generated outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add simulations/plots/ simulations/csv/ assets/renders/ cad/exports/
+          git diff --staged --quiet && echo "No output changes." || {
+            git commit -m "ci: update simulations + CAD renders [skip ci]
+
+          Triggered by: ${{ github.sha }}"
+            for attempt in 1 2 3; do
+              git pull --rebase origin main && git push && break
+              echo "Push attempt $attempt failed, retrying..."
+              sleep 5
+            done
+          }
+
+      # ============================================================
+      #  5. Upload artifacts
+      # ============================================================
+      - name: Upload outputs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-outputs-${{ github.run_number }}
+          path: |
+            simulations/plots/
+            simulations/csv/
+            assets/renders/
+            cad/exports/
+          retention-days: 90
+          if-no-files-found: warn
+
+  # ============================================================
+  #  6. Trigger GitHub Pages rebuild
+  # ============================================================
+  deploy-pages:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger Pages rebuild
+        run: |
+          # Pages is configured as legacy (Jekyll) build from main.
+          # A push to main auto-triggers a Pages build.
+          # This job ensures the Pages build waits for the build job to finish
+          # (so rendered images are in the repo before Pages picks them up).
+          echo "Pages build will trigger automatically from the commit above."
+          echo "Site: https://joachimth.github.io/mk3-reference-loudspeaker/"

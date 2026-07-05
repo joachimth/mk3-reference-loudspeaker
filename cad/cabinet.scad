@@ -194,7 +194,6 @@ module shelf_brace(z) {
         rotate([tilt_deg, 0, 0])
         linear_extrude(wall) offset(-wall) profile2d(W, D, round_r);
 }
-}
 
 module coupling_block() {
     // rigid block bonded across the gap between the opposed 12SW magnet back
