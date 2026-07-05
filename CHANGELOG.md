@@ -2,6 +2,41 @@
 
 All notable design changes for the Mk3 Reference Loudspeaker are documented here.
 
+## v8 (unreleased) — cabinet CAD rework: datasheet-driven, self-checking
+
+### Changed
+
+- **`cad/cabinet.scad` rewritten** around real datasheet dimensions with
+  automatic volume calculation and mechanical self-checks (echoed in litres /
+  mm on every render, updating with any parameter change):
+  - **Midrange cutout corrected** from Ø72 to **~Ø123 (estimate)**. The
+    Ø72 value came from a mis-extracted datasheet table; the real ScanSpeak
+    15W/4434G00 drawing shows Ø149.3 faceplate, Ø136.5 mounting BCD (4×Ø5.3),
+    61.9 mm depth, 4.8 mm flange, Ø114 basket — a Ø72 hole cannot pass the
+    Ø114 basket. `assets/datasheets/15W-4434G00.md` corrected accordingly.
+  - **Waveguide is now front-mounted**: flange recessed flush into the front
+    baffle face (matching its countersunk front screws), with a body
+    clearance hole derived from the waveguide profile exports.
+  - **Divider plate height is derived** from the midrange basket envelope
+    (tilt 12°, front low) and checked against the woofer cutout; braces are
+    ring shelves with open centres (single connected bass air volume) and
+    are notched for the woofer baskets.
+  - **Push-push magnet gap computed** from datasheet depths: ~48 mm at
+    276 mm internal width (not ~4 mm as previously noted); the coupling
+    block length now derives from the gap.
+  - Flush-mount rebate for the 15W faceplate, pilot holes on all datasheet
+    bolt circles, driver placeholders at datasheet envelopes.
+
+### Notes
+
+- The self-check currently reports **net bass volume ~45 L vs the 75 L
+  target** and **mid chamber ~31 L vs the 5.7 L target** for the modeled
+  full-width-divider layout — the documented targets and the cabinet layout
+  do not close yet (see docs/09). Options: mid sub-enclosure, taller/wider
+  cabinet, or revised alignment targets.
+- External width is modeled at **320 mm** (docs tables still say 300 mm —
+  256 mm internal cannot fit two opposed 136 mm-deep 12SW-4HE).
+
 ## v8 — GRS 12SW-4HE woofer upgrade
 
 ### Changed

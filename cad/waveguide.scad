@@ -137,6 +137,15 @@ function wg_flange_w_fn() = flange_w;
 function wg_flange_h_fn() = flange_h;
 function wg_flange_r_fn() = corner_r;
 function wg_flange_t_fn() = flange_thick;
+// Outer body radii (bore + wall) at depth z — lets cabinet.scad size the
+// baffle clearance hole from the actual waveguide body, no hardcoded numbers.
+function wg_outer_rx(z)   = prof_r(z, theta_h) + wall;
+function wg_outer_ry(z)   = prof_r(z, theta_v) + wall;
+// Rear tweeter mounting plate + baffle screw pattern exports
+function wg_backplate_d_fn() = tw_ring_od;
+function wg_backplate_t_fn() = tw_ring_thick;
+function wg_baf_bcd_x_fn()   = baf_bcd_x;
+function wg_baf_bcd_y_fn()   = baf_bcd_y;
 
 module waveguide(){
     difference(){
