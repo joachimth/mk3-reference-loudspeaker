@@ -143,13 +143,12 @@ module enclosure() {
 
 // ---- Internal structure (representative) ----------------------------
 module mid_chamber() {
-    // Sealed mid chamber above a full-width divider plate. The divider runs the
-    // full internal width and depth at z0 (bottom of the mid chamber), so ALL
-    // volume below the plate is bass volume (for the GRS 12SW-4HE push-push
-    // woofers) and the volume above the plate — bounded by the cabinet walls,
-    // the divider, and the top panel, around the midrange driver — is the sealed
-    // mid chamber. The divider is rendered by shelf_brace() so the two volumes
-    // are structurally and acoustically isolated.
+    // Sealed mid chamber above a full-width angled divider plate. The divider
+    // is tilted ~12° (front higher, rear lower) to break parallel surfaces and
+    // reduce standing waves inside the mid chamber. ALL volume below the plate
+    // is bass volume (for the GRS 12SW-4HE push-push woofers) and the volume
+    // above — bounded by cabinet walls, the divider, and the top panel, around
+    // the midrange driver — is the sealed mid chamber.
     z0 = mid_z - midchamber_h/2;
     shelf_brace(z0);
 }
@@ -163,11 +162,21 @@ module brace_window(z) {
 }
 
 module shelf_brace(z) {
-    // Full-width divider plate separating the bass volume (below) from the
-    // sealed mid chamber (above). Runs the full internal width and depth so the
-    // two volumes are structurally and acoustically isolated.
+    // Full-width angled divider plate separating the bass volume (below) from the
+    // sealed mid chamber (above). The plate is tilted ~12° (front higher, rear
+    // lower) to break parallel surfaces inside the cabinet and reduce standing
+    // waves / reflections back through the midrange cone. The tilt also directs
+    // any internal reflections downward into the bass volume (absorbed by damping)
+    // rather than back toward the midrange driver.
+    //
+    // Front edge: z + tilt_offset. Rear edge: z - tilt_offset.
+    // tilt_offset = (internal_depth/2) * tan(12°) ≈ 27 mm.
+    tilt_deg = 12;
     color("Tan", 0.85)
-    translate([0,0,z]) linear_extrude(wall) offset(-wall) profile2d(W, D, round_r);
+    translate([0, 0, z])
+        rotate([tilt_deg, 0, 0])
+        linear_extrude(wall) offset(-wall) profile2d(W, D, round_r);
+}
 }
 
 module coupling_block() {
