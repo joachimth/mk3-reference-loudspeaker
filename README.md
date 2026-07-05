@@ -2,8 +2,7 @@
 
 A DIY active 3-way reference loudspeaker, inspired by Genelec 8361, Dutch & Dutch 8C, and Revel Salon2.
 
-[![Run simulations](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/simulations.yml/badge.svg)](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/simulations.yml)
-[![Render CAD models](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/cad-render.yml/badge.svg)](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/cad-render.yml)
+[![Build and deploy](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/joachimth/mk3-reference-loudspeaker/actions/workflows/build-and-deploy.yml)
 
 ---
 

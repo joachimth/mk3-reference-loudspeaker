@@ -237,15 +237,7 @@ jobs:
           python3 << 'PYEOF'
           import markdown
           import os
-
-          # Convert README.md to index.html
-          with open('README.md') as f:
-              md_text = f.read()
-
-          html_body = markdown.markdown(
-              md_text,
-              extensions=['pymdownx.superfences', 'tables', 'fenced_code', 'toc']
-          )
+          import re
 
           html_template = """<!DOCTYPE html>
           <html lang="en">
@@ -279,33 +271,103 @@ jobs:
           <body><div class="container">__BODY__</div></body>
           </html>"""
 
+          def md_to_html(md_text):
+              return markdown.markdown(md_text, extensions=['pymdownx.superfences', 'tables', 'fenced_code', 'toc'])
+
+          def fix_links(html, from_root=True):
+              """Rewrite .md links to .html for Pages site."""
+              if from_root:
+                  html = re.sub(r'href="(docs/[^"#]+)\.md', r'href="\1.html', html)
+                  html = re.sub(r'href="([^/"#]+\w)\.md"', r'href="\1.html"', html)
+                  html = re.sub(r'href="((?:assets|cad|dsp-configs|simulations)/[^"#]+)\.md', r'href="\1.html', html)
+                  # Relative ../ links from subdirectory pages
+                  html = re.sub(r'href="(\.\./[^"#]+)\.md', r'href="\1.html', html)
+              else:
+                  # From a doc page: docs/XXX.md -> XXX.html, root XXX.md -> ../XXX.html
+                  html = re.sub(r'href="docs/([^"#]+)\.md', r'href="\1.html', html)
+                  html = re.sub(r'href="([^/"#]+\w)\.md"', r'href="../\1.html"', html)
+                  html = re.sub(r'href="((?:assets|cad|dsp-configs|simulations)/[^"#]+)\.md', r'href="../\1.html', html)
+                  # Relative ../ links from doc pages (e.g. ../cad/README.md -> ../cad/README.html)
+                  html = re.sub(r'href="(\.\./[^"#]+)\.md', r'href="\1.html', html)
+                  # Fix asset paths for doc pages
+                  html = html.replace('src="assets/', 'src="../assets/').replace('src="simulations/', 'src="../simulations/')
+                  html = html.replace('href="assets/', 'href="../assets/').replace('href="simulations/', 'href="../simulations/')
+              return html
+
+          # --- Convert README.md to index.html ---
+          with open('README.md') as f:
+              md_text = f.read()
+
+          # Fix stale badge URLs (old workflows replaced by build-and-deploy.yml)
+          md_text = md_text.replace('workflows/simulations.yml/badge.svg', 'workflows/build-and-deploy.yml/badge.svg')
+          md_text = md_text.replace('workflows/cad-render.yml/badge.svg', 'workflows/build-and-deploy.yml/badge.svg')
+
+          html_body = md_to_html(md_text)
+          html_body = fix_links(html_body, from_root=True)
+
           html = html_template.replace("__BODY__", html_body)
           with open('_site/index.html', 'w') as f:
               f.write(html)
 
-          # Convert docs/*.md to HTML
+          # --- Convert docs/*.md to HTML ---
+          doc_count = 0
           for fname in sorted(os.listdir('docs')):
               if fname.endswith('.md'):
                   with open(f'docs/{fname}') as f:
                       md = f.read()
-                  body = markdown.markdown(md, extensions=['pymdownx.superfences', 'tables', 'fenced_code'])
-                  body = body.replace('docs/', '').replace('.md', '.html')
-                  body = body.replace('src="assets/', 'src="../assets/').replace('src="simulations/', 'src="../simulations/')
+                  body = md_to_html(md)
+                  body = fix_links(body, from_root=False)
                   doc_html = html_template.replace("__BODY__", body)
                   doc_html = doc_html.replace('<title>Mk3 Reference Loudspeaker</title>',
                                               f'<title>{fname.replace(".md","")} — Mk3</title>')
                   with open(f'_site/docs/{fname.replace(".md",".html")}', 'w') as f:
                       f.write(doc_html)
+                  doc_count += 1
 
-          print(f"Generated {len(os.listdir('_site/docs'))} doc pages")
+          # --- Convert root-level .md files to HTML ---
+          root_count = 0
+          for fname in sorted(os.listdir('.')):
+              if fname.endswith('.md') and fname != 'README.md':
+                  with open(fname) as f:
+                      md = f.read()
+                  body = md_to_html(md)
+                  body = fix_links(body, from_root=True)
+                  page_html = html_template.replace("__BODY__", body)
+                  page_html = page_html.replace('<title>Mk3 Reference Loudspeaker</title>',
+                                                f'<title>{fname.replace(".md","")} — Mk3</title>')
+                  with open(f'_site/{fname.replace(".md",".html")}', 'w') as f:
+                      f.write(page_html)
+                  root_count += 1
+
+          print(f"Generated {doc_count} doc pages, {root_count} root pages")
+
+          # --- Convert subdirectory .md files to HTML ---
+          sub_count = 0
+          for subdir in ['assets/datasheets', 'cad', 'dsp-configs', 'simulations']:
+              if not os.path.isdir(subdir):
+                  continue
+              out_dir = f'_site/{subdir}'
+              os.makedirs(out_dir, exist_ok=True)
+              for fname in sorted(os.listdir(subdir)):
+                  if fname.endswith('.md'):
+                      with open(f'{subdir}/{fname}') as f:
+                          md = f.read()
+                      body = md_to_html(md)
+                      body = fix_links(body, from_root=True)
+                      page_html = html_template.replace("__BODY__", body)
+                      page_html = page_html.replace('<title>Mk3 Reference Loudspeaker</title>',
+                                                    f'<title>{fname.replace(".md","")} — Mk3</title>')
+                      with open(f'{out_dir}/{fname.replace(".md",".html")}', 'w') as f:
+                          f.write(page_html)
+                      sub_count += 1
+          print(f"Generated {sub_count} subdirectory pages")
           PYEOF
 
-          # Copy static assets
+          # Copy static assets (non-.md files)
           cp simulations/plots/*.png _site/simulations/plots/ 2>/dev/null || true
           cp assets/renders/*.png _site/assets/renders/ 2>/dev/null || true
           cp assets/datasheets/*.pdf _site/assets/datasheets/ 2>/dev/null || true
           cp assets/datasheets/*.csv _site/assets/datasheets/ 2>/dev/null || true
-          cp assets/datasheets/*.md _site/assets/datasheets/ 2>/dev/null || true
           touch _site/.nojekyll
 
           echo "=== Site files ==="
