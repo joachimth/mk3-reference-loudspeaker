@@ -41,8 +41,8 @@ use <midrange.scad>
 // ---- External shell -------------------------------------------------
 W       = 320;   // external width  [mm] (276 internal — two opposed 136 mm
                  //   deep 12SW-4HE do not fit the older 300 mm spec)
-D       = 370;   // external depth  [mm]
-H       = 1080;  // external height [mm]
+D       = 380;   // external depth  [mm]
+H       = 1180;  // external height [mm]
 wall    = 22;    // panel thickness [mm] (22 mm birch plywood)
 round_r = 19;    // front vertical roundover radius [mm] (R50 leaves no
                  //   flat for the 242 mm waveguide flange — checked below)
@@ -82,10 +82,10 @@ mid_flush       = true;   // rebate the faceplate flush into the front baffle
 mid_fit_clear   = 0.7;    // rebate diametral clearance (faceplate tol +-0.3)
 
 // ---- Driver placement (v9: midrange on TOP, waveguide below) ---------
-mid_z  = 970;          // midrange centre height [mm] — near the top; the
+mid_z  = 1065;          // midrange centre height [mm] — near the top; the
                        //   Ø145.3 cutout upper edge must stay clear of the
                        //   inner top face (checked below)
-cc     = 165;          // mid/tweeter centre-to-centre [mm]. Physical minimum
+cc     = 164;          // mid/tweeter centre-to-centre [mm]. Physical minimum
                        //   with the Ø179.2 mid faceplate + 143 mm waveguide
                        //   flange both flush-recessed is ~164 mm (echoed
                        //   below as cc_min). DD-011's 140 mm is not reachable
@@ -123,13 +123,13 @@ tw_body_displ_L = 0.25; // ESTIMATE: SB26STAC body behind the back plate [L]
 // (mid_basket_r_at() from cad/midrange.scad): the basket cone falls away
 // faster (~30 deg) than the divider rises (12 deg), so the binding point
 // is at the inner baffle face.
-divider_tilt      = 12;  // [deg] front edge low, rear edge high
-divider_mid_clear = 8;   // clearance divider top -> mid basket underside [mm]
+divider_tilt      = 19;  // [deg] front edge low, rear edge high
+divider_mid_clear = 18;   // clearance divider top -> mid basket underside [mm]
 divider_front_z   = mid_z - mid_basket_r_at(wall) - divider_mid_clear;
 
 // ---- Bracing ---------------------------------------------------------
-shelf_zs  = [160, 330]; // ring-shelf brace heights in the bass volume [mm]
-shelf_rim = 70;         // ring-shelf rim width [mm] (open centre = airflow)
+shelf_zs  = [160, 330, 730]; // ring-shelf brace heights in the bass volume [mm]
+shelf_rim = 45;         // ring-shelf rim width [mm] (open centre = airflow)
 coupling_r = 55;        // coupling block radius [mm] — block length is
                         //   derived from the actual magnet gap (echoed)
 
