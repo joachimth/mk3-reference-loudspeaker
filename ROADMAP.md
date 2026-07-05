@@ -1,20 +1,31 @@
 # Mk3 Reference Loudspeaker Roadmap
 
-## v8 — GRS 12SW-4HE woofer upgrade (current)
+## v9 — 18W/4424G00 midrange, mid-over-waveguide layout (current, in progress)
 
-Current design:
+Current design candidate:
 
-- 300 x 370 x 1080 mm cabinet
+- 320 x 370 x 1080 mm cabinet (width driven by the opposed 12" woofers)
 - 22 mm birch plywood
-- R50 front roundovers
+- R19 front roundovers (R50 leaves no flat for the waveguide flange)
 - 2 x GRS 12SW-4HE side-mounted push-push woofers (12" high excursion)
-- ScanSpeak 15W/4434G00 midrange
-- SB Acoustics SB26STAC-C000-4 tweeter
+- ScanSpeak 18W/4424G00 midrange at the TOP of the baffle (`cad/midrange.scad`)
+- SB Acoustics SB26STAC-C000-4 tweeter in the waveguide BELOW the midrange
 - Custom non-horn-loaded waveguide (`cad/waveguide.scad`)
-- Approx. 75 L sealed bass volume (under divider plate)
-- Approx. 5.7 L sealed mid chamber
+- Full-width tilted divider plate between midrange and waveguide
+- Approx. 65 L net sealed bass volume (below divider; target remains 75 L)
+- Approx. 11 L net sealed mid chamber (18W datasheet closed-box rec.: 13 L)
 - 150 Hz LR4 bass/mid crossover
-- 1100 Hz LR4 mid/tweeter crossover
+- 1100 Hz LR4 mid/tweeter crossover (re-validate for the 18 cm cone)
+- 165 mm mid/tweeter c-c spacing (physical minimum with these flanges)
+- See CHANGELOG v9 and DD-016
+
+## v8 — GRS 12SW-4HE woofer upgrade
+
+- 300 x 370 x 1080 mm cabinet (superseded: width -> 320 mm in v9)
+- 2 x GRS 12SW-4HE side-mounted push-push woofers (12" high excursion)
+- ScanSpeak 15W/4434G00 midrange (superseded by 18W/4424G00 in v9)
+- Approx. 75 L sealed bass volume target (under divider plate)
+- Approx. 5.7 L sealed mid chamber
 - Target 140 mm mid/tweeter c-c spacing
 
 Woofer upgrade details:
@@ -32,7 +43,7 @@ Woofer upgrade details:
 - Custom non-horn-loaded waveguide
 - GRS 8SW-4HE-8 woofers (superseded in v8 by 12SW)
 
-## v9 — Measurement-validated design
+## v10 — Measurement-validated design
 
 - Build first physical prototype
 - Measure all drivers in cabinet
@@ -40,27 +51,27 @@ Woofer upgrade details:
 - Validate or revise 1100 Hz crossover
 - Validate vertical listening window
 
-## v10 — CAD/package refinement
+## v11 — CAD/package refinement
 
 - Final cabinet drawings
 - Final waveguide model
 - STEP/STL export
 - CNC/fræse-ready drawings
 
-## v11 — DSP implementation
+## v12 — DSP implementation
 
 - Initial MiniDSP/FusionAmp presets
 - Delay optimization
 - EQ and target curves
 - House curve versions
 
-## v12 — Advanced variants
+## v13 — Advanced variants
 
 - FIR filters
 - Alternative midranges
 - Cardioid/controlled bass experiments
 
-## v13 — Integrated active version
+## v14 — Integrated active version
 
 - Integrated amplifier module
 - Internal DSP

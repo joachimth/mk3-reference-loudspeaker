@@ -10,22 +10,25 @@
 
 ## Driver Layout
 
-- 2 × GRS 12SW-4HE
-- ScanSpeak 15W/4434G00
-- SB Acoustics SB26STAC-C000-4
+- 2 × GRS 12SW-4HE (side-mounted push-push)
+- ScanSpeak 18W/4424G00 midrange at the top of the front baffle
+- SB Acoustics SB26STAC-C000-4 in the custom waveguide, below the midrange
 - Custom waveguide (SB26STAC version, no horn loading)
+- Full-width tilted divider plate between midrange and waveguide
+  (sealed mid chamber above, bass volume below)
 
 ## Cabinet
 
-- 300 × 370 × 1080 mm
+- 320 × 370 × 1080 mm (width driven by the opposed 12" woofer depth)
 - 22 mm birch plywood
-- R50 front roundovers
+- R19 front roundovers (R50 leaves no flat for the 242 mm waveguide flange)
 
 ## Alignment
 
-- ~75 L sealed bass chamber (volume under divider plate)
+- ~65 L net sealed bass chamber (below divider plate; 75 L remains the target)
 - Qtc ≈ 0.707 (via Linkwitz Transform target)
-- Sealed Fc ≈ 39 Hz → 28 Hz after LT
+- Sealed Fc ≈ 41 Hz → 28 Hz after LT
+- Sealed mid chamber ~11 L net (18W/4424G00 datasheet closed-box rec.: 13 L)
 - Woofer cutout: 284 mm (GRS 12SW-4HE)
 
 ## Crossovers
@@ -35,4 +38,4 @@
 
 ## Geometry
 
-- Target c-c spacing: **140 mm nominal**. In practice ~150-155 mm is expected once the waveguide is printed and the 15W flange is physically measured. Confirm from physical parts before locking the cabinet model.
+- Mid/tweeter c-c spacing: **165 mm** — the physical minimum with the Ø179.2 mm 18W/4424G00 faceplate and the 143 mm waveguide flange both flush-recessed in the baffle (`cad/cabinet.scad` echoes the computed minimum). The earlier 140 mm target (DD-011) is not reachable with these parts. Confirm from physical parts before locking the cabinet model.

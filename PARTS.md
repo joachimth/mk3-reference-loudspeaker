@@ -10,7 +10,7 @@ Prices are indicative (sourced June 2026); verify before ordering.
 | Part | Qty/pair | Unit price | Supplier | Notes |
 |---|---|---|---|---|
 | GRS 12SW-4HE (12" woofer) | 4 | ~€75 | Parts-Express | 2 per enclosure, push-push. Fs 22 Hz, Qts 0.43, Vas 80.4 L, Xmax 12.5 mm (Klippel), Sd 504 cm², 250 W |
-| ScanSpeak 15W/4434G00 (midrange) | 2 | ~€120 | Scan-Speak / Hifi-Skabet | — |
+| ScanSpeak 18W/4424G00 (midrange) | 2 | ~€95 | Scan-Speak / Hifi-Skabet | v9: replaces 15W/4434G00 (DD-016). Fs 49 Hz, Qts 0.38, Vas 24.1 L, Sd 137 cm², 91 dB, 4 Ω. Parametric model `cad/midrange.scad` |
 | SB Acoustics SB26STAC-C000-4 (tweeter) | 2 | ~€35 | SB Acoustics / Parts-Express | Custom waveguide, no horn loading |
 
 ## Waveguide
@@ -30,7 +30,7 @@ Prices are indicative (sourced June 2026); verify before ordering.
 | Damping felt/foam | Mid chamber: fully lined. Bass chamber: 50 mm rear/top/sides. |
 | Terminal cup or amplifier plate cutout | Depends on DSP/amp selection |
 
-Approximate external dimensions (v8): **300 × 370 × 1080 mm**, 22 mm walls, R50 front roundovers.
+Approximate external dimensions (v9): **320 × 370 × 1080 mm**, 22 mm walls, R19 front roundovers (see CHANGELOG v9 for why 300 mm / R50 were revised).
 
 ## Electronics / DSP
 
@@ -49,9 +49,11 @@ Approximate external dimensions (v8): **300 × 370 × 1080 mm**, 22 mm walls, R5
 ## Open Items
 
 - [ ] Caliper-verify SB26STAC-C000-4 dimensions → update `cad/waveguide.scad`
-- [ ] Print SB26STAC waveguide prototype → fit-check against SB26STAC and 15W/4434G00
+- [ ] Caliper-verify 18W/4424G00 flange/cutout/depth → update `cad/midrange.scad`
+- [ ] Print SB26STAC waveguide prototype → fit-check against SB26STAC and 18W/4424G00
 - [ ] Measure SB26STAC distortion at 1100 Hz → confirm or adjust crossover
-- [ ] Confirm actual c-c spacing (nominal 140 mm; expect ~150-155 mm from physical parts)
+- [ ] Re-validate 1100 Hz LR4 for the 18 cm midrange cone (directivity) and 165 mm c-c (vertical lobing)
+- [ ] Confirm actual c-c spacing (165 mm computed minimum; `cad/cabinet.scad` echoes it from part dimensions)
 - [ ] Confirm woofer cutout diameter (284 mm per GRS 12SW-4HE datasheet) and basket depth clearance (~136 mm total) before cutting side panels
-- [ ] Verify 12SW basket depth fits 22 mm wall — opposed magnet clearance is tight (~4 mm gap vs ~22 mm for the old 8SW)
+- [ ] Verify opposed 12SW magnet gap (~48 mm computed from datasheet depth at 320 mm width) and coupling block length before cutting panels
 - [ ] Finalize cut list from CAD model before ordering sheet material

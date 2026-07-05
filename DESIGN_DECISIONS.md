@@ -286,3 +286,47 @@ bass/mid crossover are all retained. Only the woofer driver and bass volume chan
 - **Power handling:** 250 W (vs 100 W) — higher thermal capacity.
 - DD-004 (8SW selection) is superseded; the 8SW remains in the repo as a
   historical comparison driver.
+
+# DD-016 - ScanSpeak 18W/4424G00 midrange, mid-over-waveguide layout
+
+## Decision
+
+Replace the ScanSpeak 15W/4434G00 midrange with the **ScanSpeak 18W/4424G00**
+(Discovery, 18 cm, 4 Ω), and flip the front layout: the midrange moves to the
+**top** of the baffle, the waveguide/tweeter sits **below** it, and the
+full-width tilted divider plate runs **between** them (sealed mid chamber
+above, bass volume below). Mid/tweeter c-c becomes 165 mm.
+
+## Reasoning
+
+- **Chamber volumes finally close.** With the old tweeter-on-top layout the
+  divider had to sit below the midrange at ~2/3 height, leaving only ~45 L
+  net for the bass (target 75 L) while the mid chamber ballooned to ~31 L.
+  With the mid on top, the divider rises to ~900 mm: bass grows to **~65 L
+  net** (predicted Qtc ~0.80 / Fc ~41 Hz, workable with the Linkwitz
+  Transform) and the mid chamber shrinks to **~11 L net** — right at the
+  18W's official closed-box recommendation (13 L), predicted Qtc ~0.68 /
+  Fc ~88 Hz, comfortably below the 150 Hz LR4 highpass.
+- **Driver match.** 91 dB sensitivity is within 0.5 dB of the SB26STAC
+  (vs 1.5 dB for the 15W); Sd 137 cm² (vs 80) gives more headroom at the
+  150 Hz highpass; Xmax ±2.8 mm is adequate above 150 Hz.
+- **Documented dimensions.** The 18W drawing (assets/datasheets/
+  18W-4424G00.pdf) is fully dimensioned: Ø179.2 faceplate, Ø144.3 cutout,
+  Ø167 BCD (6×Ø5.3), 72.2 mm depth — modeled parametrically in
+  `cad/midrange.scad`, which `cad/cabinet.scad` imports directly.
+
+## Consequence
+
+- Mid/tweeter c-c grows from 150 to **165 mm** — the physical minimum with
+  the Ø179.2 faceplate and the 143 mm waveguide flange both flush-recessed.
+  At 1100 Hz (λ ≈ 312 mm) this is ~0.53 λ: vertical lobing must be
+  re-checked in simulation/measurement, and the crossover may need to move
+  down or the c-c tightened by surface-mounting one part (DD-011's 140 mm
+  target is formally superseded).
+- The tweeter/waveguide moves off the top of the baffle (~805 mm axis
+  height at default parameters) — listening axis height must be revisited.
+- The waveguide body now hangs in the bass volume; its flange must be
+  gasketed against the baffle recess to keep the bass chamber sealed.
+- The 18 cm cone narrows earlier than the 15 cm at the top of the mid band;
+  the 1100 Hz LR4 must be re-validated against measured directivity.
+- 15W/4434G00 files remain in the repo as historical reference.
