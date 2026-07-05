@@ -91,6 +91,7 @@ jobs:
           cd cad
           openscad -o exports/waveguide.stl waveguide.scad 2>&1 || echo "::warning::waveguide STL export failed"
           openscad -o exports/cabinet.stl cabinet.scad 2>&1 || echo "::warning::cabinet STL export failed"
+          openscad -o exports/cabinet_v2.stl cabinet_v2.scad 2>&1 || echo "::warning::cabinet_v2 STL export failed"
           ls -lh exports/
 
       - name: Render waveguide views
@@ -174,6 +175,42 @@ jobs:
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad 2>&1 || true
           ls -lh ../assets/renders/
+
+      - name: Render cabinet v2 (baffel_insert variant)
+        run: |
+          cd cad
+          # cabinet_v2: same enclosure but with baffel_insert in the front baffle
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' -D 'show_insert=true' \
+            --camera=0,2800,540,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_v2_front.png cabinet_v2.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'show_drivers=true' -D 'show_insert=true' \
+            --camera=1200,1600,2000,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_v2_iso.png cabinet_v2.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'show_internals=true' -D 'show_drivers=true' -D 'show_insert=true' \
+            --camera=1000,1400,1400,0,185,540 \
+            --imgsize=1920,1080 --colorscheme=Cornfield \
+            -o ../assets/renders/cabinet_v2_cutaway.png cabinet_v2.scad 2>&1 || true
+          # Baffel insert alone (print-ready)
+          xvfb-run -a openscad --preview \
+            --camera=0,0,400,0,0,0 \
+            --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/baffel_insert_front.png baffel_insert_1.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'vis="fit"' \
+            --camera=200,-300,200,0,0,30 \
+            --imgsize=1200,1200 --colorscheme=Cornfield \
+            -o ../assets/renders/baffel_insert_fit.png baffel_insert_1.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'vis="snit"' \
+            --camera=300,-300,200,0,0,30 \
+            --imgsize=1200,1200 --colorscheme=Cornfield \
+            -o ../assets/renders/baffel_insert_section.png baffel_insert_1.scad 2>&1 || true
+          ls -lh ../assets/renders/cabinet_v2_* ../assets/renders/baffel_insert_*
 
       - name: Render driver models
         run: |

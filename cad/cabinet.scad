@@ -37,6 +37,8 @@
 // the show_* flags are set).
 use <waveguide.scad>
 use <midrange.scad>
+use <GRS-12SW-4HE.scad>
+use <SB26STAC-C000-4.scad>
 
 // ---- External shell -------------------------------------------------
 W       = 320;   // external width  [mm] (276 internal — two opposed 136 mm
@@ -140,7 +142,7 @@ mid_target_L  = 13;    // 18W/4424G00 datasheet closed-box recommendation [L]
 // ---- View flags (CI overrides these per render) ----------------------
 show_internals      = false; // cutaway with divider + braces
 show_waveguide      = false; // seat the waveguide model into the baffle
-show_drivers        = false; // driver models/placeholders for scale
+show_drivers        = false; // show real driver models for scale
 show_pilot_holes    = true;  // Ø3 pilot holes on the datasheet BCDs
 show_coupling_block = true;  // block between the opposed woofer magnets
 
@@ -451,14 +453,12 @@ module wg_in_baffle() {
         waveguide();
 }
 
-// ---- Driver models / placeholders (datasheet envelopes) ---------------
-module driver_woofer_placeholder(sign) {
-    // GRS 12SW-4HE: Ø332 frame surface-mounted on the side panel,
-    // body tapering to the magnet, 136 mm total depth below the flange
-    color("DarkSlateGray", 0.85)
+// ---- Driver models (real parametric models) --------------------------
+module driver_woofer(sign) {
+    // GRS 12SW-4HE: surface-mounted on the side panel, flange front at z=0
+    // The driver() module has flange front at z=0, body toward -z
     translate([sign*(W/2), 0, woofer_z]) rotate([0, -sign*90, 0]) {
-        translate([0, 0, -10]) cylinder(h = 10, r = woofer_frame_d/2, $fn = 64);
-        cylinder(h = woofer_depth - 10, r1 = woofer_cut_d/2 - 5, r2 = 80, $fn = 48);
+        driver();
     }
 }
 module driver_mid() {
@@ -468,13 +468,12 @@ module driver_mid() {
     translate([0, D/2 + (mid_flush ? 0 : mid_flange_t), mid_z])
         rotate([-90,0,0]) midrange_driver();
 }
-module driver_tweeter_placeholder() {
-    // SB26STAC-C000-4: Ø100 faceplate seated in the waveguide back-plate
-    // pocket, motor behind it (39.7 mm total depth per datasheet)
-    color("Silver", 0.9)
+module driver_tweeter() {
+    // SB26STAC-C000-4: faceplate seated in the waveguide back-plate
+    // pocket, motor behind it. diskant() has frontplate front at z=0,
+    // motor toward -z.
     translate([0, D/2 - wg_front + wg_back, tw_z]) rotate([-90,0,0]) {
-        cylinder(h = 4, d = 100, $fn = 48);
-        translate([0, 0, -35.7]) cylinder(h = 35.7, d = 70, $fn = 48);
+        diskant();
     }
 }
 
@@ -486,10 +485,10 @@ if (show_internals) {
             internals();
             if (show_waveguide) wg_in_baffle();
             if (show_drivers) {
-                driver_woofer_placeholder(+1);
-                driver_woofer_placeholder(-1);
+                driver_woofer(+1);
+                driver_woofer(-1);
                 driver_mid();
-                if (show_waveguide) driver_tweeter_placeholder();
+                if (show_waveguide) driver_tweeter();
             }
         }
         // cutaway: remove the +X half for an internal view
@@ -499,9 +498,9 @@ if (show_internals) {
     enclosure();
     if (show_waveguide) wg_in_baffle();
     if (show_drivers) {
-        driver_woofer_placeholder(+1);
-        driver_woofer_placeholder(-1);
+        driver_woofer(+1);
+        driver_woofer(-1);
         driver_mid();
-        if (show_waveguide) driver_tweeter_placeholder();
+        if (show_waveguide) driver_tweeter();
     }
 }

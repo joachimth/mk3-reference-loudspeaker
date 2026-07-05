@@ -118,6 +118,36 @@ baffle cutout, drill template, and half-section views (`vis` parameter).
 Some dimensions (cone, surround, dust cap, magnet) are estimates pending
 caliper verification on the physical unit.
 
+## `baffel_insert_1.scad`
+
+Modular 3D-printed baffle insert for the front baffle. Provides flush rebate
+(planfræset) for the 18W/4424G00 midrange, flush pocket + elliptical body hole
+for the WG212 waveguide, and precise screw patterns for both drivers. Includes
+backside ribbing for stiffness and edge screws for cabinet mounting.
+
+Dimensions: 285 x 380 x 15 mm. Print flat (backside down).
+
+`vis` parameter: `baffel` (print-ready), `fit` (with real drivers), `snit`
+(half-section).
+
+Uses `waveguide.scad` for all waveguide dimensions. Place both files in the
+same directory.
+
+## `cabinet_v2.scad`
+
+Alternative cabinet design using the baffel insert. Same enclosure dimensions,
+bracing, divider plate, and woofer placement as `cabinet.scad`, but the front
+baffle has a single pocket for the 3D-printed insert instead of individual
+driver cutouts in plywood.
+
+This is an **alternative**, not a replacement. Builders who want 3D-printed
+baffle precision without CNC routing complex cutout patterns in plywood should
+use v2. Builders who prefer all-plywood construction should use the original
+`cabinet.scad`.
+
+Uses the same driver models (`GRS-12SW-4HE.scad`, `midrange.scad`,
+`SB26STAC-C000-4.scad`) and `baffel_insert_1.scad`.
+
 ## `cabinet.scad`
 
 A fully parametric **OpenSCAD** model of the enclosure — the cabinet
