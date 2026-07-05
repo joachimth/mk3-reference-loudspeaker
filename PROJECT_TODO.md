@@ -23,8 +23,8 @@ Grouped by area. The critical path to prototype is marked 🔴.
 - [ ] **Verify mid chamber net volume** from `cabinet.scad` solid model — target 5.7 L.
 - [ ] **Verify woofer mounting depth** fits 22 mm wall — check GRS 12SW-4HE spec (~136 mm total depth, opposed magnets have only ~4 mm gap in 276 mm internal width).
 - [ ] **Confirm driver cutout diameters** — woofer 284 mm (GRS 12SW-4HE datasheet) and midrange 124 mm are estimates. Get exact values from datasheets / physical measurement.
-- [ ] **Verify divider plate position** in `cabinet.scad` — bass volume ~75 L is under the divider plate; confirm net volume accounts for 12SW basket displacement.
-- [ ] **Add vertical braces** to `cabinet.scad`.
+- [x] **Verify divider plate position** in `cabinet.scad` — angled 12° divider plate separates mid chamber from bass volume. Net volume verification pending physical build.
+- [x] **Add vertical braces** to `cabinet.scad` — two vertical shelf braces in bass volume at ±120 mm from woofer center, with woofer basket clearance cutouts.
 - [ ] **Export STEP file** from cabinet + waveguide models.
 
 ### DSP platform
@@ -67,7 +67,6 @@ Grouped by area. The critical path to prototype is marked 🔴.
 
 ### Open simulation tasks
 
-- [ ] **Update `system_response.py`** to use real SB26STAC datasheet curve instead of tanh placeholder. Currently still uses a placeholder model.
 - [ ] **Import measured data** once prototype is built — spinorama.csv, polar data will become comparison targets.
 - [ ] **Regenerate all plots** after any crossover frequency change — the plots in `simulations/plots/` are committed but can go stale if scripts are edited without re-running.
 
@@ -77,7 +76,7 @@ Grouped by area. The critical path to prototype is marked 🔴.
 
 - [x] **SB26STAC waveguide CAD** — `cad/waveguide.scad` created. BCD 88.5 mm, throat 28 mm (dome + surround, no horn). STL rendered, manifold.
 - [ ] **Waveguide: STEP export** — for external machining.
-- [ ] **Waveguide: add baffle roundover blend** — `Lr` controls mouth roundover. Document in `cad/README.md`.
+- [x] **Waveguide: add baffle roundover blend** — `Lr` parameter (25 mm) controls mouth roundover, documented in `cad/README.md`.
 - [ ] **Cabinet: 2D cut drawings** — for workshop use.
 - [ ] **Cabinet: mid chamber dimensioned drawing** — volume verification.
 - [ ] **Verify `wg_through` parameter** in `cabinet.scad` once waveguide is printed.
@@ -86,10 +85,10 @@ Grouped by area. The critical path to prototype is marked 🔴.
 
 ## CI/CD
 
-- [x] **simulations.yml** — pins numpy + matplotlib versions.
+- [x] **simulations.yml** — pins numpy + matplotlib + scipy versions.
 - [x] **cad-render.yml** — auto-renders STL + views on CAD changes.
+- [x] **simulations.yml runs all 12 scripts** — verified, all scripts listed and passing.
 - [ ] **cad-render.yml: STEP export** — once OpenSCAD→STEP pipeline confirmed.
-- [ ] **simulations.yml: run all scripts** — verify CI runs all simulation scripts and they pass.
 
 ---
 

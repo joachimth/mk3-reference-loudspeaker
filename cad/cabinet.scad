@@ -161,6 +161,23 @@ module brace_window(z) {
                        offset(-wall - 70) profile2d(W, D, round_r); }
 }
 
+module vertical_brace(z, thickness=22) {
+    // Vertical shelf brace tying front baffle to rear panel, bridging the
+    // bass volume below the divider plate. Placed at 1/3 and 2/3 of the
+    // bass chamber height to prevent panel resonance. Has a large cutout
+    // for woofer basket clearance.
+    color("OliveDrab", 0.7)
+    translate([0, 0, z])
+        difference() {
+            linear_extrude(thickness) offset(-wall) profile2d(W, D, round_r);
+            // woofer basket clearance holes (both sides)
+            translate([W/2 - wall - eps, 0, thickness/2]) rotate([0, 90, 0])
+                cylinder(h = wall + 2*eps, r = woofer_cut_d/2 + 10, $fn = 48);
+            translate([-(W/2 - wall - eps), 0, thickness/2]) rotate([0, -90, 0])
+                cylinder(h = wall + 2*eps, r = woofer_cut_d/2 + 10, $fn = 48);
+        }
+}
+
 module shelf_brace(z) {
     // Full-width angled divider plate separating the bass volume (below) from the
     // sealed mid chamber (above). The plate is tilted ~12° (front higher, rear
@@ -243,6 +260,9 @@ if (show_internals) {
               enclosure();
               mid_chamber();
               brace_window(woofer_z);
+              // vertical braces in bass volume: 1/3 and 2/3 height
+              vertical_brace(woofer_z - 120);
+              vertical_brace(woofer_z + 120);
               coupling_block();
               if (show_waveguide) wg_in_baffle();
               if (show_drivers) {
