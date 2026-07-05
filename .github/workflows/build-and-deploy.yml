@@ -24,10 +24,6 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: "build-and-deploy"
-  cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-22.04
