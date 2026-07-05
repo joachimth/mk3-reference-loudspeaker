@@ -327,7 +327,7 @@ jobs:
           # --- Convert root-level .md files to HTML ---
           root_count = 0
           for fname in sorted(os.listdir('.')):
-              if fname.endswith('.md') and fname != 'README.md':
+              if fname.endswith('.md') and fname != 'README.md' and fname != 'index.md':
                   with open(fname) as f:
                       md = f.read()
                   body = md_to_html(md)
