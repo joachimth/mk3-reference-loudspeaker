@@ -58,12 +58,13 @@ Open in OpenSCAD, render with F6, export STL. `$fn` is high for export — drop 
 
 ### CI renders and STL downloads
 
-The [`cad-render`](../.github/workflows/cad-render.yml) workflow runs automatically
+The [`build-and-deploy`](../.github/workflows/build-and-deploy.yml) workflow runs automatically
 on every push that changes a `.scad` file. It:
 
-1. Renders both models to STL (waveguide + cabinet)
-2. Renders 3 preview PNGs per model and commits them to [`../assets/renders/`](../assets/renders/)
-3. Creates a [GitHub Release](../../../releases/latest) with the STL files as downloadable assets
+1. Runs all simulations
+2. Renders both models to STL (waveguide + cabinet)
+3. Renders preview PNGs and commits them to [`../assets/renders/`](../assets/renders/)
+4. Builds and deploys the GitHub Pages site
 
 | Preview | Description |
 |---------|-------------|
@@ -90,6 +91,33 @@ These are **design-direction geometry, not validated by measurement.** Mouth
 size, throat and coverage must be confirmed against SB26STAC-in-waveguide
 measurements.
 
+## `midrange.scad`
+
+Parametric OpenSCAD model of the **ScanSpeak 18W/4424G00** midrange. Built from
+the official datasheet drawing and the manufacturer STEP file
+([`assets/cad/18W-4424G00.STEP`](../assets/cad/18W-4424G00.STEP)).
+
+Exports dimension functions used by `cabinet.scad` via `use <midrange.scad>`:
+flange OD, cutout diameter, depth, bolt circle, magnet diameter, and T/S params.
+
+## `SB26STAC-C000-4.scad`
+
+Parametric OpenSCAD model of the **SB Acoustics SB26STAC-C000-4** tweeter.
+Dimensions measured from a STEP file of a similar SB Acoustics tweeter
+([`assets/cad/SB26STAC-C000-4.stp`](../assets/cad/SB26STAC-C000-4.stp), GrabCAD
+user model), verified against the SB26STAC datasheet.
+
+Includes cutout and half-section views (`vis` parameter).
+
+## `GRS-12SW-4HE.scad`
+
+Parametric OpenSCAD model of the **GRS 12SW-4HE** 12" woofer. Built from the
+datasheet drawing only (no manufacturer STEP available). Includes driver,
+baffle cutout, drill template, and half-section views (`vis` parameter).
+
+Some dimensions (cone, surround, dust cap, magnet) are estimates pending
+caliper verification on the physical unit.
+
 ## `cabinet.scad`
 
 A fully parametric **OpenSCAD** model of the enclosure — the cabinet
@@ -101,8 +129,8 @@ geometry for the repo.
   (~520 mm), with the rigid coupling block between the magnets (see
   [Chapter 8](../docs/08_push_push_bass.md)).
 - Front baffle cut-outs for the **waveguide** (elliptical mouth + rounded flange
-  recess, matched to `waveguide.scad`) and the **15W/4434G00** midrange at
-  **~150 mm c-c**.
+  recess, matched to `waveguide.scad`) and the **18W/4424G00** midrange at
+  the top of the baffle.
 - `show_internals = true` renders a cut-away with the sealed mid chamber, a
   window brace at the woofer line and the bass/mid shelf brace.
 - `show_waveguide = true` drops the waveguide model into the baffle (it `use`s

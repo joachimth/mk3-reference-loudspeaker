@@ -11,6 +11,7 @@ on:
       - 'simulations/**.py'
       - 'cad/**.scad'
       - 'assets/datasheets/**'
+      - 'assets/cad/**'
       - 'SIMULATIONS.md'
       - 'README.md'
       - 'docs/**'
@@ -343,7 +344,7 @@ jobs:
 
           # --- Convert subdirectory .md files to HTML ---
           sub_count = 0
-          for subdir in ['assets/datasheets', 'cad', 'dsp-configs', 'simulations']:
+          for subdir in ['assets/datasheets', 'assets/cad', 'cad', 'dsp-configs', 'simulations']:
               if not os.path.isdir(subdir):
                   continue
               out_dir = f'_site/{subdir}'
@@ -368,6 +369,9 @@ jobs:
           cp assets/renders/*.png _site/assets/renders/ 2>/dev/null || true
           cp assets/datasheets/*.pdf _site/assets/datasheets/ 2>/dev/null || true
           cp assets/datasheets/*.csv _site/assets/datasheets/ 2>/dev/null || true
+          # 3D reference files
+          mkdir -p _site/assets/cad
+          cp assets/cad/*.step assets/cad/*.STEP assets/cad/*.stp assets/cad/*.STP assets/cad/*.stl assets/cad/*.STL _site/assets/cad/ 2>/dev/null || true
           touch _site/.nojekyll
 
           echo "=== Site files ==="
