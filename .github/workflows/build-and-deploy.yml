@@ -1,8 +1,8 @@
 name: Build and deploy
 
 # Unified workflow: runs all simulations, renders CAD, commits outputs,
-# and triggers GitHub Pages rebuild. Replaces separate simulations.yml
-# and cad-render.yml with a single pipeline that keeps everything in sync.
+# builds the GitHub Pages site, and deploys it. Everything in one pipeline
+# so Pages always has the latest renders + plots.
 
 on:
   push:
@@ -14,6 +14,8 @@ on:
       - 'SIMULATIONS.md'
       - 'README.md'
       - 'docs/**'
+      - 'assets/renders/**'
+      - 'simulations/plots/**'
       - '.github/workflows/build-and-deploy.yml'
   workflow_dispatch:
 
@@ -98,84 +100,82 @@ jobs:
         run: |
           mkdir -p assets/renders
           cd cad
-          # Waveguide: center (0,0,45), size ~294x175x98mm
           xvfb-run -a openscad --preview \
             --camera=0,0,400,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_mouth.png waveguide.scad 2>&1 || echo "::warning::waveguide_mouth failed"
+            -o ../assets/renders/waveguide_mouth.png waveguide.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             --camera=0,0,-300,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_rear.png waveguide.scad 2>&1 || echo "::warning::waveguide_rear failed"
+            -o ../assets/renders/waveguide_rear.png waveguide.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             --camera=400,0,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_side.png waveguide.scad 2>&1 || echo "::warning::waveguide_side failed"
+            -o ../assets/renders/waveguide_side.png waveguide.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             --camera=0,400,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
-            -o ../assets/renders/waveguide_top.png waveguide.scad 2>&1 || echo "::warning::waveguide_top failed"
+            -o ../assets/renders/waveguide_top.png waveguide.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             --camera=400,-400,300,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/waveguide_iso.png waveguide.scad 2>&1 || echo "::warning::waveguide_iso failed"
+            -o ../assets/renders/waveguide_iso.png waveguide.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             --camera=400,0,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -D 'show_cutaway=true' \
-            -o ../assets/renders/waveguide_cutaway.png waveguide.scad 2>&1 || echo "::warning::waveguide_cutaway failed"
+            -o ../assets/renders/waveguide_cutaway.png waveguide.scad 2>&1 || true
 
       - name: Render cabinet views
         run: |
           cd cad
-          # Cabinet: 320x370x1080mm, center at (0,185,540)
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' \
             --camera=0,2800,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_front.png cabinet.scad 2>&1 || echo "::warning::cabinet_front failed"
+            -o ../assets/renders/cabinet_front.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             --camera=0,-2800,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_rear.png cabinet.scad 2>&1 || echo "::warning::cabinet_rear failed"
+            -o ../assets/renders/cabinet_rear.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' \
             --camera=-2800,185,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_left.png cabinet.scad 2>&1 || echo "::warning::cabinet_left failed"
+            -o ../assets/renders/cabinet_left.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' \
             --camera=2800,185,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_right.png cabinet.scad 2>&1 || echo "::warning::cabinet_right failed"
+            -o ../assets/renders/cabinet_right.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             --camera=0,185,2800,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_top.png cabinet.scad 2>&1 || echo "::warning::cabinet_top failed"
+            -o ../assets/renders/cabinet_top.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             --camera=0,185,-2800,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_bottom.png cabinet.scad 2>&1 || echo "::warning::cabinet_bottom failed"
+            -o ../assets/renders/cabinet_bottom.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' \
             --camera=1200,1600,2000,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_exterior.png cabinet.scad 2>&1 || echo "::warning::cabinet_exterior failed"
+            -o ../assets/renders/cabinet_exterior.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             -D 'show_internals=true' -D 'show_drivers=true' \
             --camera=1000,1400,1400,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_cutaway.png cabinet.scad 2>&1 || echo "::warning::cabinet_cutaway failed"
+            -o ../assets/renders/cabinet_cutaway.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             -D 'show_drivers=true' -D 'show_waveguide=true' \
             --camera=900,1400,1700,0,185,850 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_assembly.png cabinet.scad 2>&1 || echo "::warning::cabinet_assembly failed"
+            -o ../assets/renders/cabinet_assembly.png cabinet.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
             --camera=1000,1200,1600,0,185,600 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
-            -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad 2>&1 || echo "::warning::cabinet_full_cutaway failed"
+            -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad 2>&1 || true
           ls -lh ../assets/renders/
 
       # ============================================================
@@ -213,19 +213,114 @@ jobs:
           if-no-files-found: warn
 
   # ============================================================
-  #  6. Trigger GitHub Pages rebuild
+  #  6. Build and deploy GitHub Pages
+  #     Runs AFTER build job, so all renders + plots are committed.
   # ============================================================
   deploy-pages:
     needs: build
     runs-on: ubuntu-22.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
-      - name: Trigger Pages rebuild
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build Pages site
         run: |
-          # Pages is configured as legacy (Jekyll) build from main.
-          # A push to main auto-triggers a Pages build.
-          # This job ensures the Pages build waits for the build job to finish
-          # (so rendered images are in the repo before Pages picks them up).
-          echo "Pages build will trigger automatically from the commit above."
-          echo "Site: https://joachimth.github.io/mk3-reference-loudspeaker/"
+          # Build a static HTML site from README.md and docs
+          pip install --quiet markdown pymdown-extensions
+
+          mkdir -p _site/docs _site/simulations/plots _site/assets/renders _site/assets/datasheets
+
+          python3 << 'PYEOF'
+          import markdown
+          import os
+
+          # Convert README.md to index.html
+          with open('README.md') as f:
+              md_text = f.read()
+
+          html_body = markdown.markdown(
+              md_text,
+              extensions=['pymdownx.superfences', 'tables', 'fenced_code', 'toc']
+          )
+
+          html_template = """<!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Mk3 Reference Loudspeaker</title>
+              <style>
+                  :root { --bg:#fff; --fg:#1f2328; --muted:#656d76; --accent:#0969da; --border:#d0d7de; --code-bg:#f6f8fa; }
+                  * { box-sizing:border-box; }
+                  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; line-height:1.6; color:var(--fg); background:var(--bg); margin:0; }
+                  .container { max-width:980px; margin:0 auto; padding:2rem 1rem; }
+                  h1,h2,h3,h4 { margin-top:1.5em; margin-bottom:.5em; font-weight:600; line-height:1.25; }
+                  h1 { font-size:2em; border-bottom:1px solid var(--border); padding-bottom:.3em; }
+                  h2 { font-size:1.5em; border-bottom:1px solid var(--border); padding-bottom:.3em; }
+                  a { color:var(--accent); text-decoration:none; }
+                  a:hover { text-decoration:underline; }
+                  img { max-width:100%; height:auto; border-radius:8px; }
+                  table { border-collapse:collapse; margin:1em 0; display:block; overflow-x:auto; }
+                  th,td { border:1px solid var(--border); padding:6px 13px; text-align:left; }
+                  th { background:var(--code-bg); font-weight:600; }
+                  tr:nth-child(even) { background:var(--code-bg); }
+                  code { background:var(--code-bg); padding:.2em .4em; border-radius:4px; font-size:.9em; }
+                  pre { background:var(--code-bg); padding:1em; border-radius:8px; overflow-x:auto; }
+                  pre code { background:none; padding:0; }
+                  blockquote { border-left:4px solid var(--border); margin:1em 0; padding:0 1em; color:var(--muted); }
+                  hr { border:none; border-top:1px solid var(--border); margin:2em 0; }
+                  .badges img { display:inline; height:20px; border-radius:0; }
+              </style>
+          </head>
+          <body><div class="container">__BODY__</div></body>
+          </html>"""
+
+          html = html_template.replace("__BODY__", html_body)
+          with open('_site/index.html', 'w') as f:
+              f.write(html)
+
+          # Convert docs/*.md to HTML
+          for fname in sorted(os.listdir('docs')):
+              if fname.endswith('.md'):
+                  with open(f'docs/{fname}') as f:
+                      md = f.read()
+                  body = markdown.markdown(md, extensions=['pymdownx.superfences', 'tables', 'fenced_code'])
+                  body = body.replace('docs/', '').replace('.md', '.html')
+                  body = body.replace('src="assets/', 'src="../assets/').replace('src="simulations/', 'src="../simulations/')
+                  doc_html = html_template.replace("__BODY__", body)
+                  doc_html = doc_html.replace('<title>Mk3 Reference Loudspeaker</title>',
+                                              f'<title>{fname.replace(".md","")} — Mk3</title>')
+                  with open(f'_site/docs/{fname.replace(".md",".html")}', 'w') as f:
+                      f.write(doc_html)
+
+          print(f"Generated {len(os.listdir('_site/docs'))} doc pages")
+          PYEOF
+
+          # Copy static assets
+          cp simulations/plots/*.png _site/simulations/plots/ 2>/dev/null || true
+          cp assets/renders/*.png _site/assets/renders/ 2>/dev/null || true
+          cp assets/datasheets/*.pdf _site/assets/datasheets/ 2>/dev/null || true
+          cp assets/datasheets/*.csv _site/assets/datasheets/ 2>/dev/null || true
+          cp assets/datasheets/*.md _site/assets/datasheets/ 2>/dev/null || true
+          touch _site/.nojekyll
+
+          echo "=== Site files ==="
+          find _site -type f | wc -l
+          echo "files generated"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
