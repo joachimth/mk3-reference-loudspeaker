@@ -1,5 +1,11 @@
 # Chapter 4 - Midrange Investigations
 
+> **v9 update:** the midrange driver is now the **ScanSpeak 18W/4424G00**
+> (Discovery, 18 cm) — see DD-016 and CHANGELOG v9. It replaces the
+> 15W/4434G00 selected below; the 15W analysis is kept as the selection
+> history. Datasheet: `assets/datasheets/18W-4424G00.md`; parametric model:
+> `cad/midrange.scad`.
+
 ---
 
 ## Requirements

@@ -2,6 +2,62 @@
 
 All notable design changes for the Mk3 Reference Loudspeaker are documented here.
 
+## v9 (in progress) — 18W/4424G00 midrange, mid-over-waveguide layout
+
+### Changed
+
+- **Midrange driver changed** from ScanSpeak 15W/4434G00 to **ScanSpeak
+  18W/4424G00** (Discovery, 18 cm, 4 Ω): Fs 49 Hz, Qts 0.38, Vas 24.1 L,
+  Sd 137 cm², 91 dB — sensitivity now within 0.5 dB of the SB26STAC.
+  Drawing dims: Ø179.2 faceplate, Ø144.3 cutout, Ø167 BCD (6×Ø5.3),
+  72.2 mm depth. Parametric model: `cad/midrange.scad`; datasheet:
+  `assets/datasheets/18W-4424G00.pdf` + `.md`. See DD-016.
+- **Front layout flipped**: the midrange now sits at the TOP of the baffle
+  with the waveguide BELOW it, and the full-width tilted divider plate runs
+  between them. The mid chamber is the top section of the cabinet (~11 L
+  net — near the 18W's 13 L closed-box recommendation, predicted Qtc ~0.68,
+  Fc ~88 Hz), and the bass volume below grows to **~65 L net** (predicted
+  Qtc ~0.80, Fc ~41 Hz before Linkwitz Transform).
+- **Mid/tweeter c-c increased to 165 mm** — the physical minimum with the
+  Ø179.2 mid faceplate and the 143 mm waveguide flange both flush-recessed
+  (DD-011's 140 mm target is not reachable with these parts).
+- **Cabinet external width documented as 320 mm** (spec tables previously
+  said 300 mm; 256 mm internal cannot fit two opposed 136 mm-deep
+  12SW-4HE). Front roundovers documented as R19 (R50 leaves only 220 mm
+  flat baffle — narrower than the 242 mm waveguide flange).
+
+### Added
+
+- **`cad/cabinet.scad` rewritten** around real datasheet dimensions with
+  automatic volume calculation and mechanical self-checks (echoed in litres /
+  mm on every render, updating with any parameter change):
+  - Bass and mid chamber volume in litres + predicted sealed Qtc/Fc from
+    datasheet T-S values; WARNINGs on collisions or missed targets.
+  - **Waveguide front-mounted**: flange recessed flush into the front baffle
+    face (matching its countersunk front screws), with a tapered body
+    clearance hole derived from the waveguide profile exports.
+  - **Divider plate height derived** from the midrange basket envelope
+    (tilt 12°, front low); braces are ring shelves with open centres
+    (single connected bass air volume), notched for the woofer baskets.
+  - **Push-push magnet gap computed** from datasheet depths: ~48 mm at
+    276 mm internal width (not ~4 mm as previously noted); the coupling
+    block length derives from the gap.
+  - Flush-mount rebates, pilot holes on all datasheet bolt circles, and the
+    real `cad/midrange.scad` driver model in assembly renders.
+- `assets/datasheets/15W-4434G00.md` corrected: the earlier mechanical
+  table (104 / 95 / 45.1 / Ø72) did not match the official drawing
+  (Ø149.3 faceplate, Ø136.5 BCD, 61.9 mm depth) — the Ø72 figure had
+  produced an impossible midrange cutout in earlier cabinet models.
+
+### Notes
+
+- Net bass volume ~65 L vs the 75 L docs target (docs/09's own estimate was
+  ~66 L) — Qtc ~0.80 / Fc ~41 Hz still works with the Linkwitz Transform,
+  at some excursion-headroom cost. Verify in simulation before build.
+- 1100 Hz LR4 mid/tweeter crossover is unchanged but must be re-validated
+  for the larger 18 cm cone (directivity at the top of the mid band) and
+  the 165 mm c-c (vertical lobing) once parts are measured.
+
 ## v8 — GRS 12SW-4HE woofer upgrade
 
 ### Changed

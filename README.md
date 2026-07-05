@@ -12,16 +12,16 @@ A DIY active 3-way reference loudspeaker, inspired by Genelec 8361, Dutch & Dutc
 | Parameter | Value |
 |---|---|
 | Woofers | 2 × GRS 12SW-4HE (push-push, side-mounted) |
-| Midrange | ScanSpeak 15W/4434G00 |
-| Tweeter | SB Acoustics SB26STAC-C000-4 in custom waveguide |
-| Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood |
-| Front edges | R50 vertical roundovers |
-| Bass volume | ~75 L sealed (under divider plate) |
-| Mid chamber | ~5.7 L sealed |
+| Midrange | ScanSpeak 18W/4424G00 (top of baffle, `cad/midrange.scad`) |
+| Tweeter | SB Acoustics SB26STAC-C000-4 in custom waveguide (below the midrange) |
+| Cabinet | 320 × 370 × 1080 mm, 22 mm birch plywood |
+| Front edges | R19 vertical roundovers |
+| Bass volume | ~65 L net sealed (below divider plate; target 75 L) |
+| Mid chamber | ~11 L net sealed (top section; datasheet rec. 13 L) |
 | Bass / mid crossover | 150 Hz LR4 |
-| Mid / tweeter crossover | 1100 Hz LR4 |
-| Mid / tweeter c-c | 140 mm nominal (verify from physical parts) |
-| Bass alignment | Fc ~39 Hz sealed (→28 Hz, Q 0.707 via Linkwitz Transform) |
+| Mid / tweeter crossover | 1100 Hz LR4 (re-validate for the 18 cm cone) |
+| Mid / tweeter c-c | 165 mm (physical minimum; verify from physical parts) |
+| Bass alignment | Fc ~41 Hz sealed (→28 Hz, Q 0.707 via Linkwitz Transform) |
 | DSP | MiniDSP 4×10 HD |
 | System type | Active, DSP-controlled |
 
@@ -35,7 +35,7 @@ A DIY active 3-way reference loudspeaker, inspired by Genelec 8361, Dutch & Dutc
 | Impedance | 4 Ω |
 | Type | Conventional soft dome, not horn-loaded |
 
-The SB26STAC has a low Fs and generous excursion headroom. At 1100 Hz crossover, it operates 350 Hz above resonance with +8.1 dB excursion margin. Sensitivity matches the 15W midrange within 1.8 dB, requiring only minimal DSP padding. See [tweeter selection analysis](docs/SB26STAC-C000-4_analysis.md) for the full rationale.
+The SB26STAC has a low Fs and generous excursion headroom. At 1100 Hz crossover, it operates 350 Hz above resonance with +8.1 dB excursion margin. Sensitivity matches the 18W/4424G00 midrange within 0.5 dB, requiring only minimal DSP padding. See [tweeter selection analysis](docs/SB26STAC-C000-4_analysis.md) for the full rationale.
 
 ---
 
@@ -265,7 +265,8 @@ The full design bible lives in the `docs/` folder:
 |---|---|---|
 | GRS 12SW-4HE (woofer) | [PDF](assets/datasheets/GRS-12SW-4HE.pdf) | [Full reference](assets/datasheets/GRS-12SW-4HE.md) — Fs 22 Hz, Qts 0.43, Vas 80.4 L, Xmax 12.5 mm (Klippel), Sd 504 cm², Bl 16.2 Tm, 250 W, 84.5 dB |
 | GRS 8SW-4HE-8 (woofer, historical — superseded) | [PDF](assets/datasheets/GRS-8SW-4HE-8-spec-sheet.pdf) | [freq response](assets/datasheets/GRS-8SW-4HE-8_freq_response.csv), [impedance](assets/datasheets/GRS-8SW-4HE-8_impedance.csv), [T/S params](assets/datasheets/GRS-8SW-4HE-8_params.csv) |
-| ScanSpeak 15W/4434G00 (mid) | [PDF](assets/datasheets/15W-4434G00.pdf) | [freq response](assets/datasheets/15W-4434G00_freq_response.csv), [impedance](assets/datasheets/15W-4434G00_impedance.csv), [T/S params](assets/datasheets/15W-4434G00_params.csv) |
+| ScanSpeak 18W/4424G00 (mid) | [PDF](assets/datasheets/18W-4424G00.pdf) | [Full reference](assets/datasheets/18W-4424G00.md) — Fs 49 Hz, Qts 0.38, Vas 24.1 L, Sd 137 cm², 91 dB; parametric model `cad/midrange.scad` |
+| ScanSpeak 15W/4434G00 (mid, historical — superseded in v9) | [PDF](assets/datasheets/15W-4434G00.pdf) | [freq response](assets/datasheets/15W-4434G00_freq_response.csv), [impedance](assets/datasheets/15W-4434G00_impedance.csv), [T/S params](assets/datasheets/15W-4434G00_params.csv) |
 | SB Acoustics SB26STAC-C000-4 (tweeter) | [PDF](assets/datasheets/SB26STAC-C000-4.pdf) | [freq response](assets/datasheets/SB26STAC-C000-4_freq_response.csv), [T/S params](assets/datasheets/SB26STAC-C000-4_params.csv) |
 
 See [assets/datasheets/README.md](assets/datasheets/README.md) for extraction details.
