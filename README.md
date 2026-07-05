@@ -263,7 +263,7 @@ The full design bible lives in the `docs/` folder:
 
 | Driver | Datasheet | Extracted data |
 |---|---|---|
-| GRS 12SW-4HE (woofer) | [PDF](assets/datasheets/GRS-12SW-4HE.pdf) | Fs 22 Hz, Qts 0.43, Vas 80.4 L, Xmax 12.5 mm (Klippel), Sd 504 cm², Bl 16.2 Tm, 250 W, 84.5 dB |
+| GRS 12SW-4HE (woofer) | [PDF](assets/datasheets/GRS-12SW-4HE.pdf) | [Full reference](assets/datasheets/GRS-12SW-4HE.md) — Fs 22 Hz, Qts 0.43, Vas 80.4 L, Xmax 12.5 mm (Klippel), Sd 504 cm², Bl 16.2 Tm, 250 W, 84.5 dB |
 | GRS 8SW-4HE-8 (woofer, historical — superseded) | [PDF](assets/datasheets/GRS-8SW-4HE-8-spec-sheet.pdf) | [freq response](assets/datasheets/GRS-8SW-4HE-8_freq_response.csv), [impedance](assets/datasheets/GRS-8SW-4HE-8_impedance.csv), [T/S params](assets/datasheets/GRS-8SW-4HE-8_params.csv) |
 | ScanSpeak 15W/4434G00 (mid) | [PDF](assets/datasheets/15W-4434G00.pdf) | [freq response](assets/datasheets/15W-4434G00_freq_response.csv), [impedance](assets/datasheets/15W-4434G00_impedance.csv), [T/S params](assets/datasheets/15W-4434G00_params.csv) |
 | SB Acoustics SB26STAC-C000-4 (tweeter) | [PDF](assets/datasheets/SB26STAC-C000-4.pdf) | [freq response](assets/datasheets/SB26STAC-C000-4_freq_response.csv), [T/S params](assets/datasheets/SB26STAC-C000-4_params.csv) |
