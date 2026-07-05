@@ -175,7 +175,62 @@ jobs:
             -o ../assets/renders/cabinet_full_cutaway.png cabinet.scad 2>&1 || true
           ls -lh ../assets/renders/
 
-      # ============================================================
+      - name: Render driver models
+        run: |
+          cd cad
+          # SB26STAC-C000-4 tweeter — front, iso, section
+          xvfb-run -a openscad --preview \
+            --camera=0,0,80,0,0,0 \
+            --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/driver_tweeter_front.png SB26STAC-C000-4.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            --camera=200,-200,150,0,0,35 \
+            --imgsize=1200,1200 --colorscheme=Cornfield \
+            -o ../assets/renders/driver_tweeter_iso.png SB26STAC-C000-4.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'vis="snit"' \
+            --camera=200,-200,150,0,0,35 \
+            --imgsize=1200,1200 --colorscheme=Cornfield \
+            -o ../assets/renders/driver_tweeter_section.png SB26STAC-C000-4.scad 2>&1 || true
+  
+          # GRS 12SW-4HE woofer — front, iso, section, cutout
+          xvfb-run -a openscad --preview \
+            --camera=0,0,200,0,0,0 \
+            --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/driver_woofer_front.png GRS-12SW-4HE.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            --camera=400,-400,300,0,0,35 \
+            --imgsize=1200,1200 --colorscheme=Cornfield \
+            -o ../assets/renders/driver_woofer_iso.png GRS-12SW-4HE.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'vis="snit"' \
+            --camera=400,-400,300,0,0,35 \
+            --imgsize=1200,1200 --colorscheme=Cornfield \
+            -o ../assets/renders/driver_woofer_section.png GRS-12SW-4HE.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'vis="skabelon"' \
+            --camera=0,0,200,0,0,0 \
+            --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/driver_woofer_template.png GRS-12SW-4HE.scad 2>&1 || true
+  
+          # 18W/4424G00 midrange — front, iso, section
+          xvfb-run -a openscad --preview \
+            --camera=0,0,200,0,0,0 \
+            --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/driver_midrange_front.png midrange.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            --camera=400,-400,300,0,0,35 \
+            --imgsize=1200,1200 --colorscheme=Cornfield \
+            -o ../assets/renders/driver_midrange_iso.png midrange.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'vis="snit"' \
+            --camera=400,-400,300,0,0,35 \
+            --imgsize=1200,1200 --colorscheme=Cornfield \
+            -o ../assets/renders/driver_midrange_section.png midrange.scad 2>&1 || true
+  
+          ls -lh ../assets/renders/driver_*.png
+  
+        # ============================================================
       #  4. Commit all generated outputs back to repo
       # ============================================================
       - name: Commit generated outputs
