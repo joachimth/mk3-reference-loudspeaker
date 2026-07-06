@@ -16,7 +16,8 @@ tweeter selection analysis:
 | Script | What it computes | Output |
 |---|---|---|
 | `mk3_crossover_optimization.py` | Systematic crossover-frequency sweep for the SB26STAC scoring Fs margin, excursion headroom, directivity match, vertical lobing ripple and system-sum flatness. Confirms 1100 Hz as optimal. | `plots/mk3_crossover_optimization.png` |
-| `mk2_vs_mk3_realistic_response.py` | Realistic full-system on-axis response using actual digitized datasheet frequency-response curves, baffle step, waveguide loading and LR4 crossovers. Compares the current SB26STAC/1100 Hz design against the earlier horn-dome/1250 Hz baseline (historical). | `plots/mk2_vs_mk3_realistic_response.png` |
+| `system_response_realistic.py` | Realistic full-system on-axis response using actual digitized datasheet frequency-response curves, baffle step, waveguide loading and LR4 crossovers. Compares the current SB26STAC/1100 Hz design against the earlier horn-dome/1250 Hz baseline (historical). | `plots/mk2_vs_mk3_realistic_response.png` |
+| `system_response_inroom.py` | Four-stage progression: anechoic (pre-DSP) → in-room (average living room 4.5×4×2.4m, room gain + HF absorption) → level-corrected (normalized @500 Hz) → post-DSP (EQ toward Harman in-room target, 1/3 octave PEQ simulation). Uses v9 drivers. | `plots/system_response_inroom.png`, `csv/system_response_inroom.csv` |
 | `mk2_vs_mk3_spinorna.py` | Spinorama estimate (on-axis, listening window, early reflections, sound power, DI, PIR) using real datasheet curves and 26 mm vs 25 mm dome directivity. | `plots/mk2_vs_mk3_spinorna.png`, `plots/mk2_vs_mk3_system_response.png` |
 | `h2606_vs_sb26stac_comparison.py` | Tweeter selection analysis (Fs, Xmax, sensitivity, excursion-limited max SPL, Fs-margin at each candidate crossover) documenting why the SB26STAC was chosen. | `plots/h2606_vs_sb26stac_comparison.png` |
 
@@ -66,6 +67,7 @@ python3 simulations/mk3_crossover_optimization.py
 python3 simulations/mk2_vs_mk3_realistic_response.py
 python3 simulations/mk2_vs_mk3_spinorna.py
 python3 simulations/h2606_vs_sb26stac_comparison.py
+python3 simulations/system_response_inroom.py
 ```
 
 The directivity script implements the Bessel `J1` via a polynomial

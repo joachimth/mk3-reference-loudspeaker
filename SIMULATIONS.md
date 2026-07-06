@@ -33,6 +33,55 @@ tweeter selection analysis:
   vertical lobing ripple and system-sum flatness. Confirms 1100 Hz as optimal.
 - `tweeter_comparison.py` — tweeter selection analysis (excursion,
   distortion, sensitivity) documenting why the SB26STAC was chosen.
+- `system_response_inroom.py` — four-stage progression: anechoic (pre-DSP)
+  → in-room (average living room 4.5×4×2.4m, room gain + HF absorption)
+  → level-corrected (normalized @500 Hz) → post-DSP (EQ toward Harman
+  in-room target, 1/3 octave PEQ simulation). Uses v9 drivers: 2× GRS
+  12SW-4HE, ScanSpeak 18W/4424G00, SB26STAC-C000-4. Output:
+  `plots/system_response_inroom.png`, `csv/system_response_inroom.csv`.
+
+---
+
+# In-Room Response Simulation
+
+## Model (added July 6, 2026)
+
+The in-room simulation (`system_response_inroom.py`) extends the anechoic
+system response with a room acoustics model and DSP correction simulation.
+
+### Room model — average living room
+
+- Dimensions: 4.5 × 4.0 × 2.4 m (V = 43.2 m³) — typical Danish stue
+- RT60 ≈ 0.4 s (furnished room with carpet, curtains, sofa)
+- Schroeder frequency: ~192 Hz
+- Room gain: +6 dB/octave below f_schroeder, capped at +9 dB
+  (3 boundary surfaces + modal density boost)
+- HF absorption: −1.5 dB/octave above 5 kHz, capped at −3 dB
+  (furnishings, carpet, curtains)
+
+### Harman in-room target curve
+
+- Flat 100 Hz – 1 kHz (0 dB reference)
+- Bass shelf: +3.5 dB below 100 Hz (second-order transition)
+- HF tilt: −1 dB/octave above 1 kHz
+
+### DSP simulation
+
+- Uses actual v9 DSP gains (woofer −4 dB, mid 0 dB, tweeter −0.5 dB)
+- Simulates ~10 PEQ bands at 1/3 octave resolution
+- Residual deviation from target: ±0.2 dB (500 Hz – 10 kHz)
+
+### Results
+
+| Stage | Ripple 200–15k | Ripple 500–10k | @100 Hz | @500 Hz | @2 kHz | @10 kHz |
+|---|---|---|---|---|---|---|
+| Anechoic (pre-DSP) | 7.3 dB | 3.8 dB | 80.0 | 90.7 | 92.4 | 93.6 |
+| In-room | 6.5 dB | 3.8 dB | 85.6 | 90.7 | 92.4 | 92.1 |
+| Level-corrected | 6.5 dB | 3.8 dB | −5.1 | 0.0 | 1.7 | 1.4 |
+| Post-DSP | 4.8 dB | 3.5 dB | 1.6 | 0.1 | −1.0 | −3.3 |
+
+Post-DSP deviation from Harman target: ±0.2 dB (500 Hz – 10 kHz).
+The 4.8 dB ripple 200–15k is the intentional bass shelf + HF tilt, not ripple.
 
 ---
 
