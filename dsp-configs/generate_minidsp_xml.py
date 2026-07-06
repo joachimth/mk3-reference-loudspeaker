@@ -512,7 +512,7 @@ def main():
         epilog="""
 Examples:
   # Mk3 v9 (default) — 2xGRS 12SW-4HE | 18W/4424G00 | SB26STAC-C000-4
-  python generate_minidsp_xml.py > mk3-v9-150-1100-lr4.xml
+  python generate_minidsp_xml.py > mk3-v9-200-1100-bw4-lr4.xml
 
   # Mk2 reference
   python generate_minidsp_xml.py --mk2 > mk2-150-1250-lr4.xml

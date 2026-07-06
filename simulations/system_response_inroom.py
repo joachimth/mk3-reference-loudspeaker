@@ -39,7 +39,7 @@ Data sources:
   - SB26STAC-C000-4: assets/datasheets/SB26STAC-C000-4_freq_response.csv (digitized)
   - GRS 12SW-4HE: modeled from T/S params (sealed alignment + LT)
   - Room gain: Schroeder model, typical living room placement
-  - DSP gains: from mk3-v9-150-1100-lr4.xml
+  - DSP gains: from mk3-v9-200-1100-bw4-lr4.xml
 
 ASSUMPTIONS
   - Datasheet curves measured on IEC baffle, normalized to 2.83V/1m

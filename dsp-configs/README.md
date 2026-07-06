@@ -8,7 +8,7 @@ configuration that can be loaded via MiniDSP's plugin software (File → Import)
 
 | File | Crossover | Drivers | Status |
 |------|-----------|---------|--------|
-| `mk3-v9-150-1100-lr4.xml` | 150 Hz LR4 + 1100 Hz LR4 | 2×GRS 12SW-4HE → 18W/4424G00 → SB26STAC-C000-4 | ✅ **v9 design target** |
+| `mk3-v9-200-1100-bw4-lr4.xml` | 200 Hz BW4 + 1100 Hz LR4 | 2×GRS 12SW-4HE → 18W/4424G00 → SB26STAC-C000-4 | ✅ **v9 design target** |
 | `mk2-mk3-transition-150-1100-lr4.xml` | 150 Hz LR4 + 1100 Hz LR4 | 2×GRS 12SW-4HE → 15W/4434G00 → SB26STAC-C000-4 | 🗄️ Transition config (pre-v9) |
 | *(add more as measurements refine)* | | | |
 
