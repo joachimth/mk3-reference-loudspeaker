@@ -50,16 +50,16 @@ Individual driver curves with DSP level adjustments and coherent sum through LR4
 
 | Driver | DSP gain | Filter |
 |---|---|---|
-| 2× GRS 12SW-4HE (woofer) | +1.5 dB | LP 150 Hz LR4, HP 18 Hz subsonic |
-| ScanSpeak 18W/4424G00 (mid) | −4.0 dB | HP 150 / LP 1100 Hz LR4 |
+| 2× GRS 12SW-4HE (woofer) | 0.0 dB (unity) | LP 200 Hz BW4, HP 18 Hz subsonic |
+| ScanSpeak 18W/4424G00 (mid) | −4.0 dB | HP 200 BW4 / LP 1100 Hz LR4 |
 | SB26STAC-C000-4 (tweeter) | −9.0 dB | HP 1100 Hz LR4, WG +2.5 dB |
 
 | Metric | Value |
 |---|---|
-| Midband ripple (500-10k) | 2.7 dB |
+| Midband ripple (500-10k) | 2.8 dB |
 | Sum @ 500 Hz | 0 dB (reference) |
-| Sum @ 2 kHz | −2.1 dB |
-| Sum @ 10 kHz | −1.6 dB |
+| Sum @ 2 kHz | −2.3 dB |
+| Sum @ 10 kHz | −1.8 dB |
 
 **Script:** [system_response_anechoic.py](simulations/system_response_anechoic.py)
 
@@ -73,18 +73,17 @@ Four-stage progression from anechoic to post-DSP, modeling an average living roo
 
 | Driver | DSP gain |
 |---|---|
-| 2× GRS 12SW-4HE (woofer) | +1.5 dB |
-| ScanSpeak 18W/4424G00 (mid) | −4.0 dB |
+| 2× GRS 12SW-4HE (woofer) | 0.0 dB (unity) || ScanSpeak 18W/4424G00 (mid) | −4.0 dB |
 | SB26STAC-C000-4 (tweeter) | −9.0 dB |
 
 | Stage | Ripple 500-10k | @100 Hz | @500 Hz | @10 kHz |
 |---|---|---|---|---|
-| Anechoic (pre-DSP) | 2.7 dB | 83.5 | 86.7 | 85.1 |
-| In-room | 3.6 dB | 89.2 | 86.7 | 83.6 |
-| Level-corrected | 3.6 dB | 2.5 | 0.0 | −3.1 |
+| Anechoic (pre-DSP) | 2.8 dB | 82.9 | 86.9 | 85.1 |
+| In-room | 3.7 dB | 88.6 | 86.9 | 83.6 |
+| Level-corrected | 3.7 dB | 1.7 | 0.0 | −3.3 |
 | Post-DSP | 3.5 dB* | 1.7 | 0.1 | −3.3 |
 
-*Post-DSP ripple includes intentional Harman bass shelf + HF tilt. Residual deviation from target: ±0.3 dB (500-10k). DSP correction range: ±2.0 dB.
+*Post-DSP ripple includes intentional Harman bass shelf + HF tilt. Residual deviation from target: ±0.3 dB (500-10k). DSP correction range: ±1.3 dB.
 
 **Script:** [system_response_inroom.py](simulations/system_response_inroom.py)
 
@@ -96,10 +95,10 @@ Two in-room target philosophies with their optimal per-driver gains:
 
 | Target | Woofer | Mid | Tweeter | W-M spread | M-T spread | Character |
 |---|---|---|---|---|---|---|
-| **Harman** | +1.5 dB | −4.0 dB | −9.0 dB | 5.5 dB | 5.0 dB | Flat, modern, slightly bright |
-| **BBC-style** | +1.0 dB | −3.5 dB | −8.5 dB | 4.5 dB | 5.0 dB | Warm, vocal-forward, less fatiguing |
+| **Harman** | 0.0 dB | −4.0 dB | −9.0 dB | 4.0 dB | 5.0 dB | Flat, modern, slightly bright |
+| **BBC-style** | 0.0 dB | −3.0 dB | −8.0 dB | 3.0 dB | 5.0 dB | Warm, vocal-forward, less fatiguing |
 
-Both share M-T = 5.0 dB spread. BBC needs 1 dB less woofer-to-mid because the −2 dB presence dip at 2 kHz naturally lowers the mid in the critical vocal region. Post-DSP residual: ±0.3 dB for both.
+Both share M-T = 5.0 dB spread. BBC needs 1 dB less woofer-to-mid because the −2 dB presence dip at 2 kHz naturally lowers the mid in the critical vocal region. Post-DSP residual: ±0.3 dB for both. DSP correction: Harman ±1.3 dB, BBC ±1.7 dB.
 
 **Harman target:** +3.5 dB bass shelf below 100 Hz, −1 dB/octave HF tilt above 1 kHz (Olive et al. research).
 **BBC target:** −2 dB presence dip at 2 kHz, +2 dB bass shelf below 120 Hz, −0.8 dB/octave HF tilt above 3 kHz (LS3/5a school).

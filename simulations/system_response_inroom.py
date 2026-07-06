@@ -101,6 +101,20 @@ def lr4_hp_db(f, fc):
     s = 1j * f / fc
     return 20*np.log10(np.abs((s**2 / (s**2 + np.sqrt(2)*s + 1))**2) + 1e-12)
 
+def bw4_lp_db(f, fc):
+    """4th-order Butterworth lowpass: two cascaded sections Q=0.5412, Q=1.3066."""
+    s = 1j * f / fc
+    H1 = 1.0 / (s**2 + s/0.5412 + 1)
+    H2 = 1.0 / (s**2 + s/1.3066 + 1)
+    return 20*np.log10(np.abs(H1 * H2) + 1e-12)
+
+def bw4_hp_db(f, fc):
+    """4th-order Butterworth highpass: two cascaded sections Q=0.5412, Q=1.3066."""
+    s = 1j * f / fc
+    H1 = s**2 / (s**2 + s/0.5412 + 1)
+    H2 = s**2 / (s**2 + s/1.3066 + 1)
+    return 20*np.log10(np.abs(H1 * H2) + 1e-12)
+
 def lr2_hp_db(f, fc):
     """2nd-order Linkwitz-Riley HP (for subsonic filter)."""
     s = 1j * f / fc
@@ -225,24 +239,24 @@ def interp_curve(freq_data, spl_data, f_target, fill_below=None, fill_above=None
     return spl
 
 # v9 DSP actual gains
-dsp_w_gain = 1.5     # woofer DSP gain (dB) — optimized for in-room Harman target
+dsp_w_gain = 0.0     # woofer DSP gain (dB) — optimized for in-room Harman target
 dsp_m_gain = -4.0    # mid DSP gain (dB)
 dsp_t_gain = -9.0    # tweeter DSP gain (dB)
-fc_woofer = 150.0
+fc_woofer = 200.0
 fc_tweeter = 1100.0
 wg_gain = 2.5
 
 # --- Woofer: 2x GRS 12SW-4HE sealed + LT ---
 mag_w_raw = woofer_response(f)
 mag_w = mag_w_raw + bs                          # baffle step
-mag_w += lr4_lp_db(f, fc_woofer)                # LP at 150 Hz
+mag_w += bw4_lp_db(f, fc_woofer)                # LP at 200 Hz BW4
 mag_w += lr2_hp_db(f, 18.0)                     # subsonic HP 18 Hz
 mag_w += dsp_w_gain                             # DSP level correction
 
 # --- Midrange: 18W/4424G00 real datasheet curve ---
 mag_m_raw = interp_curve(w18_freq, w18_spl, f, fill_below=92.5, fill_above=80.0)
 mag_m = mag_m_raw + bs                          # baffle step
-mag_m += lr4_hp_db(f, fc_woofer)                # HP at 150 Hz
+mag_m += bw4_hp_db(f, fc_woofer)                # HP at 200 Hz BW4
 mag_m += lr4_lp_db(f, fc_tweeter)               # LP at 1100 Hz
 mag_m += dsp_m_gain                             # DSP level correction
 
@@ -425,7 +439,7 @@ for ax in axes:
 
 fig.suptitle("Mk3 Reference Loudspeaker v9 — System Response Progression\n"
              f"Drivers: 2×GRS 12SW-4HE | ScanSpeak 18W/4424G00 | SB26STAC-C000-4  |  "
-             f"XO: 150/1100 Hz LR4  |  Room: {room_l}×{room_w}×{room_h}m (avg living room)\n"
+             f"XO: 200 Hz BW4 / 1100 Hz LR4  |  Room: {room_l}×{room_w}×{room_h}m (avg living room)\n"
              "Anechoic → In-room → Level-corrected → Post-DSP. "
              "Curves digitized from manufacturer datasheets. Room model is an estimate.",
              fontsize=13, fontweight="bold")

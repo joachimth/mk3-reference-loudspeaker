@@ -68,6 +68,20 @@ def lr4_hp_db(f, fc):
     s = 1j * f / fc
     return 20*np.log10(np.abs((s**2 / (s**2 + np.sqrt(2)*s + 1))**2) + 1e-12)
 
+def bw4_lp_db(f, fc):
+    """4th-order Butterworth lowpass: two cascaded sections Q=0.5412, Q=1.3066."""
+    s = 1j * f / fc
+    H1 = 1.0 / (s**2 + s/0.5412 + 1)
+    H2 = 1.0 / (s**2 + s/1.3066 + 1)
+    return 20*np.log10(np.abs(H1 * H2) + 1e-12)
+
+def bw4_hp_db(f, fc):
+    """4th-order Butterworth highpass: two cascaded sections Q=0.5412, Q=1.3066."""
+    s = 1j * f / fc
+    H1 = s**2 / (s**2 + s/0.5412 + 1)
+    H2 = s**2 / (s**2 + s/1.3066 + 1)
+    return 20*np.log10(np.abs(H1 * H2) + 1e-12)
+
 def lr2_hp_db(f, fc):
     s = 1j * f / fc
     H = s**2 / (s**2 + s/0.707 + 1)
@@ -108,10 +122,10 @@ def woofer_response(f):
 # ============================================================
 #  Parameters — v9 actual settings
 # ============================================================
-dsp_w_gain = 1.5     # woofer DSP gain (dB) — optimized for in-room Harman target
+dsp_w_gain = 0.0     # woofer DSP gain (dB) — optimized for in-room Harman target
 dsp_m_gain = -4.0    # mid DSP gain (dB)
 dsp_t_gain = -9.0    # tweeter DSP gain (dB)
-fc_woofer = 150.0
+fc_woofer = 200.0
 fc_tweeter = 1100.0
 wg_gain = 2.5
 
@@ -132,11 +146,11 @@ def interp_curve(freq_data, spl_data, f_target, fill_below=None, fill_above=None
 
 # Woofer: 2x GRS 12SW-4HE sealed + LT + baffle step + LP@150 + subsonic + DSP gain
 mag_w_raw = woofer_response(f)
-mag_w = mag_w_raw + bs + lr4_lp_db(f, fc_woofer) + lr2_hp_db(f, 18.0) + dsp_w_gain
+mag_w = mag_w_raw + bs + bw4_lp_db(f, fc_woofer) + lr2_hp_db(f, 18.0) + dsp_w_gain
 
 # Mid: 18W/4424G00 real curve + baffle step + HP@150 + LP@1100 + DSP gain
 mag_m_raw = interp_curve(w18_freq, w18_spl, f, fill_below=92.5, fill_above=80.0)
-mag_m = mag_m_raw + bs + lr4_hp_db(f, fc_woofer) + lr4_lp_db(f, fc_tweeter) + dsp_m_gain
+mag_m = mag_m_raw + bs + bw4_hp_db(f, fc_woofer) + lr4_lp_db(f, fc_tweeter) + dsp_m_gain
 
 # Tweeter: SB26STAC real curve + WG loading + HP@1100 + DSP gain
 mag_t_raw = interp_curve(sb26_freq, sb26_spl, f,
@@ -195,9 +209,9 @@ colors = {
 
 # Individual drivers (dashed, thinner)
 ax.semilogx(f, mag_w_n, lw=1.8, color=colors["woofer"], ls="--", alpha=0.7,
-            label=f"Woofer  2×GRS 12SW-4HE  ({dsp_w_gain:+.1f} dB, LP {fc_woofer:.0f} Hz LR4)")
+            label=f"Woofer  2×GRS 12SW-4HE  ({dsp_w_gain:+.1f} dB, LP {fc_woofer:.0f} Hz BW4)")
 ax.semilogx(f, mag_m_n, lw=1.8, color=colors["mid"], ls="--", alpha=0.7,
-            label=f"Mid     ScanSpeak 18W/4424G00  ({dsp_m_gain:+.1f} dB, HP {fc_woofer:.0f} / LP {fc_tweeter:.0f} Hz)")
+            label=f"Mid     ScanSpeak 18W/4424G00  ({dsp_m_gain:+.1f} dB, HP {fc_woofer:.0f} BW4 / LP {fc_tweeter:.0f} Hz)")
 ax.semilogx(f, mag_t_n, lw=1.8, color=colors["tweeter"], ls="--", alpha=0.7,
             label=f"Tweeter SB26STAC-C000-4  ({dsp_t_gain:+.1f} dB, HP {fc_tweeter:.0f} Hz, WG +{wg_gain:.1f} dB)")
 
@@ -220,7 +234,7 @@ ax.set_xlabel("Frequency [Hz]", fontsize=12)
 ax.set_ylabel("dB (normalized @500 Hz)", fontsize=12)
 ax.set_title("Mk3 v9 — Anechoic System Response (pre-EQ, pre-room)\n"
              "Individual drivers with DSP level adjustments + coherent sum  |  "
-             "XO: 150/1100 Hz LR4  |  Baffle step + WG loading included",
+             "XO: 200 Hz BW4 / 1100 Hz LR4  |  Baffle step + WG loading included",
              fontsize=13, fontweight="bold")
 ax.legend(fontsize=10, loc="lower left", framealpha=0.9)
 ax.grid(True, which="both", alpha=0.25)

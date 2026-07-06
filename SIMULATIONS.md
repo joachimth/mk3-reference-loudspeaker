@@ -67,19 +67,19 @@ system response with a room acoustics model and DSP correction simulation.
 
 ### DSP simulation
 
-- Uses optimized DSP gains (woofer +1.5 dB, mid −4.0 dB, tweeter −9.0 dB)
+- Uses optimized DSP gains (woofer 0 dB (unity), mid −4.0 dB, tweeter −9.0 dB)
 - Optimized for in-room response vs Harman target curve
 - Simulates ~10 PEQ bands at 1/3 octave resolution
-- DSP correction range: ±2.0 dB (smoothed, 1/3 octave)
+- DSP correction range: ±1.3 dB (smoothed, 1/3 octave)
 - Residual deviation from target: ±0.3 dB (500 Hz – 10 kHz)
 
 ### Results
 
 | Stage | Ripple 200–15k | Ripple 500–10k | @100 Hz | @500 Hz | @2 kHz | @10 kHz |
 |---|---|---|---|---|---|---|
-| Anechoic (pre-DSP) | 2.7 dB | 2.7 dB | 83.5 | 86.7 | 84.5 | 85.1 |
-| In-room | 3.6 dB | 3.6 dB | 89.2 | 86.7 | 84.5 | 83.6 |
-| Level-corrected | 3.6 dB | 3.6 dB | 2.5 | 0.0 | −2.1 | −3.1 |
+| Anechoic (pre-DSP) | 3.4 dB | 2.8 dB | 82.9 | 86.9 | 84.5 | 85.1 |
+| In-room | 4.3 dB | 3.7 dB | 88.6 | 86.9 | 84.5 | 83.6 |
+| Level-corrected | 4.3 dB | 3.7 dB | 1.7 | 0.0 | −2.3 | −3.3 |
 | Post-DSP | 4.8 dB | 3.5 dB | 1.7 | 0.1 | −1.0 | −3.3 |
 
 Post-DSP deviation from Harman target: ±0.3 dB (500 Hz – 10 kHz).
@@ -91,8 +91,8 @@ A second target curve (BBC-style) was optimized with its own gain set:
 
 | Target | Woofer | Mid | Tweeter | W-M | M-T | Pre-EQ RMS | Post-DSP residual |
 |---|---|---|---|---|---|---|---|
-| Harman | +1.5 dB | −4.0 dB | −9.0 dB | 5.5 dB | 5.0 dB | 0.89 dB | ±0.3 dB |
-| BBC-style | +1.0 dB | −3.5 dB | −8.5 dB | 4.5 dB | 5.0 dB | 0.88 dB | ±0.3 dB |
+| Harman | 0.0 dB | −4.0 dB | −9.0 dB | 5.5 dB | 5.0 dB | 0.89 dB | ±0.3 dB |
+| BBC-style | 0.0 dB | −3.0 dB | −8.0 dB | 4.5 dB | 5.0 dB | 0.88 dB | ±0.3 dB |
 
 BBC target: −2 dB presence dip at 2 kHz, +2 dB bass shelf below 120 Hz,
 −0.8 dB/octave HF tilt above 3 kHz. Both targets achievable with ±2.0 dB

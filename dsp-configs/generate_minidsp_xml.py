@@ -76,6 +76,46 @@ def build_lr4_highpass(fc: float, fs: float) -> list[tuple[float, float, float, 
     return [s, s]
 
 
+def build_bw4_lowpass(fc: float, fs: float) -> list[tuple[float, float, float, float, float]]:
+    """BW4 lowpass = two cascaded BW2 sections with different Q values.
+
+    Butterworth 4th order pole Qs: Q1=0.5412, Q2=1.3066
+    """
+    w0 = 2 * math.pi * fc / fs
+    cosw0 = math.cos(w0)
+    sections = []
+    for Q in [0.5412, 1.3066]:
+        alpha = math.sin(w0) / (2 * Q)
+        b0 = (1 - cosw0) / 2
+        b1 = 1 - cosw0
+        b2 = (1 - cosw0) / 2
+        a0 = 1 + alpha
+        a1 = -2 * cosw0
+        a2 = 1 - alpha
+        sections.append((b0/a0, b1/a0, b2/a0, a1/a0, a2/a0))
+    return sections
+
+
+def build_bw4_highpass(fc: float, fs: float) -> list[tuple[float, float, float, float, float]]:
+    """BW4 highpass = two cascaded BW2 sections with different Q values.
+
+    Butterworth 4th order pole Qs: Q1=0.5412, Q2=1.3066
+    """
+    w0 = 2 * math.pi * fc / fs
+    cosw0 = math.cos(w0)
+    sections = []
+    for Q in [0.5412, 1.3066]:
+        alpha = math.sin(w0) / (2 * Q)
+        b0 = (1 + cosw0) / 2
+        b1 = -(1 + cosw0)
+        b2 = (1 + cosw0) / 2
+        a0 = 1 + alpha
+        a1 = -2 * cosw0
+        a2 = 1 - alpha
+        sections.append((b0/a0, b1/a0, b2/a0, a1/a0, a2/a0))
+    return sections
+
+
 def build_linkwitz_transform(
     fc: float, Qc: float, fs_target: float, Q_target: float, sample_rate: float
 ) -> tuple[float, float, float, float, float]:
@@ -124,16 +164,17 @@ class OutputChannel:
 
 def build_mk3_v9_config(
     sample_rate: int = 96000,
-    woofer_lp: float = 150,
-    woofer_lp_type: str = "lr4",
-    mid_hp: float = 150,
-    mid_hp_type: str = "lr4",
+    woofer_lp: float = 200,
+    woofer_lp_type: str = "bw4",
+    mid_hp: float = 200,
+    mid_hp_type: str = "bw4",
     mid_lp: float = 1100,
     mid_lp_type: str = "lr4",
     tweeter_hp: float = 1100,
     tweeter_hp_type: str = "lr4",
-    tweeter_trim: float = -0.5,
-    woofer_trim: float = -4.0,
+    tweeter_trim: float = -9.0,
+    woofer_trim: float = 0.0,
+    mid_trim: float = -4.0,
     subsonic_hp: float = 18,
     subsonic_hp_type: str = "lr4",
     woofer_lt_fc: Optional[float] = 39.0,
@@ -145,10 +186,10 @@ def build_mk3_v9_config(
     """Build channel config for Mk3 Reference v9: 2xGRS 12SW-4HE | 18W/4424G00 | SB26STAC-C000-4.
 
     System sensitivities:
-    - GRS 12SW-4HE pair (push-push): ~95 dB → padded by woofer_trim
-    - 18W/4424G00 mid: 91 dB
-    - SB26STAC-C000-4 tweeter: 91.5 dB → trimmed by -0.5 dB to match mid
-    - XO: 150 Hz LR4 (woofer→mid), 1100 Hz LR4 (mid→tweeter)
+    - GRS 12SW-4HE pair (push-push): ~87.5 dB → woofer_trim +1.5 dB
+    - 18W/4424G00 mid: 92 dB → trimmed by -2.5 dB
+    - SB26STAC-C000-4 tweeter: ~93.5 dB → trimmed by -7.5 dB to match mid
+    - XO: 200 Hz BW4 (woofer→mid), 1100 Hz LR4 (mid→tweeter)
     """
 
     def wkz(label, coeffs):
@@ -171,6 +212,9 @@ def build_mk3_v9_config(
         if woofer_lp_type == "lr4":
             for coeffs in build_lr4_lowpass(woofer_lp, sample_rate):
                 woofer_biquads.append(wkz(f"LP {woofer_lp} LR4", coeffs))
+        elif woofer_lp_type == "bw4":
+            for coeffs in build_bw4_lowpass(woofer_lp, sample_rate):
+                woofer_biquads.append(wkz(f"LP {woofer_lp} BW4", coeffs))
 
     # Mid chain: HP (LR4) + LP (LR4)
     mid_biquads: list[BiquadFilter] = []
@@ -178,6 +222,9 @@ def build_mk3_v9_config(
         if mid_hp_type == "lr4":
             for coeffs in build_lr4_highpass(mid_hp, sample_rate):
                 mid_biquads.append(wkz(f"HP {mid_hp} LR4", coeffs))
+        elif mid_hp_type == "bw4":
+            for coeffs in build_bw4_highpass(mid_hp, sample_rate):
+                mid_biquads.append(wkz(f"HP {mid_hp} BW4", coeffs))
     if mid_lp and mid_lp > 0:
         if mid_lp_type == "lr4":
             for coeffs in build_lr4_lowpass(mid_lp, sample_rate):
@@ -198,12 +245,12 @@ def build_mk3_v9_config(
     return [
         OutputChannel(label="12SW Woofer L Top",     gain_db=woofer_trim, delay_ms=0.0,           biquads=woofer_biquads),
         OutputChannel(label="12SW Woofer L Bot",     gain_db=woofer_trim, delay_ms=0.0,           biquads=woofer_biquads),
-        OutputChannel(label="18W/4424G00 Mid L",     gain_db=0.0,         delay_ms=0.0,           biquads=mid_biquads),
+        OutputChannel(label="18W/4424G00 Mid L",     gain_db=mid_trim,    delay_ms=0.0,           biquads=mid_biquads),
         OutputChannel(label="SB26STAC Tweeter L",    gain_db=tweeter_trim,delay_ms=tweeter_delay_ms,biquads=tweeter_biquads),
         OutputChannel(label="(Spare output L)",      gain_db=0.0,         delay_ms=0.0,           biquads=[]),
         OutputChannel(label="12SW Woofer R Top",     gain_db=woofer_trim, delay_ms=0.0,           biquads=woofer_biquads),
         OutputChannel(label="12SW Woofer R Bot",     gain_db=woofer_trim, delay_ms=0.0,           biquads=woofer_biquads),
-        OutputChannel(label="18W/4424G00 Mid R",     gain_db=0.0,         delay_ms=0.0,           biquads=mid_biquads),
+        OutputChannel(label="18W/4424G00 Mid R",     gain_db=mid_trim,    delay_ms=0.0,           biquads=mid_biquads),
         OutputChannel(label="SB26STAC Tweeter R",    gain_db=tweeter_trim,delay_ms=tweeter_delay_ms,biquads=tweeter_biquads),
         OutputChannel(label="(Spare output R)",      gain_db=0.0,         delay_ms=0.0,           biquads=[]),
     ]
@@ -253,6 +300,9 @@ def build_mk2_config(
         if woofer_lp_type == "lr4":
             for coeffs in build_lr4_lowpass(woofer_lp, sample_rate):
                 woofer_biquads.append(wkz(f"LP {woofer_lp} LR4", coeffs))
+        elif woofer_lp_type == "bw4":
+            for coeffs in build_bw4_lowpass(woofer_lp, sample_rate):
+                woofer_biquads.append(wkz(f"LP {woofer_lp} BW4", coeffs))
 
     # Mid chain: HP (LR4) + LP (LR4)
     mid_biquads: list[BiquadFilter] = []
@@ -260,6 +310,9 @@ def build_mk2_config(
         if mid_hp_type == "lr4":
             for coeffs in build_lr4_highpass(mid_hp, sample_rate):
                 mid_biquads.append(wkz(f"HP {mid_hp} LR4", coeffs))
+        elif mid_hp_type == "bw4":
+            for coeffs in build_bw4_highpass(mid_hp, sample_rate):
+                mid_biquads.append(wkz(f"HP {mid_hp} BW4", coeffs))
     if mid_lp and mid_lp > 0:
         if mid_lp_type == "lr4":
             for coeffs in build_lr4_lowpass(mid_lp, sample_rate):
@@ -311,6 +364,9 @@ def build_2way_config(
         if woofer_lp_type == "lr4":
             for c in build_lr4_lowpass(woofer_lp, sample_rate):
                 woofer_biquads.append(BiquadFilter(label=f"LP {woofer_lp} LR4", coeffs=c))
+        elif woofer_lp_type == "bw4":
+            for c in build_bw4_lowpass(woofer_lp, sample_rate):
+                woofer_biquads.append(BiquadFilter(label=f"LP {woofer_lp} BW4", coeffs=c))
 
     tweeter_biquads: list[BiquadFilter] = []
     if tweeter_hp and tweeter_hp > 0:
@@ -404,7 +460,7 @@ def generate_xml(
     desc_parts = [
         f"3-way + push-push woofer.",
         f"GRS 12SW-4HE ×2 | {mid_name} | {tweeter_name}.",
-        f"XO: {woofer_lp}/{mid_hp}-{mid_lp}/{tweeter_hp} Hz LR4.",
+        f"XO: {woofer_lp}/{mid_hp}-{mid_lp}/{tweeter_hp} Hz.",
         f"Sub HP {subsonic_hp} Hz {lt_str}.",
         f"Sample rate: {sample_rate} Hz.",
         "Generated by generate_minidsp_xml.py",
@@ -483,24 +539,25 @@ Examples:
     parser.add_argument("--two-way", action="store_true", dest="two_way", help="2-way config (default: 3-way)")
 
     # Woofer filters
-    parser.add_argument("--woofer-lp", type=float, default=150, help="Woofer lowpass freq (Hz)")
-    parser.add_argument("--woofer-lp-type", default="lr4", choices=["lr4", "lr2", "bw2", "bw4"])
-    parser.add_argument("--woofer-trim", type=float, default=-4.0, help="Woofer gain trim (dB)")
+    parser.add_argument("--woofer-lp", type=float, default=200, help="Woofer lowpass freq (Hz)")
+    parser.add_argument("--woofer-lp-type", default="bw4", choices=["lr4", "lr2", "bw2", "bw4"])
+    parser.add_argument("--woofer-trim", type=float, default=0.0, help="Woofer gain trim (dB)")
     parser.add_argument("--subsonic-hp", type=float, default=18, help="Subsonic highpass freq (Hz)")
     parser.add_argument("--subsonic-hp-type", default="lr4", choices=["lr4", "lr2"])
     parser.add_argument("--no-subsonic", action="store_true", help="Skip subsonic filter")
     parser.add_argument("--no-lt", action="store_true", help="Skip Linkwitz Transform")
 
     # Mid filters (3-way only)
-    parser.add_argument("--mid-hp", type=float, default=150, help="Mid highpass freq (Hz)")
-    parser.add_argument("--mid-hp-type", default="lr4", choices=["lr4", "lr2", "bw2", "bw4"])
+    parser.add_argument("--mid-hp", type=float, default=200, help="Mid highpass freq (Hz)")
+    parser.add_argument("--mid-hp-type", default="bw4", choices=["lr4", "lr2", "bw2", "bw4"])
     parser.add_argument("--mid-lp", type=float, default=1100, help="Mid lowpass freq (Hz)")
-    parser.add_argument("--mid-lp-type", default="lr4", choices=["lr4", "lr2", "bw2", "bw4"])
+    parser.add_argument("--mid-lp-type", default="bw4", choices=["lr4", "lr2", "bw2", "bw4"])
 
     # Tweeter filters
     parser.add_argument("--tweeter-hp", type=float, default=1100, help="Tweeter highpass freq (Hz)")
-    parser.add_argument("--tweeter-hp-type", default="lr4", choices=["lr4", "lr2", "bw2", "bw4"])
-    parser.add_argument("--tweeter-trim", type=float, default=-0.5, help="Tweeter gain trim (dB)")
+    parser.add_argument("--tweeter-hp-type", default="bw4", choices=["lr4", "lr2", "bw2", "bw4"])
+    parser.add_argument("--tweeter-trim", type=float, default=-9.0, help="Tweeter gain trim (dB)")
+    parser.add_argument("--mid-trim", type=float, default=-4.0, help="Mid gain trim (dB)")
 
     args = parser.parse_args()
 
@@ -521,6 +578,7 @@ Examples:
             tweeter_hp=args.tweeter_hp,
             tweeter_hp_slope=args.tweeter_hp_type,
             tweeter_trim=args.tweeter_trim,
+            mid_trim=args.mid_trim,
         )
     elif model == "mk3-v9":
         channels = build_mk3_v9_config(

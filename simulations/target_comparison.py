@@ -64,6 +64,18 @@ def lr4_lp_db(f, fc):
     s = 1j * f / fc; return 20*np.log10(np.abs((1.0/(s**2+np.sqrt(2)*s+1))**2)+1e-12)
 def lr4_hp_db(f, fc):
     s = 1j * f / fc; return 20*np.log10(np.abs((s**2/(s**2+np.sqrt(2)*s+1))**2)+1e-12)
+def bw4_lp_db(f, fc):
+    s = 1j * f / fc
+    H1 = 1.0 / (s**2 + s/0.5412 + 1)
+    H2 = 1.0 / (s**2 + s/1.3066 + 1)
+    return 20*np.log10(np.abs(H1 * H2) + 1e-12)
+
+def bw4_hp_db(f, fc):
+    s = 1j * f / fc
+    H1 = s**2 / (s**2 + s/0.5412 + 1)
+    H2 = s**2 / (s**2 + s/1.3066 + 1)
+    return 20*np.log10(np.abs(H1 * H2) + 1e-12)
+
 def lr2_hp_db(f, fc):
     s = 1j * f / fc; return 20*np.log10(np.abs(s**2/(s**2+s/0.707+1))+1e-12)
 def baffle_step_db(f, a=0.168):
@@ -114,16 +126,16 @@ def interp_curve(fd, sd, ft, fb=None, fa=None):
     return s
 
 def system_inroom(w_gain, m_gain, t_gain):
-    fc_w=150; fc_t=1100; wg=2.5
-    mw = woofer_response(f)+bs+lr4_lp_db(f,fc_w)+lr2_hp_db(f,18)+w_gain
-    mm = interp_curve(w18_freq,w18_spl,f,fb=92.5,fa=80)+bs+lr4_hp_db(f,fc_w)+lr4_lp_db(f,fc_t)+m_gain
+    fc_w=200; fc_t=1100; wg=2.5
+    mw = woofer_response(f)+bs+bw4_lp_db(f,fc_w)+lr2_hp_db(f,18)+w_gain
+    mm = interp_curve(w18_freq,w18_spl,f,fb=92.5,fa=80)+bs+bw4_hp_db(f,fc_w)+lr4_lp_db(f,fc_t)+m_gain
     mt = interp_curve(sb26_freq,sb26_spl,f,fb=sb26_spl[0]-20,fa=sb26_spl[-1]-20)+wg_loading_db(f,wg)+lr4_hp_db(f,fc_t)+t_gain
     s = 20*np.log10(10**(mw/20)+10**(mm/20)+10**(mt/20)+1e-12)
     return s + room_transfer_db(f)
 
 # Optimal gains
-gains_harman = (1.5, -4.0, -9.0)   # W-M=5.5, M-T=5.0
-gains_bbc = (1.0, -3.5, -8.5)      # W-M=4.5, M-T=5.0
+gains_harman = (0.0, -4.0, -9.0)   # W-M=5.5, M-T=5.0
+gains_bbc = (0.0, -3.0, -8.0)      # W-M=4.5, M-T=5.0
 
 ir_harman = system_inroom(*gains_harman)
 ir_bbc = system_inroom(*gains_bbc)
@@ -191,9 +203,9 @@ ax.grid(True, which="both", alpha=0.25)
 # Panel 2: In-room response with both gain sets (pre-EQ)
 ax = axes[1]
 ax.semilogx(f, ir_harman_n, lw=3.0, color=colors["harman"],
-            label=f"Harman gains  W{gains_harman[0]:+.1f} / M{gains_harman[1]:+.1f} / T{gains_harman[2]:+.1f}")
+            label=f"Harman gains  W{gains_harman[0]:+.1f} / M{gains_harman[1]:+.1f} / T{gains_harman[2]:+.1f}  (200 Hz BW4)")
 ax.semilogx(f, ir_bbc_n, lw=3.0, color=colors["bbc"],
-            label=f"BBC gains      W{gains_bbc[0]:+.1f} / M{gains_bbc[1]:+.1f} / T{gains_bbc[2]:+.1f}")
+            label=f"BBC gains      W{gains_bbc[0]:+.1f} / M{gains_bbc[1]:+.1f} / T{gains_bbc[2]:+.1f}  (200 Hz BW4)")
 ax.semilogx(f, target_h, lw=1.5, color=colors["target_h"], ls=":", alpha=0.6, label="Harman target (dashed)")
 ax.semilogx(f, target_b, lw=1.5, color=colors["target_b"], ls=":", alpha=0.6, label="BBC target (dashed)")
 ax.axhline(0, color="0.5", ls=":", lw=0.8)
@@ -223,7 +235,7 @@ for ax in axes:
     ax.set_xticklabels(["20", "50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"])
 
 fig.suptitle("Mk3 v9 — In-room Target Comparison: Harman vs BBC-style\n"
-             f"Room: 4.5×4×2.4m (avg living room)  |  Drivers: 2×GRS 12SW | 18W/4424G00 | SB26STAC  |  XO: 150/1100 Hz LR4",
+             f"Room: 4.5×4×2.4m (avg living room)  |  Drivers: 2×GRS 12SW | 18W/4424G00 | SB26STAC  |  XO: 200 Hz BW4 / 1100 Hz LR4",
              fontsize=14, fontweight="bold")
 fig.tight_layout(rect=[0, 0, 1, 0.93])
 
