@@ -87,6 +87,24 @@ Four-stage progression from anechoic to post-DSP, modeling an average living roo
 
 **Script:** [system_response_inroom.py](simulations/system_response_inroom.py)
 
+### In-room gain optimization
+
+![Gain optimization](simulations/plots/inroom_gain_optimization.png)
+
+Three-stage progression showing why gain correction is needed and what it achieves:
+
+| Stage | @100 Hz | @2 kHz | @10 kHz | RMS deviation |
+|---|---|---|---|---|
+| All gains = 0 dB | −2.1 | +2.0 | +1.7 | 3.59 dB |
+| Optimized (W0/M−4/T−9) | +1.7 | −2.3 | −3.3 | 0.59 dB |
+| Post-DSP (±1.3 dB PEQ) | +1.7 | −1.0 | −3.3 | 0.06 dB |
+
+Driver sensitivities explain the needed pads: woofer pair 87.5 dB, mid 92.0 dB (+4.5 dB), tweeter+WG 93.5 dB (+6.0 dB). The extra tweeter pad beyond sensitivity matching (−9 vs −6) accounts for the Harman HF tilt target.
+
+The optimizer confirms W0/M−4.0/T−9.0 as optimal at 0.1 dB resolution. Spreads: W−M = 4.0 dB, M−T = 5.0 dB. Woofer at 0 dB unity avoids wasting DAC headroom.
+
+**Script:** [inroom_gain_optimization.py](simulations/inroom_gain_optimization.py)
+
 ### Target comparison: Harman vs BBC-style
 
 ![Target comparison](simulations/plots/target_comparison.png)
@@ -214,6 +232,7 @@ Historical analysis of why SB26STAC-C000-4 was selected. The H2606/920000 is sho
 | `system_response_anechoic.py` | Per-driver crossover sum, anechoic, pre-EQ, pre-room | `system_response_anechoic.png` |
 | `system_response_inroom.py` | 4-stage: anechoic → in-room → level-corrected → post-DSP | `system_response_inroom.png` |
 | `target_comparison.py` | Harman vs BBC-style in-room targets with optimal gains | `target_comparison.png` |
+| `inroom_gain_optimization.py` | In-room response: all-zero vs optimized gains vs post-DSP, with sensitivity analysis | `inroom_gain_optimization.png` |
 | `spinorama_estimate.py` | Spinorama estimate (on-axis, LW, ER, SP, DI) | `spinorama_estimate.png` |
 | `crossover_optimization.py` | Crossover frequency sweep (800-1600 Hz) | `crossover_optimization.png` |
 | `tweeter_comparison.py` | SB26STAC selection analysis (excursion, sensitivity, directivity) | `tweeter_comparison.png` |
