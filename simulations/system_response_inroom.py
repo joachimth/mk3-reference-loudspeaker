@@ -225,9 +225,9 @@ def interp_curve(freq_data, spl_data, f_target, fill_below=None, fill_above=None
     return spl
 
 # v9 DSP actual gains
-dsp_w_gain = 0.0     # woofer DSP gain (dB)
-dsp_m_gain = -4.5    # mid DSP gain (dB)
-dsp_t_gain = -7.5    # tweeter DSP gain (dB)
+dsp_w_gain = 1.5     # woofer DSP gain (dB) — optimized for in-room Harman target
+dsp_m_gain = -4.0    # mid DSP gain (dB)
+dsp_t_gain = -9.0    # tweeter DSP gain (dB)
 fc_woofer = 150.0
 fc_tweeter = 1100.0
 wg_gain = 2.5

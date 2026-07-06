@@ -50,16 +50,16 @@ Individual driver curves with DSP level adjustments and coherent sum through LR4
 
 | Driver | DSP gain | Filter |
 |---|---|---|
-| 2× GRS 12SW-4HE (woofer) | 0.0 dB | LP 150 Hz LR4, HP 18 Hz subsonic |
-| ScanSpeak 18W/4424G00 (mid) | −4.5 dB | HP 150 / LP 1100 Hz LR4 |
-| SB26STAC-C000-4 (tweeter) | −7.5 dB | HP 1100 Hz LR4, WG +2.5 dB |
+| 2× GRS 12SW-4HE (woofer) | +1.5 dB | LP 150 Hz LR4, HP 18 Hz subsonic |
+| ScanSpeak 18W/4424G00 (mid) | −4.0 dB | HP 150 / LP 1100 Hz LR4 |
+| SB26STAC-C000-4 (tweeter) | −9.0 dB | HP 1100 Hz LR4, WG +2.5 dB |
 
 | Metric | Value |
 |---|---|
-| Midband ripple (500-10k) | 1.8 dB |
+| Midband ripple (500-10k) | 2.7 dB |
 | Sum @ 500 Hz | 0 dB (reference) |
-| Sum @ 2 kHz | −0.5 dB |
-| Sum @ 10 kHz | +0.4 dB |
+| Sum @ 2 kHz | −2.1 dB |
+| Sum @ 10 kHz | −1.6 dB |
 
 **Script:** [system_response_anechoic.py](simulations/system_response_anechoic.py)
 
@@ -69,18 +69,42 @@ Individual driver curves with DSP level adjustments and coherent sum through LR4
 
 Four-stage progression from anechoic to post-DSP, modeling an average living room (4.5×4×2.4 m, 43 m³, RT60 0.4s).
 
+**Optimized gains (in-room vs Harman target):**
+
+| Driver | DSP gain |
+|---|---|
+| 2× GRS 12SW-4HE (woofer) | +1.5 dB |
+| ScanSpeak 18W/4424G00 (mid) | −4.0 dB |
+| SB26STAC-C000-4 (tweeter) | −9.0 dB |
+
 | Stage | Ripple 500-10k | @100 Hz | @500 Hz | @10 kHz |
 |---|---|---|---|---|
-| Anechoic (pre-DSP) | 1.8 dB | 82.2 | 86.2 | 86.6 |
-| In-room | 2.5 dB | 87.8 | 86.2 | 85.1 |
-| Level-corrected | 2.5 dB | 1.6 | 0.0 | −1.1 |
+| Anechoic (pre-DSP) | 2.7 dB | 83.5 | 86.7 | 85.1 |
+| In-room | 3.6 dB | 89.2 | 86.7 | 83.6 |
+| Level-corrected | 3.6 dB | 2.5 | 0.0 | −3.1 |
 | Post-DSP | 3.5 dB* | 1.7 | 0.1 | −3.3 |
 
-*Post-DSP ripple includes intentional Harman bass shelf + HF tilt. Residual deviation from target: ±0.3 dB (500-10k). DSP correction range: ±3.5 dB.
-
-Room model: +6 dB/octave below Schroeder frequency (192 Hz, cap +9 dB), −1.5 dB/octave HF absorption above 5 kHz (cap −3 dB). DSP simulates ~10 PEQ bands at 1/3 octave resolution toward a Harman in-room target curve (+3.5 dB bass shelf below 100 Hz, −1 dB/octave above 1 kHz).
+*Post-DSP ripple includes intentional Harman bass shelf + HF tilt. Residual deviation from target: ±0.3 dB (500-10k). DSP correction range: ±2.0 dB.
 
 **Script:** [system_response_inroom.py](simulations/system_response_inroom.py)
+
+### Target comparison: Harman vs BBC-style
+
+![Target comparison](simulations/plots/target_comparison.png)
+
+Two in-room target philosophies with their optimal per-driver gains:
+
+| Target | Woofer | Mid | Tweeter | W-M spread | M-T spread | Character |
+|---|---|---|---|---|---|---|
+| **Harman** | +1.5 dB | −4.0 dB | −9.0 dB | 5.5 dB | 5.0 dB | Flat, modern, slightly bright |
+| **BBC-style** | +1.0 dB | −3.5 dB | −8.5 dB | 4.5 dB | 5.0 dB | Warm, vocal-forward, less fatiguing |
+
+Both share M-T = 5.0 dB spread. BBC needs 1 dB less woofer-to-mid because the −2 dB presence dip at 2 kHz naturally lowers the mid in the critical vocal region. Post-DSP residual: ±0.3 dB for both.
+
+**Harman target:** +3.5 dB bass shelf below 100 Hz, −1 dB/octave HF tilt above 1 kHz (Olive et al. research).
+**BBC target:** −2 dB presence dip at 2 kHz, +2 dB bass shelf below 120 Hz, −0.8 dB/octave HF tilt above 3 kHz (LS3/5a school).
+
+**Script:** [target_comparison.py](simulations/target_comparison.py)
 
 ### System frequency response
 
@@ -190,6 +214,7 @@ Historical analysis of why SB26STAC-C000-4 was selected. The H2606/920000 is sho
 | `system_response_realistic.py` | Full system response with real datasheet curves | `system_response_realistic.png` |
 | `system_response_anechoic.py` | Per-driver crossover sum, anechoic, pre-EQ, pre-room | `system_response_anechoic.png` |
 | `system_response_inroom.py` | 4-stage: anechoic → in-room → level-corrected → post-DSP | `system_response_inroom.png` |
+| `target_comparison.py` | Harman vs BBC-style in-room targets with optimal gains | `target_comparison.png` |
 | `spinorama_estimate.py` | Spinorama estimate (on-axis, LW, ER, SP, DI) | `spinorama_estimate.png` |
 | `crossover_optimization.py` | Crossover frequency sweep (800-1600 Hz) | `crossover_optimization.png` |
 | `tweeter_comparison.py` | SB26STAC selection analysis (excursion, sensitivity, directivity) | `tweeter_comparison.png` |
