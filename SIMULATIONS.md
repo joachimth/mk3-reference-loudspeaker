@@ -67,20 +67,21 @@ system response with a room acoustics model and DSP correction simulation.
 
 ### DSP simulation
 
-- Uses actual v9 DSP gains (woofer −4 dB, mid 0 dB, tweeter −0.5 dB)
+- Uses v9 DSP gains (woofer 0 dB, mid −4.5 dB, tweeter −7.5 dB)
 - Simulates ~10 PEQ bands at 1/3 octave resolution
-- Residual deviation from target: ±0.2 dB (500 Hz – 10 kHz)
+- DSP correction range: ±3.5 dB (smoothed, 1/3 octave)
+- Residual deviation from target: ±0.3 dB (500 Hz – 10 kHz)
 
 ### Results
 
 | Stage | Ripple 200–15k | Ripple 500–10k | @100 Hz | @500 Hz | @2 kHz | @10 kHz |
 |---|---|---|---|---|---|---|
-| Anechoic (pre-DSP) | 7.3 dB | 3.8 dB | 80.0 | 90.7 | 92.4 | 93.6 |
-| In-room | 6.5 dB | 3.8 dB | 85.6 | 90.7 | 92.4 | 92.1 |
-| Level-corrected | 6.5 dB | 3.8 dB | −5.1 | 0.0 | 1.7 | 1.4 |
-| Post-DSP | 4.8 dB | 3.5 dB | 1.6 | 0.1 | −1.0 | −3.3 |
+| Anechoic (pre-DSP) | 3.5 dB | 1.8 dB | 82.2 | 86.2 | 85.7 | 86.6 |
+| In-room | 2.8 dB | 2.5 dB | 87.8 | 86.2 | 85.7 | 85.1 |
+| Level-corrected | 2.8 dB | 2.5 dB | 1.6 | 0.0 | −0.5 | −1.1 |
+| Post-DSP | 4.8 dB | 3.5 dB | 1.7 | 0.1 | −1.0 | −3.3 |
 
-Post-DSP deviation from Harman target: ±0.2 dB (500 Hz – 10 kHz).
+Post-DSP deviation from Harman target: ±0.3 dB (500 Hz – 10 kHz).
 The 4.8 dB ripple 200–15k is the intentional bass shelf + HF tilt, not ripple.
 
 ---

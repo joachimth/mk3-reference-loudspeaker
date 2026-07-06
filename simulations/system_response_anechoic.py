@@ -108,9 +108,9 @@ def woofer_response(f):
 # ============================================================
 #  Parameters — v9 actual settings
 # ============================================================
-dsp_w_gain = -4.0    # woofer DSP gain (dB)
-dsp_m_gain = 0.0     # mid DSP gain (dB)
-dsp_t_gain = -0.5    # tweeter DSP gain (dB)
+dsp_w_gain = 0.0     # woofer DSP gain (dB)
+dsp_m_gain = -4.5    # mid DSP gain (dB)
+dsp_t_gain = -7.5    # tweeter DSP gain (dB)
 fc_woofer = 150.0
 fc_tweeter = 1100.0
 wg_gain = 2.5

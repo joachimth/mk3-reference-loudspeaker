@@ -50,16 +50,16 @@ Individual driver curves with DSP level adjustments and coherent sum through LR4
 
 | Driver | DSP gain | Filter |
 |---|---|---|
-| 2× GRS 12SW-4HE (woofer) | −4.0 dB | LP 150 Hz LR4, HP 18 Hz subsonic |
-| ScanSpeak 18W/4424G00 (mid) | 0.0 dB | HP 150 / LP 1100 Hz LR4 |
-| SB26STAC-C000-4 (tweeter) | −0.5 dB | HP 1100 Hz LR4, WG +2.5 dB |
+| 2× GRS 12SW-4HE (woofer) | 0.0 dB | LP 150 Hz LR4, HP 18 Hz subsonic |
+| ScanSpeak 18W/4424G00 (mid) | −4.5 dB | HP 150 / LP 1100 Hz LR4 |
+| SB26STAC-C000-4 (tweeter) | −7.5 dB | HP 1100 Hz LR4, WG +2.5 dB |
 
 | Metric | Value |
 |---|---|
-| Midband ripple (500-10k) | 3.8 dB |
+| Midband ripple (500-10k) | 1.8 dB |
 | Sum @ 500 Hz | 0 dB (reference) |
-| Sum @ 2 kHz | +1.7 dB |
-| Sum @ 10 kHz | +2.9 dB |
+| Sum @ 2 kHz | −0.5 dB |
+| Sum @ 10 kHz | +0.4 dB |
 
 **Script:** [system_response_anechoic.py](simulations/system_response_anechoic.py)
 
@@ -71,12 +71,12 @@ Four-stage progression from anechoic to post-DSP, modeling an average living roo
 
 | Stage | Ripple 500-10k | @100 Hz | @500 Hz | @10 kHz |
 |---|---|---|---|---|
-| Anechoic (pre-DSP) | 3.8 dB | 80.0 | 90.7 | 93.6 |
-| In-room | 3.8 dB | 85.6 | 90.7 | 92.1 |
-| Level-corrected | 3.8 dB | −5.1 | 0.0 | 1.4 |
-| Post-DSP | 3.5 dB* | 1.6 | 0.1 | −3.3 |
+| Anechoic (pre-DSP) | 1.8 dB | 82.2 | 86.2 | 86.6 |
+| In-room | 2.5 dB | 87.8 | 86.2 | 85.1 |
+| Level-corrected | 2.5 dB | 1.6 | 0.0 | −1.1 |
+| Post-DSP | 3.5 dB* | 1.7 | 0.1 | −3.3 |
 
-*Post-DSP ripple includes intentional Harman bass shelf + HF tilt. Residual deviation from target: ±0.2 dB (500-10k).
+*Post-DSP ripple includes intentional Harman bass shelf + HF tilt. Residual deviation from target: ±0.3 dB (500-10k). DSP correction range: ±3.5 dB.
 
 Room model: +6 dB/octave below Schroeder frequency (192 Hz, cap +9 dB), −1.5 dB/octave HF absorption above 5 kHz (cap −3 dB). DSP simulates ~10 PEQ bands at 1/3 octave resolution toward a Harman in-room target curve (+3.5 dB bass shelf below 100 Hz, −1 dB/octave above 1 kHz).
 
