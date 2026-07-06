@@ -122,6 +122,93 @@ class OutputChannel:
     biquads: list[BiquadFilter] = field(default_factory=list)
 
 
+def build_mk3_v9_config(
+    sample_rate: int = 96000,
+    woofer_lp: float = 150,
+    woofer_lp_type: str = "lr4",
+    mid_hp: float = 150,
+    mid_hp_type: str = "lr4",
+    mid_lp: float = 1100,
+    mid_lp_type: str = "lr4",
+    tweeter_hp: float = 1100,
+    tweeter_hp_type: str = "lr4",
+    tweeter_trim: float = -0.5,
+    woofer_trim: float = -4.0,
+    subsonic_hp: float = 18,
+    subsonic_hp_type: str = "lr4",
+    woofer_lt_fc: Optional[float] = 39.0,
+    woofer_lt_fs: Optional[float] = 28.0,
+    woofer_lt_qc: Optional[float] = 0.76,
+    woofer_lt_qs: Optional[float] = 0.707,
+    tweeter_delay_ms: float = 0.12,
+) -> list[OutputChannel]:
+    """Build channel config for Mk3 Reference v9: 2xGRS 12SW-4HE | 18W/4424G00 | SB26STAC-C000-4.
+
+    System sensitivities:
+    - GRS 12SW-4HE pair (push-push): ~95 dB → padded by woofer_trim
+    - 18W/4424G00 mid: 91 dB
+    - SB26STAC-C000-4 tweeter: 91.5 dB → trimmed by -0.5 dB to match mid
+    - XO: 150 Hz LR4 (woofer→mid), 1100 Hz LR4 (mid→tweeter)
+    """
+
+    def wkz(label, coeffs):
+        return BiquadFilter(label=label, coeffs=coeffs)
+
+    # Woofer chain: subsonic HP (LR4) + Linkwitz Transform + LP (LR4)
+    woofer_biquads: list[BiquadFilter] = []
+    if subsonic_hp and subsonic_hp > 0:
+        if subsonic_hp_type == "lr4":
+            for coeffs in build_lr4_highpass(subsonic_hp, sample_rate):
+                woofer_biquads.append(wkz(f"Sub HP {subsonic_hp} LR4", coeffs))
+    if woofer_lt_fc and woofer_lt_fs:
+        coeffs = build_linkwitz_transform(
+            fc=woofer_lt_fc, Qc=woofer_lt_qc or 0.76,
+            fs_target=woofer_lt_fs, Q_target=woofer_lt_qs or 0.707,
+            sample_rate=sample_rate,
+        )
+        woofer_biquads.append(wkz(f"LT {woofer_lt_fc}→{woofer_lt_fs}Hz Q{woofer_lt_qc}→{woofer_lt_qs}", coeffs))
+    if woofer_lp and woofer_lp > 0:
+        if woofer_lp_type == "lr4":
+            for coeffs in build_lr4_lowpass(woofer_lp, sample_rate):
+                woofer_biquads.append(wkz(f"LP {woofer_lp} LR4", coeffs))
+
+    # Mid chain: HP (LR4) + LP (LR4)
+    mid_biquads: list[BiquadFilter] = []
+    if mid_hp and mid_hp > 0:
+        if mid_hp_type == "lr4":
+            for coeffs in build_lr4_highpass(mid_hp, sample_rate):
+                mid_biquads.append(wkz(f"HP {mid_hp} LR4", coeffs))
+    if mid_lp and mid_lp > 0:
+        if mid_lp_type == "lr4":
+            for coeffs in build_lr4_lowpass(mid_lp, sample_rate):
+                mid_biquads.append(wkz(f"LP {mid_lp} LR4", coeffs))
+
+    # Tweeter chain: HP (LR4) only
+    tweeter_biquads: list[BiquadFilter] = []
+    if tweeter_hp and tweeter_hp > 0:
+        if tweeter_hp_type == "lr4":
+            for coeffs in build_lr4_highpass(tweeter_hp, sample_rate):
+                tweeter_biquads.append(wkz(f"HP {tweeter_hp} LR4", coeffs))
+
+    # Woofer delay: 0 reference
+    # Mid delay: 0 reference (same baffle plane)
+    # Tweeter delay: WG212 waveguide depth = ~0.12 ms acoustic offset
+    # Woofer pair gets -4 dB trim to match 91 dB mid + 0.5 dB headroom
+
+    return [
+        OutputChannel(label="12SW Woofer L Top",     gain_db=woofer_trim, delay_ms=0.0,           biquads=woofer_biquads),
+        OutputChannel(label="12SW Woofer L Bot",     gain_db=woofer_trim, delay_ms=0.0,           biquads=woofer_biquads),
+        OutputChannel(label="18W/4424G00 Mid L",     gain_db=0.0,         delay_ms=0.0,           biquads=mid_biquads),
+        OutputChannel(label="SB26STAC Tweeter L",    gain_db=tweeter_trim,delay_ms=tweeter_delay_ms,biquads=tweeter_biquads),
+        OutputChannel(label="(Spare output L)",      gain_db=0.0,         delay_ms=0.0,           biquads=[]),
+        OutputChannel(label="12SW Woofer R Top",     gain_db=woofer_trim, delay_ms=0.0,           biquads=woofer_biquads),
+        OutputChannel(label="12SW Woofer R Bot",     gain_db=woofer_trim, delay_ms=0.0,           biquads=woofer_biquads),
+        OutputChannel(label="18W/4424G00 Mid R",     gain_db=0.0,         delay_ms=0.0,           biquads=mid_biquads),
+        OutputChannel(label="SB26STAC Tweeter R",    gain_db=tweeter_trim,delay_ms=tweeter_delay_ms,biquads=tweeter_biquads),
+        OutputChannel(label="(Spare output R)",      gain_db=0.0,         delay_ms=0.0,           biquads=[]),
+    ]
+
+
 def build_mk2_config(
     sample_rate: int = 96000,
     woofer_lp: float = 150,
@@ -288,10 +375,11 @@ def channel_to_xml(ch: OutputChannel, index: int) -> ET.Element:
 def generate_xml(
     channels: list[OutputChannel],
     sample_rate: int = 96000,
+    model: str = "mk3-v9",
     woofer_lp: float = 150,
     mid_hp: float = 150,
-    mid_lp: float = 1250,
-    tweeter_hp: float = 1250,
+    mid_lp: float = 1100,
+    tweeter_hp: float = 1100,
     subsonic_hp: float = 18,
     woofer_lt_fc: Optional[float] = 39.0,
     woofer_lt_fs: Optional[float] = 28.0,
@@ -299,16 +387,23 @@ def generate_xml(
     """Generate complete MiniDSP plugin XML from channel config."""
     root = ET.Element("minidsp")
 
-    # Determine tweeter based on crossover frequency
-    tweeter_name = "SB26STAC-C000-4" if tweeter_hp == 1100 else "ScanSpeak H2606 (WG212)"
+    # Determine names based on model
+    if model == "mk3-v9":
+        speaker_name = "Mk3 Reference Loudspeaker v9"
+        mid_name = "ScanSpeak 18W/4424G00"
+        tweeter_name = "SB26STAC-C000-4"
+    else:
+        speaker_name = "Mk2 Reference Loudspeaker"
+        mid_name = "ScanSpeak 15W/4434G00"
+        tweeter_name = "SB26STAC-C000-4" if tweeter_hp == 1100 else "ScanSpeak H2606 (WG212)"
 
     # Header
     header = ET.SubElement(root, "header")
-    ET.SubElement(header, "name").text = "Mk2 Reference Loudspeaker"
+    ET.SubElement(header, "name").text = speaker_name
     lt_str = f"LT {woofer_lt_fc}->{woofer_lt_fs}" if woofer_lt_fc and woofer_lt_fs else "no LT"
     desc_parts = [
         f"3-way + push-push woofer.",
-        f"GRS 12SW-4HE ×2 | ScanSpeak 15W/4434G00 | {tweeter_name}.",
+        f"GRS 12SW-4HE ×2 | {mid_name} | {tweeter_name}.",
         f"XO: {woofer_lp}/{mid_hp}-{mid_lp}/{tweeter_hp} Hz LR4.",
         f"Sub HP {subsonic_hp} Hz {lt_str}.",
         f"Sample rate: {sample_rate} Hz.",
@@ -360,13 +455,16 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Mk2 reference (default)
-  python generate_minidsp_xml.py > mk2-150-1250-lr4.xml
+  # Mk3 v9 (default) — 2xGRS 12SW-4HE | 18W/4424G00 | SB26STAC-C000-4
+  python generate_minidsp_xml.py > mk3-v9-150-1100-lr4.xml
+
+  # Mk2 reference
+  python generate_minidsp_xml.py --mk2 > mk2-150-1250-lr4.xml
 
   # Custom 2-way
   python generate_minidsp_xml.py --two-way --woofer-lp 2500 --tweeter-hp 2500 --tweeter-trim -3
 
-  # Custom 3-way with SB26STAC (mk3 fallback)
+  # Custom 3-way
   python generate_minidsp_xml.py \\
     --woofer-lp 150 \\
     --mid-hp 150 --mid-lp 1100 \\
@@ -377,12 +475,17 @@ Examples:
 
     parser.add_argument("--sample-rate", type=int, default=96000, help="Sample rate (Hz, default: 96000)")
 
+    # Preset selection
+    parser.add_argument("--mk2", action="store_true", help="Use Mk2 preset (15W/4434G00 mid, H2606 tweeter, 150/1250 Hz)")
+    parser.add_argument("--mk3", action="store_true", dest="mk3", help="Use Mk3 v9 preset (18W/4424G00 mid, SB26STAC tweeter, 150/1100 Hz) [default]")
+
     # Way configuration
     parser.add_argument("--two-way", action="store_true", dest="two_way", help="2-way config (default: 3-way)")
 
     # Woofer filters
     parser.add_argument("--woofer-lp", type=float, default=150, help="Woofer lowpass freq (Hz)")
     parser.add_argument("--woofer-lp-type", default="lr4", choices=["lr4", "lr2", "bw2", "bw4"])
+    parser.add_argument("--woofer-trim", type=float, default=-4.0, help="Woofer gain trim (dB)")
     parser.add_argument("--subsonic-hp", type=float, default=18, help="Subsonic highpass freq (Hz)")
     parser.add_argument("--subsonic-hp-type", default="lr4", choices=["lr4", "lr2"])
     parser.add_argument("--no-subsonic", action="store_true", help="Skip subsonic filter")
@@ -391,13 +494,13 @@ Examples:
     # Mid filters (3-way only)
     parser.add_argument("--mid-hp", type=float, default=150, help="Mid highpass freq (Hz)")
     parser.add_argument("--mid-hp-type", default="lr4", choices=["lr4", "lr2", "bw2", "bw4"])
-    parser.add_argument("--mid-lp", type=float, default=1250, help="Mid lowpass freq (Hz)")
+    parser.add_argument("--mid-lp", type=float, default=1100, help="Mid lowpass freq (Hz)")
     parser.add_argument("--mid-lp-type", default="lr4", choices=["lr4", "lr2", "bw2", "bw4"])
 
     # Tweeter filters
-    parser.add_argument("--tweeter-hp", type=float, default=1250, help="Tweeter highpass freq (Hz)")
+    parser.add_argument("--tweeter-hp", type=float, default=1100, help="Tweeter highpass freq (Hz)")
     parser.add_argument("--tweeter-hp-type", default="lr4", choices=["lr4", "lr2", "bw2", "bw4"])
-    parser.add_argument("--tweeter-trim", type=float, default=-5.5, help="Tweeter gain trim (dB)")
+    parser.add_argument("--tweeter-trim", type=float, default=-0.5, help="Tweeter gain trim (dB)")
 
     args = parser.parse_args()
 
@@ -408,6 +511,8 @@ Examples:
     else:
         sub_hp = args.subsonic_hp
 
+    model = "mk2" if args.mk2 else "mk3-v9"
+
     if args.two_way:
         channels = build_2way_config(
             sample_rate=sr,
@@ -416,6 +521,23 @@ Examples:
             tweeter_hp=args.tweeter_hp,
             tweeter_hp_slope=args.tweeter_hp_type,
             tweeter_trim=args.tweeter_trim,
+        )
+    elif model == "mk3-v9":
+        channels = build_mk3_v9_config(
+            sample_rate=sr,
+            woofer_lp=args.woofer_lp,
+            woofer_lp_type=args.woofer_lp_type,
+            woofer_trim=args.woofer_trim,
+            mid_hp=args.mid_hp,
+            mid_hp_type=args.mid_hp_type,
+            mid_lp=args.mid_lp,
+            mid_lp_type=args.mid_lp_type,
+            tweeter_hp=args.tweeter_hp,
+            tweeter_hp_type=args.tweeter_hp_type,
+            tweeter_trim=args.tweeter_trim,
+            subsonic_hp=sub_hp,
+            woofer_lt_fc=None if args.no_lt else 39.0,
+            woofer_lt_fs=None if args.no_lt else 28.0,
         )
     else:
         channels = build_mk2_config(
@@ -443,7 +565,7 @@ Examples:
     lt_fc_val = None if args.no_lt else 39.0
     lt_fs_val = None if args.no_lt else 28.0
 
-    xml = generate_xml(channels, sr,
+    xml = generate_xml(channels, sr, model=model,
                        woofer_lp=woofer_lp_val,
                        mid_hp=mid_hp_val,
                        mid_lp=mid_lp_val,
