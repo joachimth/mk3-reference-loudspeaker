@@ -249,7 +249,7 @@ module wg_in_baffle() {
 
 // ---- Driver models (real parametric models, same as cabinet.scad) ----
 module driver_woofer(sign) {
-    translate([sign*(W/2), 0, woofer_z]) rotate([0, -sign*90, 0]) {
+    translate([sign*(W/2), 0, woofer_z]) rotate([0, sign*90, 0]) {
         driver();
     }
 }

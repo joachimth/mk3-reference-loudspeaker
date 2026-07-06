@@ -12,6 +12,8 @@
 // ============================================================
 
 use <waveguide.scad>
+use <midrange.scad>
+use <SB26STAC-C000-4.scad>
 
 /* [Visning] */
 vis = "baffel"; // [baffel:Printklar insert, fit:Med rigtige enheder (GUI-preview), snit:Lodret halvsnit]
@@ -147,14 +149,17 @@ module baffel() {
 mid_ref_front = 80.1;
 module fit() {
     baffel();
+    // 18W/4424G00 midrange — real parametric model, flange front flush with insert front
     color("dimgray")
         translate([0, mid_cy, baffel_tyk - mid_ref_front])
-            rotate([90,0,0]) import("18W-4424G00_ref.stl");
+            rotate([90,0,0]) midrange_driver();
+    // WG212 waveguide — already imported via use <waveguide.scad>
     color("gray")
         translate([0, wg_cy, baffel_tyk - wg_front_z()]) waveguide();
+    // SB26STAC-C000-4 tweeter — real parametric model, seated behind waveguide
     color("silver")
         translate([0, wg_cy, baffel_tyk - wg_front_z() + wg_back_z() + 4])
-            import("SB26ST_ref.stl");
+            diskant();
 }
 
 // ------------------------------------------------------------

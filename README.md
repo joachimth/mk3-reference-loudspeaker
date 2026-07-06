@@ -218,8 +218,10 @@ for the waveguide, and precise screw patterns.
 
 | | | |
 |:---:|:---:|:---:|
-| ![Front](assets/renders/baffel_insert_front.png) | ![Fit](assets/renders/baffel_insert_fit.png) | ![Section](assets/renders/baffel_insert_section.png) |
-| Print-ready (front) | With drivers fitted | Half-section |
+| ![Front](assets/renders/baffel_insert_front.png) | ![Fit front](assets/renders/baffel_insert_fit_front.png) | ![Fit iso](assets/renders/baffel_insert_fit_iso.png) |
+| Print-ready (front) | With all drivers fitted | Fitted isometric |
+| ![Fit rear](assets/renders/baffel_insert_fit_rear.png) | ![Section](assets/renders/baffel_insert_section.png) | |
+| Fitted rear view | Half-section | |
 
 The insert is 285 x 380 x 15 mm with backside ribbing for stiffness. Print
 flat (backside down). `vis="fit"` shows the insert with the 18W/4424G00

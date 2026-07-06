@@ -200,11 +200,22 @@ jobs:
             --camera=0,0,400,0,0,0 \
             --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/baffel_insert_front.png baffel_insert_1.scad 2>&1 || true
+          # Baffel insert with all drivers fitted (fit view)
+          xvfb-run -a openscad --preview \
+            -D 'vis="fit"' \
+            --camera=0,0,400,0,0,0 \
+            --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/baffel_insert_fit_front.png baffel_insert_1.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             -D 'vis="fit"' \
             --camera=200,-300,200,0,0,30 \
             --imgsize=1200,1200 --colorscheme=Cornfield \
-            -o ../assets/renders/baffel_insert_fit.png baffel_insert_1.scad 2>&1 || true
+            -o ../assets/renders/baffel_insert_fit_iso.png baffel_insert_1.scad 2>&1 || true
+          xvfb-run -a openscad --preview \
+            -D 'vis="fit"' \
+            --camera=0,0,-400,0,0,0 \
+            --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
+            -o ../assets/renders/baffel_insert_fit_rear.png baffel_insert_1.scad 2>&1 || true
           xvfb-run -a openscad --preview \
             -D 'vis="snit"' \
             --camera=300,-300,200,0,0,30 \

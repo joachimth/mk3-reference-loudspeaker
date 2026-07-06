@@ -457,7 +457,8 @@ module wg_in_baffle() {
 module driver_woofer(sign) {
     // GRS 12SW-4HE: surface-mounted on the side panel, flange front at z=0
     // The driver() module has flange front at z=0, body toward -z
-    translate([sign*(W/2), 0, woofer_z]) rotate([0, -sign*90, 0]) {
+    // rotate([0, sign*90, 0]) maps -z (body) to -sign*x → into the cabinet
+    translate([sign*(W/2), 0, woofer_z]) rotate([0, sign*90, 0]) {
         driver();
     }
 }
