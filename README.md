@@ -40,7 +40,47 @@ The SB26STAC has a low Fs and generous excursion headroom. At 1100 Hz crossover,
 
 ## Simulation Results
 
-All simulations use real datasheet frequency response curves, baffle step modeling, and waveguide loading estimates. Pre-DSP, anechoic.
+All simulations use real datasheet frequency response curves, baffle step modeling, and waveguide loading estimates. The anechoic plot shows pre-DSP response; the in-room plot adds room gain modeling, level correction, and DSP EQ toward a Harman in-room target.
+
+### Anechoic per-driver crossover sum
+
+![Anechoic crossover sum](simulations/plots/system_response_anechoic.png)
+
+Individual driver curves with DSP level adjustments and coherent sum through LR4 crossovers. No room gain, no EQ — raw anechoic only.
+
+| Driver | DSP gain | Filter |
+|---|---|---|
+| 2× GRS 12SW-4HE (woofer) | −4.0 dB | LP 150 Hz LR4, HP 18 Hz subsonic |
+| ScanSpeak 18W/4424G00 (mid) | 0.0 dB | HP 150 / LP 1100 Hz LR4 |
+| SB26STAC-C000-4 (tweeter) | −0.5 dB | HP 1100 Hz LR4, WG +2.5 dB |
+
+| Metric | Value |
+|---|---|
+| Midband ripple (500-10k) | 3.8 dB |
+| Sum @ 500 Hz | 0 dB (reference) |
+| Sum @ 2 kHz | +1.7 dB |
+| Sum @ 10 kHz | +2.9 dB |
+
+**Script:** [system_response_anechoic.py](simulations/system_response_anechoic.py)
+
+### In-room, level-corrected, and post-DSP
+
+![In-room response progression](simulations/plots/system_response_inroom.png)
+
+Four-stage progression from anechoic to post-DSP, modeling an average living room (4.5×4×2.4 m, 43 m³, RT60 0.4s).
+
+| Stage | Ripple 500-10k | @100 Hz | @500 Hz | @10 kHz |
+|---|---|---|---|---|
+| Anechoic (pre-DSP) | 3.8 dB | 80.0 | 90.7 | 93.6 |
+| In-room | 3.8 dB | 85.6 | 90.7 | 92.1 |
+| Level-corrected | 3.8 dB | −5.1 | 0.0 | 1.4 |
+| Post-DSP | 3.5 dB* | 1.6 | 0.1 | −3.3 |
+
+*Post-DSP ripple includes intentional Harman bass shelf + HF tilt. Residual deviation from target: ±0.2 dB (500-10k).
+
+Room model: +6 dB/octave below Schroeder frequency (192 Hz, cap +9 dB), −1.5 dB/octave HF absorption above 5 kHz (cap −3 dB). DSP simulates ~10 PEQ bands at 1/3 octave resolution toward a Harman in-room target curve (+3.5 dB bass shelf below 100 Hz, −1 dB/octave above 1 kHz).
+
+**Script:** [system_response_inroom.py](simulations/system_response_inroom.py)
 
 ### System frequency response
 
@@ -148,6 +188,8 @@ Historical analysis of why SB26STAC-C000-4 was selected. The H2606/920000 is sho
 | `vertical_polar_map.py` | Vertical 2D heat-map vs frequency | `vertical_polar_map.png` |
 | `polar_response.py` | 2D polar map + spinorama curves + horizontal polar cuts | `polar_response.png` |
 | `system_response_realistic.py` | Full system response with real datasheet curves | `system_response_realistic.png` |
+| `system_response_anechoic.py` | Per-driver crossover sum, anechoic, pre-EQ, pre-room | `system_response_anechoic.png` |
+| `system_response_inroom.py` | 4-stage: anechoic → in-room → level-corrected → post-DSP | `system_response_inroom.png` |
 | `spinorama_estimate.py` | Spinorama estimate (on-axis, LW, ER, SP, DI) | `spinorama_estimate.png` |
 | `crossover_optimization.py` | Crossover frequency sweep (800-1600 Hz) | `crossover_optimization.png` |
 | `tweeter_comparison.py` | SB26STAC selection analysis (excursion, sensitivity, directivity) | `tweeter_comparison.png` |
