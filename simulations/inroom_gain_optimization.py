@@ -28,6 +28,8 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
 import csv
 
+from cabinet_params import baffle_step_db_side, baffle_step_db_front
+
 c_speed = 343.0
 
 # ============================================================
@@ -68,9 +70,7 @@ def bw4_hp_db(f, fc):
     return 20*np.log10(np.abs(s**2/(s**2+s/0.5412+1) * s**2/(s**2+s/1.3066+1))+1e-12)
 def lr2_hp_db(f, fc):
     s = 1j*f/fc; return 20*np.log10(np.abs(s**2/(s**2+s/0.707+1))+1e-12)
-def baffle_step_db(f, a=0.168):
-    fbs = c_speed/(2*np.pi*a); x = 1j*f/fbs
-    return 20*np.log10(np.abs((0.5+x)/(1+x)))
+# baffle_step imported from cabinet_params (side vs front)
 def wg_loading_db(f, gain_db, f_low=1100, f_high=2000):
     f_mid = np.sqrt(f_low*f_high); spread = (np.log10(f_high)-np.log10(f_low))*0.3
     return gain_db * 0.5*(1+np.tanh((np.log10(f)-np.log10(f_mid))/spread))
@@ -96,7 +96,8 @@ def harman_target_db(f, bass_shelf=3.5, f_bass=100.0, hf_tilt=1.0, f_hf=1000.0):
 #  System response
 # ============================================================
 f = np.logspace(np.log10(20), np.log10(22000), 3000)
-bs = baffle_step_db(f)
+bs_side = baffle_step_db_side(f)     # woofer (side panel, D/2)
+bs_front = baffle_step_db_front(f)   # mid/tweeter (front baffle, W/2)
 room_tf = room_transfer_db(f)
 target = harman_target_db(f)
 
@@ -108,8 +109,8 @@ def interp_curve(fd, sd, ft, fb=None, fa=None):
 
 def system_inroom(w_gain, m_gain, t_gain):
     fc_wm=200; fc_t=1100; wg=2.5
-    mw = woofer_response(f)+bs+bw4_lp_db(f,fc_wm)+lr2_hp_db(f,18)+w_gain
-    mm = interp_curve(w18_freq,w18_spl,f,fb=92.5,fa=80)+bs+bw4_hp_db(f,fc_wm)+lr4_lp_db(f,fc_t)+m_gain
+    mw = woofer_response(f)+bs_side+bw4_lp_db(f,fc_wm)+lr2_hp_db(f,18)+w_gain
+    mm = interp_curve(w18_freq,w18_spl,f,fb=92.5,fa=80)+bs_front+bw4_hp_db(f,fc_wm)+lr4_lp_db(f,fc_t)+m_gain
     mt = interp_curve(sb26_freq,sb26_spl,f,fb=sb26_spl[0]-20,fa=sb26_spl[-1]-20)+wg_loading_db(f,wg)+lr4_hp_db(f,fc_t)+t_gain
     s = 20*np.log10(10**(mw/20)+10**(mm/20)+10**(mt/20)+1e-12)
     return s + room_tf
@@ -139,8 +140,8 @@ n_dsp = n_opt + corr_smoothed
 dev_dsp = (n_dsp - target)[(f>500)&(f<10000)]
 
 # Individual drivers at 0 dB (for reference)
-mw0 = woofer_response(f)+bs+bw4_lp_db(f,200)+lr2_hp_db(f,18)+0.0+room_tf
-mm0 = interp_curve(w18_freq,w18_spl,f,fb=92.5,fa=80)+bs+bw4_hp_db(f,200)+lr4_lp_db(f,1100)+0.0+room_tf
+mw0 = woofer_response(f)+bs_side+bw4_lp_db(f,200)+lr2_hp_db(f,18)+0.0+room_tf
+mm0 = interp_curve(w18_freq,w18_spl,f,fb=92.5,fa=80)+bs_front+bw4_hp_db(f,200)+lr4_lp_db(f,1100)+0.0+room_tf
 mt0 = interp_curve(sb26_freq,sb26_spl,f,fb=sb26_spl[0]-20,fa=sb26_spl[-1]-20)+wg_loading_db(f,2.5)+lr4_hp_db(f,1100)+0.0+room_tf
 
 # Print

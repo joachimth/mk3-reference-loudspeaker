@@ -7,12 +7,12 @@ coherent sum, so you can see exactly how the three drivers combine through
 the LR4 crossovers before any room gain or EQ.
 
 Drivers (v9):
-  - 2× GRS 12SW-4HE (woofer, sealed + LT, DSP gain -4.0 dB)
-  - ScanSpeak 18W/4424G00 (midrange, DSP gain 0.0 dB)
-  - SB Acoustics SB26STAC-C000-4 (tweeter, DSP gain -0.5 dB)
+  - 2× GRS 12SW-4HE (woofer, sealed + LT, DSP gain 0.0 dB unity)
+  - ScanSpeak 18W/4424G00 (midrange, DSP gain -4.0 dB)
+  - SB Acoustics SB26STAC-C000-4 (tweeter, DSP gain -9.0 dB)
 
-Crossovers: LR4 at 150 Hz + 1100 Hz
-Baffle step: Vandercooy model, 300mm cabinet
+Crossovers: BW4 at 200 Hz + LR4 at 1100 Hz
+Baffle step: cabinet.scad via cabinet_params.py (side D/2=190mm, front W/2=160mm)
 Waveguide loading: +2.5 dB above control limit
 
 No room gain, no Harman target, no PEQ — just the raw anechoic sum.
@@ -26,6 +26,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import csv
+
+from cabinet_params import baffle_step_db_side, baffle_step_db_front
 
 c_speed = 343.0
 
@@ -88,16 +90,11 @@ def lr2_hp_db(f, fc):
     return 20*np.log10(np.abs(H) + 1e-12)
 
 # ============================================================
-#  Baffle step (Vanderkooy)
+#  Baffle step (from cabinet.scad via cabinet_params.py)
+#  Side woofers: a = D/2 = 0.190 m → f_bs = 287 Hz
+#  Front mid/tweeter: a = W/2 = 0.160 m → f_bs = 341 Hz
+#  bs_side / bs_front computed after frequency array f is defined below
 # ============================================================
-a_h = 0.150; a_d = 0.185
-a_mean = np.sqrt((a_h**2 + a_d**2) / 2.0)
-
-def baffle_step_db(f, a=0.168):
-    fbs = c_speed / (2.0 * np.pi * a)
-    x = 1j * f / fbs
-    H = (0.5 + x) / (1.0 + x)
-    return 20.0 * np.log10(np.abs(H))
 
 # ============================================================
 #  Waveguide loading
@@ -130,7 +127,8 @@ fc_tweeter = 1100.0
 wg_gain = 2.5
 
 f = np.logspace(np.log10(20), np.log10(22000), 2000)
-bs = baffle_step_db(f)
+bs_side = baffle_step_db_side(f)     # woofer (side panel, D/2 = 0.190m)
+bs_front = baffle_step_db_front(f)   # mid + tweeter (front baffle, W/2 = 0.160m)
 
 def interp_curve(freq_data, spl_data, f_target, fill_below=None, fill_above=None):
     spl = np.interp(f_target, freq_data, spl_data)
@@ -146,11 +144,11 @@ def interp_curve(freq_data, spl_data, f_target, fill_below=None, fill_above=None
 
 # Woofer: 2x GRS 12SW-4HE sealed + LT + baffle step + LP@150 + subsonic + DSP gain
 mag_w_raw = woofer_response(f)
-mag_w = mag_w_raw + bs + bw4_lp_db(f, fc_woofer) + lr2_hp_db(f, 18.0) + dsp_w_gain
+mag_w = mag_w_raw + bs_side + bw4_lp_db(f, fc_woofer) + lr2_hp_db(f, 18.0) + dsp_w_gain
 
 # Mid: 18W/4424G00 real curve + baffle step + HP@150 + LP@1100 + DSP gain
 mag_m_raw = interp_curve(w18_freq, w18_spl, f, fill_below=92.5, fill_above=80.0)
-mag_m = mag_m_raw + bs + bw4_hp_db(f, fc_woofer) + lr4_lp_db(f, fc_tweeter) + dsp_m_gain
+mag_m = mag_m_raw + bs_front + bw4_hp_db(f, fc_woofer) + lr4_lp_db(f, fc_tweeter) + dsp_m_gain
 
 # Tweeter: SB26STAC real curve + WG loading + HP@1100 + DSP gain
 mag_t_raw = interp_curve(sb26_freq, sb26_spl, f,

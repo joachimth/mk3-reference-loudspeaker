@@ -17,7 +17,7 @@ Room model (average living room — "gennemsnitlig stue"):
   - HF absorption: -1.5 dB/octave above 5 kHz, cap -3 dB (furnishings)
 
 DSP model (v9 actual settings):
-  - Woofer gain: -4.0 dB, Mid gain: 0.0 dB, Tweeter gain: -0.5 dB
+  - Woofer gain: 0.0 dB (unity), Mid gain: -4.0 dB, Tweeter gain: -9.0 dB
   - Subsonic HP 18 Hz LR4, Linkwitz Transform 39→28 Hz Q0.76→0.707
   - Room EQ: parametric correction toward Harman target curve
   - Residual ripple ±1-2 dB (limited PEQ bands, 1/3 octave smoothing)
@@ -32,7 +32,7 @@ Drivers (v9):
   - ScanSpeak 18W/4424G00 (midrange, real datasheet curve)
   - SB Acoustics SB26STAC-C000-4 (tweeter, real datasheet + WG loading)
 
-Crossovers: LR4 at 150 Hz + 1100 Hz
+Crossovers: BW4 at 200 Hz + LR4 at 1100 Hz
 
 Data sources:
   - 18W/4424G00: assets/datasheets/18W-4424G00_freq_response.csv (digitized)
@@ -57,6 +57,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
 import csv
+
+from cabinet_params import baffle_step_db_side, baffle_step_db_front, A_SIDE_M, A_FRONT_M, F_BS_SIDE, F_BS_FRONT
 
 c_speed = 343.0
 
@@ -122,18 +124,11 @@ def lr2_hp_db(f, fc):
     return 20*np.log10(np.abs(H) + 1e-12)
 
 # ============================================================
-#  Baffle step model (Vanderkooy / Keele)
+#  Baffle step (from cabinet.scad via cabinet_params.py)
 # ============================================================
-a_h = 0.150
-a_d = 0.185
-a_mean = np.sqrt((a_h**2 + a_d**2) / 2.0)
-f_bs = c_speed / (2.0 * np.pi * a_mean)
-
-def baffle_step_db(f, a=0.168):
-    fbs = c_speed / (2.0 * np.pi * a)
-    x = 1j * f / fbs
-    H = (0.5 + x) / (1.0 + x)
-    return 20.0 * np.log10(np.abs(H))
+# Side-mounted woofers:  a = D/2 = 0.190 m → f_bs = 287 Hz
+# Front-mounted mid/tweeter: a = W/2 = 0.160 m → f_bs = 341 Hz
+# bs_side / bs_front computed after frequency array f is defined below
 
 # ============================================================
 #  Waveguide loading model
@@ -228,7 +223,8 @@ def harman_target_db(f, bass_shelf_db=3.5, f_bass=100.0, hf_tilt_db=1.0, f_hf=10
 #  Build system response — v9 drivers
 # ============================================================
 f = np.logspace(np.log10(20), np.log10(22000), 2000)
-bs = baffle_step_db(f)
+bs_side = baffle_step_db_side(f)     # woofer (side panel, D/2 = 0.190m)
+bs_front = baffle_step_db_front(f)   # mid + tweeter (front baffle, W/2 = 0.160m)
 
 def interp_curve(freq_data, spl_data, f_target, fill_below=None, fill_above=None):
     spl = np.interp(f_target, freq_data, spl_data)
@@ -248,14 +244,14 @@ wg_gain = 2.5
 
 # --- Woofer: 2x GRS 12SW-4HE sealed + LT ---
 mag_w_raw = woofer_response(f)
-mag_w = mag_w_raw + bs                          # baffle step
+mag_w = mag_w_raw + bs_side                      # baffle step (side panel)
 mag_w += bw4_lp_db(f, fc_woofer)                # LP at 200 Hz BW4
 mag_w += lr2_hp_db(f, 18.0)                     # subsonic HP 18 Hz
 mag_w += dsp_w_gain                             # DSP level correction
 
 # --- Midrange: 18W/4424G00 real datasheet curve ---
 mag_m_raw = interp_curve(w18_freq, w18_spl, f, fill_below=92.5, fill_above=80.0)
-mag_m = mag_m_raw + bs                          # baffle step
+mag_m = mag_m_raw + bs_front                     # baffle step (front baffle)
 mag_m += bw4_hp_db(f, fc_woofer)                # HP at 200 Hz BW4
 mag_m += lr4_lp_db(f, fc_tweeter)               # LP at 1100 Hz
 mag_m += dsp_m_gain                             # DSP level correction

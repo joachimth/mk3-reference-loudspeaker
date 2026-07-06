@@ -51,6 +51,10 @@ jobs:
       - name: Run all simulations
         working-directory: simulations
         run: |
+          # Validate cabinet params match cabinet.scad
+          echo "::group::Cabinet params validation"
+          python cabinet_params.py || { echo "::error::cabinet_params.py validation failed — cabinet.scad may have changed"; exit 1; }
+          echo "::endgroup::"
           for script in \
             bass_alignment_maxspl.py \
             bass_volume_compare.py \
@@ -63,7 +67,12 @@ jobs:
             system_response_realistic.py \
             spinorama_estimate.py \
             crossover_optimization.py \
-            tweeter_comparison.py
+            tweeter_comparison.py \
+            system_response_inroom.py \
+            system_response_anechoic.py \
+            inroom_gain_optimization.py \
+            target_comparison.py \
+            crossover_woofer_mid.py
           do
             echo "::group::Running $script"
             python "$script" 2>&1 || echo "::warning::$script failed (non-blocking)"

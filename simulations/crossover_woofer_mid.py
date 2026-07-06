@@ -31,6 +31,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import csv
 
+from cabinet_params import baffle_step_db_side, baffle_step_db_front
+
 c_speed = 343.0
 
 # ============================================================
@@ -110,11 +112,9 @@ filters = {
 }
 
 # ============================================================
-#  Baffle step + WG loading
+#  Baffle step (from cabinet.scad via cabinet_params.py) + WG loading
+#  bs_side / bs_front computed after frequency array f is defined below
 # ============================================================
-def baffle_step_db(f, a=0.168):
-    fbs = c_speed/(2*np.pi*a); x = 1j*f/fbs
-    return 20*np.log10(np.abs((0.5+x)/(1+x)))
 
 def wg_loading_db(f, gain_db, f_low=1100, f_high=2000):
     f_mid = np.sqrt(f_low*f_high)
@@ -152,7 +152,8 @@ def harman_target_db(f, bass_shelf=3.5, f_bass=100.0, hf_tilt=1.0, f_hf=1000.0):
 #  Frequency grid
 # ============================================================
 f = np.logspace(np.log10(20), np.log10(22000), 3000)
-bs = baffle_step_db(f)
+bs_side = baffle_step_db_side(f)     # woofer (side panel, D/2 = 0.190m)
+bs_front = baffle_step_db_front(f)   # mid (front baffle, W/2 = 0.160m)
 room_tf = room_transfer_db(f)
 target = harman_target_db(f)
 
@@ -163,7 +164,7 @@ def interp_curve(fd, sd, ft, fb=None, fa=None):
     return s
 
 # v9 gains (Harman-optimized)
-W_GAIN = 1.5; M_GAIN = -4.0; T_GAIN = -9.0
+W_GAIN = 0.0; M_GAIN = -4.0; T_GAIN = -9.0
 FC_TWEETER = 1100.0; WG_GAIN = 2.5
 
 # Tweeter (constant across all woofer-mid crossover variants)
@@ -191,11 +192,11 @@ print("-" * 70)
 for fc_wm in xo_freqs:
     for filter_name, (lp_func, hp_func) in filters.items():
         # Woofer
-        mag_w = (woofer_response(f) + bs + lp_func(f, fc_wm)
+        mag_w = (woofer_response(f) + bs_side + lp_func(f, fc_wm)
                  + lr2_hp_db_sub(f, 18.0) + W_GAIN)
         # Mid
         mag_m = (interp_curve(w18_freq, w18_spl, f, fb=92.5, fa=80.0)
-                 + bs + hp_func(f, fc_wm) + lr4_lp_db(f, FC_TWEETER) + M_GAIN)
+                 + bs_front + hp_func(f, fc_wm) + lr4_lp_db(f, FC_TWEETER) + M_GAIN)
 
         # System sum
         w_lin = 10**(mag_w/20); m_lin = 10**(mag_m/20); t_lin = 10**(mag_t/20)

@@ -208,7 +208,17 @@ Historical analysis of why SB26STAC-C000-4 was selected. The H2606/920000 is sho
 
 ![Baffle step](simulations/plots/baffle_step.png)
 
-**Script:** [baffle_step.py](simulations/baffle_step.py)
+Baffle step is modeled with separate effective radii for side-mounted woofers vs front-mounted mid/tweeter, parsed from [cabinet.scad](cad/cabinet.scad) via [cabinet_params.py](simulations/cabinet_params.py):
+
+| Driver | Mount | Baffle dimension | Effective radius | f_bs |
+|---|---|---|---|---|
+| 2× GRS 12SW-4HE | Side panel | D = 380 mm | 190 mm | 287 Hz |
+| 18W/4424G00 | Front baffle | W = 320 mm | 160 mm | 341 Hz |
+| SB26STAC-C000-4 | Front baffle | W = 320 mm | 160 mm | 341 Hz |
+
+All simulation scripts import from `cabinet_params.py` which parses `cad/cabinet.scad` at runtime. CI validates consistency on every push.
+
+**Scripts:** [baffle_step.py](simulations/baffle_step.py), [cabinet_params.py](simulations/cabinet_params.py)
 
 ### Waveguide profile
 
@@ -222,7 +232,8 @@ Historical analysis of why SB26STAC-C000-4 was selected. The H2606/920000 is sho
 |---|---|---|
 | `bass_alignment_maxspl.py` | Sealed alignment + excursion-limited max-SPL + Linkwitz Transform | `bass_alignment_maxspl.png` |
 | `bass_volume_compare.py` | Sealed alignment sensitivity to box volume (64-72 L) | `bass_volume_compare.png` |
-| `baffle_step.py` | Baffle step diffraction for 300 mm cabinet | `baffle_step.png` |
+| `baffle_step.py` | Baffle step diffraction model (standalone visualization) | `baffle_step.png` |
+| `cabinet_params.py` | Parses cabinet.scad for dimensions; provides side/front baffle step functions | — (module) |
 | `waveguide_profile.py` | Waveguide mouth-to-baffle termination cross-section | `waveguide_termination.png` |
 | `directivity_estimate.py` | Directivity index across crossover | `directivity_estimate.png` |
 | `vertical_lobing.py` | Vertical interference-null angle vs frequency | `vertical_lobing.png` |

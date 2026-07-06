@@ -43,7 +43,8 @@ current design values are captured by the scripts above.
 | `polar_response.py` | 2D polar map (freq × angle), spinorama curves (on-axis, listening window, early reflections, sound power, DI, PIR), and horizontal polar cuts at 7 key frequencies. | `plots/polar_response.png`, `csv/spinorama.csv`, `csv/polar_horizontal.csv` |
 | `vertical_polar_map.py` | Vertical 2D heat-map vs frequency + comparison of four crossover options + null-depth bar chart. (Earlier candidate parameters.) | `plots/vertical_polar_map.png`, `csv/vertical_polar_map.csv` |
 | `design_versions_comparison.py` | Tabulates the design parameters for reference. | `design_versions.md`, `csv/design_versions.csv` |
-| `baffle_step.py` | Baffle-step diffraction model for the 300 mm wide cabinet: SPL correction curve, low-frequency level loss, and the full on-axis response before/after step correction. | `plots/baffle_step.png`, `csv/baffle_step.csv` |
+| `baffle_step.py` | Baffle-step diffraction model for the cabinet: SPL correction curve, low-frequency level loss, and the full on-axis response before/after step correction. | `plots/baffle_step.png`, `csv/baffle_step.csv` |
+| `cabinet_params.py` | Parses `cad/cabinet.scad` for cabinet dimensions (W, D, H, wall, round_r, driver positions). Provides `baffle_step_db_side(f)` and `baffle_step_db_front(f)` with correct effective radii: side woofers use D/2 = 190 mm (f_bs = 287 Hz), front mid/tweeter use W/2 = 160 mm (f_bs = 341 Hz). All v9 simulation scripts import from here. CI runs `cabinet_params.py` validation on every push. | — (module, no plot) |
 
 The GRS alignment script reproduces the repo's stated **Qtc ≈ 0.76 / Fc ≈ 39 Hz
 in ~75 L** (12SW), transformed to 28 Hz / 0.707 via Linkwitz Transform. The lobing
@@ -65,6 +66,7 @@ python3 simulations/polar_response.py
 python3 simulations/vertical_polar_map.py
 python3 simulations/design_versions_comparison.py
 python3 simulations/baffle_step.py
+python3 simulations/cabinet_params.py  # validate cabinet.scad parse
 python3 simulations/mk3_crossover_optimization.py
 python3 simulations/mk2_vs_mk3_realistic_response.py
 python3 simulations/mk2_vs_mk3_spinorna.py
@@ -72,6 +74,8 @@ python3 simulations/h2606_vs_sb26stac_comparison.py
 python3 simulations/system_response_inroom.py
 python3 simulations/target_comparison.py
 python3 simulations/inroom_gain_optimization.py
+python3 simulations/system_response_anechoic.py
+python3 simulations/crossover_woofer_mid.py
 ```
 
 The directivity script implements the Bessel `J1` via a polynomial
