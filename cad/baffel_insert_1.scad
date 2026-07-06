@@ -149,10 +149,11 @@ module baffel() {
 mid_ref_front = 80.1;
 module fit() {
     baffel();
-    // 18W/4424G00 midrange — real parametric model, flange front flush with insert front
+    // 18W/4424G00 midrange — real parametric model, flange front at z=0, body toward -z
+    // No rotation needed: insert front is +Z, driver z-axis aligns directly
     color("dimgray")
-        translate([0, mid_cy, baffel_tyk - mid_ref_front])
-            rotate([90,0,0]) midrange_driver();
+        translate([0, mid_cy, baffel_tyk])
+            midrange_driver();
     // WG212 waveguide — already imported via use <waveguide.scad>
     color("gray")
         translate([0, wg_cy, baffel_tyk - wg_front_z()]) waveguide();
