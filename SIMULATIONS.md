@@ -140,7 +140,7 @@ Variants explored:
 
 ## Current conclusion
 
-300 mm front width with R50 vertical front roundovers is the best practical compromise.
+320 mm front width with R19 vertical front roundovers is the current v9 cabinet (see `cad/cabinet.scad`). The width was increased from 300 mm to fit two opposed 136 mm-deep 12SW-4HE woofers (276 mm internal width required).
 
 ---
 

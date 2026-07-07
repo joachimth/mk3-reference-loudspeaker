@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Generate MiniDSP 4×10 HD biquad coefficients for Mk2 reference loudspeaker.
+Generate MiniDSP 4×10 HD biquad coefficients for Mk3 reference loudspeaker.
 
 Usage:
-    python3 generate_biquads.py                      # default: 150 Hz + 1250 Hz
-    python3 generate_biquads.py 150 1600              # custom: 150 Hz mid + 1600 Hz tweeter
-    python3 generate_biquads.py 150 1250 --fs 48000   # 48 kHz sample rate
+    python3 generate_biquads.py                      # default: 200 Hz + 1250 Hz
+    python3 generate_biquads.py 200 1600              # custom: 200 Hz mid + 1600 Hz tweeter
+    python3 generate_biquads.py 200 1250 --fs 48000   # 48 kHz sample rate
 
 Output: Markdown table with biquad coefficients ready to paste into MiniDSP plugin.
 """

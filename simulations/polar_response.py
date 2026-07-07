@@ -20,7 +20,7 @@ ASSUMPTIONS (theoretical, NOT measured data)
   omni-dome to CD-horn is approximated by a smooth crossover function from the
   bare dome radius (~13 mm) to the waveguide mouth (~106×60 mm).  This is a very
   rough geometric model; the real pattern is measured, not predicted.
-- Baffle / edge effects are IGNORED.  The 300 mm baffle would create significant
+- Baffle / edge effects are IGNORED.  The v9 baffle would create significant
   baffle step and edge diffraction at the lower midrange.  This model gives the
   driver-directivity only.
 - Frequencies are evaluated every 1/24 octave from 200 Hz to 20 kHz.

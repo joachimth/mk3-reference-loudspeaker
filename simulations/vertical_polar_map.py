@@ -17,7 +17,7 @@ ASSUMPTIONS (simplified, NOT measured data)
   the unfiltered point-source model.  We model the sum of two LR4-weighted point
   sources at each crossover frequency to show the real null depth.
 - The c-c distance used is 150 mm (the v6b design target; 140 mm is the ideal).
-- 15W/4434G00 radiating diameter is ~124 mm, so 150 mm c-c is the practical
+- 18W/4424G00 radiating diameter is ~124 mm, so 150 mm c-c is the practical
   minimum before the frames touch.  The map uses d = 150 mm.
 - The vertical map is shown in the plane of the two drivers (worst-case).
 

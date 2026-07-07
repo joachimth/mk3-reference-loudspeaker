@@ -9,9 +9,9 @@
 | Item | Value |
 |---|---|
 | **Design** | Active DSP 3-way, sealed, push-push woofers |
-| **Cabinet width** | 300 mm |
+| **Cabinet width** | 320 mm |
 | **Bass volume** | ~75 L (under divider plate) |
-| **Front roundovers** | R50 mm vertical edges |
+| **Front roundovers** | R19 mm vertical edges |
 
 ---
 
@@ -20,7 +20,7 @@
 | Band | Driver | Quantity | Sensitivity | Notes |
 |---|---|---|---|---|
 | **Woofer** | GRS 12SW-4HE | 2 (push-push) | 84.5 dB | 12" high excursion, Fs 22 Hz, Xmax 12.5 mm |
-| **Mid** | ScanSpeak 15W/4434G00 | 1 | 89.7 dB | Discovery series, 5" |
+| **Mid** | ScanSpeak 18W/4424G00 | 1 | 91 dB | Discovery series, 18 cm |
 | **Tweeter** | SB Acoustics SB26STAC-C000-4 | 1 | 91.5 dB | Conventional dome, Fs 750 Hz, waveguide-mounted |
 
 ---
@@ -29,7 +29,7 @@
 
 | Band | Frequency | Slope |
 |---|---|---|
-| Bass → Mid | **150 Hz** | LR4 (24 dB/oct) |
+| Bass → Mid | **200 Hz** | BW4 (24 dB/oct) |
 | Mid → Tweeter | **1100 Hz** | LR4 (24 dB/oct) |
 
 ### Why 1100 Hz
@@ -41,7 +41,7 @@
 - **Woofers:** wired in **series** → 8 Ω load per side
 - Mid: single driver
 - Tweeter: single driver
-- **Level trim:** tweeter ~-1.8 dB DSP pad (91.5 dB → ~89.7 dB match to mid)
+- **Level trim:** woofer 0 dB (unity), mid -4 dB, tweeter -9 dB (W0/M-4/T-9)
 
 ---
 
@@ -53,14 +53,15 @@
 | Tweeter waveguide throat | **28 mm** (SB26STAC dome + surround) | [ ] |
 | Waveguide mouth | **~212 mm** | [ ] |
 | Waveguide BCD | **88.5 mm** (3-hole, M3 or M4) | [ ] |
-| 15W cutout | Ø118 mm | [ ] |
+| 18W cutout | Ø144.3 mm | [ ] |
 | 12SW cutout | Ø284 mm | [ ] |
-| Cabinet internal width | 276 mm (300 - 2×12 mm sides) | [ ] |
+| Cabinet internal width | 276 mm (320 - 2×22 mm walls) | [ ] |
 | Opposed woofer magnet clearance | ~4 mm @ 276 mm internal width | [ ] ⚠️ |
 
 > ⚠️ **Verify 12SW magnet clearance with physical driver before cutting panels.**
 > Coupling block: h=20 mm, r=55 mm. Basket profile must be checked against a real
-> 12SW. If the gap is too tight, increase cabinet width to 320 mm.
+> 12SW. The 320 mm cabinet width (276 mm internal) was chosen to provide adequate
+> opposed-magnet clearance.
 
 ---
 
@@ -96,7 +97,7 @@ Input → Subsonic HP 18 Hz LR4 → Linkwitz Transform → Crossover → Output
 - [ ] **3. Measure T/S on 12SW** — verify actual Fs, Qts, Vas against datasheet
 - [ ] **4. Mock up magnet clearance** — cut cardboard templates from STEP, check opposed gap
 - [ ] **5. Full cabinet** — build, mount drivers, seal, wire series
-- [ ] **6. DSP load** — import `mk3-sb26stac-1100hz.xml` → upload to MiniDSP
+- [ ] **6. DSP load** — import `mk3-v9-200-1100-bw4-lr4.xml` → upload to MiniDSP
 - [ ] **7. Nearfield measurements** — each driver individually with REW
 - [ ] **8. Gated measurements** — quasi-anechoic at 1 m, full system
 - [ ] **9. Iterate** — adjust delay, level, PEQ based on measured response
@@ -140,4 +141,4 @@ Input → Subsonic HP 18 Hz LR4 → Linkwitz Transform → Crossover → Output
 
 ---
 
-*Last updated: July 5, 2026 — v8 (12SW woofer upgrade).*
+*Last updated: July 7, 2026 — v9 (18W/4424G00 midrange, 200 Hz BW4 crossover, 320 mm cabinet).*

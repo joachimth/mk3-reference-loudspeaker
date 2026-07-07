@@ -48,8 +48,8 @@ Source → DSP input → [Bass LP filter] → Bass amplifier → Woofers (series
 
 | Filter | Value |
 |---|---|
-| Type | Linkwitz-Riley 4th order (LR4) |
-| Frequency | 150 Hz |
+| Type | Butterworth 4th order (BW4) |
+| Frequency | 200 Hz |
 | Slope | 24 dB/oct |
 
 ### Bass subsonic high-pass
@@ -64,8 +64,8 @@ Source → DSP input → [Bass LP filter] → Bass amplifier → Woofers (series
 
 | Filter | Value |
 |---|---|
-| Type | LR4 |
-| Frequency | 150 Hz |
+| Type | BW4 |
+| Frequency | 200 Hz |
 | Slope | 24 dB/oct |
 
 ### Midrange low-pass
@@ -112,7 +112,7 @@ Initial delay estimates cannot be confirmed until the prototype is built and mea
 The baffle step is a +6 dB rise in sensitivity as frequency increases above the frequency where the wavelength becomes comparable to the baffle width:
 
 ```
-f_baffle_step ≈ c / (π × width) = 344 / (π × 0.3) ≈ 365 Hz
+f_baffle_step ≈ c / (π × width) = 344 / (π × 0.32) ≈ 342 Hz
 ```
 
 Below this frequency, the driver radiates into 4π steradians (all directions). Above it, radiation is increasingly confined to 2π steradians (hemisphere). This causes a +6 dB rise that must be corrected in the DSP.
@@ -151,7 +151,15 @@ The three driver channels must be level-matched so that the crossover sums corre
 1. Measuring the on-axis sensitivity of each driver
 2. Applying gain reduction in the DSP to match levels at the crossover frequencies
 
-**Expected level adjustment:** The SB Acoustics SB26STAC-C000-4 has a rated sensitivity of 91.5 dB / 2.83V / 1m, compared with approximately 89.7 dB for the ScanSpeak 15W midrange. This means the tweeter channel will require only roughly -2 dB of gain reduction relative to the midrange channel — a natural match. In the waveguide, the SB26STAC will gain 2-3 dB of acoustic loading, bringing effective sensitivity to ~94 dB. The exact pad is set from measurement.
+**v9 level adjustment (gains W0/M-4/T-9):** The woofer channel is at 0 dB
+(unity), the midrange channel is trimmed -4 dB, and the tweeter channel is
+trimmed -9 dB. This "pad down from unity" approach (rather than boosting the
+woofer) was chosen to avoid wasting amplifier headroom. The SB Acoustics
+SB26STAC-C000-4 has a rated sensitivity of 91.5 dB / 2.83V / 1m; in the
+waveguide it gains 2-3 dB of acoustic loading. The ScanSpeak 18W/4424G00
+midrange is 91 dB. The GRS 12SW-4HE pair in push-push has high effective
+sensitivity at low frequencies due to the large combined Sd. The exact trims
+are finalized from measurement. DSP correction is approximately ±1.3 dB.
 
 ---
 

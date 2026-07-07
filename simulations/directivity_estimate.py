@@ -7,7 +7,7 @@ does crossing the WG212 + 15W near the waveguide's ~1620 Hz control limit give a
 better directivity match than the 1100 Hz design crossover?
 
 ASSUMPTIONS (simplified estimate, NOT a measured spinorama)
-  - Midrange 15W/4434G00 modelled as a flat circular piston, effective radius
+  - Midrange 18W/4424G00 modelled as a flat circular piston, effective radius
     a = sqrt(Sd/pi) with Sd = 107 cm^2  ->  a ~ 58.3 mm. -6 dB beamwidth from the
     piston directivity  D(theta) = |2*J1(k a sin theta)/(k a sin theta)|.
   - Tweeter (SB26STAC-C000-4) in WG212 modelled as a constant-directivity source

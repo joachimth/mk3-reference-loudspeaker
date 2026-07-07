@@ -4,7 +4,7 @@
 
 Current design candidate:
 
-- 320 x 370 x 1080 mm cabinet (width driven by the opposed 12" woofers)
+- 320 x 380 x 1180 mm cabinet (width driven by the opposed 12" woofers)
 - 22 mm birch plywood
 - R19 front roundovers (R50 leaves no flat for the waveguide flange)
 - 2 x GRS 12SW-4HE side-mounted push-push woofers (12" high excursion)
@@ -12,12 +12,13 @@ Current design candidate:
 - SB Acoustics SB26STAC-C000-4 tweeter in the waveguide BELOW the midrange
 - Custom non-horn-loaded waveguide (`cad/waveguide.scad`)
 - Full-width tilted divider plate between midrange and waveguide
-- Approx. 65 L net sealed bass volume (below divider; target remains 75 L)
-- Approx. 11 L net sealed mid chamber (18W datasheet closed-box rec.: 13 L)
-- 150 Hz LR4 bass/mid crossover
-- 1100 Hz LR4 mid/tweeter crossover (re-validate for the 18 cm cone)
-- 165 mm mid/tweeter c-c spacing (physical minimum with these flanges)
-- See CHANGELOG v9 and DD-016
+- Approx. 65 L net sealed bass volume (below divider, DD-016)
+- Approx. 13 L net sealed mid chamber (18W datasheet closed-box rec.)
+- 200 Hz BW4 bass/mid crossover
+- 1100 Hz LR4 mid/tweeter crossover
+- 165 mm mid/tweeter c-c spacing (physical minimum with 18W faceplate, DD-016)
+- DSP gains: Woofer 0 dB (unity), Mid -4.0 dB, Tweeter -9.0 dB (W0/M-4/T-9)
+- See CHANGELOG v9, DD-016, DD-017
 
 ## v8 — GRS 12SW-4HE woofer upgrade
 

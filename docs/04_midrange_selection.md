@@ -12,14 +12,14 @@
 
 The midrange driver must:
 
-- Cover the range from approximately 150 Hz to 1100 Hz
+- Cover the range from approximately 200 Hz to 1100 Hz
 - Be a 15 cm (6-inch class) driver with good off-axis response in the midrange
 - Have low distortion at normal listening levels in the 200-1000 Hz range
-- Fit within a 300 mm wide baffle with the waveguide above it at 140 mm c-c
+- Fit within a 320 mm wide baffle with the waveguide above it at 140 mm c-c
 - Operate in a dedicated sealed chamber of approximately 5.7 L net
 
 A 15 cm driver size is preferred over smaller drivers for this range because:
-- It can reach down to 150 Hz without excessive excursion or rolloff
+- It can reach down to 200 Hz without excessive excursion or rolloff
 - It remains small enough that its directivity begins narrowing (in free-field) above approximately 1200-1500 Hz, which matches the target crossover frequency
 - The radiating diameter is compatible with achieving the 140 mm c-c spacing to the waveguide
 
@@ -45,7 +45,7 @@ The ScanSpeak Illuminator 15W/4434G00 is the midrange driver selected for this p
 **Why the ScanSpeak 15W:**
 
 - The Illuminator series is known for low distortion and smooth frequency response
-- The 15W cone area provides sufficient output from 150 Hz without requiring excessive amplifier power
+- The 15W cone area provides sufficient output from 200 Hz without requiring excessive amplifier power
 - The upper frequency limit in a baffle is well-suited to a 1100 Hz crossover with LR4 slopes
 - ScanSpeak has detailed datasheet and measured data available, supporting simulation work
 - Good availability through European suppliers
@@ -65,10 +65,10 @@ The chamber must be:
 
 The midrange is crossed:
 
-- High-pass at 150 Hz (LR4) from the bass system
+- High-pass at 200 Hz (BW4) from the bass system
 - Low-pass at 1100 Hz (LR4) to the tweeter/waveguide
 
-The 150 Hz crossover point is low enough that the 15W does not need to produce significant bass output. The 1100 Hz crossover point is within the normal operating range of this driver with the cabinet geometry.
+The 200 Hz crossover point is low enough that the 15W does not need to produce significant bass output. The 1100 Hz crossover point is within the normal operating range of this driver with the cabinet geometry.
 
 **Vertical lobing:** The 140 mm c-c spacing between the 15W midrange and the waveguide tweeter determines the vertical lobing pattern at the mid/tweeter crossover. See Chapter 11 (Crossovers) and Chapter 12 (Directivity) for detail.
 

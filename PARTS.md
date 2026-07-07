@@ -30,21 +30,21 @@ Prices are indicative (sourced June 2026); verify before ordering.
 | Damping felt/foam | Mid chamber: fully lined. Bass chamber: 50 mm rear/top/sides. |
 | Terminal cup or amplifier plate cutout | Depends on DSP/amp selection |
 
-Approximate external dimensions (v9): **320 × 370 × 1080 mm**, 22 mm walls, R19 front roundovers (see CHANGELOG v9 for why 300 mm / R50 were revised).
+Approximate external dimensions (v9): **320 × 380 × 1180 mm**, 22 mm walls, R19 front roundovers (see CHANGELOG v9 for why 300 mm / R50 were revised).
 
 ## Electronics / DSP
 
 **MiniDSP 4×10 HD** selected as DSP platform for initial prototyping. USB/optical in, 10 outputs, well-documented with REW export. Pre-built XML config available (see DSP Filter Plan below).
 
-## DSP Filter Plan (v8 target)
+## DSP Filter Plan (v9)
 
 | Driver path | Filters |
 |---|---|
-| Woofer (×2) | Subsonic HP ~18 Hz LR4, Linkwitz Transform (39.0→28 Hz, Q 0.76→0.707), LP 150 Hz LR4, polarity/delay |
-| Midrange | HP 150 Hz LR4, LP 1100 Hz LR4, delay |
-| Tweeter | HP 1100 Hz LR4, level trim ~-1.8 dB, delay |
+| Woofer (×2) | Subsonic HP ~18 Hz LR2, Linkwitz Transform (39.0→28 Hz, Q 0.76→0.707), LP 200 Hz BW4, gain 0 dB |
+| Midrange | HP 200 Hz BW4, LP 1100 Hz LR4, gain -4.0 dB |
+| Tweeter | HP 1100 Hz LR4, gain -9.0 dB |
 
-**Note:** 1100 Hz crossover frequency is **unconfirmed** — depends on SB26STAC distortion measurement in the waveguide. If distortion is too high, raise to 1300-1500 Hz. Pre-built MiniDSP XML config: `dsp-configs/mk3-sb26stac-1100hz.xml`.
+**Note:** 1100 Hz crossover frequency is **unconfirmed** — depends on SB26STAC distortion measurement in the waveguide. If distortion is too high, raise to 1300-1500 Hz. Pre-built MiniDSP XML config: `dsp-configs/mk3-v9-200-1100-bw4-lr4.xml`.
 
 ## Open Items
 

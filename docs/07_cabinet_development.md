@@ -10,8 +10,8 @@ The cabinet geometry was developed iteratively across the early concept versions
 |---|---|---|
 | Initial concept | - | Active 3-way with push-push woofers |
 | 280 mm | R20-R40 | Narrower baffle explored, R40 promising |
-| 300 mm | R50 | 300/R50 selected as best compromise |
-| 300 mm | R50 | Retained through directivity optimization (current cabinet) |
+| 300 mm | R50 | 300/R50 selected as best compromise (DD-007) |
+| 320 mm | R19 | Current v9 cabinet — width increased for 12SW magnet clearance |
 
 ---
 
@@ -19,32 +19,39 @@ The cabinet geometry was developed iteratively across the early concept versions
 
 | Parameter | Value |
 |---|---|
-| External width | 300 mm |
-| External depth | 370 mm |
-| External height | 1080 mm |
+| External width | 320 mm |
+| External depth | 380 mm |
+| External height | 1180 mm |
 | Material | 22 mm birch plywood |
-| Front edge roundovers | R50 (vertical edges) |
+| Front edge roundovers | R19 (vertical edges) |
 | Rear/other edges | R20-R30 or chamfers (TBD) |
 
 ---
 
-## Cabinet width: 300 mm
+## Cabinet width: 320 mm
 
-The 300 mm wide front baffle was selected (DD-007) as the best compromise between:
+The 320 mm wide front baffle is the current v9 cabinet width. Originally 300 mm
+was selected (DD-007) as the best compromise, but the width was increased to
+320 mm to provide adequate clearance for the opposed GRS 12SW-4HE magnets (only
+~4 mm gap at 276 mm internal width with 300 mm external). The 320 mm width gives
+276 mm + 2×9 mm = improved internal clearance.
 
-- **Directivity:** A narrower baffle reduces baffle diffraction effects at high frequencies. 280 mm was investigated but showed only small additional benefits over 300 mm.
-- **Diffraction:** The R50 roundovers on the 300 mm baffle smooth diffraction more than was achievable on the narrower 280 mm version with practical roundover radii.
-- **Mechanical fit:** 300 mm provides enough width for the waveguide and the woofer cutouts while leaving adequate material for the box sides and bracing.
-- **Cabinet volume:** 300 mm provides more internal volume than 280 mm, easing the ~75 L bass chamber requirement (volume under the divider plate).
-- **Visual proportion:** 300 mm is a reasonable proportion for a tall reference loudspeaker.
+The 320 mm width is the best compromise between:
+
+- **Directivity:** A narrower baffle reduces baffle diffraction effects at high frequencies. 280 mm was investigated but showed only small additional benefits over 300 mm (the original DD-007 width).
+- **Diffraction:** The R19 roundovers on the 320 mm baffle smooth diffraction more than was achievable on the narrower 280 mm version with practical roundover radii.
+- **Mechanical fit:** 320 mm provides enough width for the waveguide and the woofer cutouts while leaving adequate material for the box sides and bracing.
+- **Cabinet volume:** 320 mm provides more internal volume than 280 mm, easing the ~65 L bass chamber requirement (volume under the divider plate).
+- **Visual proportion:** 320 mm is a reasonable proportion for a tall reference loudspeaker.
 
 ---
 
 ## R50 front edge roundovers
 
-The R50 vertical front roundovers (DD-008) were selected from a comparison of R20, R30, R40, R50, and R70 radii in simplified diffraction simulation.
+The R19 vertical front roundovers (revised from R50 in v9 — see DD-016 and
+CHANGELOG) were selected from a comparison of R20, R30, R40, R50, and R70 radii in simplified diffraction simulation.
 
-Larger roundovers produce smoother diffraction, reducing the diffraction ripple in the off-axis response and the predicted in-room response. R50 is a practical limit for the 300 mm wide cabinet using typical woodworking methods (router jig or router table).
+Larger roundovers produce smoother diffraction, reducing the diffraction ripple in the off-axis response and the predicted in-room response. R19 is a practical radius for the 320 mm wide cabinet using typical woodworking methods (router jig or router table).
 
 The roundover applies to the vertical front edges only. The horizontal top and bottom edges may use smaller roundovers or chamfers depending on the mechanical construction.
 
@@ -60,7 +67,7 @@ Exact height from the cabinet top is to be determined from the final front baffl
 
 ### Midrange
 
-The ScanSpeak 15W is mounted directly below the waveguide. The center-to-center spacing to the tweeter is 140 mm (design target).
+The ScanSpeak 18W/4424G00 is mounted directly below the waveguide. The center-to-center spacing to the tweeter is 165 mm (DD-016, physical minimum with these flanges).
 
 The midrange operates in a dedicated sealed chamber (see Chapter 9: Volume calculations).
 
@@ -99,9 +106,9 @@ The front baffle may use a double layer (44 mm) around the driver cutouts for dr
 The front baffle must accommodate:
 
 - Waveguide cutout
-- ScanSpeak 15W midrange cutout
-- R50 vertical front edge roundovers
-- 140 mm c-c spacing between waveguide and 15W centers
+- ScanSpeak 18W/4424G00 midrange cutout
+- R19 vertical front edge roundovers
+- 165 mm c-c spacing between waveguide and 18W centers (DD-016)
 - Adequate wood remaining between cutouts and edges for structural integrity
 
 The mechanical tightness of this layout is a known constraint (DD-011). The waveguide flange and midrange recess must be designed together.
@@ -112,8 +119,8 @@ The mechanical tightness of this layout is a known constraint (DD-011). The wave
 
 | Region | Contents |
 |---|---|
-| Upper section | Mid chamber (5.7 L sealed) |
-| Main bass chamber | Bass volume (~75 L net, under divider plate) |
+| Upper section | Mid chamber (~11 L sealed, 18W/4424G00) |
+| Main bass chamber | Bass volume (~65 L net, under divider plate) |
 | Woofer positions | Side walls, push-push |
 | Bracing | Shelf, window, vertical (see Chapter 10) |
 

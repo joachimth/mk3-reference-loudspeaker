@@ -13,13 +13,14 @@ A DIY active 3-way reference loudspeaker, inspired by Genelec 8361, Dutch & Dutc
 | Woofers | 2 × GRS 12SW-4HE (push-push, side-mounted) |
 | Midrange | ScanSpeak 18W/4424G00 (top of baffle, `cad/midrange.scad`) |
 | Tweeter | SB Acoustics SB26STAC-C000-4 in custom waveguide (below the midrange) |
-| Cabinet | 320 × 370 × 1080 mm, 22 mm birch plywood |
+| Cabinet | 320 × 380 × 1180 mm, 22 mm birch plywood |
 | Front edges | R19 vertical roundovers |
-| Bass volume | ~65 L net sealed (below divider plate; target 75 L) |
-| Mid chamber | ~11 L net sealed (top section; datasheet rec. 13 L) |
-| Bass / mid crossover | 150 Hz LR4 |
-| Mid / tweeter crossover | 1100 Hz LR4 (re-validate for the 18 cm cone) |
-| Mid / tweeter c-c | 165 mm (physical minimum; verify from physical parts) |
+| Bass volume | ~75 L net sealed (below divider plate) |
+| Mid chamber | ~13 L net sealed (top section; datasheet rec. 13 L) |
+| Bass / mid crossover | 200 Hz BW4 |
+| Mid / tweeter crossover | 1100 Hz LR4 |
+| Mid / tweeter c-c | 164 mm (physical minimum; verify from physical parts) |
+| DSP gains | Woofer 0 dB (unity), Mid -4.0 dB, Tweeter -9.0 dB |
 | Bass alignment | Fc ~41 Hz sealed (→28 Hz, Q 0.707 via Linkwitz Transform) |
 | DSP | MiniDSP 4×10 HD |
 | System type | Active, DSP-controlled |
@@ -362,11 +363,11 @@ MiniDSP 4×10 HD with pre-built XML config.
 
 | Driver path | Filters |
 |---|---|
-| Woofer (×2) | Subsonic HP ~18 Hz LR4, Linkwitz Transform (39.0→28 Hz, Q 0.76→0.707), LP 150 Hz LR4 |
-| Midrange | HP 150 Hz LR4, LP 1100 Hz LR4 |
-| Tweeter | HP 1100 Hz LR4, level trim -1.8 dB |
+| Woofer (×2) | Subsonic HP ~18 Hz LR2, Linkwitz Transform (39.0→28 Hz, Q 0.76→0.707), LP 200 Hz BW4, gain 0 dB |
+| Midrange | HP 200 Hz BW4, LP 1100 Hz LR4, gain -4.0 dB |
+| Tweeter | HP 1100 Hz LR4, gain -9.0 dB |
 
-**Pre-built config:** [dsp-configs/](dsp-configs/) — import `mk3-sb26stac-1100hz.xml` via File → Import in MiniDSP plugin. See [dsp-configs/README.md](dsp-configs/README.md) for the full filter specification and biquad coefficients.
+**Pre-built config:** [dsp-configs/](dsp-configs/) — import `mk3-v9-200-1100-bw4-lr4.xml` via File → Import in MiniDSP plugin. See [dsp-configs/README.md](dsp-configs/README.md) for the full filter specification and biquad coefficients.
 
 ---
 

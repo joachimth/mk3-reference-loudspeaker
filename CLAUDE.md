@@ -14,7 +14,7 @@ the engineering reasoning behind the speaker design, captured as a living
 "Design Bible" plus supporting reference files.
 
 The project is currently at the **simulation / design-candidate stage** (design
-version **v8**). No physical prototype has been built yet. Most numbers are
+version **v9**). No physical prototype has been built yet. Most numbers are
 simplified simulation estimates, not measured data — preserve that distinction
 in any edits.
 
@@ -61,7 +61,7 @@ in any edits.
 
 The whole project is organized around incrementing design versions, tracked in
 `ROADMAP.md` (full history) and `CHANGELOG.md` (changes, newest first). The
-current design candidate is **v8**. Further v9+ are planned/future and describe
+current design candidate is **v9**. Further versions are planned/future and describe
 intended work.
 
 When the design changes, bump or annotate the version and record it in both
@@ -81,19 +81,20 @@ This summary appears verbatim (or near-verbatim) in **multiple files**:
 **must update every place it appears** — otherwise the docs contradict each
 other.
 
-### Current spec (v8)
+### Current spec (v9)
 
 | Parameter | Value |
 |---|---|
 | Woofers | 2 × GRS 12SW-4HE (push-push, side-mounted, 12" high excursion) |
-| Midrange | ScanSpeak 15W/4434G00 (sealed mid chamber ~5.7 L) |
-| Tweeter | SB Acoustics SB26STAC-C000-4 (bare dome, not horn-loaded) |
+| Midrange | ScanSpeak 18W/4424G00 (sealed mid chamber ~13 L) |
+| Tweeter | SB Acoustics SB26STAC-C000-4 (bare dome, waveguide-loaded) |
 | Tweeter waveguide | `cad/waveguide.scad` |
-| Cabinet | 300 × 370 × 1080 mm, 22 mm birch plywood, R50 front roundovers |
-| Bass volume | ~75 L sealed (under divider plate), sealed Fc ~39 Hz → 28 Hz via LT, Qtc ~0.707 |
-| Bass/mid xover | 150 Hz LR4 |
+| Cabinet | 320 × 380 × 1180 mm, 22 mm birch plywood, R19 front roundovers |
+| Bass volume | ~65 L sealed (under divider plate, DD-016), sealed Fc ~41 Hz → 28 Hz via LT, Qtc ~0.707 |
+| Bass/mid xover | 200 Hz BW4 |
 | Mid/tweeter xover | 1100 Hz LR4 |
-| Mid/tweeter c-c | 140 mm |
+| Mid/tweeter c-c | 165 mm |
+| DSP gains | Woofer 0 dB (unity), Mid -4.0 dB, Tweeter -9.0 dB |
 | System | Active, DSP-controlled (no passive crossover) |
 
 ## Writing conventions

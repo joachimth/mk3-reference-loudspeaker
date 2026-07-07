@@ -186,7 +186,7 @@ def build_mk3_v9_config(
     """Build channel config for Mk3 Reference v9: 2xGRS 12SW-4HE | 18W/4424G00 | SB26STAC-C000-4.
 
     System sensitivities:
-    - GRS 12SW-4HE pair (push-push): ~87.5 dB → woofer_trim +1.5 dB
+    - GRS 12SW-4HE pair (push-push): ~87.5 dB → woofer_trim 0.0 dB (unity)
     - 18W/4424G00 mid: 92 dB → trimmed by -2.5 dB
     - SB26STAC-C000-4 tweeter: ~93.5 dB → trimmed by -7.5 dB to match mid
     - XO: 200 Hz BW4 (woofer→mid), 1100 Hz LR4 (mid→tweeter)

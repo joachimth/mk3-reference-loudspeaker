@@ -15,10 +15,10 @@ The design bible is a living document. It will be updated as the project progres
 - ScanSpeak 18W/4424G00 midrange at the TOP of the baffle (`cad/midrange.scad`)
 - SB Acoustics SB26STAC-C000-4 tweeter in a custom non-horn-loaded waveguide (`cad/waveguide.scad`), mounted BELOW the midrange
 - Full-width tilted divider plate between midrange and waveguide: mid chamber above (~11 L net), bass volume below (~65 L net)
-- Cabinet: 320 × 370 × 1080 mm, 22 mm birch plywood, R19 front roundovers
+- Cabinet: 320 × 380 × 1180 mm, 22 mm birch plywood, R19 front roundovers
 - Bass: ~65 L net sealed, Fc ~41 Hz → 28 Hz via LT, Qtc target 0.707 after LT
 - Mid chamber: predicted Qtc ~0.68, Fc ~88 Hz (18W datasheet closed-box rec.: 13 L)
-- Crossovers: 150 Hz LR4 (bass/mid), 1100 Hz LR4 (mid/tweeter, re-validate for 18 cm cone)
+- Crossovers: 200 Hz BW4 (bass/mid), 1100 Hz LR4 (mid/tweeter, re-validate for 18 cm cone)
 - Mid/tweeter c-c: 165 mm (physical minimum with these flanges; DD-016)
 
 ---

@@ -43,7 +43,7 @@ For full spinorama measurements, a quiet room with a turntable setup is needed. 
 - Distortion measurement at rated SPL levels (THD vs frequency) — verify Klippel Xmax (12.5 mm) holds in cabinet
 - Verify Linkwitz Transform target (39→28 Hz, Q 0.76→0.707) against measured sealed response
 
-### Midrange (ScanSpeak 15W/4434G00)
+### Midrange (ScanSpeak 18W/4424G00)
 
 - On-axis response in the cabinet
 - Horizontal off-axis: 0° to 60° in 10° steps
@@ -132,7 +132,7 @@ At low frequencies the measurement window is too short for accurate farfield mea
 
 1. Import all driver measurements (on-axis and off-axis)
 2. Enter acoustic offsets (driver center positions relative to a reference point)
-3. Build active crossover model (LR4 at 150 Hz and 1100 Hz)
+3. Build active crossover model (BW4 at 200 Hz, LR4 at 1100 Hz)
 4. Add delay compensation values
 5. Optimize crossover frequency and slopes
 6. Compute CEA-2034 spinorama curves

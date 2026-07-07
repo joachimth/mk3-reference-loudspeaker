@@ -330,3 +330,38 @@ above, bass volume below). Mid/tweeter c-c becomes 165 mm.
 - The 18 cm cone narrows earlier than the 15 cm at the top of the mid band;
   the 1100 Hz LR4 must be re-validated against measured directivity.
 - 15W/4434G00 files remain in the repo as historical reference.
+
+# DD-017 - 200 Hz BW4 bass/mid crossover + 320 mm cabinet width (v9)
+
+## Decision
+
+1. Change the bass/mid crossover from **150 Hz LR4** to **200 Hz BW4**
+   (Butterworth 4th order). The mid/tweeter crossover remains 1100 Hz LR4.
+2. Increase cabinet width from **300 mm to 320 mm** (external), depth to
+   380 mm, height to 1180 mm. Front roundovers revised from R50 to R19.
+3. Rebalance DSP gains to **W0/M-4/T-9** (woofer at 0 dB unity, mid -4 dB,
+   tweeter -9 dB) — pad down from unity rather than boosting the woofer.
+
+## Reasoning
+
+- **Crossover:** Simulation (`simulations/crossover_woofer_mid.py`) showed a
+  response dip at the woofer rolloff with 150 Hz LR4 slopes. Raising the
+  crossover to 200 Hz and switching to BW4 (−3 dB at Fc vs −6 dB for LR4)
+  fills the dip and produces a flatter summed response. The 18W/4424G00
+  has adequate excursion headroom above 200 Hz (Xmax ±2.8 mm, Fs 49 Hz).
+- **Cabinet width:** The 300 mm cabinet (276 mm internal) left only ~4 mm
+  clearance between opposed GRS 12SW-4HE magnets. Increasing to 320 mm
+  provides a safer margin while remaining a reasonable proportion.
+- **Gains:** Joachim's insight — pad the more sensitive channels down from
+  unity rather than boosting the woofer. This avoids wasting amplifier
+  headroom and keeps the woofer channel at 0 dB. DSP correction reduced
+  from ±6 dB to approximately ±1.3 dB.
+
+## Consequence
+
+- DSP XML config updated: `dsp-configs/mk3-v9-200-1100-bw4-lr4.xml`
+- Baffle step per-driver: side woofers D/2 = 190 mm, front mid/tweeter
+  W/2 = 160 mm (from `simulations/cabinet_params.py`)
+- DD-007 (300 mm cabinet width) and DD-008 (R50 roundovers) are superseded
+  for the current design; retained as historical record.
+- DD-014 (1100 Hz LR4 mid/tweeter) remains in effect.

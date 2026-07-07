@@ -53,7 +53,7 @@
 | Driver | Cutout diameter | Status | Verify from |
 |---|---|---|---|
 | GRS 12SW-4HE (woofer) | ø284 mm | ⚠️ Estimate from datasheet (embedded fonts block text extraction) | ☐ Caliper on physical unit |
-| ScanSpeak 15W/4434G00 (mid) | ø72 mm | ✅ Corrected June 28 from 15W chassis drawing | ☐ Verify anyway |
+| ScanSpeak 18W/4424G00 (mid) | Ø144.3 mm (Ø179.2 faceplate) | From official datasheet + cad/midrange.scad | ☐ Verify anyway |
 | SB26STAC waveguide mouth (baffle aperture) | from SCAD | ✅ Auto-propagating from waveguide.scad | ☐ Measure printed part |
 
 ---
@@ -88,7 +88,7 @@ This is **the design gate**. If the SB26STAC can't do 1100 Hz with low distortio
 **After the test:**
 - [ ] If 1100 Hz passes: confirm fc = 1100 Hz, update DESIGN_DECISIONS.md
 - [ ] If 1100 Hz fails: update fc_mid in all simulation scripts + MiniDSP XML config
-- [ ] Measure real c-c from printed waveguide flange to 15W frame — expected 150-155 mm (not 140 mm)
+- [ ] Measure real c-c from printed waveguide flange to 18W frame — expected 165 mm (DD-016)
 - [ ] Update cc_mid_tw_mm in design_versions_comparison.py + DESIGN_DECISIONS.md DD-011
 
 ---
@@ -97,8 +97,8 @@ This is **the design gate**. If the SB26STAC can't do 1100 Hz with low distortio
 
 The cabinet CAD is fully parametric. Once these 3 steps are done:
 
-1. Order drivers (2× GRS, 1× 15W, 1× SB26STAC-C000-4 per speaker)
-2. DSP: MiniDSP 4×10 HD — import `mk3-sb26stac-1100hz.xml`
+1. Order drivers (2× GRS, 1× 18W/4424G00, 1× SB26STAC-C000-4 per speaker)
+2. DSP: MiniDSP 4×10 HD — import `mk3-v9-200-1100-bw4-lr4.xml`
 3. Follow `docs/16_build_guide.md` — 10 phases, build log in `BUILD_LOG.md`
 4. 22 mm birch plywood, ~4 sheets per pair
 
@@ -119,13 +119,13 @@ The cabinet CAD is fully parametric. Once these 3 steps are done:
 
 | Item | Value |
 |---|---|
-| Cabinet W×D×H | 300 × 370 × 1080 mm (22 mm birch ply) |
+| Cabinet W×D×H | 320 × 380 × 1180 mm (22 mm birch ply) |
 | Woofer (each) | GRS 12SW-4HE, 4 Ω, 12" high excursion, side-mounted push-push |
 | Woofer centers | ~520 mm from bottom, opposed at same height |
-| Midrange | ScanSpeak 15W/4434G00, 8 Ω |
+| Midrange | ScanSpeak 18W/4424G00, 4 Ω |
 | Tweeter | SB Acoustics SB26STAC-C000-4 in custom waveguide |
-| Mid/tweeter c-c | Target 140 mm, expected 150-155 mm (verify from real parts) |
-| Bass crossover | 150 Hz LR4 |
+| Mid/tweeter c-c | 165 mm (physical minimum with 18W faceplate — verify from real parts, DD-016) |
+| Bass crossover | 200 Hz BW4 |
 | Mid/tweeter crossover | 1100 Hz LR4 (unconfirmed — Step 3) |
-| FR roundovers | R50 on cabinet front vertical edges |
+| FR roundovers | R19 on cabinet front vertical edges |
 | DSP | MiniDSP 4×10 HD |

@@ -6,10 +6,10 @@
 
 The woofer system must:
 
-- Cover the bass range from approximately 20-25 Hz to 150 Hz
+- Cover the bass range from approximately 20-25 Hz to 200 Hz
 - Be suitable for a sealed alignment with Qtc around 0.6-0.65
 - Produce useful output below 30 Hz with DSP assistance
-- Fit two drivers side-mounted in a 300 mm wide cabinet
+- Fit two drivers side-mounted in a 320 mm wide cabinet
 - Have sufficient excursion for realistic SPL at low frequencies
 - Have an acceptable cost/performance ratio for a DIY project
 

@@ -51,12 +51,12 @@ All notable design changes for the Mk3 Reference Loudspeaker are documented here
 
 ### Notes
 
-- Net bass volume ~65 L vs the 75 L docs target (docs/09's own estimate was
-  ~66 L) — Qtc ~0.80 / Fc ~41 Hz still works with the Linkwitz Transform,
-  at some excursion-headroom cost. Verify in simulation before build.
-- 1100 Hz LR4 mid/tweeter crossover is unchanged but must be re-validated
-  for the larger 18 cm cone (directivity at the top of the mid band) and
-  the 165 mm c-c (vertical lobing) once parts are measured.
+- Net bass volume ~75 L with the updated 320×380×1180 mm cabinet — Qtc ~0.80 / Fc ~41 Hz with Linkwitz Transform to 28 Hz Q0.707.
+- 1100 Hz LR4 mid/tweeter crossover is unchanged. Re-validate for the larger 18 cm cone (directivity at the top of the mid band) and the 164 mm c-c (vertical lobing) once parts are measured.
+- **Bass/mid crossover updated from 150 Hz LR4 to 200 Hz BW4**: BW4's +3 dB sum at crossover fills the dip that LR4 created where the woofer's sealed rolloff left a hole before the mid was fully online. 18W/4424G00 has 27.9 dB excursion headroom at 200 Hz (Xmax 4.5 mm @ 90 dB). 12SW ka=0.46 at 200 Hz (no directivity issues).
+- **DSP gains updated**: Woofer 0 dB (unity, avoids DAC headroom waste), Mid -4.0 dB, Tweeter -9.0 dB. Optimized against Harman in-room target at 0.1 dB resolution. Spreads: W-M=4.0, M-T=5.0. Post-DSP residual ±0.3 dB.
+- **Baffle step modeled from cabinet.scad**: side woofers D/2=190 mm (f_bs=287 Hz), front mid/tweeter W/2=160 mm (f_bs=341 Hz). All v9 simulation scripts import from `simulations/cabinet_params.py` which parses `cad/cabinet.scad` at runtime.
+- **DSP config**: `dsp-configs/mk3-v9-200-1100-bw4-lr4.xml` (renamed from mk3-v9-150-1100-lr4.xml).
 
 ## v8 — GRS 12SW-4HE woofer upgrade
 

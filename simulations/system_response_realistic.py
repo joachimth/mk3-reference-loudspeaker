@@ -5,7 +5,7 @@ System frequency response with datasheet curves (mk3 — SB26STAC @ 1100 Hz)
 Uses ACTUAL frequency response curves extracted from the manufacturer
 datasheets (digitized from the PDF graphs), combined with:
 
-  1. Baffle step (Vanderkooy model, 300mm cabinet baffle)
+  1. Baffle step (Vanderkooy model, v9 cabinet baffle (from cabinet_params.py))
   2. Waveguide loading (WG212 acoustic gain above control limit)
   3. Sealed woofer alignment (2x GRS 12SW-4HE, Fc=28 Hz with LT, Qtc=0.707)
   4. LR4 crossover filters (150 Hz + 1100 Hz)
@@ -15,14 +15,14 @@ Data sources:
   - SB26STAC-C000-4: assets/datasheets/SB26STAC-C000-4.pdf (digitized)
   - 15W/4434G00: ScanSpeak datasheet (digitized)
   - GRS 8SW-4HE-8: modeled from T/S params (sealed alignment)
-  - Baffle step: Vanderkooy/Keele, 300mm baffle
+  - Baffle step: Vanderkooy/Keele, v9 baffle
   - Waveguide loading: WG212 control limit ~1620 Hz, +2.5 dB gain
 
 ASSUMPTIONS
   - Datasheet curves are measured on IEC baffle (31.6 cm mic distance,
     normalized to 2.83V/1m). On-axis curves used.
   - Baffle step is applied to ALL drivers (they're all on the same baffle).
-    The step transition is ~365 Hz for the 300mm baffle.
+    The step transition is ~365 Hz for the v9 baffle.
   - Waveguide loading adds acoustic gain above the control limit. The
     bare-dome tweeter response (from datasheet) is modified by the WG212
     loading: +2.5 dB above 1620 Hz, transitioning smoothly from 1100-1800 Hz.
@@ -98,7 +98,7 @@ def lr4_hp_lin(f, fc):
 # ============================================================
 #  Baffle step model (Vanderkooy / Keele)
 # ============================================================
-# Cabinet: 300mm wide, 370mm deep
+# Cabinet: 320mm wide, 380mm deep (v9, from cabinet.scad)
 # Mean baffle-edge distance: a = sqrt((150^2 + 185^2)/2) = 168 mm
 a_h = 0.150   # half-width (dominant edge)
 a_d = 0.185   # half-depth
@@ -269,7 +269,7 @@ ax.grid(True, which="both", alpha=0.25)
 # --- Panel 3: Acoustic effects + DSP correction needed ---
 ax = axes[2]
 # Baffle step
-ax.semilogx(f, bs, lw=2.0, color="tab:orange", label="Baffle step (300mm baffle)")
+ax.semilogx(f, bs, lw=2.0, color="tab:orange", label="Baffle step (v9 baffle)")
 # WG loading
 wg_curve = wg_loading_db(f, wg_gain, f_low=fc_tw, f_high=2000)
 ax.semilogx(f, wg_curve, lw=1.8, color="tab:blue", ls="--", label=f"WG loading (+{wg_gain:.1f} dB)")

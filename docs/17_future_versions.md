@@ -4,7 +4,7 @@
 
 ## Version roadmap
 
-The Mk3 Reference Loudspeaker is designed to be an evolving platform. The v8 design (GRS 12SW-4HE woofer upgrade, SB26STAC-C000-4 tweeter at 1100 Hz) is the current prototype candidate. Future versions will address remaining limitations and explore more advanced techniques.
+The Mk3 Reference Loudspeaker is designed to be an evolving platform. The v9 design (GRS 12SW-4HE woofer upgrade, ScanSpeak 18W/4424G00 midrange, SB26STAC-C000-4 tweeter at 1100 Hz, 200 Hz BW4 bass/mid crossover, 320 mm cabinet) is the current prototype candidate. Future versions will address remaining limitations and explore more advanced techniques.
 
 ---
 
@@ -21,16 +21,27 @@ Woofer upgraded from GRS 8SW-4HE-8 (8") to GRS 12SW-4HE (12" high excursion).
 
 ---
 
-## v9 - Measurement-validated design
+## v9 - Midrange upgrade + crossover optimization
 
-The first physical prototype of the v8 design.
+The v9 design upgrades the midrange and optimizes the bass/mid crossover.
 
-**Goals:**
+**Changes from v8:**
+- Midrange replaced: ScanSpeak 15W/4434G00 → **18W/4424G00** (Discovery, 18 cm, 91 dB)
+- Layout flipped: midrange on top, waveguide/tweeter below, full-width tilted divider between
+- Bass/mid crossover: 150 Hz LR4 → **200 Hz BW4** (fills woofer rolloff dip)
+- Cabinet width: 300 mm → **320 mm** (12SW magnet clearance), depth 380 mm, height 1180 mm
+- Front roundovers: R50 → **R19**
+- Mid/tweeter c-c: 150 mm → **165 mm** (physical minimum with 18W faceplate)
+- DSP gains rebalanced: **W0/M-4/T-9** (woofer at unity, pad others down)
+- DSP correction reduced: ±6 → ±1.3 dB
+- See DD-016, DD-017
+
+**Remaining goals (prototype validation):**
 - Build prototype cabinet
 - Measure all drivers in cabinet
 - Import measurements into VituixCAD
-- Validate or revise the 1100 Hz crossover
-- Validate the vertical listening window
+- Validate or revise the 1100 Hz crossover for 18 cm cone directivity
+- Validate the vertical listening window at 165 mm c-c
 - Finalize DSP crossover settings
 - Document all measurements
 

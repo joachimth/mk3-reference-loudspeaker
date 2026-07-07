@@ -32,9 +32,9 @@ python generate_minidsp_xml.py --mk2 > mk2-custom.xml
 
 # Custom 3-way
 python generate_minidsp_xml.py \
-  --woofer-lp 150 --mid-hp 150 --mid-lp 1100 \
-  --tweeter-hp 1100 --tweeter-trim -0.5 \
-  --woofer-trim -4.0
+  --woofer-lp 200 --mid-hp 200 --mid-lp 1100 \
+  --tweeter-hp 1100 --tweeter-trim -9.0 \
+  --woofer-trim 0.0 --mid-trim -4.0
 
 # All options
 python generate_minidsp_xml.py --help
@@ -46,11 +46,13 @@ Biquad coefficients can also be generated stand-alone with `generate_biquads.py`
 
 | Driver | Sensitivity | DSP Trim | Net SPL |
 |--------|------------|----------|---------|
-| 2×GRS 12SW-4HE (push-push) | ~95 dB | -4.0 dB | **91 dB** |
-| ScanSpeak 18W/4424G00 | 91 dB | 0 dB | **91 dB** |
-| SB26STAC-C000-4 (waveguide) | 91.5 dB | -0.5 dB | **91 dB** |
+| 2×GRS 12SW-4HE (push-push) | ~95 dB | 0.0 dB | **95 dB** |
+| ScanSpeak 18W/4424G00 | 91 dB | -4.0 dB | **87 dB** |
+| SB26STAC-C000-4 (waveguide) | 91.5 dB | -9.0 dB | **82.5 dB** |
 
-All three ways are level-matched to 91 dB. No padding resistors needed.
+Gains are W0/M-4/T-9 (woofer at unity, mid and tweeter padded down). Net SPL
+values are pre-measurement estimates; final trims set from in-cabinet measurement.
+DSP correction is approximately ±1.3 dB.
 
 ## Input → Output Mapping
 
@@ -61,9 +63,9 @@ Input L → Out 0-4 (left speaker) and Input R → Out 5-9 (right speaker).
 
 | Input | Output | Driver | Filters |
 |-------|--------|--------|---------|
-| CH1 (Left) | Out 0 → Woofer Top | GRS 12SW-4HE (series, 8Ω pair) | Sub HP 18 Hz LR4, LT 39→28 Hz Q0.76→0.707, LP 150 Hz LR4 |
+| CH1 (Left) | Out 0 → Woofer Top | GRS 12SW-4HE (series, 8Ω pair) | Sub HP 18 Hz LR4, LT 39→28 Hz Q0.76→0.707, LP 200 Hz BW4 |
 | CH1 (Left) | Out 1 → Woofer Bot | GRS 12SW-4HE (series, 8Ω pair) | Same as Out 0 |
-| CH1 (Left) | Out 2 → Mid | ScanSpeak 18W/4424G00 | HP 150 Hz LR4, LP 1100 Hz LR4 |
+| CH1 (Left) | Out 2 → Mid | ScanSpeak 18W/4424G00 | HP 200 Hz BW4, LP 1100 Hz LR4 |
 | CH1 (Left) | Out 3 → Tweeter | SB26STAC-C000-4 (waveguide WG212) | HP 1100 Hz LR4, delay 120 µs |
 | CH1 (Left) | Out 4 | Spare | — |
 

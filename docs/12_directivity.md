@@ -33,11 +33,11 @@ Irregularities in the DI (dips, steps, irregularities) indicate directivity prob
 At the crossover frequency, two drivers of different sizes transition between each other. If their off-axis responses do not match at the crossover frequency, the combined off-axis response will show a step or dip.
 
 For the mid/tweeter crossover at 1100 Hz:
-- The ScanSpeak 15W midrange at 1100 Hz radiates over a moderate angle (the ~120 mm cone diameter is beginning to narrow the pattern)
+- The ScanSpeak 18W/4424G00 midrange at 1100 Hz radiates over a moderate angle (the ~144 mm cone diameter is beginning to narrow the pattern)
 - The SB Acoustics SB26STAC-C000-4 is a conventional dome with no built-in horn, so the custom waveguide provides all of the directivity control
 - Without the waveguide, a directivity step would be present at the crossover frequency
 
-The custom SB26STAC waveguide (`cad/waveguide.scad`) is designed to provide directivity control matching the 15W midrange at the crossover frequency. Because the SB26STAC is a conventional dome (no built-in horn), this is a non-horn-loaded waveguide.
+The custom SB26STAC waveguide (`cad/waveguide.scad`) is designed to provide directivity control matching the 18W/4424G00 midrange at the crossover frequency. Because the SB26STAC is a conventional dome (no built-in horn), this is a non-horn-loaded waveguide.
 
 ### Vertical lobing
 
@@ -55,7 +55,7 @@ The R50 front edge roundovers minimize diffraction by presenting a smooth curve 
 
 At high frequencies, individual drivers become increasingly directional because their radiating diameter becomes large relative to the wavelength. This is called beaming.
 
-The ScanSpeak 15W begins to beam above approximately 1500-2000 Hz in free-field. The 1100 Hz crossover is designed to transition to the tweeter/waveguide before significant beaming occurs.
+The ScanSpeak 18W/4424G00 begins to beam above approximately 1500-2000 Hz in free-field. The 1100 Hz crossover is designed to transition to the tweeter/waveguide before significant beaming occurs.
 
 ---
 
@@ -87,8 +87,8 @@ The SB26STAC waveguide with 1100 Hz and 140 mm c-c is the current best candidate
 
 | Frequency range | Expected pattern |
 |---|---|
-| Below 150 Hz | Omnidirectional (woofers, long wavelengths) |
-| 150 Hz - 1 kHz | Gradually narrowing (midrange, baffle loading) |
+| Below 200 Hz | Omnidirectional (woofers, long wavelengths) |
+| 200 Hz - 1 kHz | Gradually narrowing (midrange, baffle loading) |
 | 1 kHz - 3 kHz | Controlled by custom waveguide |
 | 3 kHz - 20 kHz | Gradually narrowing (tweeter in waveguide) |
 

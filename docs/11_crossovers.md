@@ -14,8 +14,8 @@ See Chapter 14 (DSP) for the full DSP implementation. This chapter covers the cr
 
 | Crossover | Frequency | Slope | Drivers |
 |---|---|---|---|
-| Bass / midrange | 150 Hz | LR4 (24 dB/oct) | GRS woofers → ScanSpeak 15W |
-| Midrange / tweeter | **1100 Hz** | LR4 (24 dB/oct) | ScanSpeak 15W → SB26STAC-C000-4 / waveguide |
+| Bass / midrange | 200 Hz | BW4 (24 dB/oct) | GRS woofers → ScanSpeak 18W/4424G00 |
+| Midrange / tweeter | **1100 Hz** | LR4 (24 dB/oct) | ScanSpeak 18W/4424G00 → SB26STAC-C000-4 / waveguide |
 
 ---
 
@@ -36,18 +36,30 @@ LR4 crossovers can be implemented as a cascade of two 2nd-order Butterworth filt
 
 ---
 
-## Bass / midrange: 150 Hz
+## Butterworth 4th-order (BW4) bass/mid crossover
 
-The 150 Hz crossover was selected to:
-- Relieve the ScanSpeak 15W of bass reproduction (below 150 Hz is handled by the woofers)
+The bass/mid crossover uses a 4th-order Butterworth (BW4) topology rather than
+LR4. BW4 has a -3 dB point at the crossover frequency (vs -6 dB for LR4), which
+fills the response dip that appeared at the woofer rolloff with LR4 slopes. The
+asymmetric pairing (BW4 low-pass on woofer, BW4 high-pass on mid) was chosen
+after simulation showed it produced a flatter summed response than LR4 at the
+woofer/mid handoff (see `simulations/crossover_woofer_mid.py`).
+
+---
+
+## Bass / midrange: 200 Hz
+
+The 200 Hz BW4 crossover was selected to:
+- Relieve the ScanSpeak 18W/4424G00 of bass reproduction (below 200 Hz is handled by the woofers)
 - Keep the GRS woofers within their optimal operating range
-- Allow the 15W to reproduce the lower midrange (150-500 Hz) without excessive excursion
+- Allow the 18W to reproduce the lower midrange (200-500 Hz) without excessive excursion
+- Fill the response dip at the woofer rolloff that occurred with the previous 150 Hz LR4 crossover
 
-**Woofer low-pass:** 150 Hz LR4
-The woofers are rolled off at 150 Hz. Below 150 Hz the full bass SPL is produced by the GRS push-push system. The bass system also receives a high-pass filter at approximately 20 Hz to protect the woofers from infrasonic content.
+**Woofer low-pass:** 200 Hz BW4
+The woofers are rolled off at 200 Hz. Below 200 Hz the full bass SPL is produced by the GRS push-push system. The bass system also receives a high-pass filter at approximately 20 Hz to protect the woofers from infrasonic content.
 
-**Midrange high-pass:** 150 Hz LR4
-The 15W midrange is high-passed at 150 Hz. This removes bass loading from the midrange driver and the mid chamber.
+**Midrange high-pass:** 200 Hz BW4
+The 18W/4424G00 midrange is high-passed at 200 Hz. This removes bass loading from the midrange driver and the mid chamber.
 
 **Phase alignment:** The acoustic centers of the woofers and the midrange are at different physical positions. DSP delay must be applied to align them at the crossover frequency.
 
@@ -77,22 +89,22 @@ headroom, directivity match, vertical lobing, and system sum flatness.
 **Why 1100 Hz is chosen over 1200 Hz despite identical scores:**
 - Below broadside null (1147 Hz for 150mm c-c) — the null is fully outside
   the active crossover band, not partially inside it
-- Better DI match (4.6 vs 5.1 dB) — closer to 15W's near-omni region
+- Better DI match (4.6 vs 5.1 dB) — closer to 18W's near-omni region
 - Fs margin of 350 Hz is already comfortable — additional margin has
   diminishing returns (the sigmoid scoring reflects this)
 
 The crossover could be raised to 1150-1200 Hz with negligible penalty if
-measurement shows the 15W has cone breakup or directivity issues at 1100 Hz.
+measurement shows the 18W has cone breakup or directivity issues at 1100 Hz.
 
 ### Selection rationale
 
 - **Fs margin:** 350 Hz above the 750 Hz resonance — comfortable, no distortion test gate required.
-- **Directivity match:** At 1100 Hz the 15W midrange is closer to omni, giving a smaller DI step (4.6 dB mismatch).
+- **Directivity match:** At 1100 Hz the 18W midrange is closer to omni, giving a smaller DI step (4.6 dB mismatch).
 - **Vertical lobing:** The broadside null for 150mm c-c is at 1147 Hz — just above the 1100 Hz crossover. The LR4 rolloff suppresses the null almost entirely. At ±15° the ripple is under 0.7 dB.
 - **Excursion headroom:** The SB26STAC's 0.6mm Xmax gives +8.1 dB more max SPL at 1100 Hz.
 
 **Midrange low-pass:** 1100 Hz LR4
-The 15W is rolled off above 1100 Hz.
+The 18W is rolled off above 1100 Hz.
 
 **Tweeter high-pass:** 1100 Hz LR4
 The SB26STAC in the waveguide is high-passed at 1100 Hz.
@@ -122,7 +134,7 @@ For d = 140 mm and θ = 90° (broadside null):
 f_null = 344 / (2 × 0.14) ≈ 1229 Hz
 ```
 
-For d = 150 mm (practical minimum before 15W frames touch):
+For d = 150 mm (practical minimum before 18W frames touch):
 ```
 f_null = 344 / (2 × 0.15) ≈ 1147 Hz
 ```

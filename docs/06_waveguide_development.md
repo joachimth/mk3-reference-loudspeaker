@@ -40,7 +40,7 @@ The simplified directivity simulations compared four waveguide mouth diameters:
 | ~212 mm | ~212 mm | Current candidate |
 | ~220 mm | ~220 mm | Marginal improvement in directivity |
 | ~230 mm | ~230 mm | More directional, larger baffle impact |
-| ~240 mm | ~240 mm | Most directional but mechanically challenging in 300 mm cabinet |
+| ~240 mm | ~240 mm | Most directional but mechanically challenging in 320 mm cabinet |
 
 ---
 

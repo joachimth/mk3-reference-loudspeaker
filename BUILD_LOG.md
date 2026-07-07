@@ -14,7 +14,7 @@ Not started.
 
 - Validate cabinet geometry
 - Validate woofer fit
-- Validate waveguide and 15W spacing
+- Validate waveguide and 18W spacing
 - Validate mid chamber volume
 - Validate bracing layout
 - Prepare for acoustic measurements
@@ -25,11 +25,11 @@ Not started.
 
 ## External dimensions
 
-- Width: 300 mm
-- Depth: 370 mm
-- Height: 1080 mm
+- Width: 320 mm
+- Depth: 380 mm
+- Height: 1180 mm
 - Material: 22 mm birch plywood
-- Front vertical roundovers: R50
+- Front vertical roundovers: R19
 
 ## Bass placement
 
@@ -38,9 +38,9 @@ Not started.
 
 ## Mid/tweeter layout
 
-- Waveguide
-- ScanSpeak 15W/4434G00 below waveguide
-- Target c-c spacing: 140 mm
+- ScanSpeak 18W/4424G00 midrange at TOP of baffle
+- Waveguide/tweeter BELOW midrange
+- Target c-c spacing: 165 mm (DD-016)
 
 ---
 

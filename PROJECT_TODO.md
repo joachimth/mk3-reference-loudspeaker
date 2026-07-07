@@ -1,6 +1,6 @@
 # Mk3 Reference Loudspeaker — Project TODO
 
-**Design version:** v8 | **Updated:** July 5, 2026
+**Design version:** v9 | **Updated:** July 7, 2026
 
 The design uses the SB Acoustics SB26STAC-C000-4 tweeter with a 1100 Hz LR4 crossover.
 
@@ -16,7 +16,7 @@ Grouped by area. The critical path to prototype is marked 🔴.
 - [ ] **Print SB26STAC waveguide prototype** (PETG recommended, print flat, slow cool). STL at `cad/exports/waveguide.stl`.
 - [ ] **Test-fit SB26STAC in printed waveguide** — verify faceplate seating, throat alignment, screw positions.
 - [ ] **Measure SB26STAC distortion at 1100 Hz in waveguide** — this is the gate. Target: ≤2% THD at 1100 Hz / 96 dB SPL. If >3%, raise crossover to 1300-1400 Hz and update all simulation scripts. See `MEASUREMENTS.md` for the distortion test protocol.
-- [ ] **Confirm realistic c-c spacing** from printed waveguide flange + 15W frame. Expected ~150-155 mm, not 140 mm nominal. Update `cc_mid_tw_mm` in simulation scripts and DESIGN_DECISIONS.md.
+- [ ] **Confirm realistic c-c spacing** from printed waveguide flange + 18W frame. Expected 165 mm (DD-016). Update `cc_mid_tw_mm` in simulation scripts and DESIGN_DECISIONS.md.
 
 ### Cabinet CAD
 
@@ -30,7 +30,7 @@ Grouped by area. The critical path to prototype is marked 🔴.
 ### DSP platform
 
 - [x] **MiniDSP 4×10 HD selected** as DSP platform.
-- [x] **MiniDSP XML config generated** — `dsp-configs/mk3-sb26stac-1100hz.xml` (import via File → Import in MiniDSP plugin).
+- [x] **MiniDSP XML config generated** — `dsp-configs/mk3-v9-200-1100-bw4-lr4.xml` (import via File → Import in MiniDSP plugin).
 - [ ] **Verify DSP config with measurement** — import XML, measure, adjust delays and EQ.
 
 ---
@@ -96,7 +96,7 @@ Grouped by area. The critical path to prototype is marked 🔴.
 
 *(Not started. Full sequence in `docs/16_build_guide.md`.)*
 
-- [ ] Order all drivers (2× GRS 12SW-4HE, 1× ScanSpeak 15W/4434G00, 1× SB26STAC-C000-4 per speaker)
+- [ ] Order all drivers (2× GRS 12SW-4HE, 1× ScanSpeak 18W/4424G00, 1× SB26STAC-C000-4 per speaker)
 - [ ] Order MiniDSP 4×10 HD
 - [ ] Order 22 mm birch plywood (~4 sheets per pair)
 - [ ] Order hardware (threaded inserts, gasket tape, terminal plate, cable)

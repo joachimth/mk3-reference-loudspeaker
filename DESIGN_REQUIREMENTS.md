@@ -33,7 +33,7 @@
 
 ## Crossovers
 
-- 150 Hz LR4
+- 200 Hz BW4
 - 1100 Hz LR4
 
 ## Geometry

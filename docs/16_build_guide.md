@@ -58,7 +58,7 @@ Before starting the build:
 | Driver | Quantity |
 |---|---|
 | GRS 12SW-4HE | 2 |
-| ScanSpeak 15W/4434G00 | 1 |
+| ScanSpeak 18W/4424G00 | 1 |
 | SB Acoustics SB26STAC-C000-4 | 1 |
 | Printed waveguide | 1 |
 
@@ -121,13 +121,13 @@ Before starting the build:
 
 1. Install mid chamber into cabinet
 2. Seal mid chamber to front baffle and side walls
-3. Install midrange (ScanSpeak 15W) with gasket tape
+3. Install midrange (ScanSpeak 18W/4424G00) with gasket tape
 4. Run midrange wiring to terminal area
 
 ### Phase 8: Waveguide and tweeter
 
 1. Test fit printed waveguide in front baffle cutout
-2. Confirm c-c spacing to midrange (target: 140 mm)
+2. Confirm c-c spacing to midrange (target: 165 mm, DD-016)
 3. Mount SB26STAC tweeter into waveguide
 4. Install waveguide + tweeter assembly in front baffle
 5. Run tweeter wiring to terminal area

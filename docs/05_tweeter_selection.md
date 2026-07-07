@@ -11,7 +11,7 @@ The tweeter must:
 - Have sufficient power handling and headroom at 1100 Hz
 - Have low distortion at 1100 Hz and above
 - Have a dome/surround geometry compatible with the waveguide throat design
-- Fit within the 300 mm baffle at 140 mm c-c from the midrange
+- Fit within the 320 mm baffle at 140 mm c-c from the midrange
 
 ---
 
