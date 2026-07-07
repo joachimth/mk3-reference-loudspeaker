@@ -1,19 +1,21 @@
 """
-Mk2 Reference Loudspeaker - WG212 mouth-to-baffle termination study
+Mk3 Reference Loudspeaker - WG212 mouth-to-baffle termination study
 ===================================================================
 
-Why: the current waveguide model (cad/waveguide.scad) rolls the bore to a
-flush tangent at z = D_tot, but then adds the mounting flange *forward* of that
-plane and cuts the mouth as a straight prism through it. The last `flange_thick`
-mm are therefore a straight, axial "lip" that ends in a sharp 90 deg edge at the
-baffle surface -> mouth diffraction, audible as off-axis / spinorama ripple.
+Why: the waveguide termination at the baffle matters for diffraction.
+The current waveguide model (cad/waveguide.scad) seats the flange *behind*
+the flush mouth plane — the bore rolls to a flush tangent at z = D_tot
+with no forward lip.
 
 This script draws the waveguide wall in the r-z plane (horizontal plane,
-theta_h) for:
-  (a) CURRENT   : OS + roll + forward straight lip (sharp edge at the baffle)
-  (b) FLUSH     : same roll, flange moved *behind* the mouth plane -> no lip
-  (c) BLENDED   : flush + a baffle roundover (secondary radius) that lets the
-                  mouth flow into the flat baffle with continuous curvature.
+theta_h) comparing three approaches:
+  (a) OLD LIP  : forward straight lip (sharp 90 deg edge at the baffle)
+  (b) FLUSH    : flush mouth plane, flange behind (CURRENT design)
+  (c) BLENDED  : larger roll (Lr=26) for continuous baffle curvature
+
+NOTE: Lr was increased from 10 to 25 on Joachim's request (commit d807ab0)
+to match the H2606 waveguide depth and improve baffle blend. The Python
+values are now synced to the SCAD source-of-truth.
 
 ASSUMPTIONS: purely geometric (matches the OpenSCAD profile math). Diffraction
 severity is argued qualitatively; the real proof is a measurement of the printed
@@ -31,8 +33,8 @@ import matplotlib.pyplot as plt
 r_t       = 28/2.0
 theta     = 50.0           # theta_h [deg]
 D_os      = 65.0
-Lr        = 10.0           # current roundover forward depth
-flange_t  = 9.0
+Lr        = 25.0           # current roundover forward depth
+flange_t  = 5.0           # SCAD: flange_thick (cad/waveguide.scad)
 flange_hw = 252/2.0        # flange half-width (horizontal)
 
 tan, sin, cos = (lambda d: np.tan(np.radians(d)),
@@ -62,7 +64,7 @@ fig, ax = plt.subplots(figsize=(10, 6.2))
 ax.plot(np.r_[z_os, z_roll], np.r_[r_os, r_roll], color="tab:red", lw=2.6)
 ax.plot([D_tot, D_tot+flange_t], [mouth_r, mouth_r], color="tab:red", lw=2.6)      # axial lip
 ax.plot([D_tot+flange_t, D_tot+flange_t], [mouth_r, flange_hw], color="tab:red",
-        lw=2.6, label="(a) current: forward lip -> sharp edge")
+        lw=2.6, label="(a) old lip: forward lip -> sharp edge")
 ax.scatter([D_tot+flange_t], [mouth_r], color="tab:red", zorder=6, s=55)
 ax.annotate("sharp 90 deg edge\nat the baffle", (D_tot+flange_t, mouth_r),
             xytext=(D_tot+flange_t+9, mouth_r-26), color="tab:red", fontsize=9,
@@ -89,9 +91,9 @@ ax.set_title("WG212 mouth-to-baffle termination (horizontal plane)")
 ax.set_xlim(0, D_tot+flange_t+22); ax.set_ylim(0, flange_hw+6)
 ax.grid(True, alpha=0.25); ax.legend(loc="lower right", fontsize=9)
 ax.text(2, 6,
-        "The current lip protrudes forward of the flush plane and ends in a sharp edge\n"
-        "at the baffle. Moving the flange behind the mouth plane (b), or rolling into a\n"
-        "baffle blend (c), removes the edge and the diffraction it causes.",
+        "(a) shows the old design with a forward lip and sharp edge at the baffle.\n"
+        "The current design (b, flush) seats the flange behind the mouth plane.\n"
+        "Option (c, blended) uses a larger roll (Lr=26) for continuous curvature.",
         fontsize=8.5, color="0.3")
 
 out = os.path.join(os.path.dirname(__file__), "plots", "waveguide_termination.png")
