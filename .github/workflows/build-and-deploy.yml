@@ -107,27 +107,27 @@ jobs:
         run: |
           mkdir -p assets/renders
           cd cad
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,0,400,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/waveguide_mouth.png waveguide.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,0,-300,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/waveguide_rear.png waveguide.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=400,0,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/waveguide_side.png waveguide.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,400,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/waveguide_top.png waveguide.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=400,-400,300,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/waveguide_iso.png waveguide.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=400,0,45,0,0,45 \
             --imgsize=1920,1080 --colorscheme=Cornfield --projection=ortho \
             -D 'show_cutaway=true' \
@@ -136,49 +136,49 @@ jobs:
       - name: Render cabinet views
         run: |
           cd cad
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_drivers=true' \
             --camera=0,2800,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_front.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,-2800,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_rear.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_drivers=true' \
             --camera=-2800,185,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_left.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_drivers=true' \
             --camera=2800,185,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_right.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,185,2800,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_top.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,185,-2800,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_bottom.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_drivers=true' \
             --camera=1200,1600,2000,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_exterior.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_internals=true' -D 'show_drivers=true' \
             --camera=1000,1400,1400,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_cutaway.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_drivers=true' -D 'show_waveguide=true' \
             --camera=900,1400,1700,0,185,850 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_assembly.png cabinet.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_internals=true' -D 'show_waveguide=true' -D 'show_drivers=true' \
             --camera=1000,1200,1600,0,185,600 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
@@ -189,43 +189,43 @@ jobs:
         run: |
           cd cad
           # cabinet_v2: same enclosure but with baffel_insert in the front baffle
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_drivers=true' -D 'show_insert=true' \
             --camera=0,2800,540,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_v2_front.png cabinet_v2.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_drivers=true' -D 'show_insert=true' \
             --camera=1200,1600,2000,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_v2_iso.png cabinet_v2.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'show_internals=true' -D 'show_drivers=true' -D 'show_insert=true' \
             --camera=1000,1400,1400,0,185,540 \
             --imgsize=1920,1080 --colorscheme=Cornfield \
             -o ../assets/renders/cabinet_v2_cutaway.png cabinet_v2.scad 2>&1 || true
           # Baffel insert alone (print-ready)
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,0,400,0,0,0 \
             --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/baffel_insert_front.png baffel_insert_1.scad 2>&1 || true
           # Baffel insert with all drivers fitted (fit view)
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'vis="fit"' \
             --camera=0,0,400,0,0,0 \
             --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/baffel_insert_fit_front.png baffel_insert_1.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'vis="fit"' \
             --camera=200,-300,200,0,0,30 \
             --imgsize=1200,1200 --colorscheme=Cornfield \
             -o ../assets/renders/baffel_insert_fit_iso.png baffel_insert_1.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'vis="fit"' \
             --camera=0,0,-400,0,0,0 \
             --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/baffel_insert_fit_rear.png baffel_insert_1.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'vis="snit"' \
             --camera=300,-300,200,0,0,30 \
             --imgsize=1200,1200 --colorscheme=Cornfield \
@@ -236,50 +236,50 @@ jobs:
         run: |
           cd cad
           # SB26STAC-C000-4 tweeter — front, iso, section
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,0,80,0,0,0 \
             --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/driver_tweeter_front.png SB26STAC-C000-4.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=200,-200,150,0,0,35 \
             --imgsize=1200,1200 --colorscheme=Cornfield \
             -o ../assets/renders/driver_tweeter_iso.png SB26STAC-C000-4.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'vis="snit"' \
             --camera=200,-200,150,0,0,35 \
             --imgsize=1200,1200 --colorscheme=Cornfield \
             -o ../assets/renders/driver_tweeter_section.png SB26STAC-C000-4.scad 2>&1 || true
   
           # GRS 12SW-4HE woofer — front, iso, section, cutout
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,0,200,0,0,0 \
             --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/driver_woofer_front.png GRS-12SW-4HE.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=400,-400,300,0,0,35 \
             --imgsize=1200,1200 --colorscheme=Cornfield \
             -o ../assets/renders/driver_woofer_iso.png GRS-12SW-4HE.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'vis="snit"' \
             --camera=400,-400,300,0,0,35 \
             --imgsize=1200,1200 --colorscheme=Cornfield \
             -o ../assets/renders/driver_woofer_section.png GRS-12SW-4HE.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'vis="skabelon"' \
             --camera=0,0,200,0,0,0 \
             --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/driver_woofer_template.png GRS-12SW-4HE.scad 2>&1 || true
   
           # 18W/4424G00 midrange — front, iso, section
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=0,0,200,0,0,0 \
             --imgsize=1200,1200 --colorscheme=Cornfield --projection=ortho \
             -o ../assets/renders/driver_midrange_front.png midrange.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             --camera=400,-400,300,0,0,35 \
             --imgsize=1200,1200 --colorscheme=Cornfield \
             -o ../assets/renders/driver_midrange_iso.png midrange.scad 2>&1 || true
-          xvfb-run -a openscad --preview \
+          xvfb-run -a openscad --preview --viewall --autocenter \
             -D 'vis="snit"' \
             --camera=400,-400,300,0,0,35 \
             --imgsize=1200,1200 --colorscheme=Cornfield \

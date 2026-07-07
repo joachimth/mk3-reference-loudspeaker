@@ -104,7 +104,16 @@ class OpenSCADServer:
         """Export PNG with camera settings (server command)."""
         if not self.available:
             return False
-        
+          
+        # Enable auto-framing before export
+        try:
+            self.process.stdin.write("set $viewall true\n")
+            self.process.stdin.write("set $autocenter true\n")
+            self.process.stdin.flush()
+            self._wait_for_response(timeout=5)
+        except Exception:
+            pass
+          
         # Build command
         defs_str = " ".join(f"-D {d}" for d in extra_defs)
         cmd = f"export-png {output} {camera} --imgsize=1920,1080 --colorscheme=Cornfield --projection={projection} {defs_str}\n"
@@ -238,6 +247,7 @@ def render_job(args) -> bool:
             "xvfb-run", "-a",
             "openscad",
             "--render",
+            "--viewall", "--autocenter",
             camera,
             "--imgsize", "1920,1080",
             "--colorscheme", "Cornfield",

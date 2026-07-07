@@ -122,6 +122,7 @@ def execute_job(job: RenderJob) -> Tuple[str, bool, Optional[str]]:
             "xvfb-run", "-a",
             "openscad",
             "--render",
+            "--viewall", "--autocenter",
             "--camera", f"{tx},{ty},{tz},{rx},{ry},{rz},{dist}",
             "--imgsize", "1920,1080",
             "--colorscheme", "Cornfield",

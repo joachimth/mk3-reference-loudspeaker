@@ -51,7 +51,7 @@ def render(args):
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     
-    cmd = f"openscad --render {camera} --imgsize=1920,1080 --colorscheme=Cornfield -o {output}"
+    cmd = f"openscad --render --viewall --autocenter {camera} --imgsize=1920,1080 --colorscheme=Cornfield -o {output}"
     for d in defs:
         cmd += f" -D '{d}'"
     cmd += f" {scad}"
