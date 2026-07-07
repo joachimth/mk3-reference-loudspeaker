@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="506.0" height="593.0" viewBox="0 0 506.0 593.0">
+<style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
+.cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
+.rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
+.pilot { fill: #333; }
+.dim-line { stroke: #2980b9; stroke-width: 0.8; fill: none; }
+.dim-text { fill: #2980b9; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+.dim-text-v { fill: #2980b9; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+.label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
+.label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+.label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
+.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+.note { fill: #555; font-family: sans-serif; font-size: 10px; }
+.arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
+.center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
+</style>
+<rect width="506.0" height="593.0" fill="white"/>
+<text x="253.0" y="25.0" class="title-text">Mk3 Cabinet — Assembly Measurement Drawing</text>
+<rect x="50.0" y="60.0" width="112.0" height="413.0" rx="6.6" ry="6.6" class="panel"/>
+<text x="106.0" y="52.0" class="label">FRONT</text>
+<circle cx="106.0" cy="100.2" r="31.4" class="cutout"/>
+<text x="106.0" y="60.9" class="label-sm">MID</text>
+<rect x="63.7" y="132.6" width="84.7" height="50.0" rx="1.4" ry="1.4" class="cutout"/>
+<text x="106.0" y="194.7" class="label-sm">WG</text>
+<line x1="50.0" y1="478.0" x2="50.0" y2="463.0" class="dim-line"/>
+<line x1="162.0" y1="478.0" x2="162.0" y2="463.0" class="dim-line"/>
+<line x1="50.0" y1="463.0" x2="162.0" y2="463.0" class="dim-line"/>
+<polygon points="50.0,463.0 54.0,461.0 54.0,465.0" class="arrow"/>
+<polygon points="162.0,463.0 158.0,461.0 158.0,465.0" class="arrow"/>
+<text x="106.0" y="459.0" class="dim-text">W=320</text>
+<line x1="55.0" y1="60.0" x2="70.0" y2="60.0" class="dim-line"/>
+<line x1="55.0" y1="473.0" x2="70.0" y2="473.0" class="dim-line"/>
+<line x1="70.0" y1="60.0" x2="70.0" y2="473.0" class="dim-line"/>
+<polygon points="70.0,60.0 68.0,64.0 72.0,64.0" class="arrow"/>
+<polygon points="70.0,473.0 68.0,469.0 72.0,469.0" class="arrow"/>
+<text x="84.0" y="266.5" class="dim-text-v" transform="rotate(-90 84.0 266.5)">H=1180</text>
+<line x1="58.0" y1="473.0" x2="73.0" y2="473.0" class="dim-line"/>
+<line x1="58.0" y1="100.2" x2="73.0" y2="100.2" class="dim-line"/>
+<line x1="73.0" y1="473.0" x2="73.0" y2="100.2" class="dim-line"/>
+<polygon points="73.0,473.0 71.0,477.0 75.0,477.0" class="arrow"/>
+<polygon points="73.0,100.2 71.0,96.2 75.0,96.2" class="arrow"/>
+<text x="87.0" y="286.6" class="dim-text-v" transform="rotate(-90 87.0 286.6)">1065</text>
+<line x1="83.0" y1="473.0" x2="98.0" y2="473.0" class="dim-line"/>
+<line x1="83.0" y1="157.7" x2="98.0" y2="157.7" class="dim-line"/>
+<line x1="98.0" y1="473.0" x2="98.0" y2="157.7" class="dim-line"/>
+<polygon points="98.0,473.0 96.0,477.0 100.0,477.0" class="arrow"/>
+<polygon points="98.0,157.7 96.0,153.7 100.0,153.7" class="arrow"/>
+<text x="112.0" y="315.3" class="dim-text-v" transform="rotate(-90 112.0 315.3)">901</text>
+<line x1="160.3" y1="100.2" x2="175.3" y2="100.2" class="dim-line"/>
+<line x1="160.3" y1="157.7" x2="175.3" y2="157.7" class="dim-line"/>
+<line x1="175.3" y1="100.2" x2="175.3" y2="157.7" class="dim-line"/>
+<polygon points="175.3,100.2 173.3,104.2 177.3,104.2" class="arrow"/>
+<polygon points="175.3,157.7 173.3,153.7 177.3,153.7" class="arrow"/>
+<text x="189.3" y="129.0" class="dim-text-v" transform="rotate(-90 189.3 129.0)">cc=164</text>
+<rect x="273.0" y="60.0" width="133.0" height="413.0" class="panel"/>
+<text x="339.5" y="52.0" class="label">SIDE</text>
+<circle cx="339.5" cy="291.0" r="49.7" class="cutout"/>
+<text x="339.5" y="233.3" class="label-sm">12SW</text>
+<line x1="276.0" y1="128.2" x2="403.0" y2="87.8" class="center-line"/>
+<text x="414.0" y="108.0" class="label-sm">divider 19°</text>
+<line x1="278.0" y1="417.0" x2="401.0" y2="417.0" class="center-line"/>
+<line x1="278.0" y1="357.5" x2="401.0" y2="357.5" class="center-line"/>
+<line x1="278.0" y1="217.5" x2="401.0" y2="217.5" class="center-line"/>
+<line x1="273.0" y1="478.0" x2="273.0" y2="463.0" class="dim-line"/>
+<line x1="406.0" y1="478.0" x2="406.0" y2="463.0" class="dim-line"/>
+<line x1="273.0" y1="463.0" x2="406.0" y2="463.0" class="dim-line"/>
+<polygon points="273.0,463.0 277.0,461.0 277.0,465.0" class="arrow"/>
+<polygon points="406.0,463.0 402.0,461.0 402.0,465.0" class="arrow"/>
+<text x="339.5" y="459.0" class="dim-text">D=380</text>
+<line x1="278.0" y1="60.0" x2="293.0" y2="60.0" class="dim-line"/>
+<line x1="278.0" y1="473.0" x2="293.0" y2="473.0" class="dim-line"/>
+<line x1="293.0" y1="60.0" x2="293.0" y2="473.0" class="dim-line"/>
+<polygon points="293.0,60.0 291.0,64.0 295.0,64.0" class="arrow"/>
+<polygon points="293.0,473.0 291.0,469.0 295.0,469.0" class="arrow"/>
+<text x="307.0" y="266.5" class="dim-text-v" transform="rotate(-90 307.0 266.5)">H=1180</text>
+<line x1="281.0" y1="473.0" x2="296.0" y2="473.0" class="dim-line"/>
+<line x1="281.0" y1="291.0" x2="296.0" y2="291.0" class="dim-line"/>
+<line x1="296.0" y1="473.0" x2="296.0" y2="291.0" class="dim-line"/>
+<polygon points="296.0,473.0 294.0,477.0 298.0,477.0" class="arrow"/>
+<polygon points="296.0,291.0 294.0,287.0 298.0,287.0" class="arrow"/>
+<text x="310.0" y="382.0" class="dim-text-v" transform="rotate(-90 310.0 382.0)">520</text>
+<text x="50.0" y="523.0" class="note">Internal: 276 × 336 × 1136 mm  |  Wall: 22 mm  |  Roundover: R19</text>
+<text x="50.0" y="539.0" class="note">Driver heights: MID z=1065  WG/TW z=901  Woofer z=520  |  C-C mid/tw: 164 mm</text>
+<text x="50.0" y="555.0" class="note">Shelf braces at z=[160, 330, 730]  |  Divider tilt: 19°</text>
+</svg>

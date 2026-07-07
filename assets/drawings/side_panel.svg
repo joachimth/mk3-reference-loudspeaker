@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="350.0" height="750.0" viewBox="0 0 350.0 750.0">
+<style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
+.cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
+.rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
+.pilot { fill: #333; }
+.dim-line { stroke: #2980b9; stroke-width: 0.8; fill: none; }
+.dim-text { fill: #2980b9; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+.dim-text-v { fill: #2980b9; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+.label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
+.label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+.label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
+.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+.note { fill: #555; font-family: sans-serif; font-size: 10px; }
+.arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
+.center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
+</style>
+<rect width="350.0" height="750.0" fill="white"/>
+<rect x="80.0" y="80.0" width="190.0" height="590.0" class="panel"/>
+<text x="175.0" y="25.0" class="title-text">Mk3 Side Panel — Woofer Cutout &amp; Hole Layout</text>
+<text x="175.0" y="42.0" class="note">Panel: 380 × 1180 mm, 22 mm birch ply (flat, no roundover)</text>
+<circle cx="175.0" cy="410.0" r="83.0" class="rebate"/>
+<circle cx="175.0" cy="410.0" r="71.0" class="cutout"/>
+<line x1="165.0" y1="410.0" x2="185.0" y2="410.0" class="center-line"/>
+<line x1="175.0" y1="400.0" x2="175.0" y2="420.0" class="center-line"/>
+<circle cx="254.8" cy="410.0" r="1.5" class="pilot"/>
+<circle cx="231.4" cy="466.4" r="1.5" class="pilot"/>
+<circle cx="175.0" cy="489.8" r="1.5" class="pilot"/>
+<circle cx="118.6" cy="466.4" r="1.5" class="pilot"/>
+<circle cx="95.2" cy="410.0" r="1.5" class="pilot"/>
+<circle cx="118.6" cy="353.6" r="1.5" class="pilot"/>
+<circle cx="175.0" cy="330.2" r="1.5" class="pilot"/>
+<circle cx="231.4" cy="353.6" r="1.5" class="pilot"/>
+<text x="175.0" y="315.0" class="label-driver">GRS 12SW-4HE  Ø284 cutout, Ø332 frame, 8×Ø5.5 on Ø319 BCD</text>
+<text x="175.0" y="513.0" class="label-sm">(Opposed push-push: 2nd woofer on opposite side, same height)</text>
+<line x1="80.0" y1="670.0" x2="80.0" y2="655.0" class="dim-line"/>
+<line x1="270.0" y1="670.0" x2="270.0" y2="655.0" class="dim-line"/>
+<line x1="80.0" y1="655.0" x2="270.0" y2="655.0" class="dim-line"/>
+<polygon points="80.0,655.0 84.0,653.0 84.0,657.0" class="arrow"/>
+<polygon points="270.0,655.0 266.0,653.0 266.0,657.0" class="arrow"/>
+<text x="175.0" y="651.0" class="dim-text">380</text>
+<line x1="100.0" y1="80.0" x2="115.0" y2="80.0" class="dim-line"/>
+<line x1="100.0" y1="670.0" x2="115.0" y2="670.0" class="dim-line"/>
+<line x1="115.0" y1="80.0" x2="115.0" y2="670.0" class="dim-line"/>
+<polygon points="115.0,80.0 113.0,84.0 117.0,84.0" class="arrow"/>
+<polygon points="115.0,670.0 113.0,666.0 117.0,666.0" class="arrow"/>
+<text x="129.0" y="375.0" class="dim-text-v" transform="rotate(-90 129.0 375.0)">1180</text>
+<line x1="70.0" y1="670.0" x2="85.0" y2="670.0" class="dim-line"/>
+<line x1="70.0" y1="410.0" x2="85.0" y2="410.0" class="dim-line"/>
+<line x1="85.0" y1="670.0" x2="85.0" y2="410.0" class="dim-line"/>
+<polygon points="85.0,670.0 83.0,674.0 87.0,674.0" class="arrow"/>
+<polygon points="85.0,410.0 83.0,406.0 87.0,406.0" class="arrow"/>
+<text x="99.0" y="540.0" class="dim-text-v" transform="rotate(-90 99.0 540.0)">z=520</text>
+<line x1="175.0" y1="75.0" x2="175.0" y2="675.0" class="center-line"/>
+<line x1="85.0" y1="590.0" x2="265.0" y2="590.0" class="center-line"/>
+<text x="278.0" y="593.0" class="label-sm">shelf z=160</text>
+<line x1="85.0" y1="505.0" x2="265.0" y2="505.0" class="center-line"/>
+<text x="278.0" y="508.0" class="label-sm">shelf z=330</text>
+<line x1="85.0" y1="305.0" x2="265.0" y2="305.0" class="center-line"/>
+<text x="278.0" y="308.0" class="label-sm">shelf z=730</text>
+</svg>

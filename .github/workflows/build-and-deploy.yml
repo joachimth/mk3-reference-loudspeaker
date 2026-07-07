@@ -286,7 +286,12 @@ jobs:
             -o ../assets/renders/driver_midrange_section.png midrange.scad 2>&1 || true
   
           ls -lh ../assets/renders/driver_*.png
-  
+
+      - name: Generate cabinet drawings (SVG)
+        run: |
+          python3 scripts/generate_drawings.py
+          ls -lh assets/drawings/
+
         # ============================================================
       #  4. Commit all generated outputs back to repo
       # ============================================================
@@ -294,7 +299,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add simulations/plots/ simulations/csv/ assets/renders/ cad/exports/
+          git add simulations/plots/ simulations/csv/ assets/renders/ assets/drawings/ cad/exports/
           git diff --staged --quiet && echo "No output changes." || {
             git commit -m "ci: update simulations + CAD renders [skip ci]
 
