@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Generate MiniDSP 4×10 HD biquad coefficients for Mk3 reference loudspeaker.
+Generate MiniDSP 4×10 HD biquad coefficients for Mk3 v9 reference loudspeaker.
 
 Usage:
-    python3 generate_biquads.py                      # default: 200 Hz + 1250 Hz
-    python3 generate_biquads.py 200 1600              # custom: 200 Hz mid + 1600 Hz tweeter
-    python3 generate_biquads.py 200 1250 --fs 48000   # 48 kHz sample rate
+    python3 generate_biquads.py                      # default: 200 Hz BW4 + 1100 Hz LR4
+    python3 generate_biquads.py 200 1100             # explicit frequencies
+    python3 generate_biquads.py 200 1100 --fs 48000  # 48 kHz sample rate
 
 Output: Markdown table with biquad coefficients ready to paste into MiniDSP plugin.
 """
@@ -15,17 +15,17 @@ import numpy as np
 from scipy.signal import butter, bilinear
 
 # ============================================================
-# Defaults
+# Defaults (Mk3 v9)
 # ============================================================
 FS_DEFAULT = 96000  # MiniDSP 4×10 HD default
-FC_BASS_DEFAULT = 150.0
-FC_MID_DEFAULT = 1250.0
+FC_BASS_DEFAULT = 200.0   # woofer/mid crossover (BW4)
+FC_MID_DEFAULT = 1100.0   # mid/tweeter crossover (LR4)
 
-# GRS 8SW-4HE-8 T/S parameters (for Linkwitz Transform)
-GRS_FS = 27.0
-GRS_QTS = 0.36
-GRS_VAS = 142.0  # liters
-VB = 69.0        # sealed volume per speaker (liters)
+# GRS 12SW-4HE T/S parameters (for Linkwitz Transform)
+GRS_FS = 22.0
+GRS_QTS = 0.43
+GRS_VAS = 80.4  # liters
+VB = 75.0       # sealed volume per speaker (liters, v9 cabinet)
 
 
 def parse_args():
@@ -67,8 +67,31 @@ def lr4_biquads(fc, btype, fs):
     return bq_list
 
 
+def bw4_biquads(fc, btype, fs):
+    """Return two biquads for BW4 = two cascaded BW2 with Q1=0.5412, Q2=1.3066."""
+    import math
+    w0 = 2 * math.pi * fc / fs
+    cosw0 = math.cos(w0)
+    bq_list = []
+    for Q in [0.5412, 1.3066]:
+        alpha = math.sin(w0) / (2 * Q)
+        if btype == 'low':
+            b0 = (1 - cosw0) / 2
+            b1 = 1 - cosw0
+            b2 = (1 - cosw0) / 2
+        else:  # high
+            b0 = (1 + cosw0) / 2
+            b1 = -(1 + cosw0)
+            b2 = (1 + cosw0) / 2
+        a0 = 1 + alpha
+        a1 = -2 * cosw0
+        a2 = 1 - alpha
+        bq_list.append([b0/a0, b1/a0, b2/a0, a1/a0, a2/a0])
+    return bq_list
+
+
 def linkwitz_transform(fs):
-    """Linkwitz Transform biquad for GRS 8SW-4HE-8 in 69L sealed."""
+    """Linkwitz Transform biquad for GRS 12SW-4HE in 75L sealed."""
     alpha = GRS_VAS / VB
     Qtc = GRS_QTS * np.sqrt(1 + alpha)
     Fc = GRS_FS * np.sqrt(1 + alpha)
@@ -112,15 +135,15 @@ def format_table(title, stages, fc=None):
 def main():
     fc_bass, fc_mid, fs = parse_args()
 
-    print(f"# MiniDSP Biquad Coefficients")
+    print(f"# MiniDSP Biquad Coefficients — Mk3 v9")
     print(f"Sample rate: {fs:.0f} Hz")
-    print(f"Crossover: bass LP {fc_bass:.0f} Hz LR4 / mid HP {fc_bass:.0f} Hz LR4")
+    print(f"Crossover: bass LP {fc_bass:.0f} Hz BW4 / mid HP {fc_bass:.0f} Hz BW4")
     print(f"           mid LP {fc_mid:.0f} Hz LR4 / tweeter HP {fc_mid:.0f} Hz LR4")
     print()
     print("---")
 
     # === Woofer chain (5 biquads) ===
-    print("## Woofer Chain")
+    print("## Woofer Chain (GRS 12SW-4HE)")
     print()
     hp18 = lr4_biquads(18, 'high', fs)
     format_table("Subsonic HP 18 Hz LR4 (2 stages)", hp18, 18)
@@ -135,20 +158,20 @@ def main():
     print(f"| 1 | {lt[0]:.10f} | {lt[1]:.10f} | {lt[2]:.10f} | {lt[3]:.10f} | {lt[4]:.10f} |")
     print()
 
-    lp_bass = lr4_biquads(fc_bass, 'low', fs)
-    format_table(f"LP {fc_bass:.0f} Hz LR4 (2 stages)", lp_bass, fc_bass)
+    lp_bass = bw4_biquads(fc_bass, 'low', fs)
+    format_table(f"LP {fc_bass:.0f} Hz BW4 (2 stages)", lp_bass, fc_bass)
 
     # === Midrange chain (4 biquads) ===
-    print("## Midrange Chain")
+    print("## Midrange Chain (18W/4424G00)")
     print()
-    hp_mid = lr4_biquads(fc_bass, 'high', fs)
-    format_table(f"HP {fc_bass:.0f} Hz LR4 (2 stages)", hp_mid, fc_bass)
+    hp_mid = bw4_biquads(fc_bass, 'high', fs)
+    format_table(f"HP {fc_bass:.0f} Hz BW4 (2 stages)", hp_mid, fc_bass)
 
     lp_mid = lr4_biquads(fc_mid, 'low', fs)
     format_table(f"LP {fc_mid:.0f} Hz LR4 (2 stages)", lp_mid, fc_mid)
 
     # === Tweeter chain (2 biquads) ===
-    print("## Tweeter Chain")
+    print("## Tweeter Chain (SB26STAC-C000-4)")
     print()
     hp_tw = lr4_biquads(fc_mid, 'high', fs)
     format_table(f"HP {fc_mid:.0f} Hz LR4 (2 stages)", hp_tw, fc_mid)
@@ -158,14 +181,14 @@ def main():
     print()
     print("| Channel | Driver | Biquads | Gain (dB) | Delay (ms) |")
     print("|---------|--------|---------|-----------|------------|")
-    print("| Out 1 | GRS Woofer L | 5 | 0 | 0.19 |")
-    print("| Out 2 | GRS Woofer L (2nd) | 5 | 0 | 0.19 |")
-    print("| Out 3 | 15W/4434G00 Mid L | 4 | 0 | 0.12 |")
-    print("| Out 4 | H2606 Tweeter L | 2 | -5.5 | 0 |")
-    print("| Out 6 | GRS Woofer R | 5 | 0 | 0.19 |")
-    print("| Out 7 | GRS Woofer R (2nd) | 5 | 0 | 0.19 |")
-    print("| Out 8 | 15W/4434G00 Mid R | 4 | 0 | 0.12 |")
-    print("| Out 9 | H2606 Tweeter R | 2 | -5.5 | 0 |")
+    print("| Out 1 | GRS 12SW-4HE Woofer L Top | 5 | 0.0 | 0 |")
+    print("| Out 2 | GRS 12SW-4HE Woofer L Bot | 5 | 0.0 | 0 |")
+    print("| Out 3 | 18W/4424G00 Mid L | 4 | -4.0 | 0 |")
+    print("| Out 4 | SB26STAC-C000-4 Tweeter L | 2 | -9.0 | 0.12 |")
+    print("| Out 6 | GRS 12SW-4HE Woofer R Top | 5 | 0.0 | 0 |")
+    print("| Out 7 | GRS 12SW-4HE Woofer R Bot | 5 | 0.0 | 0 |")
+    print("| Out 8 | 18W/4424G00 Mid R | 4 | -4.0 | 0 |")
+    print("| Out 9 | SB26STAC-C000-4 Tweeter R | 2 | -9.0 | 0.12 |")
 
 
 if __name__ == "__main__":

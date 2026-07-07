@@ -19,7 +19,7 @@
 | Total depth | **39.7 mm** | — | shallower than H2606 (45.1) |
 | Net weight | 0.53 kg | — | — |
 
-> **No horn throat.** The SB26STAC is a conventional flush-mount dome. Unlike the H2606 (ø33 mm horn exit), it has no horn to couple to the WG212 waveguide. Using it requires a complete waveguide redesign (see `cad/mk2_waveguide_sb26stac.scad`).
+> **No horn throat.** The SB26STAC is a conventional flush-mount dome. Unlike the H2606 (ø33 mm horn exit), it has no horn to couple to the WG212 waveguide. Using it requires a complete waveguide redesign (see `cad/waveguide.scad`).
 
 ---
 
@@ -93,4 +93,4 @@ Full analysis: `docs/SB26STAC-C000-4_analysis.md`
 - Verification plot: `assets/datasheets/SB26STAC-C000-4_extraction_verify.png`
 - Markdown reference: `assets/datasheets/SB26STAC-C000-4.md` (this file)
 - Analysis: `docs/SB26STAC-C000-4_analysis.md` (full comparison with H2606)
-- Waveguide CAD: `cad/mk2_waveguide_sb26stac.scad` (alternative waveguide design)
+- Waveguide CAD: `cad/waveguide.scad` (current waveguide design)

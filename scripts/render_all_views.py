@@ -10,17 +10,17 @@ from concurrent.futures import ProcessPoolExecutor
 
 VIEWS = [
     # Waveguide (6 views)
-    ("cad/mk2_waveguide_os.scad", "assets/renders/waveguide_mouth.png", 
+    ("cad/waveguide.scad", "assets/renders/waveguide_mouth.png", 
      "--camera=0,0,45,0,0,0,600 --projection=ortho", []),
-    ("cad/mk2_waveguide_os.scad", "assets/renders/waveguide_rear.png",
+    ("cad/waveguide.scad", "assets/renders/waveguide_rear.png",
      "--camera=0,0,45,180,0,0,600 --projection=ortho", []),
-    ("cad/mk2_waveguide_os.scad", "assets/renders/waveguide_side.png",
+    ("cad/waveguide.scad", "assets/renders/waveguide_side.png",
      "--camera=0,0,45,90,0,90,600 --projection=ortho", []),
-    ("cad/mk2_waveguide_os.scad", "assets/renders/waveguide_top.png",
+    ("cad/waveguide.scad", "assets/renders/waveguide_top.png",
      "--camera=0,0,45,0,0,180,600 --projection=ortho", []),
-    ("cad/mk2_waveguide_os.scad", "assets/renders/waveguide_iso.png",
+    ("cad/waveguide.scad", "assets/renders/waveguide_iso.png",
      "--camera=200,-200,120,55,0,35,700", []),
-    ("cad/mk2_waveguide_os.scad", "assets/renders/waveguide_cutaway.png",
+    ("cad/waveguide.scad", "assets/renders/waveguide_cutaway.png",
      "--camera=0,0,45,90,0,90,600 --projection=ortho", ["show_cutaway=true"]),
     
     # Cabinet (10 views)

@@ -16,7 +16,7 @@ configuration that can be loaded via MiniDSP's plugin software (File → Import)
 
 `generate_minidsp_xml.py` is a reusable generator supporting:
 
-- **3-way + push-push woofer** (mk3 v9 default, mk2 also available)
+- **3-way + push-push woofer** (mk3 v9 default)
 - **2-way** configs (--two-way)
 - Subsonic HP, Linkwitz Transform, variable sample rate
 - Per-channel gain/delay
@@ -26,9 +26,6 @@ Usage:
 ```bash
 # Mk3 v9 (default)
 python generate_minidsp_xml.py > mk3-v9-custom.xml
-
-# Mk2 reference (for comparison)
-python generate_minidsp_xml.py --mk2 > mk2-custom.xml
 
 # Custom 3-way
 python generate_minidsp_xml.py \

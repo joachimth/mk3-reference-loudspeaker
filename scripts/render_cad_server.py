@@ -275,10 +275,10 @@ def main():
     all_results = []
     
     if not args.cabinet_only:
-        wg_file = cad_dir / "mk2_waveguide_os.scad"
+        wg_file = cad_dir / "waveguide.scad"
         if wg_file.exists():
             results = render_with_fallback(
-                wg_file, "mk2_waveguide_os", exports_dir, renders_dir,
+                wg_file, "waveguide", exports_dir, renders_dir,
                 WAVEGUIDE_VIEWS, args.workers
             )
             all_results.extend(results)
@@ -287,7 +287,7 @@ def main():
         cab_file = cad_dir / "cabinet.scad"
         if cab_file.exists():
             results = render_with_fallback(
-                cab_file, "mk2_cabinet", exports_dir, renders_dir,
+                cab_file, "cabinet", exports_dir, renders_dir,
                 CABINET_VIEWS, args.workers
             )
             all_results.extend(results)

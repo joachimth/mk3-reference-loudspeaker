@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CAD render orchestrator for Mk2 Reference Loudspeaker.
+CAD render orchestrator for Mk3 Reference Loudspeaker.
 Groups STL + PNG renders per model for efficient parallelization.
 """
 import subprocess
@@ -33,8 +33,8 @@ def build_job_list(cad_dir: Path, output_dir: Path, exports_dir: Path) -> List[R
     jobs = []
     
     # Waveguide model
-    wg_scad = cad_dir / "mk2_waveguide_os.scad"
-    wg_stl = exports_dir / "mk2_waveguide_os.stl"
+    wg_scad = cad_dir / "waveguide.scad"
+    wg_stl = exports_dir / "waveguide.stl"
     
     # Waveguide STL
     jobs.append(RenderJob(
@@ -67,7 +67,7 @@ def build_job_list(cad_dir: Path, output_dir: Path, exports_dir: Path) -> List[R
     
     # Cabinet model
     cab_scad = cad_dir / "cabinet.scad"
-    cab_stl = exports_dir / "mk2_cabinet.stl"
+    cab_stl = exports_dir / "cabinet.stl"
     
     # Cabinet STL
     jobs.append(RenderJob(
@@ -150,7 +150,7 @@ def execute_job(job: RenderJob) -> Tuple[str, bool, Optional[str]]:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Batch CAD renderer for Mk2")
+    parser = argparse.ArgumentParser(description="Batch CAD renderer for Mk3")
     parser.add_argument("--waveguide-only", action="store_true")
     parser.add_argument("--cabinet-only", action="store_true")
     parser.add_argument("--workers", type=int, default=4)
