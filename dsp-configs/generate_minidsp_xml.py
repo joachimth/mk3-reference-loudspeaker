@@ -6,16 +6,16 @@ Generates a complete plug-in XML config from a speaker crossover specification.
 The XML can be imported directly into the MiniDSP 4×10 HD plugin via File → Import.
 
 Usage:
-    # Generate the mk2 crossover config
-    python generate_minidsp_xml.py > mk2-150-1250-lr4.xml
+    # Generate the mk3 v9 crossover config (default)
+    python generate_minidsp_xml.py > mk3-v9-200-1100-bw4-lr4.xml
 
     # Custom crossover
     python generate_minidsp_xml.py \
         --sample-rate 96000 \
-        --woofer-lp 150 --woofer-lp-type lr4 \
-        --mid-hp 150 --mid-hp-type lr4 --mid-lp 1250 --mid-lp-type lr4 \
-        --tweeter-hp 1250 --tweeter-hp-type lr4 \
-        --tweeter-trim -5.5 \
+        --woofer-lp 200 --woofer-lp-type bw4 \
+        --mid-hp 200 --mid-hp-type bw4 --mid-lp 1100 --mid-lp-type lr4 \
+        --tweeter-hp 1100 --tweeter-hp-type lr4 \
+        --tweeter-trim -9.0 --mid-trim -4.0 \
         --subsonic-hp 18
 """
 
@@ -256,93 +256,6 @@ def build_mk3_v9_config(
     ]
 
 
-def build_mk2_config(
-    sample_rate: int = 96000,
-    woofer_lp: float = 150,
-    woofer_lp_type: str = "lr4",
-    mid_hp: float = 150,
-    mid_hp_type: str = "lr4",
-    mid_lp: float = 1250,
-    mid_lp_type: str = "lr4",
-    tweeter_hp: float = 1250,
-    tweeter_hp_type: str = "lr4",
-    tweeter_trim: float = -5.5,
-    subsonic_hp: float = 18,
-    subsonic_hp_type: str = "lr4",
-    woofer_lt_fc: Optional[float] = 39.0,
-    woofer_lt_fs: Optional[float] = 28.0,
-    woofer_lt_qc: Optional[float] = 0.76,
-    woofer_lt_qs: Optional[float] = 0.707,
-) -> list[OutputChannel]:
-    """Build the complete channel configuration for the Mk2 3-way + push-push woofer."""
-
-    def wkz(label, coeffs):
-        return BiquadFilter(label=label, coeffs=coeffs)
-
-    # Build the biquad chains
-    # Woofer chain: subsonic HP (LR4) + Linkwitz Transform + LP (LR4)
-    woofer_biquads: list[BiquadFilter] = []
-
-    if subsonic_hp and subsonic_hp > 0:
-        if subsonic_hp_type == "lr4":
-            for coeffs in build_lr4_highpass(subsonic_hp, sample_rate):
-                woofer_biquads.append(wkz(f"Sub HP {subsonic_hp} LR4", coeffs))
-
-    if woofer_lt_fc and woofer_lt_fs:
-        coeffs = build_linkwitz_transform(
-            fc=woofer_lt_fc, Qc=woofer_lt_qc or 0.76,
-            fs_target=woofer_lt_fs, Q_target=woofer_lt_qs or 0.707,
-            sample_rate=sample_rate,
-        )
-        woofer_biquads.append(wkz(f"LT {woofer_lt_fc}→{woofer_lt_fs}Hz Q{woofer_lt_qc}→{woofer_lt_qs}", coeffs))
-
-    if woofer_lp and woofer_lp > 0:
-        if woofer_lp_type == "lr4":
-            for coeffs in build_lr4_lowpass(woofer_lp, sample_rate):
-                woofer_biquads.append(wkz(f"LP {woofer_lp} LR4", coeffs))
-        elif woofer_lp_type == "bw4":
-            for coeffs in build_bw4_lowpass(woofer_lp, sample_rate):
-                woofer_biquads.append(wkz(f"LP {woofer_lp} BW4", coeffs))
-
-    # Mid chain: HP (LR4) + LP (LR4)
-    mid_biquads: list[BiquadFilter] = []
-    if mid_hp and mid_hp > 0:
-        if mid_hp_type == "lr4":
-            for coeffs in build_lr4_highpass(mid_hp, sample_rate):
-                mid_biquads.append(wkz(f"HP {mid_hp} LR4", coeffs))
-        elif mid_hp_type == "bw4":
-            for coeffs in build_bw4_highpass(mid_hp, sample_rate):
-                mid_biquads.append(wkz(f"HP {mid_hp} BW4", coeffs))
-    if mid_lp and mid_lp > 0:
-        if mid_lp_type == "lr4":
-            for coeffs in build_lr4_lowpass(mid_lp, sample_rate):
-                mid_biquads.append(wkz(f"LP {mid_lp} LR4", coeffs))
-
-    # Tweeter chain: HP (LR4) only
-    tweeter_biquads: list[BiquadFilter] = []
-    if tweeter_hp and tweeter_hp > 0:
-        if tweeter_hp_type == "lr4":
-            for coeffs in build_lr4_highpass(tweeter_hp, sample_rate):
-                tweeter_biquads.append(wkz(f"HP {tweeter_hp} LR4", coeffs))
-
-    # Delay estimation: ~0.12 ms for tweeter (acoustic offset, typical WG212 depth)
-    # Woofer and mid share the same delay reference (0)
-    # Tweeter is physically shallower → needs delayed by ~0.12 ms to align
-
-    return [
-        OutputChannel(label="12SW Woofer L Top",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
-        OutputChannel(label="12SW Woofer L Bot",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
-        OutputChannel(label="15W/4434G00 Mid L", gain_db=0.0,  delay_ms=0.0,    biquads=mid_biquads),
-        OutputChannel(label="H2606 Tweeter L",   gain_db=tweeter_trim, delay_ms=0.12, biquads=tweeter_biquads),
-        OutputChannel(label="(Spare input)",     gain_db=0.0,  delay_ms=0.0,    biquads=[]),
-        OutputChannel(label="12SW Woofer R Top",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
-        OutputChannel(label="12SW Woofer R Bot",  gain_db=0.0,  delay_ms=0.0,    biquads=woofer_biquads),
-        OutputChannel(label="15W/4434G00 Mid R", gain_db=0.0,  delay_ms=0.0,    biquads=mid_biquads),
-        OutputChannel(label="H2606 Tweeter R",   gain_db=tweeter_trim, delay_ms=0.12, biquads=tweeter_biquads),
-        OutputChannel(label="(Spare output)",    gain_db=0.0,  delay_ms=0.0,    biquads=[]),
-    ]
-
-
 def build_2way_config(
     sample_rate: int = 48000,
     woofer_hp: float = 0,
@@ -443,15 +356,10 @@ def generate_xml(
     """Generate complete MiniDSP plugin XML from channel config."""
     root = ET.Element("minidsp")
 
-    # Determine names based on model
-    if model == "mk3-v9":
-        speaker_name = "Mk3 Reference Loudspeaker v9"
-        mid_name = "ScanSpeak 18W/4424G00"
-        tweeter_name = "SB26STAC-C000-4"
-    else:
-        speaker_name = "Mk2 Reference Loudspeaker"
-        mid_name = "ScanSpeak 15W/4434G00"
-        tweeter_name = "SB26STAC-C000-4" if tweeter_hp == 1100 else "ScanSpeak H2606 (WG212)"
+    # Determine names
+    speaker_name = "Mk3 Reference Loudspeaker v9"
+    mid_name = "ScanSpeak 18W/4424G00"
+    tweeter_name = "SB26STAC-C000-4"
 
     # Header
     header = ET.SubElement(root, "header")
@@ -514,9 +422,6 @@ Examples:
   # Mk3 v9 (default) — 2xGRS 12SW-4HE | 18W/4424G00 | SB26STAC-C000-4
   python generate_minidsp_xml.py > mk3-v9-200-1100-bw4-lr4.xml
 
-  # Mk2 reference
-  python generate_minidsp_xml.py --mk2 > mk2-150-1250-lr4.xml
-
   # Custom 2-way
   python generate_minidsp_xml.py --two-way --woofer-lp 2500 --tweeter-hp 2500 --tweeter-trim -3
 
@@ -530,10 +435,6 @@ Examples:
     )
 
     parser.add_argument("--sample-rate", type=int, default=96000, help="Sample rate (Hz, default: 96000)")
-
-    # Preset selection
-    parser.add_argument("--mk2", action="store_true", help="Use Mk2 preset (15W/4434G00 mid, H2606 tweeter, 150/1250 Hz)")
-    parser.add_argument("--mk3", action="store_true", dest="mk3", help="Use Mk3 v9 preset (18W/4424G00 mid, SB26STAC tweeter, 150/1100 Hz) [default]")
 
     # Way configuration
     parser.add_argument("--two-way", action="store_true", dest="two_way", help="2-way config (default: 3-way)")
@@ -568,7 +469,7 @@ Examples:
     else:
         sub_hp = args.subsonic_hp
 
-    model = "mk2" if args.mk2 else "mk3-v9"
+    model = "mk3-v9"
 
     if args.two_way:
         channels = build_2way_config(
@@ -580,28 +481,12 @@ Examples:
             tweeter_trim=args.tweeter_trim,
             mid_trim=args.mid_trim,
         )
-    elif model == "mk3-v9":
+    else:
         channels = build_mk3_v9_config(
             sample_rate=sr,
             woofer_lp=args.woofer_lp,
             woofer_lp_type=args.woofer_lp_type,
             woofer_trim=args.woofer_trim,
-            mid_hp=args.mid_hp,
-            mid_hp_type=args.mid_hp_type,
-            mid_lp=args.mid_lp,
-            mid_lp_type=args.mid_lp_type,
-            tweeter_hp=args.tweeter_hp,
-            tweeter_hp_type=args.tweeter_hp_type,
-            tweeter_trim=args.tweeter_trim,
-            subsonic_hp=sub_hp,
-            woofer_lt_fc=None if args.no_lt else 39.0,
-            woofer_lt_fs=None if args.no_lt else 28.0,
-        )
-    else:
-        channels = build_mk2_config(
-            sample_rate=sr,
-            woofer_lp=args.woofer_lp,
-            woofer_lp_type=args.woofer_lp_type,
             mid_hp=args.mid_hp,
             mid_hp_type=args.mid_hp_type,
             mid_lp=args.mid_lp,
