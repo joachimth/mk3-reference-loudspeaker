@@ -32,6 +32,35 @@ Prices are indicative (sourced June 2026); verify before ordering.
 
 Approximate external dimensions (v9): **320 × 380 × 1180 mm**, 22 mm walls, R19 front roundovers (see CHANGELOG v9 for why 300 mm / R50 were revised).
 
+### Alternative material: massiv fyr bordplade (25 mm)
+
+Jem & Fix sælger massive fyrrebordplader i 25 × 620 × 2420 mm som en potentiel kabinetalternativ.
+Produkt: [Massiv bordplade i fyr — 25 mm × 62 × 242 cm](https://www.jemogfix.dk/massiv-bordplade-i-fyr-25-mm-x-62-x-242-cm/4137/9048870/)
+
+**Implikationer ved 25 mm vs. 22 mm:**
+- Indvendige mål: 270 × 330 × 1130 mm (vs. 276 × 336 × 1136 mm med 22 mm ply) — ca. 5% mindre volumen
+- `cabinet.scad` skal opdateres: `wall = 25;`
+- Massiv fyr er tungere og densere end krydsfinér — potentielt bedre kabinettræg masse, men blødere overflade (dents lettere)
+- Kræver grundning/oliering på alle sider inden samling (som med ply)
+
+**Skæreliste — 3 stk. 620 × 2420 mm bordplader pr. kabinet:**
+
+| Plade | Snit (bredde) | Stykke | Mål (mm) | Position på plade |
+|---|---|---|---|---|
+| Plade 1 | 380 mm rip | Side panel V | 380 × 1180 | 0–1180 mm |
+| Plade 1 | 380 mm rip | Side panel H | 380 × 1180 | 1180–2360 mm |
+| Plade 1 | 240 mm rip | Reserve | — | hele længden |
+| Plade 2 | 320 mm rip | Front baffle | 320 × 1180 | 0–1180 mm |
+| Plade 2 | 320 mm rip | Bagplade | 320 × 1180 | 1180–2360 mm |
+| Plade 2 | 300 mm rip | Divider plade | 270 × 330 | 0–330 mm |
+| Plade 2 | 300 mm rip | Hylde brace ×3 | 270 × 330 | 330–1320 mm |
+| Plade 3 | 320 mm rip | Toplåg | 320 × 380 | 0–380 mm |
+| Plade 3 | 320 mm rip | Bundplade | 320 × 380 | 380–760 mm |
+| Plade 3 | 320 mm rip | Reserve | — | 760–2420 mm |
+| Plade 3 | 300 mm rip | Reserve | — | hele længden |
+
+*Divider og hylde braces skæres til 270 mm fra de 300 mm strips (30 mm trim). Plade 3 efterlader ca. 1.2 m² reservetræ — velegnet til højttalerstativ, rondeller til portkanaler, mv.*
+
 ## Electronics / DSP
 
 **MiniDSP 4×10 HD** selected as DSP platform for initial prototyping. USB/optical in, 10 outputs, well-documented with REW export. Pre-built XML config available (see DSP Filter Plan below).
