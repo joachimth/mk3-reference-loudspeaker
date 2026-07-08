@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="595" height="613" viewBox="0 0 595 613">
+<style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
+.cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
+.rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
+.pilot { fill: #333; }
+.dim-line { stroke: #2980b9; stroke-width: 0.8; fill: none; }
+.dim-text { fill: #2980b9; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+.dim-text-v { fill: #2980b9; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+.label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
+.label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+.label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
+.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+.subtitle { fill: #555; font-family: sans-serif; font-size: 10px; }
+.note { fill: #555; font-family: sans-serif; font-size: 10px; }
+.arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
+.center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
+.cp-board { fill: #ddd8c8; stroke: #555; stroke-width: 1.2; }
+.cp-piece { fill: #f5f0e0; stroke: #333; stroke-width: 1.1; }
+.cp-spare { fill: #dce8d8; stroke: #7a9a78; stroke-width: 0.8; stroke-dasharray: 5,3; }
+.cp-rip   { stroke: #e67e22; stroke-width: 1.5; stroke-dasharray: 8,3; fill: none; }
+.cp-lbl   { fill: #222; font-family: sans-serif; font-size: 9px; text-anchor: start; font-weight: bold; }
+.cp-sub   { fill: #555; font-family: sans-serif; font-size: 8px; text-anchor: start; }
+.cp-bdlbl { fill: #444; font-family: sans-serif; font-size: 10px; text-anchor: middle; font-weight: bold; }
+.cp-bdsub { fill: #666; font-family: sans-serif; font-size: 9px; text-anchor: middle; }
+</style>
+<rect width="595" height="613" fill="white"/>
+<text x="15.0" y="20.0" class="title-text">Skæreplan — 3× 25×620×2420 mm massiv fyr (Jem &amp; Fix)</text>
+<text x="15.0" y="38.0" class="subtitle">Vægtykkelse: 25 mm  |  Udvendigt: 320×380×1180 mm  |  Indvendigt: 270×330×1130 mm</text>
+<rect x="70.0" y="130.0" width="111.6" height="435.6" class="cp-board"/>
+<line x1="138.4" y1="130.0" x2="138.4" y2="565.6" class="cp-rip"/>
+<rect x="70.0" y="130.0" width="68.4" height="212.4" class="cp-piece"/>
+<text x="73.0" y="231.2" class="cp-lbl">Side L</text>
+<text x="73.0" y="243.2" class="cp-sub">380×1180 mm</text>
+<rect x="70.0" y="342.4" width="68.4" height="212.4" class="cp-piece"/>
+<text x="73.0" y="443.6" class="cp-lbl">Side R</text>
+<text x="73.0" y="455.6" class="cp-sub">380×1180 mm</text>
+<rect x="70.0" y="554.8" width="68.4" height="10.8" class="cp-spare"/>
+<text x="73.0" y="555.2" class="cp-lbl">spild</text>
+<text x="73.0" y="567.2" class="cp-sub">60 mm</text>
+<rect x="138.4" y="130.0" width="43.2" height="435.6" class="cp-spare"/>
+<text x="141.4" y="342.8" class="cp-lbl">reserve</text>
+<text x="141.4" y="354.8" class="cp-sub">240 mm</text>
+<text x="125.8" y="580.6" class="cp-bdlbl">Plade 1</text>
+<text x="125.8" y="592.6" class="cp-bdsub">620×2420×25 mm  |  rip @ 380 mm</text>
+<rect x="236.6" y="130.0" width="111.6" height="435.6" class="cp-board"/>
+<line x1="294.2" y1="130.0" x2="294.2" y2="565.6" class="cp-rip"/>
+<rect x="236.6" y="130.0" width="57.6" height="212.4" class="cp-piece"/>
+<text x="239.6" y="231.2" class="cp-lbl">Front</text>
+<text x="239.6" y="243.2" class="cp-sub">320×1180 mm</text>
+<rect x="236.6" y="342.4" width="57.6" height="212.4" class="cp-piece"/>
+<text x="239.6" y="443.6" class="cp-lbl">Bagplade</text>
+<text x="239.6" y="455.6" class="cp-sub">320×1180 mm</text>
+<rect x="236.6" y="554.8" width="57.6" height="10.8" class="cp-spare"/>
+<text x="239.6" y="555.2" class="cp-lbl">spild</text>
+<text x="239.6" y="567.2" class="cp-sub">60 mm</text>
+<rect x="294.2" y="130.0" width="54.0" height="59.4" class="cp-piece"/>
+<text x="297.2" y="154.7" class="cp-lbl">Divider</text>
+<text x="297.2" y="166.7" class="cp-sub">trim→270×330</text>
+<rect x="294.2" y="189.4" width="54.0" height="59.4" class="cp-piece"/>
+<text x="297.2" y="214.1" class="cp-lbl">Hylde 1</text>
+<text x="297.2" y="226.1" class="cp-sub">trim→270×330</text>
+<rect x="294.2" y="248.8" width="54.0" height="59.4" class="cp-piece"/>
+<text x="297.2" y="273.5" class="cp-lbl">Hylde 2</text>
+<text x="297.2" y="285.5" class="cp-sub">trim→270×330</text>
+<rect x="294.2" y="308.2" width="54.0" height="59.4" class="cp-piece"/>
+<text x="297.2" y="332.9" class="cp-lbl">Hylde 3</text>
+<text x="297.2" y="344.9" class="cp-sub">trim→270×330</text>
+<rect x="294.2" y="367.6" width="54.0" height="198.0" class="cp-spare"/>
+<text x="297.2" y="461.6" class="cp-lbl">reserve</text>
+<text x="297.2" y="473.6" class="cp-sub">1100 mm</text>
+<text x="292.4" y="580.6" class="cp-bdlbl">Plade 2</text>
+<text x="292.4" y="592.6" class="cp-bdsub">620×2420×25 mm  |  rip @ 320 mm</text>
+<rect x="403.2" y="130.0" width="111.6" height="435.6" class="cp-board"/>
+<line x1="460.8" y1="130.0" x2="460.8" y2="565.6" class="cp-rip"/>
+<rect x="403.2" y="130.0" width="57.6" height="68.4" class="cp-piece"/>
+<text x="406.2" y="159.2" class="cp-lbl">Toplåg</text>
+<text x="406.2" y="171.2" class="cp-sub">320×380 mm</text>
+<rect x="403.2" y="198.4" width="57.6" height="68.4" class="cp-piece"/>
+<text x="406.2" y="227.6" class="cp-lbl">Bundplade</text>
+<text x="406.2" y="239.6" class="cp-sub">320×380 mm</text>
+<rect x="403.2" y="266.8" width="57.6" height="298.8" class="cp-spare"/>
+<text x="406.2" y="411.2" class="cp-lbl">reserve</text>
+<text x="406.2" y="423.2" class="cp-sub">1660 mm</text>
+<rect x="460.8" y="130.0" width="54.0" height="435.6" class="cp-spare"/>
+<text x="463.8" y="342.8" class="cp-lbl">reserve</text>
+<text x="463.8" y="354.8" class="cp-sub">300 mm</text>
+<text x="459.0" y="580.6" class="cp-bdlbl">Plade 3</text>
+<text x="459.0" y="592.6" class="cp-bdsub">620×2420×25 mm  |  rip @ 320 mm</text>
+<rect x="70.0" y="599.6" width="14" height="10" class="cp-piece"/>
+<text x="88.0" y="608.6" class="note">Bruges</text>
+<rect x="200.0" y="599.6" width="14" height="10" class="cp-spare"/>
+<text x="218.0" y="608.6" class="note">Reserve/spild</text>
+<line x1="330.0" y1="604.6" x2="344.0" y2="604.6" class="cp-rip"/>
+<text x="348.0" y="608.6" class="note">Rip-snit (orange)</text>
+</svg>

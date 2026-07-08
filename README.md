@@ -302,7 +302,7 @@ Dimensioned 2D drawings auto-generated from `cabinet.scad` + driver SCAD files. 
 
 **[→ Open interactive drawing viewer](assets/drawings/index.html)** — all 12 drawings with navigation, per-drawing download, and combined PDF.
 
-**[→ Download all drawings (PDF, 12 pages)](assets/drawings/mk3-cabinet-drawings.pdf)**
+**[→ Download all drawings (PDF, 13 pages)](assets/drawings/mk3-cabinet-drawings.pdf)**
 
 Overview drawings:
 
@@ -325,6 +325,12 @@ Per-panel cut drawings:
 | Bottom panel | [SVG](assets/drawings/panel_bottom.svg) | [PDF](assets/drawings/panel_bottom.pdf) |
 | Divider plate | [SVG](assets/drawings/panel_divider.svg) | [PDF](assets/drawings/panel_divider.pdf) |
 | Shelf brace ×3 | [SVG](assets/drawings/panel_shelf_brace.svg) | [PDF](assets/drawings/panel_shelf_brace.pdf) |
+
+Alternative material cut plan:
+
+| Drawing | SVG | PDF | Description |
+|---|---|---|---|
+| Pine board cut plan | [SVG](assets/drawings/pine_cutplan.svg) | [PDF](assets/drawings/pine_cutplan.pdf) | 3× 25×620×2420 mm massiv fyr (Jem & Fix) — rip + crosscut layout |
 
 Generator: `scripts/generate_drawings.py` (parses SCAD source files, no hardcoded dimensions).
 

@@ -41,6 +41,7 @@ DRAWING_INFO = [
     ("panel_bottom",       "Bottom Panel",        "Per Panel", "Cut drawing: R19 front edge"),
     ("panel_divider",      "Divider Plate",       "Per Panel", "Cut drawing: tilted 19° in cabinet"),
     ("panel_shelf_brace",  "Shelf Brace ×3",      "Per Panel", "Cut drawing: ring shelf, 3 pieces at z=160/330/730"),
+    ("pine_cutplan",       "Pine Board Cut Plan", "Alt. Material", "3× 25×620×2420 mm massiv fyr (Jem & Fix) — rip + crosscut layout"),
 ]
 
 
@@ -892,6 +893,172 @@ def gen_panel_shelf_brace(p, outdir):
 
 
 # ============================================================
+#  Pine board cut plan (alternative material)
+# ============================================================
+def gen_pine_cutplan(p, outdir):
+    """
+    Visual cut plan for 3x Jem & Fix solid pine boards (25x620x2420 mm).
+    Shows the 3 boards in portrait orientation with rip lines and piece labels.
+    Wall thickness is hardcoded at 25 mm (pine board thickness).
+    """
+    WALL  = 25          # pine board thickness
+    BW, BH = 620, 2420  # board width x length (mm)
+    W, D, H = p["W"], p["D"], p["H"]
+    w_in  = W - 2 * WALL   # 270
+    d_in  = D - 2 * WALL   # 330
+    h_in  = H - 2 * WALL   # 1130
+
+    scale  = 0.18
+    margin = 70
+    gap    = 55   # horizontal gap between boards
+    hdr    = 60   # vertical header (title + subtitle)
+    foot   = 48   # space below boards for labels + legend
+
+    bw = BW * scale   # ~93 px
+    bh = BH * scale   # ~363 px
+
+    title    = "Skæreplan — 3× 25×620×2420 mm massiv fyr (Jem & Fix)"
+    subtitle = (f"Vægtykkelse: {WALL} mm  |  Udvendigt: {W:.0f}×{D:.0f}×{H:.0f} mm  |  "
+                f"Indvendigt: {w_in:.0f}×{d_in:.0f}×{h_in:.0f} mm")
+
+    content_w = 3 * bw + 2 * gap + 2 * margin
+    title_w   = len(title) * 16 * 0.68 + 30  # 0.68 accounts for wide chars (×, —)
+    dw = int(max(content_w, title_w))
+    dh = int(bh + hdr + margin + foot)
+
+    svg = SVG(dw, dh)
+
+    # Extra CSS for cut plan
+    svg.styles += textwrap.dedent("""\
+            .cp-board { fill: #ddd8c8; stroke: #555; stroke-width: 1.2; }
+            .cp-piece { fill: #f5f0e0; stroke: #333; stroke-width: 1.1; }
+            .cp-spare { fill: #dce8d8; stroke: #7a9a78; stroke-width: 0.8; stroke-dasharray: 5,3; }
+            .cp-rip   { stroke: #e67e22; stroke-width: 1.5; stroke-dasharray: 8,3; fill: none; }
+            .cp-lbl   { fill: #222; font-family: sans-serif; font-size: 9px; text-anchor: start; font-weight: bold; }
+            .cp-sub   { fill: #555; font-family: sans-serif; font-size: 8px; text-anchor: start; }
+            .cp-bdlbl { fill: #444; font-family: sans-serif; font-size: 10px; text-anchor: middle; font-weight: bold; }
+            .cp-bdsub { fill: #666; font-family: sans-serif; font-size: 9px; text-anchor: middle; }
+    """)
+
+    svg.text_wrap(15, 20, title,    "title-text")
+    svg.text_wrap(15, 38, subtitle, "subtitle")
+
+    board_top = margin + hdr  # y-coordinate of board top edge
+
+    def bx(board_idx):
+        return margin + board_idx * (bw + gap)
+
+    def px(board_idx, mm_x):
+        return bx(board_idx) + mm_x * scale
+
+    def py(mm_y):
+        return board_top + mm_y * scale
+
+    def piece(bidx, x_mm, y_mm, w_mm, h_mm, label, sub="", cls="cp-piece"):
+        x = px(bidx, x_mm);  y = py(y_mm)
+        w = w_mm * scale;    h = h_mm * scale
+        # Clip piece rect to board width to avoid overdraw
+        svg.elements.append(
+            f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" class="{cls}"/>')
+        cy = y + h / 2
+        off = 5 if sub else 0
+        # Left-aligned at x+3px so text stays within the piece
+        lbl_x = x + 3
+        svg.elements.append(
+            f'<text x="{lbl_x:.1f}" y="{cy - off:.1f}" class="cp-lbl">{label}</text>')
+        if sub:
+            svg.elements.append(
+                f'<text x="{lbl_x:.1f}" y="{cy + 7:.1f}" class="cp-sub">{sub}</text>')
+
+    def rip(bidx, x_mm):
+        x = px(bidx, x_mm)
+        svg.elements.append(
+            f'<line x1="{x:.1f}" y1="{py(0):.1f}" x2="{x:.1f}" y2="{py(BH):.1f}" class="cp-rip"/>')
+
+    def board_labels(bidx, nr, rip_mm):
+        cx = bx(bidx) + bw / 2
+        y  = py(BH)
+        svg.elements.append(
+            f'<text x="{cx:.1f}" y="{y+15:.1f}" class="cp-bdlbl">Plade {nr}</text>')
+        svg.elements.append(
+            f'<text x="{cx:.1f}" y="{y+27:.1f}" class="cp-bdsub">'
+            f'{BW}×{BH}×{WALL} mm  |  rip @ {rip_mm} mm</text>')
+
+    # ----------------------------------------------------------------
+    # Board 1 — side panels
+    # Rip at 380 mm: strip A=380 (Side L + Side R + waste), strip B=240 (spare)
+    # ----------------------------------------------------------------
+    B = 0
+    svg.elements.append(
+        f'<rect x="{bx(B):.1f}" y="{py(0):.1f}" width="{bw:.1f}" height="{bh:.1f}" class="cp-board"/>')
+    rip(B, 380)
+    piece(B,   0,    0, 380, 1180, "Side L",   f"380×1180 mm")
+    piece(B,   0, 1180, 380, 1180, "Side R",   f"380×1180 mm")
+    piece(B,   0, 2360, 380,   60, "spild",    "60 mm",       cls="cp-spare")
+    piece(B, 380,    0, 240, BH,   "reserve",  "240 mm",      cls="cp-spare")
+    board_labels(B, 1, 380)
+
+    # ----------------------------------------------------------------
+    # Board 2 — front + back + divider + shelf braces
+    # Rip at 320 mm: strip A=320 (Front + Back + waste), strip B=300 (Divider + 3×Shelf + spare)
+    # ----------------------------------------------------------------
+    B = 1
+    svg.elements.append(
+        f'<rect x="{bx(B):.1f}" y="{py(0):.1f}" width="{bw:.1f}" height="{bh:.1f}" class="cp-board"/>')
+    rip(B, 320)
+    piece(B,   0,    0, 320, 1180, "Front",    f"320×1180 mm")
+    piece(B,   0, 1180, 320, 1180, "Bagplade", f"320×1180 mm")
+    piece(B,   0, 2360, 320,   60, "spild",    "60 mm",       cls="cp-spare")
+    piece(B, 320,    0, 300,  330, "Divider",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320,  330, 300,  330, "Hylde 1",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320,  660, 300,  330, "Hylde 2",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320,  990, 300,  330, "Hylde 3",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320, 1320, 300, 1100, "reserve",  "1100 mm",     cls="cp-spare")
+    board_labels(B, 2, 320)
+
+    # ----------------------------------------------------------------
+    # Board 3 — top + bottom
+    # Rip at 320 mm: strip A=320 (Top + Bottom + large spare), strip B=300 (spare)
+    # ----------------------------------------------------------------
+    B = 2
+    svg.elements.append(
+        f'<rect x="{bx(B):.1f}" y="{py(0):.1f}" width="{bw:.1f}" height="{bh:.1f}" class="cp-board"/>')
+    rip(B, 320)
+    piece(B,   0,   0, 320,  380, "Toplåg",    f"320×380 mm")
+    piece(B,   0, 380, 320,  380, "Bundplade", f"320×380 mm")
+    piece(B,   0, 760, 320, 1660, "reserve",   "1660 mm",     cls="cp-spare")
+    piece(B, 320,   0, 300,   BH, "reserve",   "300 mm",      cls="cp-spare")
+    board_labels(B, 3, 320)
+
+    # ----------------------------------------------------------------
+    # Legend
+    # ----------------------------------------------------------------
+    lx = margin
+    ly = py(BH) + 34
+    legend = [
+        ("cp-piece", "Bruges"),
+        ("cp-spare", "Reserve/spild"),
+    ]
+    for i, (cls, lbl) in enumerate(legend):
+        rx = lx + i * 130
+        svg.elements.append(
+            f'<rect x="{rx:.1f}" y="{ly:.1f}" width="14" height="10" class="{cls}"/>')
+        svg.elements.append(
+            f'<text x="{rx+18:.1f}" y="{ly+9:.1f}" class="note">{lbl}</text>')
+    # rip line in legend
+    rx = lx + 2 * 130
+    svg.elements.append(
+        f'<line x1="{rx:.1f}" y1="{ly+5:.1f}" x2="{rx+14:.1f}" y2="{ly+5:.1f}" class="cp-rip"/>')
+    svg.elements.append(
+        f'<text x="{rx+18:.1f}" y="{ly+9:.1f}" class="note">Rip-snit (orange)</text>')
+
+    outpath = os.path.join(outdir, "pine_cutplan.svg")
+    with open(outpath, "w") as f:
+        f.write(svg.render())
+    return outpath
+
+
+# ============================================================
 #  PDF generation
 # ============================================================
 def gen_pdfs(outdir):
@@ -1232,6 +1399,8 @@ def main():
     svg_files.append(gen_panel_top_bottom(p, args.outdir, "bottom")); print(f"  ✓ panel_bottom.svg")
     svg_files.append(gen_panel_divider(p, args.outdir));           print(f"  ✓ panel_divider.svg")
     svg_files.append(gen_panel_shelf_brace(p, args.outdir));       print(f"  ✓ panel_shelf_brace.svg")
+    # Alternative material
+    svg_files.append(gen_pine_cutplan(p, args.outdir));            print(f"  ✓ pine_cutplan.svg")
 
     print(f"\n{len(svg_files)} SVG files written.")
 
