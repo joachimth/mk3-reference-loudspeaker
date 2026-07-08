@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="428" height="780" viewBox="0 0 428 780">
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="780" viewBox="0 0 320 780">
 <style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
 .cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
 .rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
@@ -10,15 +10,15 @@
 .label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
 .label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
 .label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
-.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
-.subtitle { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+.subtitle { fill: #555; font-family: sans-serif; font-size: 10px; }
 .note { fill: #555; font-family: sans-serif; font-size: 10px; }
 .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
-<rect width="428" height="780" fill="white"/>
-<text x="214.0" y="20.0" class="title-text">Front Baffle — Cut Drawing</text>
-<text x="214.0" y="38.0" class="subtitle">320 × 1180 mm, 22 mm ply, R19 front edges</text>
+<rect width="320" height="780" fill="white"/>
+<text x="15.0" y="20.0" class="title-text">Front Baffle — Cut Drawing</text>
+<text x="15.0" y="38.0" class="subtitle">320 × 1180 mm, 22 mm ply, R19 front edges</text>
 <rect x="80.0" y="110.0" width="160.0" height="590.0" rx="9.5" ry="9.5" class="panel"/>
 <circle cx="160.0" cy="167.5" r="44.8" class="rebate"/>
 <circle cx="160.0" cy="167.5" r="36.3" class="cutout"/>

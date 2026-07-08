@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="609" height="593.0" viewBox="0 0 609 593.0">
+<svg xmlns="http://www.w3.org/2000/svg" width="506.0" height="593.0" viewBox="0 0 506.0 593.0">
 <style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
 .cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
 .rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
@@ -10,14 +10,14 @@
 .label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
 .label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
 .label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
-.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
-.subtitle { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+.subtitle { fill: #555; font-family: sans-serif; font-size: 10px; }
 .note { fill: #555; font-family: sans-serif; font-size: 10px; }
 .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
-<rect width="609" height="593.0" fill="white"/>
-<text x="304.5" y="25.0" class="title-text">Mk3 Cabinet — Assembly Measurement Drawing</text>
+<rect width="506.0" height="593.0" fill="white"/>
+<text x="15.0" y="25.0" class="title-text">Mk3 Cabinet — Assembly Measurement Drawing</text>
 <rect x="50.0" y="60.0" width="112.0" height="413.0" rx="6.6" ry="6.6" class="panel"/>
 <text x="106.0" y="52.0" class="label">FRONT</text>
 <circle cx="106.0" cy="100.2" r="31.4" class="cutout"/>

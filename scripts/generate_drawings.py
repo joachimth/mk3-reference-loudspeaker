@@ -151,8 +151,8 @@ class SVG:
             .label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
             .label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
             .label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
-            .title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
-            .subtitle { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+            .title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+            .subtitle { fill: #555; font-family: sans-serif; font-size: 10px; }
             .note { fill: #555; font-family: sans-serif; font-size: 10px; }
             .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
             .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
@@ -186,6 +186,37 @@ class SVG:
             f'<text x="{x:.1f}" y="{y:.1f}" class="{cls}" '
             f'transform="rotate({angle} {x:.1f} {y:.1f})">{escaped}</text>'
         )
+
+    def text_wrap(self, x, y, text, cls="title-text", max_width=None, line_height=None):
+        """Left-aligned text that word-wraps to multiple lines if it exceeds max_width.
+        Returns the y position of the last line."""
+        if max_width is None:
+            max_width = self.w - x - 15
+        if line_height is None:
+            line_height = 18 if cls == "title-text" else 13
+        font_size = 16 if cls == "title-text" else 10
+
+        if _est_text_width(text, font_size) <= max_width:
+            self.text(x, y, text, cls)
+            return y
+
+        words = text.split()
+        lines = []
+        current = []
+        for word in words:
+            test = " ".join(current + [word])
+            if _est_text_width(test, font_size) <= max_width:
+                current.append(word)
+            else:
+                if current:
+                    lines.append(" ".join(current))
+                current = [word]
+        if current:
+            lines.append(" ".join(current))
+
+        for i, line in enumerate(lines):
+            self.text(x, y + i * line_height, line, cls)
+        return y + (len(lines) - 1) * line_height
 
     def dim_h(self, x1, x2, y, offset=25, label=None):
         """Horizontal dimension line with arrows."""
@@ -260,7 +291,7 @@ def gen_front_baffle(p, outdir):
     margin = 80
     title = "Mk3 Front Baffle — Cutout & Hole Layout"
     subtitle = f"Panel: {W:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply, R{rr:.0f} front edges"
-    dw = max(W * scale + 2 * margin, _min_width(title, subtitle, margin))
+    dw = W * scale + 2 * margin
     dh = H * scale + 2 * margin
     svg = SVG(dw, dh, title)
 
@@ -272,8 +303,8 @@ def gen_front_baffle(p, outdir):
     svg.rrect(px, py, pw, ph, rr * scale, "panel")
 
     # Title
-    svg.text(dw / 2, 25, "Mk3 Front Baffle — Cutout & Hole Layout", "title-text")
-    svg.text(dw / 2, 42, f"Panel: {W:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply, R{rr:.0f} front edges", "subtitle")
+    svg.text_wrap(15, 25, title, "title-text")
+    svg.text_wrap(15, 44, subtitle, "subtitle")
 
     # Convert z-height to SVG y (bottom of panel = bottom of SVG)
     def z_to_y(z):
@@ -362,7 +393,7 @@ def gen_side_panel(p, outdir):
     margin = 80
     title = "Mk3 Side Panel — Woofer Cutout & Hole Layout"
     subtitle = f"Panel: {D:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply (flat, no roundover)"
-    dw = max(D * scale + 2 * margin, _min_width(title, subtitle, margin))
+    dw = D * scale + 2 * margin
     dh = H * scale + 2 * margin
     svg = SVG(dw, dh, title)
 
@@ -374,8 +405,8 @@ def gen_side_panel(p, outdir):
     # Panel (square corners — side panels are flat)
     svg.rect(px, py, pw, ph, "panel")
 
-    svg.text(dw / 2, 25, "Mk3 Side Panel — Woofer Cutout & Hole Layout", "title-text")
-    svg.text(dw / 2, 42, f"Panel: {D:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply (flat, no roundover)", "subtitle")
+    svg.text_wrap(15, 25, title, "title-text")
+    svg.text_wrap(15, 44, subtitle, "subtitle")
 
     def z_to_y(z):
         return py + ph - z * scale
@@ -451,8 +482,8 @@ def gen_cut_list(p, outdir):
     total_w = 780
 
     svg = SVG(total_w, total_h, "Cut List")
-    svg.text(total_w / 2, 25, "Mk3 Cabinet — Panel Cut List", "title-text")
-    svg.text(total_w / 2, 42, f"Material: {wall:.0f} mm birch plywood  |  External: {W:.0f} × {D:.0f} × {H:.0f} mm", "subtitle")
+    svg.text_wrap(15, 25, "Mk3 Cabinet — Panel Cut List", "title-text")
+    svg.text_wrap(15, 44, f"Material: {wall:.0f} mm birch plywood  |  External: {W:.0f} × {D:.0f} × {H:.0f} mm", "subtitle")
 
     # Header
     svg.rect(15, header_h - 10, total_w - 30, row_h, "panel")
@@ -501,11 +532,11 @@ def gen_assembly_dims(p, outdir):
     # Two views: front elevation + side elevation
     view_w = max(W, D) * scale + margin
     view_h = H * scale + margin
-    dw = max(view_w * 2 + 40, _min_width(title, margin=100))
+    dw = view_w * 2 + 40
     dh = view_h + 80
     svg = SVG(dw, dh, title)
 
-    svg.text(dw / 2, 25, "Mk3 Cabinet — Assembly Measurement Drawing", "title-text")
+    svg.text_wrap(15, 25, "Mk3 Cabinet — Assembly Measurement Drawing", "title-text")
 
     # --- Front elevation (left) ---
     fx = margin / 2
@@ -601,7 +632,7 @@ def gen_assembly_dims(p, outdir):
 # ============================================================
 def _panel_base(svg, p, w_mm, h_mm, title, subtitle, scale=0.5, margin=80):
     """Set up a standard panel drawing with title and return (px, py, pw, ph, scale)."""
-    dw = max(w_mm * scale + 2 * margin, _min_width(title, subtitle, margin))
+    dw = w_mm * scale + 2 * margin
     dh = h_mm * scale + 2 * margin + 30
     svg.w = int(dw)
     svg.h = int(dh)
@@ -612,8 +643,8 @@ def _panel_base(svg, p, w_mm, h_mm, title, subtitle, scale=0.5, margin=80):
     pw = w_mm * scale
     ph = h_mm * scale
 
-    svg.text(dw / 2, 20, title, "title-text")
-    svg.text(dw / 2, 38, subtitle, "subtitle")
+    svg.text_wrap(15, 20, title, "title-text")
+    svg.text_wrap(15, 38, subtitle, "subtitle")
     return px, py, pw, ph, scale
 
 
@@ -806,16 +837,14 @@ def gen_panel_shelf_brace(p, outdir):
     margin = 80
     title = "Shelf Brace ×3 — Cut Drawing"
     subtitle = f"Outer: {w_in:.0f} × {d_in:.0f} mm (internal cavity)  Rim: {rim:.0f} mm  Thickness: {p['wall']:.0f} mm  Qty: 3 (z={[int(z) for z in p['shelf_zs']]})"
-    dw = max(w_in * scale + 2 * margin, _min_width(title, subtitle, margin))
+    dw = w_in * scale + 2 * margin
     dh = d_in * scale + 2 * margin + 50
     svg.w = int(dw)
     svg.h = int(dh)
     svg.elements = []
 
-    svg.text(dw / 2, 20, title, "title-text")
-    svg.text(dw / 2, 38,
-             subtitle,
-             "note")
+    svg.text_wrap(15, 20, title, "title-text")
+    svg.text_wrap(15, 38, subtitle, "subtitle")
 
     px = margin
     py = margin + 30
