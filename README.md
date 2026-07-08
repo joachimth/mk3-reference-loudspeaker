@@ -422,6 +422,7 @@ The full design bible lives in the `docs/` folder:
 | 16. Build guide | [16_build_guide.md](docs/16_build_guide.md) |
 | 17. Future versions | [17_future_versions.md](docs/17_future_versions.md) |
 | Tweeter analysis | [SB26STAC-C000-4_analysis.md](docs/SB26STAC-C000-4_analysis.md) |
+| Drawings guide | [DRAWINGS_GUIDE.md](docs/DRAWINGS_GUIDE.md) |
 
 ### Reference files
 
