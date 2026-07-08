@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="780" viewBox="0 0 320 780">
+<svg xmlns="http://www.w3.org/2000/svg" width="428" height="780" viewBox="0 0 428 780">
 <style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
 .cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
 .rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
@@ -15,9 +15,9 @@
 .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
-<rect width="320" height="780" fill="white"/>
-<text x="160.0" y="20.0" class="title-text">Front Baffle — Cut Drawing</text>
-<text x="160.0" y="38.0" class="note">320 × 1180 mm, 22 mm ply, R19 front edges</text>
+<rect width="428" height="780" fill="white"/>
+<text x="214.0" y="20.0" class="title-text">Front Baffle — Cut Drawing</text>
+<text x="214.0" y="38.0" class="note">320 × 1180 mm, 22 mm ply, R19 front edges</text>
 <rect x="80.0" y="110.0" width="160.0" height="590.0" rx="9.5" ry="9.5" class="panel"/>
 <circle cx="160.0" cy="167.5" r="44.8" class="rebate"/>
 <circle cx="160.0" cy="167.5" r="36.3" class="cutout"/>

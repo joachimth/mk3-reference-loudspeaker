@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="298" height="358" viewBox="0 0 298 358">
+<svg xmlns="http://www.w3.org/2000/svg" width="453" height="358" viewBox="0 0 453 358">
 <style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
 .cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
 .rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
@@ -15,9 +15,9 @@
 .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
-<rect width="298" height="358" fill="white"/>
-<text x="149.0" y="20.0" class="title-text">Divider Plate — Cut Drawing</text>
-<text x="149.0" y="38.0" class="note">276 × 336 mm, 22 mm ply, tilted 19° in cabinet</text>
+<rect width="453" height="358" fill="white"/>
+<text x="226.5" y="20.0" class="title-text">Divider Plate — Cut Drawing</text>
+<text x="226.5" y="38.0" class="note">276 × 336 mm, 22 mm ply, tilted 19° in cabinet</text>
 <rect x="80.0" y="110.0" width="138.0" height="168.0" class="panel"/>
 <text x="149.0" y="194.0" class="label-sm">Cut to internal cavity shape
 (front edge follows rounded side walls)</text>

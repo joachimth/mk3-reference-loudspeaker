@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="350.0" height="750.0" viewBox="0 0 350.0 750.0">
+<svg xmlns="http://www.w3.org/2000/svg" width="587" height="750.0" viewBox="0 0 587 750.0">
 <style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
 .cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
 .rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
@@ -15,10 +15,10 @@
 .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
-<rect width="350.0" height="750.0" fill="white"/>
+<rect width="587" height="750.0" fill="white"/>
 <rect x="80.0" y="80.0" width="190.0" height="590.0" class="panel"/>
-<text x="175.0" y="25.0" class="title-text">Mk3 Side Panel — Woofer Cutout &amp; Hole Layout</text>
-<text x="175.0" y="42.0" class="note">Panel: 380 × 1180 mm, 22 mm birch ply (flat, no roundover)</text>
+<text x="293.5" y="25.0" class="title-text">Mk3 Side Panel — Woofer Cutout &amp; Hole Layout</text>
+<text x="293.5" y="42.0" class="note">Panel: 380 × 1180 mm, 22 mm birch ply (flat, no roundover)</text>
 <circle cx="175.0" cy="410.0" r="83.0" class="rebate"/>
 <circle cx="175.0" cy="410.0" r="71.0" class="cutout"/>
 <line x1="165.0" y1="410.0" x2="185.0" y2="410.0" class="center-line"/>

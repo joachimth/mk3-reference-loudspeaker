@@ -121,6 +121,17 @@ def load_params():
 # ============================================================
 #  SVG helpers
 # ============================================================
+def _est_text_width(text, font_size=16):
+    """Estimate rendered text width in pixels (rough: 0.55 × font_size × len)."""
+    return len(text) * font_size * 0.55
+
+def _min_width(title, subtitle="", margin=80, extra=40):
+    """Calculate minimum SVG width to fit title + subtitle without clipping."""
+    w = _est_text_width(title, 16) + extra
+    if subtitle:
+        w = max(w, _est_text_width(subtitle, 10) + extra)
+    return int(w + 2 * margin)
+
 class SVG:
     """Simple SVG builder with dimension-line primitives."""
 
@@ -246,9 +257,11 @@ def gen_front_baffle(p, outdir):
     rr = p["round_r"]
     scale = 0.5  # mm to SVG units
     margin = 80
-    dw = W * scale + 2 * margin
+    title = "Mk3 Front Baffle — Cutout & Hole Layout"
+    subtitle = f"Panel: {W:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply, R{rr:.0f} front edges"
+    dw = max(W * scale + 2 * margin, _min_width(title, subtitle, margin))
     dh = H * scale + 2 * margin
-    svg = SVG(dw, dh, "Front Baffle")
+    svg = SVG(dw, dh, title)
 
     # Panel (rounded front edges)
     px = margin
@@ -346,9 +359,11 @@ def gen_side_panel(p, outdir):
     wall = p["wall"]
     scale = 0.5
     margin = 80
-    dw = D * scale + 2 * margin
+    title = "Mk3 Side Panel — Woofer Cutout & Hole Layout"
+    subtitle = f"Panel: {D:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply (flat, no roundover)"
+    dw = max(D * scale + 2 * margin, _min_width(title, subtitle, margin))
     dh = H * scale + 2 * margin
-    svg = SVG(dw, dh, "Side Panel")
+    svg = SVG(dw, dh, title)
 
     px = margin
     py = margin
@@ -480,13 +495,14 @@ def gen_assembly_dims(p, outdir):
     rr = p["round_r"]
     scale = 0.35
     margin = 100
+    title = "Mk3 Cabinet — Assembly Measurement Drawing"
 
     # Two views: front elevation + side elevation
     view_w = max(W, D) * scale + margin
     view_h = H * scale + margin
-    dw = view_w * 2 + 40
+    dw = max(view_w * 2 + 40, _min_width(title, margin=100))
     dh = view_h + 80
-    svg = SVG(dw, dh, "Assembly Dimensions")
+    svg = SVG(dw, dh, title)
 
     svg.text(dw / 2, 25, "Mk3 Cabinet — Assembly Measurement Drawing", "title-text")
 
@@ -584,7 +600,7 @@ def gen_assembly_dims(p, outdir):
 # ============================================================
 def _panel_base(svg, p, w_mm, h_mm, title, subtitle, scale=0.5, margin=80):
     """Set up a standard panel drawing with title and return (px, py, pw, ph, scale)."""
-    dw = w_mm * scale + 2 * margin
+    dw = max(w_mm * scale + 2 * margin, _min_width(title, subtitle, margin))
     dh = h_mm * scale + 2 * margin + 30
     svg.w = int(dw)
     svg.h = int(dh)
@@ -787,16 +803,17 @@ def gen_panel_shelf_brace(p, outdir):
     # Need to show outer ring + inner cutout
     scale = 0.5
     margin = 80
-    dw = w_in * scale + 2 * margin
+    title = "Shelf Brace ×3 — Cut Drawing"
+    subtitle = f"Outer: {w_in:.0f} × {d_in:.0f} mm (internal cavity)  Rim: {rim:.0f} mm  Thickness: {p['wall']:.0f} mm  Qty: 3 (z={[int(z) for z in p['shelf_zs']]})"
+    dw = max(w_in * scale + 2 * margin, _min_width(title, subtitle, margin))
     dh = d_in * scale + 2 * margin + 50
     svg.w = int(dw)
     svg.h = int(dh)
     svg.elements = []
 
-    svg.text(dw / 2, 20, "Shelf Brace ×3 — Cut Drawing", "title-text")
+    svg.text(dw / 2, 20, title, "title-text")
     svg.text(dw / 2, 38,
-             f"Outer: {w_in:.0f} × {d_in:.0f} mm (internal cavity)  Rim: {rim:.0f} mm  "
-             f"Thickness: {p['wall']:.0f} mm  Qty: 3 (z={[int(z) for z in p['shelf_zs']]})",
+             subtitle,
              "note")
 
     px = margin
