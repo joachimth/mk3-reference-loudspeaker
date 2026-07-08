@@ -492,6 +492,15 @@ jobs:
           cp assets/drawings/*.svg _site/assets/drawings/ 2>/dev/null || true
           cp assets/drawings/*.pdf _site/assets/drawings/ 2>/dev/null || true
           cp assets/drawings/index.html _site/assets/drawings/ 2>/dev/null || true
+          # Simulation source files (.py) + CSV outputs
+          cp simulations/*.py _site/simulations/ 2>/dev/null || true
+          cp simulations/*.csv _site/simulations/ 2>/dev/null || true
+          # CAD source files (.scad)
+          mkdir -p _site/cad
+          cp cad/*.scad _site/cad/ 2>/dev/null || true
+          # DSP configs (.xml + .py)
+          mkdir -p _site/dsp-configs
+          cp dsp-configs/*.xml dsp-configs/*.py _site/dsp-configs/ 2>/dev/null || true
           # 3D reference files
           mkdir -p _site/assets/cad
           cp assets/cad/*.step assets/cad/*.STEP assets/cad/*.stp assets/cad/*.STP assets/cad/*.stl assets/cad/*.STL _site/assets/cad/ 2>/dev/null || true
