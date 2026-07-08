@@ -2,7 +2,7 @@
 // Mk3 Reference Loudspeaker - cabinet (parametric, simulation-stage)
 // =====================================================================
 //
-// v9 layout: 320 x 370 x 1080 mm, 22 mm birch ply, rounded front vertical
+// v9 layout: 300 x 420 x 1180 mm, 22 mm birch ply, rounded front vertical
 // edges, side-mounted push-push GRS 12SW-4HE woofers opposed at the same
 // height. MIDRANGE (ScanSpeak 18W/4424G00) sits at the TOP of the front
 // baffle with the sealed mid chamber behind it; the WAVEGUIDE sits BELOW
@@ -41,9 +41,8 @@ use <GRS-12SW-4HE.scad>
 use <SB26STAC-C000-4.scad>
 
 // ---- External shell -------------------------------------------------
-W       = 320;   // external width  [mm] (276 internal — two opposed 136 mm
-                 //   deep 12SW-4HE do not fit the older 300 mm spec)
-D       = 400;   // external depth  [mm]
+W       = 300;   // external width  [mm] (250 internal pine / 256 internal ply)
+D       = 420;   // external depth  [mm] (Qtc=0.70 with 25mm pine walls)
 H       = 1180;  // external height [mm]
 wall    = 22;    // panel thickness [mm] (22 mm birch plywood)
 round_r = 19;    // front vertical roundover radius [mm] (R50 leaves no

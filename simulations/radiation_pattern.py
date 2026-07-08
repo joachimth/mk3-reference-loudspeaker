@@ -28,8 +28,8 @@ c_speed = 343.0
 # ============================================================
 #  Cabinet geometry (from cad/cabinet.scad)
 # ============================================================
-W = 0.320      # cabinet width [m]
-D = 0.400      # cabinet depth [m]
+W = 0.300      # cabinet width [m]
+D = 0.420      # cabinet depth [m]
 H = 1.180      # cabinet height [m]
 
 # Driver positions (millimetres from CAD → metres)
@@ -178,7 +178,7 @@ def woofer_directivity_horizontal(theta_deg, freq):
     Since they're on opposite sides of the cabinet:
     - Left-right asymmetry at close range
     - At far field (>> W), they look like a single source at cabinet centre
-    - The W=320 mm spacing causes comb filtering at higher frequencies
+    - The W=300 mm spacing causes comb filtering at higher frequencies
     """
     Sd = 504e-4
     r_eff = np.sqrt(Sd / np.pi)
@@ -189,7 +189,7 @@ def woofer_directivity_horizontal(theta_deg, freq):
     piston = piston_directivity(theta_deg, ka)
     
     # Array interference from the push-push spacing
-    # The woofers are separated by W = 320 mm across the cabinet
+    # The woofers are separated by W = 300 mm across the cabinet
     if freq < 200:  # only above 200 Hz does the spacing matter
         array = array_interference(theta_deg, freq, W)
         return piston + array

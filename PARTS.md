@@ -30,7 +30,7 @@ Prices are indicative (sourced June 2026); verify before ordering.
 | Damping felt/foam | Mid chamber: fully lined. Bass chamber: 50 mm rear/top/sides. |
 | Terminal cup or amplifier plate cutout | Depends on DSP/amp selection |
 
-Approximate external dimensions (v9): **320 × 400 × 1180 mm**, 22 mm walls, R19 front roundovers (see CHANGELOG v9 for why 300 mm / R50 were revised).
+Approximate external dimensions (v9): **300 × 420 × 1180 mm**, 22 mm walls, R19 front roundovers (see CHANGELOG v9 for why 300 mm / R50 were revised).
 
 ### Alternative material: massiv fyr bordplade (25 mm)
 
@@ -38,7 +38,7 @@ Jem & Fix sælger massive fyrrebordplader i 25 × 620 × 2420 mm som en potentie
 Produkt: [Massiv bordplade i fyr — 25 mm × 62 × 242 cm](https://www.jemogfix.dk/massiv-bordplade-i-fyr-25-mm-x-62-x-242-cm/4137/9048870/)
 
 **Implikationer ved 25 mm vs. 22 mm:**
-- Indvendige mål: 270 × 350 × 1130 mm (vs. 276 × 356 × 1136 mm med 22 mm ply) — ca. 5% mindre volumen
+- Indvendige mål: 250 × 370 × 1130 mm (vs. 256 × 376 × 1136 mm med 22 mm ply) — ca. 5% mindre volumen
 - `cabinet.scad` skal opdateres: `wall = 25;`
 - Massiv fyr er tungere og densere end krydsfinér — potentielt bedre kabinetttræ masse, men blødere overflade (dents lettere)
 - Kræver grundning/oliering på alle sider inden samling (som med ply)
@@ -47,25 +47,25 @@ Produkt: [Massiv bordplade i fyr — 25 mm × 62 × 242 cm](https://www.jemogfix
 
 | Plade | Snit (bredde) | Stykke | Mål (mm) | Position på plade |
 |---|---|---|---|---|
-| Plade 1 | 400 mm rip | Side L (V) | 400 × 1180 | 0–1180 mm |
-| Plade 1 | 400 mm rip | Side L (H) | 400 × 1180 | 1180–2360 mm |
-| Plade 1 | 220 mm rip | Reserve | — | hele længden |
-| Plade 2 | 400 mm rip | Side R (V) | 400 × 1180 | 0–1180 mm |
-| Plade 2 | 400 mm rip | Side R (H) | 400 × 1180 | 1180–2360 mm |
-| Plade 2 | 220 mm rip | Reserve | — | hele længden |
-| Plade 3 | 320 mm rip | Front (V) | 320 × 1180 | 0–1180 mm |
-| Plade 3 | 320 mm rip | Front (H) | 320 × 1180 | 1180–2360 mm |
-| Plade 3 | 300 mm rip | Divider (V) | 270 × 350 | 0–350 mm |
-| Plade 3 | 300 mm rip | Hylde 1–3 (V) | 270 × 350 | 350–1400 mm |
-| Plade 4 | 320 mm rip | Bagplade (V) | 320 × 1180 | 0–1180 mm |
-| Plade 4 | 320 mm rip | Bagplade (H) | 320 × 1180 | 1180–2360 mm |
-| Plade 4 | 300 mm rip | Divider (H) | 270 × 350 | 0–350 mm |
-| Plade 4 | 300 mm rip | Hylde 1–3 (H) | 270 × 350 | 350–1400 mm |
-| Plade 5 | 320 mm rip | Toplåg (V) | 320 × 400 | 0–400 mm |
-| Plade 5 | 320 mm rip | Bundplade (V) | 320 × 400 | 400–800 mm |
-| Plade 5 | 320 mm rip | Toplåg (H) | 320 × 400 | 800–1200 mm |
-| Plade 5 | 320 mm rip | Bundplade (H) | 320 × 400 | 1200–1600 mm |
-| Plade 5 | 300 mm rip | Reserve | — | hele længden |
+| Plade 1 | 420 mm rip | Side L (V) | 420 × 1180 | 0–1180 mm |
+| Plade 1 | 420 mm rip | Side L (H) | 420 × 1180 | 1180–2360 mm |
+| Plade 1 | 200 mm rip | Reserve | — | hele længden |
+| Plade 2 | 420 mm rip | Side R (V) | 420 × 1180 | 0–1180 mm |
+| Plade 2 | 420 mm rip | Side R (H) | 420 × 1180 | 1180–2360 mm |
+| Plade 2 | 200 mm rip | Reserve | — | hele længden |
+| Plade 3 | 300 mm rip | Front (V) | 300 × 1180 | 0–1180 mm |
+| Plade 3 | 300 mm rip | Front (H) | 300 × 1180 | 1180–2360 mm |
+| Plade 3 | 320 mm rip | Divider (V) | 250 × 370 | 0–370 mm |
+| Plade 3 | 320 mm rip | Hylde 1–3 (V) | 250 × 370 | 370–1480 mm |
+| Plade 4 | 300 mm rip | Bagplade (V) | 300 × 1180 | 0–1180 mm |
+| Plade 4 | 300 mm rip | Bagplade (H) | 300 × 1180 | 1180–2360 mm |
+| Plade 4 | 320 mm rip | Divider (H) | 250 × 370 | 0–370 mm |
+| Plade 4 | 320 mm rip | Hylde 1–3 (H) | 250 × 370 | 370–1480 mm |
+| Plade 5 | 300 mm rip | Toplåg (V) | 300 × 420 | 0–420 mm |
+| Plade 5 | 300 mm rip | Bundplade (V) | 300 × 420 | 420–840 mm |
+| Plade 5 | 300 mm rip | Toplåg (H) | 300 × 420 | 840–1260 mm |
+| Plade 5 | 300 mm rip | Bundplade (H) | 300 × 420 | 1260–1680 mm |
+| Plade 5 | 320 mm rip | Reserve | — | hele længden |
 
 *Divider og hylde braces skæres til 270 mm fra de 300 mm strips (30 mm trim). Plade 5 efterlader ca. 0.9 m² reservetræ på strip A + hele strip B — velegnet til højttalerstativ, rondeller til portkanaler, mv.*
 

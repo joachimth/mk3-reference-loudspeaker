@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="298" height="388" viewBox="0 0 298 388">
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="398" viewBox="0 0 288 398">
 <style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
 .cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
 .rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
@@ -16,32 +16,32 @@
 .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
-<rect width="298" height="388" fill="white"/>
+<rect width="288" height="398" fill="white"/>
 <text x="15.0" y="20.0" class="title-text">Shelf Brace ×3 — Cut</text>
 <text x="15.0" y="38.0" class="title-text">Drawing</text>
-<text x="15.0" y="38.0" class="subtitle">Outer: 276 × 356 mm (internal</text>
-<text x="15.0" y="51.0" class="subtitle">cavity) Rim: 45 mm Thickness: 22 mm</text>
-<text x="15.0" y="64.0" class="subtitle">Qty: 3 (z=[160, 330, 730])</text>
-<rect x="80.0" y="110.0" width="138.0" height="178.0" rx="9.5" ry="9.5" class="panel"/>
-<rect x="102.5" y="132.5" width="93.0" height="133.0" rx="0.0" ry="0.0" class="cutout"/>
-<text x="149.0" y="193.0" class="label-sm">Open centre</text>
-<text x="149.0" y="207.0" class="label-sm">186 × 266 mm</text>
-<line x1="80.0" y1="288.0" x2="80.0" y2="273.0" class="dim-line"/>
-<line x1="218.0" y1="288.0" x2="218.0" y2="273.0" class="dim-line"/>
-<line x1="80.0" y1="273.0" x2="218.0" y2="273.0" class="dim-line"/>
-<polygon points="80.0,273.0 84.0,271.0 84.0,275.0" class="arrow"/>
-<polygon points="218.0,273.0 214.0,271.0 214.0,275.0" class="arrow"/>
-<text x="149.0" y="269.0" class="dim-text">outer 276</text>
+<text x="15.0" y="38.0" class="subtitle">Outer: 256 × 376 mm (internal</text>
+<text x="15.0" y="51.0" class="subtitle">cavity) Rim: 45 mm Thickness: 22</text>
+<text x="15.0" y="64.0" class="subtitle">mm Qty: 3 (z=[160, 330, 730])</text>
+<rect x="80.0" y="110.0" width="128.0" height="188.0" rx="9.5" ry="9.5" class="panel"/>
+<rect x="102.5" y="132.5" width="83.0" height="143.0" rx="0.0" ry="0.0" class="cutout"/>
+<text x="144.0" y="198.0" class="label-sm">Open centre</text>
+<text x="144.0" y="212.0" class="label-sm">166 × 286 mm</text>
+<line x1="80.0" y1="298.0" x2="80.0" y2="283.0" class="dim-line"/>
+<line x1="208.0" y1="298.0" x2="208.0" y2="283.0" class="dim-line"/>
+<line x1="80.0" y1="283.0" x2="208.0" y2="283.0" class="dim-line"/>
+<polygon points="80.0,283.0 84.0,281.0 84.0,285.0" class="arrow"/>
+<polygon points="208.0,283.0 204.0,281.0 204.0,285.0" class="arrow"/>
+<text x="144.0" y="279.0" class="dim-text">outer 256</text>
 <line x1="90.0" y1="110.0" x2="105.0" y2="110.0" class="dim-line"/>
-<line x1="90.0" y1="288.0" x2="105.0" y2="288.0" class="dim-line"/>
-<line x1="105.0" y1="110.0" x2="105.0" y2="288.0" class="dim-line"/>
+<line x1="90.0" y1="298.0" x2="105.0" y2="298.0" class="dim-line"/>
+<line x1="105.0" y1="110.0" x2="105.0" y2="298.0" class="dim-line"/>
 <polygon points="105.0,110.0 103.0,114.0 107.0,114.0" class="arrow"/>
-<polygon points="105.0,288.0 103.0,284.0 107.0,284.0" class="arrow"/>
-<text x="119.0" y="199.0" class="dim-text-v" transform="rotate(-90 119.0 199.0)">outer 356</text>
-<line x1="102.5" y1="318.0" x2="102.5" y2="303.0" class="dim-line"/>
-<line x1="195.5" y1="318.0" x2="195.5" y2="303.0" class="dim-line"/>
-<line x1="102.5" y1="303.0" x2="195.5" y2="303.0" class="dim-line"/>
-<polygon points="102.5,303.0 106.5,301.0 106.5,305.0" class="arrow"/>
-<polygon points="195.5,303.0 191.5,301.0 191.5,305.0" class="arrow"/>
-<text x="149.0" y="299.0" class="dim-text">inner 186</text>
+<polygon points="105.0,298.0 103.0,294.0 107.0,294.0" class="arrow"/>
+<text x="119.0" y="204.0" class="dim-text-v" transform="rotate(-90 119.0 204.0)">outer 376</text>
+<line x1="102.5" y1="328.0" x2="102.5" y2="313.0" class="dim-line"/>
+<line x1="185.5" y1="328.0" x2="185.5" y2="313.0" class="dim-line"/>
+<line x1="102.5" y1="313.0" x2="185.5" y2="313.0" class="dim-line"/>
+<polygon points="102.5,313.0 106.5,311.0 106.5,315.0" class="arrow"/>
+<polygon points="185.5,313.0 181.5,311.0 181.5,315.0" class="arrow"/>
+<text x="144.0" y="309.0" class="dim-text">inner 166</text>
 </svg>

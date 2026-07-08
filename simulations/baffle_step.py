@@ -15,7 +15,7 @@ This script uses the Vanderkooy / Keele approximation:
     where  f_bs = c / (2 * pi * a)
     and    a    = mean path from driver centre to all baffle edges
 
-For v9 cabinet (w=320, d=400 mm, from cad/cabinet.scad):
+For v9 cabinet (w=300, d=420 mm, from cad/cabinet.scad):
     Side woofers:   a = D/2 = 190 mm (f_bs = 287 Hz)
     Front mid/tweeter: a = W/2 = 160 mm (f_bs = 341 Hz)
     See simulations/cabinet_params.py for the parsed values.
@@ -99,7 +99,7 @@ ax.axhline(-6.0, color="0.5", ls=":", lw=1)
 ax.axvline(f_bs_mean, color="tab:red", ls="--", lw=1, alpha=0.5)
 ax.text(f_bs_mean * 1.07, -5.5, f"f_bs = {f_bs_mean:.0f} Hz", fontsize=8, color="tab:red")
 ax.set_ylabel("Baffle-step loss [dB]")
-ax.set_title("Baffle-step diffraction — v9 cabinet (320 mm wide, 400 mm deep)")
+ax.set_title("Baffle-step diffraction — v9 cabinet (300 mm wide, 420 mm deep)")
 ax.set_ylim(-8, 1)
 ax.legend(fontsize=8)
 ax.grid(True, which="both", alpha=0.25)

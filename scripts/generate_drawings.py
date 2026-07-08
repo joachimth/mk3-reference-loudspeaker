@@ -917,7 +917,7 @@ def gen_pine_cutplan(p, outdir):
     bh = BH * scale   # ~339 px
 
     title    = "Skæreplan — massiv fyr 25 mm (Jem & Fix) — ET PAR"
-    subtitle = (f"5× 620×2420×25 mm  |  320×380×1180 mm  |  2 kabinetter (V+H)")
+    subtitle = (f"5× 620×2420×25 mm  |  {W:.0f}×{D:.0f}×{H:.0f} mm  |  2 kabinetter (V+H)")
 
     n_boards = 5
     content_w = n_boards * bw + (n_boards - 1) * gap + 2 * margin
@@ -987,16 +987,16 @@ def gen_pine_cutplan(p, outdir):
 
     # ----------------------------------------------------------------
     # Board 1 — Side L (cabinet 1) + Side L (cabinet 2)
-    # Rip at 380 mm: strip A=380 (2 sides + waste), strip B=240 (spare)
+    # Rip at D mm: strip A=D (2 sides + waste), strip B=(620-D) (spare)
     # ----------------------------------------------------------------
     B = 0
     draw_board(B)
-    rip(B, 380)
-    piece(B,   0,    0, 380, 1180, "Side L (V)",  f"380×1180 mm")
-    piece(B,   0, 1180, 380, 1180, "Side L (H)",  f"380×1180 mm")
-    piece(B,   0, 2360, 380,   60, "spild",       "60 mm",       cls="cp-spare")
-    piece(B, 380,    0, 240, BH,   "reserve",     "240 mm",      cls="cp-spare")
-    board_labels(B, 1, 380, "sider V")
+    rip(B, D)
+    piece(B,   0,    0, D, H, "Side L (V)",  f"{D:.0f}×{H:.0f} mm")
+    piece(B,   0,    H, D, H, "Side L (H)",  f"{D:.0f}×{H:.0f} mm")
+    piece(B,   0, 2*H, D, BH-2*H, "spild",   f"{BH-2*H:.0f} mm",       cls="cp-spare")
+    piece(B, D,    0, BW-D, BH, "reserve",   f"{BW-D:.0f} mm",      cls="cp-spare")
+    board_labels(B, 1, D, "sider V")
 
     # ----------------------------------------------------------------
     # Board 2 — Side R (cabinet 1) + Side R (cabinet 2)
@@ -1004,29 +1004,29 @@ def gen_pine_cutplan(p, outdir):
     # ----------------------------------------------------------------
     B = 1
     draw_board(B)
-    rip(B, 380)
-    piece(B,   0,    0, 380, 1180, "Side R (V)",  f"380×1180 mm")
-    piece(B,   0, 1180, 380, 1180, "Side R (H)",  f"380×1180 mm")
-    piece(B,   0, 2360, 380,   60, "spild",       "60 mm",       cls="cp-spare")
-    piece(B, 380,    0, 240, BH,   "reserve",     "240 mm",      cls="cp-spare")
-    board_labels(B, 2, 380, "sider H")
+    rip(B, D)
+    piece(B,   0,    0, D, H, "Side R (V)",  f"{D:.0f}×{H:.0f} mm")
+    piece(B,   0,    H, D, H, "Side R (H)",  f"{D:.0f}×{H:.0f} mm")
+    piece(B,   0, 2*H, D, BH-2*H, "spild",   f"{BH-2*H:.0f} mm",       cls="cp-spare")
+    piece(B, D,    0, BW-D, BH, "reserve",   f"{BW-D:.0f} mm",      cls="cp-spare")
+    board_labels(B, 2, D, "sider H")
 
     # ----------------------------------------------------------------
     # Board 3 — Front (V+H) + Divider (V) + 3× Shelf (V)
-    # Rip at 320 mm: strip A=320 (2 fronts + waste), strip B=300 (divider + 3 shelves + spare)
+    # Rip at W mm: strip A=W (2 fronts + waste), strip B=(620-W) (divider + 3 shelves + spare)
     # ----------------------------------------------------------------
     B = 2
     draw_board(B)
-    rip(B, 320)
-    piece(B,   0,    0, 320, 1180, "Front (V)",   f"320×1180 mm")
-    piece(B,   0, 1180, 320, 1180, "Front (H)",   f"320×1180 mm")
-    piece(B,   0, 2360, 320,   60, "spild",       "60 mm",       cls="cp-spare")
-    piece(B, 320,    0, 300,  336, "Divider (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320,  336, 300,  336, "Hylde 1 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320,  672, 300,  336, "Hylde 2 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320, 1008, 300,  336, "Hylde 3 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320, 1344, 300, 1076, "reserve",     "1076 mm",     cls="cp-spare")
-    board_labels(B, 3, 320, "front + div V + hylder V")
+    rip(B, W)
+    piece(B,   0,    0, W, H, "Front (V)",   f"{W:.0f}×{H:.0f} mm")
+    piece(B,   0,    H, W, H, "Front (H)",   f"{W:.0f}×{H:.0f} mm")
+    piece(B,   0, 2*H, W, BH-2*H, "spild",   f"{BH-2*H:.0f} mm",        cls="cp-spare")
+    piece(B, W,    0, BW-W, d_in, "Divider (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, W,  d_in, BW-W, d_in, "Hylde 1 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, W, 2*d_in, BW-W, d_in, "Hylde 2 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, W, 3*d_in, BW-W, d_in, "Hylde 3 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, W, 4*d_in, BW-W, BH-4*d_in, "reserve", f"{BH-4*d_in:.0f} mm", cls="cp-spare")
+    board_labels(B, 3, W, "front + div V + hylder V")
 
     # ----------------------------------------------------------------
     # Board 4 — Back (V+H) + Divider (H) + 3× Shelf (H)
@@ -1034,32 +1034,32 @@ def gen_pine_cutplan(p, outdir):
     # ----------------------------------------------------------------
     B = 3
     draw_board(B)
-    rip(B, 320)
-    piece(B,   0,    0, 320, 1180, "Bagplade (V)", f"320×1180 mm")
-    piece(B,   0, 1180, 320, 1180, "Bagplade (H)", f"320×1180 mm")
-    piece(B,   0, 2360, 320,   60, "spild",        "60 mm",       cls="cp-spare")
-    piece(B, 320,    0, 300,  336, "Divider (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320,  336, 300,  336, "Hylde 1 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320,  672, 300,  336, "Hylde 2 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320, 1008, 300,  336, "Hylde 3 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320, 1344, 300, 1076, "reserve",      "1076 mm",     cls="cp-spare")
-    board_labels(B, 4, 320, "bagplade + div H + hylder H")
+    rip(B, W)
+    piece(B,   0,    0, W, H, "Bagplade (V)", f"{W:.0f}×{H:.0f} mm")
+    piece(B,   0,    H, W, H, "Bagplade (H)", f"{W:.0f}×{H:.0f} mm")
+    piece(B,   0, 2*H, W, BH-2*H, "spild",    f"{BH-2*H:.0f} mm",        cls="cp-spare")
+    piece(B, W,    0, BW-W, d_in, "Divider (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, W,  d_in, BW-W, d_in, "Hylde 1 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, W, 2*d_in, BW-W, d_in, "Hylde 2 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, W, 3*d_in, BW-W, d_in, "Hylde 3 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, W, 4*d_in, BW-W, BH-4*d_in, "reserve", f"{BH-4*d_in:.0f} mm", cls="cp-spare")
+    board_labels(B, 4, W, "bagplade + div H + hylder H")
 
     # ----------------------------------------------------------------
     # Board 5 — Top + Bottom for BOTH cabinets
-    # Rip at 320 mm: strip A=320 (4 pieces), strip B=300 (spare)
-    # 4× 380mm = 1520mm of 2420mm — fits easily
+    # Rip at W mm: strip A=W (4 pieces), strip B=(620-W) (spare)
+    # 4× D mm stacked on strip A
     # ----------------------------------------------------------------
     B = 4
     draw_board(B)
-    rip(B, 320)
-    piece(B,   0,    0, 320,  380, "Toplåg (V)",   f"320×380 mm")
-    piece(B,   0,  380, 320,  380, "Bundplade (V)", f"320×380 mm")
-    piece(B,   0,  760, 320,  380, "Toplåg (H)",   f"320×380 mm")
-    piece(B,   0, 1140, 320,  380, "Bundplade (H)", f"320×380 mm")
-    piece(B,   0, 1520, 320,  900, "reserve",      "900 mm",      cls="cp-spare")
-    piece(B, 320,    0, 300,   BH, "reserve",      "300 mm",      cls="cp-spare")
-    board_labels(B, 5, 320, "toplåg + bund")
+    rip(B, W)
+    piece(B,   0,      0, W, D, "Toplåg (V)",   f"{W:.0f}×{D:.0f} mm")
+    piece(B,   0,      D, W, D, "Bundplade (V)", f"{W:.0f}×{D:.0f} mm")
+    piece(B,   0,  2*D, W, D, "Toplåg (H)",   f"{W:.0f}×{D:.0f} mm")
+    piece(B,   0,  3*D, W, D, "Bundplade (H)", f"{W:.0f}×{D:.0f} mm")
+    piece(B,   0,  4*D, W, BH-4*D, "reserve",  f"{BH-4*D:.0f} mm", cls="cp-spare")
+    piece(B, W,    0, BW-W, BH, "reserve",     f"{BW-W:.0f} mm",      cls="cp-spare")
+    board_labels(B, 5, W, "toplåg + bund")
 
     # ----------------------------------------------------------------
     # Legend

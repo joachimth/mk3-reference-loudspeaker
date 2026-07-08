@@ -42,7 +42,7 @@ def _parse_scad_variable(text, var_name):
     """Extract a numeric variable from OpenSCAD source.
 
     Handles patterns like:
-        W       = 320;   // comment
+        W       = 300;   // comment
         woofer_z = 520;  // comment
     """
     pattern = rf"^\s*{re.escape(var_name)}\s*=\s*([0-9.]+)\s*;"
@@ -126,7 +126,7 @@ def baffle_step_db_side(f):
 
     At low frequencies: -6 dB (4π radiation, full space).
     At high frequencies:  0 dB (2π radiation, half space into side).
-    Transition at f_bs_side ≈ 287 Hz (D=400mm).
+    Transition at f_bs_side ≈ 259 Hz (D=420mm).
     """
     fbs = F_BS_SIDE
     x = 1j * f / fbs
@@ -138,7 +138,7 @@ def baffle_step_db_front(f):
 
     At low frequencies: -6 dB (4π radiation, full space).
     At high frequencies:  0 dB (2π radiation, half space toward listener).
-    Transition at f_bs_front ≈ 341 Hz (W=320mm).
+    Transition at f_bs_front ≈ 364 Hz (W=300mm).
     """
     fbs = F_BS_FRONT
     x = 1j * f / fbs

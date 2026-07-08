@@ -98,7 +98,7 @@ def lr4_hp_lin(f, fc):
 # ============================================================
 #  Baffle step model (Vanderkooy / Keele)
 # ============================================================
-# Cabinet: 320mm wide, 400mm deep (v9, from cabinet.scad)
+# Cabinet: 300mm wide, 420mm deep (v9, from cabinet.scad)
 # Mean baffle-edge distance: a = sqrt((150^2 + 185^2)/2) = 168 mm
 a_h = 0.150   # half-width (dominant edge)
 a_d = 0.185   # half-depth

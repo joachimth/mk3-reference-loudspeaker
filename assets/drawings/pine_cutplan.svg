@@ -26,115 +26,115 @@
 </style>
 <rect width="734" height="513" fill="white"/>
 <text x="15.0" y="20.0" class="title-text">Skæreplan — massiv fyr 25 mm (Jem &amp; Fix) — ET PAR</text>
-<text x="15.0" y="38.0" class="subtitle">5× 620×2420×25 mm  |  320×380×1180 mm  |  2 kabinetter (V+H)</text>
+<text x="15.0" y="38.0" class="subtitle">5× 620×2420×25 mm  |  300×420×1180 mm  |  2 kabinetter (V+H)</text>
 <rect x="60.0" y="120.0" width="86.8" height="338.8" class="cp-board"/>
-<line x1="113.2" y1="120.0" x2="113.2" y2="458.8" class="cp-rip"/>
-<rect x="60.0" y="120.0" width="53.2" height="165.2" class="cp-piece"/>
+<line x1="118.8" y1="120.0" x2="118.8" y2="458.8" class="cp-rip"/>
+<rect x="60.0" y="120.0" width="58.8" height="165.2" class="cp-piece"/>
 <text x="63.0" y="197.6" class="cp-lbl">Side L (V)</text>
-<text x="63.0" y="209.6" class="cp-sub">380×1180 mm</text>
-<rect x="60.0" y="285.2" width="53.2" height="165.2" class="cp-piece"/>
+<text x="63.0" y="209.6" class="cp-sub">420×1180 mm</text>
+<rect x="60.0" y="285.2" width="58.8" height="165.2" class="cp-piece"/>
 <text x="63.0" y="362.8" class="cp-lbl">Side L (H)</text>
-<text x="63.0" y="374.8" class="cp-sub">380×1180 mm</text>
-<rect x="60.0" y="450.4" width="53.2" height="8.4" class="cp-spare"/>
+<text x="63.0" y="374.8" class="cp-sub">420×1180 mm</text>
+<rect x="60.0" y="450.4" width="58.8" height="8.4" class="cp-spare"/>
 <text x="63.0" y="449.6" class="cp-lbl">spild</text>
 <text x="63.0" y="461.6" class="cp-sub">60 mm</text>
-<rect x="113.2" y="120.0" width="33.6" height="338.8" class="cp-spare"/>
-<text x="116.2" y="284.4" class="cp-lbl">reserve</text>
-<text x="116.2" y="296.4" class="cp-sub">240 mm</text>
+<rect x="118.8" y="120.0" width="28.0" height="338.8" class="cp-spare"/>
+<text x="121.8" y="284.4" class="cp-lbl">reserve</text>
+<text x="121.8" y="296.4" class="cp-sub">200 mm</text>
 <text x="103.4" y="473.8" class="cp-bdlbl">Plade 1</text>
 <text x="103.4" y="485.8" class="cp-bdsub">sider V</text>
 <rect x="191.8" y="120.0" width="86.8" height="338.8" class="cp-board"/>
-<line x1="245.0" y1="120.0" x2="245.0" y2="458.8" class="cp-rip"/>
-<rect x="191.8" y="120.0" width="53.2" height="165.2" class="cp-piece"/>
+<line x1="250.6" y1="120.0" x2="250.6" y2="458.8" class="cp-rip"/>
+<rect x="191.8" y="120.0" width="58.8" height="165.2" class="cp-piece"/>
 <text x="194.8" y="197.6" class="cp-lbl">Side R (V)</text>
-<text x="194.8" y="209.6" class="cp-sub">380×1180 mm</text>
-<rect x="191.8" y="285.2" width="53.2" height="165.2" class="cp-piece"/>
+<text x="194.8" y="209.6" class="cp-sub">420×1180 mm</text>
+<rect x="191.8" y="285.2" width="58.8" height="165.2" class="cp-piece"/>
 <text x="194.8" y="362.8" class="cp-lbl">Side R (H)</text>
-<text x="194.8" y="374.8" class="cp-sub">380×1180 mm</text>
-<rect x="191.8" y="450.4" width="53.2" height="8.4" class="cp-spare"/>
+<text x="194.8" y="374.8" class="cp-sub">420×1180 mm</text>
+<rect x="191.8" y="450.4" width="58.8" height="8.4" class="cp-spare"/>
 <text x="194.8" y="449.6" class="cp-lbl">spild</text>
 <text x="194.8" y="461.6" class="cp-sub">60 mm</text>
-<rect x="245.0" y="120.0" width="33.6" height="338.8" class="cp-spare"/>
-<text x="248.0" y="284.4" class="cp-lbl">reserve</text>
-<text x="248.0" y="296.4" class="cp-sub">240 mm</text>
+<rect x="250.6" y="120.0" width="28.0" height="338.8" class="cp-spare"/>
+<text x="253.6" y="284.4" class="cp-lbl">reserve</text>
+<text x="253.6" y="296.4" class="cp-sub">200 mm</text>
 <text x="235.2" y="473.8" class="cp-bdlbl">Plade 2</text>
 <text x="235.2" y="485.8" class="cp-bdsub">sider H</text>
 <rect x="323.6" y="120.0" width="86.8" height="338.8" class="cp-board"/>
-<line x1="368.4" y1="120.0" x2="368.4" y2="458.8" class="cp-rip"/>
-<rect x="323.6" y="120.0" width="44.8" height="165.2" class="cp-piece"/>
+<line x1="365.6" y1="120.0" x2="365.6" y2="458.8" class="cp-rip"/>
+<rect x="323.6" y="120.0" width="42.0" height="165.2" class="cp-piece"/>
 <text x="326.6" y="197.6" class="cp-lbl">Front (V)</text>
-<text x="326.6" y="209.6" class="cp-sub">320×1180 mm</text>
-<rect x="323.6" y="285.2" width="44.8" height="165.2" class="cp-piece"/>
+<text x="326.6" y="209.6" class="cp-sub">300×1180 mm</text>
+<rect x="323.6" y="285.2" width="42.0" height="165.2" class="cp-piece"/>
 <text x="326.6" y="362.8" class="cp-lbl">Front (H)</text>
-<text x="326.6" y="374.8" class="cp-sub">320×1180 mm</text>
-<rect x="323.6" y="450.4" width="44.8" height="8.4" class="cp-spare"/>
+<text x="326.6" y="374.8" class="cp-sub">300×1180 mm</text>
+<rect x="323.6" y="450.4" width="42.0" height="8.4" class="cp-spare"/>
 <text x="326.6" y="449.6" class="cp-lbl">spild</text>
 <text x="326.6" y="461.6" class="cp-sub">60 mm</text>
-<rect x="368.4" y="120.0" width="42.0" height="47.0" class="cp-piece"/>
-<text x="371.4" y="138.5" class="cp-lbl">Divider (V)</text>
-<text x="371.4" y="150.5" class="cp-sub">trim→270×350</text>
-<rect x="368.4" y="167.0" width="42.0" height="47.0" class="cp-piece"/>
-<text x="371.4" y="185.6" class="cp-lbl">Hylde 1 (V)</text>
-<text x="371.4" y="197.6" class="cp-sub">trim→270×350</text>
-<rect x="368.4" y="214.1" width="42.0" height="47.0" class="cp-piece"/>
-<text x="371.4" y="232.6" class="cp-lbl">Hylde 2 (V)</text>
-<text x="371.4" y="244.6" class="cp-sub">trim→270×350</text>
-<rect x="368.4" y="261.1" width="42.0" height="47.0" class="cp-piece"/>
-<text x="371.4" y="279.6" class="cp-lbl">Hylde 3 (V)</text>
-<text x="371.4" y="291.6" class="cp-sub">trim→270×350</text>
-<rect x="368.4" y="308.2" width="42.0" height="150.6" class="cp-spare"/>
-<text x="371.4" y="378.5" class="cp-lbl">reserve</text>
-<text x="371.4" y="390.5" class="cp-sub">1076 mm</text>
+<rect x="365.6" y="120.0" width="44.8" height="51.8" class="cp-piece"/>
+<text x="368.6" y="140.9" class="cp-lbl">Divider (V)</text>
+<text x="368.6" y="152.9" class="cp-sub">trim→250×370</text>
+<rect x="365.6" y="171.8" width="44.8" height="51.8" class="cp-piece"/>
+<text x="368.6" y="192.7" class="cp-lbl">Hylde 1 (V)</text>
+<text x="368.6" y="204.7" class="cp-sub">trim→250×370</text>
+<rect x="365.6" y="223.6" width="44.8" height="51.8" class="cp-piece"/>
+<text x="368.6" y="244.5" class="cp-lbl">Hylde 2 (V)</text>
+<text x="368.6" y="256.5" class="cp-sub">trim→250×370</text>
+<rect x="365.6" y="275.4" width="44.8" height="51.8" class="cp-piece"/>
+<text x="368.6" y="296.3" class="cp-lbl">Hylde 3 (V)</text>
+<text x="368.6" y="308.3" class="cp-sub">trim→250×370</text>
+<rect x="365.6" y="327.2" width="44.8" height="131.6" class="cp-spare"/>
+<text x="368.6" y="388.0" class="cp-lbl">reserve</text>
+<text x="368.6" y="400.0" class="cp-sub">940 mm</text>
 <text x="367.0" y="473.8" class="cp-bdlbl">Plade 3</text>
 <text x="367.0" y="485.8" class="cp-bdsub">front + div V + hylder V</text>
 <rect x="455.4" y="120.0" width="86.8" height="338.8" class="cp-board"/>
-<line x1="500.2" y1="120.0" x2="500.2" y2="458.8" class="cp-rip"/>
-<rect x="455.4" y="120.0" width="44.8" height="165.2" class="cp-piece"/>
+<line x1="497.4" y1="120.0" x2="497.4" y2="458.8" class="cp-rip"/>
+<rect x="455.4" y="120.0" width="42.0" height="165.2" class="cp-piece"/>
 <text x="458.4" y="197.6" class="cp-lbl">Bagplade (V)</text>
-<text x="458.4" y="209.6" class="cp-sub">320×1180 mm</text>
-<rect x="455.4" y="285.2" width="44.8" height="165.2" class="cp-piece"/>
+<text x="458.4" y="209.6" class="cp-sub">300×1180 mm</text>
+<rect x="455.4" y="285.2" width="42.0" height="165.2" class="cp-piece"/>
 <text x="458.4" y="362.8" class="cp-lbl">Bagplade (H)</text>
-<text x="458.4" y="374.8" class="cp-sub">320×1180 mm</text>
-<rect x="455.4" y="450.4" width="44.8" height="8.4" class="cp-spare"/>
+<text x="458.4" y="374.8" class="cp-sub">300×1180 mm</text>
+<rect x="455.4" y="450.4" width="42.0" height="8.4" class="cp-spare"/>
 <text x="458.4" y="449.6" class="cp-lbl">spild</text>
 <text x="458.4" y="461.6" class="cp-sub">60 mm</text>
-<rect x="500.2" y="120.0" width="42.0" height="47.0" class="cp-piece"/>
-<text x="503.2" y="138.5" class="cp-lbl">Divider (H)</text>
-<text x="503.2" y="150.5" class="cp-sub">trim→270×350</text>
-<rect x="500.2" y="167.0" width="42.0" height="47.0" class="cp-piece"/>
-<text x="503.2" y="185.6" class="cp-lbl">Hylde 1 (H)</text>
-<text x="503.2" y="197.6" class="cp-sub">trim→270×350</text>
-<rect x="500.2" y="214.1" width="42.0" height="47.0" class="cp-piece"/>
-<text x="503.2" y="232.6" class="cp-lbl">Hylde 2 (H)</text>
-<text x="503.2" y="244.6" class="cp-sub">trim→270×350</text>
-<rect x="500.2" y="261.1" width="42.0" height="47.0" class="cp-piece"/>
-<text x="503.2" y="279.6" class="cp-lbl">Hylde 3 (H)</text>
-<text x="503.2" y="291.6" class="cp-sub">trim→270×350</text>
-<rect x="500.2" y="308.2" width="42.0" height="150.6" class="cp-spare"/>
-<text x="503.2" y="378.5" class="cp-lbl">reserve</text>
-<text x="503.2" y="390.5" class="cp-sub">1076 mm</text>
+<rect x="497.4" y="120.0" width="44.8" height="51.8" class="cp-piece"/>
+<text x="500.4" y="140.9" class="cp-lbl">Divider (H)</text>
+<text x="500.4" y="152.9" class="cp-sub">trim→250×370</text>
+<rect x="497.4" y="171.8" width="44.8" height="51.8" class="cp-piece"/>
+<text x="500.4" y="192.7" class="cp-lbl">Hylde 1 (H)</text>
+<text x="500.4" y="204.7" class="cp-sub">trim→250×370</text>
+<rect x="497.4" y="223.6" width="44.8" height="51.8" class="cp-piece"/>
+<text x="500.4" y="244.5" class="cp-lbl">Hylde 2 (H)</text>
+<text x="500.4" y="256.5" class="cp-sub">trim→250×370</text>
+<rect x="497.4" y="275.4" width="44.8" height="51.8" class="cp-piece"/>
+<text x="500.4" y="296.3" class="cp-lbl">Hylde 3 (H)</text>
+<text x="500.4" y="308.3" class="cp-sub">trim→250×370</text>
+<rect x="497.4" y="327.2" width="44.8" height="131.6" class="cp-spare"/>
+<text x="500.4" y="388.0" class="cp-lbl">reserve</text>
+<text x="500.4" y="400.0" class="cp-sub">940 mm</text>
 <text x="498.8" y="473.8" class="cp-bdlbl">Plade 4</text>
 <text x="498.8" y="485.8" class="cp-bdsub">bagplade + div H + hylder H</text>
 <rect x="587.2" y="120.0" width="86.8" height="338.8" class="cp-board"/>
-<line x1="632.0" y1="120.0" x2="632.0" y2="458.8" class="cp-rip"/>
-<rect x="587.2" y="120.0" width="44.8" height="53.2" class="cp-piece"/>
-<text x="590.2" y="141.6" class="cp-lbl">Toplåg (V)</text>
-<text x="590.2" y="153.6" class="cp-sub">320×380 mm</text>
-<rect x="587.2" y="173.2" width="44.8" height="53.2" class="cp-piece"/>
-<text x="590.2" y="194.8" class="cp-lbl">Bundplade (V)</text>
-<text x="590.2" y="206.8" class="cp-sub">320×380 mm</text>
-<rect x="587.2" y="226.4" width="44.8" height="53.2" class="cp-piece"/>
-<text x="590.2" y="248.0" class="cp-lbl">Toplåg (H)</text>
-<text x="590.2" y="260.0" class="cp-sub">320×380 mm</text>
-<rect x="587.2" y="279.6" width="44.8" height="53.2" class="cp-piece"/>
-<text x="590.2" y="301.2" class="cp-lbl">Bundplade (H)</text>
-<text x="590.2" y="313.2" class="cp-sub">320×380 mm</text>
-<rect x="587.2" y="332.8" width="44.8" height="126.0" class="cp-spare"/>
-<text x="590.2" y="390.8" class="cp-lbl">reserve</text>
-<text x="590.2" y="402.8" class="cp-sub">900 mm</text>
-<rect x="632.0" y="120.0" width="42.0" height="338.8" class="cp-spare"/>
-<text x="635.0" y="284.4" class="cp-lbl">reserve</text>
-<text x="635.0" y="296.4" class="cp-sub">300 mm</text>
+<line x1="629.2" y1="120.0" x2="629.2" y2="458.8" class="cp-rip"/>
+<rect x="587.2" y="120.0" width="42.0" height="58.8" class="cp-piece"/>
+<text x="590.2" y="144.4" class="cp-lbl">Toplåg (V)</text>
+<text x="590.2" y="156.4" class="cp-sub">300×420 mm</text>
+<rect x="587.2" y="178.8" width="42.0" height="58.8" class="cp-piece"/>
+<text x="590.2" y="203.2" class="cp-lbl">Bundplade (V)</text>
+<text x="590.2" y="215.2" class="cp-sub">300×420 mm</text>
+<rect x="587.2" y="237.6" width="42.0" height="58.8" class="cp-piece"/>
+<text x="590.2" y="262.0" class="cp-lbl">Toplåg (H)</text>
+<text x="590.2" y="274.0" class="cp-sub">300×420 mm</text>
+<rect x="587.2" y="296.4" width="42.0" height="58.8" class="cp-piece"/>
+<text x="590.2" y="320.8" class="cp-lbl">Bundplade (H)</text>
+<text x="590.2" y="332.8" class="cp-sub">300×420 mm</text>
+<rect x="587.2" y="355.2" width="42.0" height="103.6" class="cp-spare"/>
+<text x="590.2" y="402.0" class="cp-lbl">reserve</text>
+<text x="590.2" y="414.0" class="cp-sub">740 mm</text>
+<rect x="629.2" y="120.0" width="44.8" height="338.8" class="cp-spare"/>
+<text x="632.2" y="284.4" class="cp-lbl">reserve</text>
+<text x="632.2" y="296.4" class="cp-sub">320 mm</text>
 <text x="630.6" y="473.8" class="cp-bdlbl">Plade 5</text>
 <text x="630.6" y="485.8" class="cp-bdsub">toplåg + bund</text>
 <rect x="60.0" y="498.8" width="14" height="10" class="cp-piece"/>
