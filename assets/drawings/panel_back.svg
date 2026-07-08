@@ -10,14 +10,15 @@
 .label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
 .label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
 .label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
-.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+.subtitle { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
 .note { fill: #555; font-family: sans-serif; font-size: 10px; }
 .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
 <rect width="411" height="780" fill="white"/>
 <text x="205.5" y="20.0" class="title-text">Back Panel — Cut Drawing</text>
-<text x="205.5" y="38.0" class="note">320 × 1180 mm, 22 mm ply, square edges</text>
+<text x="205.5" y="38.0" class="subtitle">320 × 1180 mm, 22 mm ply, square edges</text>
 <rect x="80.0" y="110.0" width="160.0" height="590.0" class="panel"/>
 <line x1="80.0" y1="700.0" x2="80.0" y2="685.0" class="dim-line"/>
 <line x1="240.0" y1="700.0" x2="240.0" y2="685.0" class="dim-line"/>

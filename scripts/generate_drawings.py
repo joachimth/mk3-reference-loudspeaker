@@ -151,7 +151,8 @@ class SVG:
             .label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
             .label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
             .label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
-            .title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+            .title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+            .subtitle { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
             .note { fill: #555; font-family: sans-serif; font-size: 10px; }
             .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
             .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
@@ -272,7 +273,7 @@ def gen_front_baffle(p, outdir):
 
     # Title
     svg.text(dw / 2, 25, "Mk3 Front Baffle — Cutout & Hole Layout", "title-text")
-    svg.text(dw / 2, 42, f"Panel: {W:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply, R{rr:.0f} front edges", "note")
+    svg.text(dw / 2, 42, f"Panel: {W:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply, R{rr:.0f} front edges", "subtitle")
 
     # Convert z-height to SVG y (bottom of panel = bottom of SVG)
     def z_to_y(z):
@@ -374,7 +375,7 @@ def gen_side_panel(p, outdir):
     svg.rect(px, py, pw, ph, "panel")
 
     svg.text(dw / 2, 25, "Mk3 Side Panel — Woofer Cutout & Hole Layout", "title-text")
-    svg.text(dw / 2, 42, f"Panel: {D:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply (flat, no roundover)", "note")
+    svg.text(dw / 2, 42, f"Panel: {D:.0f} × {H:.0f} mm, {wall:.0f} mm birch ply (flat, no roundover)", "subtitle")
 
     def z_to_y(z):
         return py + ph - z * scale
@@ -451,7 +452,7 @@ def gen_cut_list(p, outdir):
 
     svg = SVG(total_w, total_h, "Cut List")
     svg.text(total_w / 2, 25, "Mk3 Cabinet — Panel Cut List", "title-text")
-    svg.text(total_w / 2, 42, f"Material: {wall:.0f} mm birch plywood  |  External: {W:.0f} × {D:.0f} × {H:.0f} mm", "note")
+    svg.text(total_w / 2, 42, f"Material: {wall:.0f} mm birch plywood  |  External: {W:.0f} × {D:.0f} × {H:.0f} mm", "subtitle")
 
     # Header
     svg.rect(15, header_h - 10, total_w - 30, row_h, "panel")
@@ -612,7 +613,7 @@ def _panel_base(svg, p, w_mm, h_mm, title, subtitle, scale=0.5, margin=80):
     ph = h_mm * scale
 
     svg.text(dw / 2, 20, title, "title-text")
-    svg.text(dw / 2, 38, subtitle, "note")
+    svg.text(dw / 2, 38, subtitle, "subtitle")
     return px, py, pw, ph, scale
 
 
