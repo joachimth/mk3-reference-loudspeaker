@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="380" viewBox="0 0 320 380">
+<style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
+.cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
+.rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
+.pilot { fill: #333; }
+.dim-line { stroke: #2980b9; stroke-width: 0.8; fill: none; }
+.dim-text { fill: #2980b9; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+.dim-text-v { fill: #2980b9; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+.label { fill: #333; font-family: sans-serif; font-size: 12px; text-anchor: middle; font-weight: bold; }
+.label-sm { fill: #555; font-family: sans-serif; font-size: 10px; text-anchor: middle; }
+.label-driver { fill: #c0392b; font-family: sans-serif; font-size: 11px; text-anchor: middle; font-weight: bold; }
+.title-text { fill: #222; font-family: sans-serif; font-size: 16px; font-weight: bold; }
+.note { fill: #555; font-family: sans-serif; font-size: 10px; }
+.arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
+.center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
+</style>
+<rect width="320" height="380" fill="white"/>
+<text x="160.0" y="20.0" class="title-text">Top Panel — Cut Drawing</text>
+<text x="160.0" y="38.0" class="note">320 × 380 mm, 22 mm ply, R19 front edge</text>
+<rect x="80.0" y="110.0" width="160.0" height="190.0" rx="9.5" ry="9.5" class="panel"/>
+<line x1="80.0" y1="300.0" x2="80.0" y2="285.0" class="dim-line"/>
+<line x1="240.0" y1="300.0" x2="240.0" y2="285.0" class="dim-line"/>
+<line x1="80.0" y1="285.0" x2="240.0" y2="285.0" class="dim-line"/>
+<polygon points="80.0,285.0 84.0,283.0 84.0,287.0" class="arrow"/>
+<polygon points="240.0,285.0 236.0,283.0 236.0,287.0" class="arrow"/>
+<text x="160.0" y="281.0" class="dim-text">W=320</text>
+<line x1="90.0" y1="110.0" x2="105.0" y2="110.0" class="dim-line"/>
+<line x1="90.0" y1="300.0" x2="105.0" y2="300.0" class="dim-line"/>
+<line x1="105.0" y1="110.0" x2="105.0" y2="300.0" class="dim-line"/>
+<polygon points="105.0,110.0 103.0,114.0 107.0,114.0" class="arrow"/>
+<polygon points="105.0,300.0 103.0,296.0 107.0,296.0" class="arrow"/>
+<text x="119.0" y="205.0" class="dim-text-v" transform="rotate(-90 119.0 205.0)">D=380</text>
+<text x="160.0" y="205.0" class="label-sm">No cutouts</text>
+</svg>

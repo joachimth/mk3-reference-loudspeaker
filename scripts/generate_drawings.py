@@ -580,8 +580,254 @@ def gen_assembly_dims(p, outdir):
 
 
 # ============================================================
-#  Main
+#  Per-panel cut drawings
 # ============================================================
+def _panel_base(svg, p, w_mm, h_mm, title, subtitle, scale=0.5, margin=80):
+    """Set up a standard panel drawing with title and return (px, py, pw, ph, scale)."""
+    dw = w_mm * scale + 2 * margin
+    dh = h_mm * scale + 2 * margin + 30
+    svg.w = int(dw)
+    svg.h = int(dh)
+    svg.elements = []
+
+    px = margin
+    py = margin + 30
+    pw = w_mm * scale
+    ph = h_mm * scale
+
+    svg.text(dw / 2, 20, title, "title-text")
+    svg.text(dw / 2, 38, subtitle, "note")
+    return px, py, pw, ph, scale
+
+
+def _dim_outer(svg, px, py, pw, ph, w_label, h_label):
+    """Add standard outer dimension lines to a panel."""
+    svg.dim_h(px, px + pw, py + ph + 10, offset=25, label=w_label)
+    svg.dim_v(py, py + ph, px, offset=25, label=h_label)
+
+
+def gen_panel_front_baffle(p, outdir):
+    """Front baffle as a standalone per-panel cut drawing."""
+    svg = SVG(100, 100)
+    px, py, pw, ph, sc = _panel_base(
+        svg, p, p["W"], p["H"],
+        "Front Baffle — Cut Drawing",
+        f"{p['W']:.0f} × {p['H']:.0f} mm, {p['wall']:.0f} mm ply, R{p['round_r']:.0f} front edges"
+    )
+    svg.rrect(px, py, pw, ph, p["round_r"] * sc, "panel")
+
+    cx = px + pw / 2
+    def z_to_y(z): return py + ph - z * sc
+
+    # Midrange
+    mid_cut_r = p["mid_cut_d"] / 2 * sc
+    mid_face_r = p["mid_face_d"] / 2 * sc
+    mid_y = z_to_y(p["mid_z"])
+    svg.circle(cx, mid_y, mid_face_r, "rebate")
+    svg.circle(cx, mid_y, mid_cut_r, "cutout")
+    svg.center_cross(cx, mid_y, 8)
+    for i in range(p["mid_n_holes"]):
+        a = math.radians(p["mid_bolt_offset"] + i * 360 / p["mid_n_holes"])
+        hx = cx + (p["mid_bcd"] / 2) * math.cos(a) * sc
+        hy = mid_y + (p["mid_bcd"] / 2) * math.sin(a) * sc
+        svg.circle(hx, hy, 1.5, "pilot")
+    svg.text(cx, mid_y - mid_face_r - 10,
+             f"Ø{p['mid_cut_d']:.1f} cut  Ø{p['mid_face_d']:.1f} rebate  {p['mid_n_holes']}×Ø{p['mid_hole_d']:.1f}",
+             "label-sm")
+
+    # Waveguide
+    tw_y = z_to_y(p["tw_z"])
+    wg_w = (p["wg_flange_w"] + 1.0) * sc
+    wg_h = (p["wg_flange_h"] + 1.0) * sc
+    svg.rrect(cx - wg_w / 2, tw_y - wg_h / 2, wg_w, wg_h, p["wg_flange_r"] * sc, "rebate")
+    for sx in [-1, 1]:
+        for sy in [-1, 1]:
+            hx = cx + sx * (p["wg_bcd_x"] / 2) * sc
+            hy = tw_y + sy * (p["wg_bcd_y"] / 2) * sc
+            svg.circle(hx, hy, 1.5, "pilot")
+    svg.center_cross(cx, tw_y, 8)
+    svg.text(cx, tw_y + wg_h / 2 + 12,
+             f"{p['wg_flange_w']:.0f}×{p['wg_flange_h']:.0f} recess  4×Ø3 pilot", "label-sm")
+
+    # Dimensions
+    _dim_outer(svg, px, py, pw, ph, f"W={p['W']:.0f}", f"H={p['H']:.0f}")
+    svg.dim_v(py + ph, mid_y, px - 12, offset=18, label=f"z={p['mid_z']:.0f}")
+    svg.dim_v(py + ph, tw_y, px - 12, offset=42, label=f"z={p['tw_z']:.0f}")
+    svg.line(cx, py - 5, cx, py + ph + 5, "center-line")
+
+    outpath = os.path.join(outdir, "panel_front_baffle.svg")
+    with open(outpath, "w") as f:
+        f.write(svg.render())
+    return outpath
+
+
+def gen_panel_back(p, outdir):
+    """Back panel — simple rectangle, no cutouts."""
+    svg = SVG(100, 100)
+    px, py, pw, ph, sc = _panel_base(
+        svg, p, p["W"], p["H"],
+        "Back Panel — Cut Drawing",
+        f"{p['W']:.0f} × {p['H']:.0f} mm, {p['wall']:.0f} mm ply, square edges"
+    )
+    svg.rect(px, py, pw, ph, "panel")
+    _dim_outer(svg, px, py, pw, ph, f"W={p['W']:.0f}", f"H={p['H']:.0f}")
+    svg.text(px + pw / 2, py + ph / 2, "No cutouts", "label-sm")
+
+    outpath = os.path.join(outdir, "panel_back.svg")
+    with open(outpath, "w") as f:
+        f.write(svg.render())
+    return outpath
+
+
+def gen_panel_side(p, outdir, side="left"):
+    """Side panel with woofer cutout. Left and right are identical (opposed mounting)."""
+    label = "Side Panel LEFT" if side == "left" else "Side Panel RIGHT"
+    filename = f"panel_side_{side}.svg"
+    svg = SVG(100, 100)
+    px, py, pw, ph, sc = _panel_base(
+        svg, p, p["D"], p["H"],
+        f"{label} — Cut Drawing",
+        f"{p['D']:.0f} × {p['H']:.0f} mm, {p['wall']:.0f} mm ply, woofer on {'left' if side=='left' else 'right (opposed)'} face"
+    )
+    svg.rect(px, py, pw, ph, "panel")
+
+    cx = px + pw / 2
+    def z_to_y(z): return py + ph - z * sc
+    wz = z_to_y(p["woofer_z"])
+
+    cut_r = p["woofer_cut_d"] / 2 * sc
+    frame_r = p["woofer_frame_d"] / 2 * sc
+    svg.circle(cx, wz, frame_r, "rebate")
+    svg.circle(cx, wz, cut_r, "cutout")
+    svg.center_cross(cx, wz, 10)
+    for i in range(p["woofer_n_holes"]):
+        a = math.radians(i * 360 / p["woofer_n_holes"])
+        hx = cx + (p["woofer_bcd"] / 2) * math.cos(a) * sc
+        hy = wz + (p["woofer_bcd"] / 2) * math.sin(a) * sc
+        svg.circle(hx, hy, 1.5, "pilot")
+    svg.text(cx, wz - frame_r - 10,
+             f"Ø{p['woofer_cut_d']:.0f} cut  Ø{p['woofer_frame_d']:.0f} frame  {p['woofer_n_holes']}×Ø{p['woofer_hole_d']:.1f} on Ø{p['woofer_bcd']:.0f} BCD",
+             "label-sm")
+
+    # Shelf brace positions
+    for sz in p["shelf_zs"]:
+        sy = z_to_y(sz)
+        svg.line(px + 5, sy, px + pw - 5, sy, "center-line")
+        svg.text(px + pw + 8, sy + 3, f"shelf z={sz:.0f}", "label-sm")
+
+    _dim_outer(svg, px, py, pw, ph, f"D={p['D']:.0f}", f"H={p['H']:.0f}")
+    svg.dim_v(py + ph, wz, px - 12, offset=18, label=f"z={p['woofer_z']:.0f}")
+    svg.line(cx, py - 5, cx, py + ph + 5, "center-line")
+
+    outpath = os.path.join(outdir, filename)
+    with open(outpath, "w") as f:
+        f.write(svg.render())
+    return outpath
+
+
+def gen_panel_top_bottom(p, outdir, which="top"):
+    """Top or bottom panel — rectangle with rounded front edge (top/bottom follow the front roundover)."""
+    label = f"{which.title()} Panel"
+    filename = f"panel_{which}.svg"
+    svg = SVG(100, 100)
+    px, py, pw, ph, sc = _panel_base(
+        svg, p, p["W"], p["D"],
+        f"{label} — Cut Drawing",
+        f"{p['W']:.0f} × {p['D']:.0f} mm, {p['wall']:.0f} mm ply, R{p['round_r']:.0f} front edge"
+    )
+    # Rounded front edge (one side)
+    svg.rrect(px, py, pw, ph, p["round_r"] * sc, "panel")
+    _dim_outer(svg, px, py, pw, ph, f"W={p['W']:.0f}", f"D={p['D']:.0f}")
+    svg.text(px + pw / 2, py + ph / 2, "No cutouts", "label-sm")
+
+    outpath = os.path.join(outdir, filename)
+    with open(outpath, "w") as f:
+        f.write(svg.render())
+    return outpath
+
+
+def gen_panel_divider(p, outdir):
+    """Divider plate — full-width tilted plate, cut to fit internal cavity."""
+    w_in = p["w_in"]
+    d_in = p["d_in"]
+    svg = SVG(100, 100)
+    px, py, pw, ph, sc = _panel_base(
+        svg, p, w_in, d_in,
+        "Divider Plate — Cut Drawing",
+        f"{w_in:.0f} × {d_in:.0f} mm, {p['wall']:.0f} mm ply, tilted {p['divider_tilt']:.0f}° in cabinet"
+    )
+    svg.rect(px, py, pw, ph, "panel")
+
+    # Show tilt annotation: front edge is low, rear edge is high
+    tilt_note = f"Front edge sits at z={p['mid_z'] - 80:.0f} mm, rises {p['divider_tilt']:.0f}° toward rear"
+    svg.text(px + pw / 2, py + ph / 2, "Cut to internal cavity shape\n(front edge follows rounded side walls)", "label-sm")
+    svg.text(px + pw / 2, py + ph + 25, tilt_note, "note")
+
+    _dim_outer(svg, px, py, pw, ph, f"int W={w_in:.0f}", f"int D={d_in:.0f}")
+
+    # Tilt indicator line
+    mid_y = py + ph / 2
+    svg.line(px + 10, mid_y + 15, px + pw - 10, mid_y - 15, "center-line")
+    svg.text(px + pw / 2, mid_y - 20, f"tilt {p['divider_tilt']:.0f}°", "label-sm")
+
+    outpath = os.path.join(outdir, "panel_divider.svg")
+    with open(outpath, "w") as f:
+        f.write(svg.render())
+    return outpath
+
+
+def gen_panel_shelf_brace(p, outdir):
+    """Shelf brace — ring shape (outer = internal cavity, inner = outer - rim width)."""
+    w_in = p["w_in"]
+    d_in = p["d_in"]
+    rim = p["shelf_rim"]
+    rr = p["round_r"]
+    svg = SVG(100, 100)
+
+    # Need to show outer ring + inner cutout
+    scale = 0.5
+    margin = 80
+    dw = w_in * scale + 2 * margin
+    dh = d_in * scale + 2 * margin + 50
+    svg.w = int(dw)
+    svg.h = int(dh)
+    svg.elements = []
+
+    svg.text(dw / 2, 20, "Shelf Brace ×3 — Cut Drawing", "title-text")
+    svg.text(dw / 2, 38,
+             f"Outer: {w_in:.0f} × {d_in:.0f} mm (internal cavity)  Rim: {rim:.0f} mm  "
+             f"Thickness: {p['wall']:.0f} mm  Qty: 3 (z={[int(z) for z in p['shelf_zs']]})",
+             "note")
+
+    px = margin
+    py = margin + 30
+    pw = w_in * scale
+    ph = d_in * scale
+
+    # Outer ring (rounded corners matching internal cavity)
+    svg.rrect(px, py, pw, ph, rr * scale, "panel")
+    # Inner cutout (inset by rim)
+    inner_w = (w_in - 2 * rim) * scale
+    inner_h = (d_in - 2 * rim) * scale
+    inner_x = px + rim * scale
+    inner_y = py + rim * scale
+    svg.rrect(inner_x, inner_y, inner_w, inner_h, max(0, (rr - rim)) * scale, "cutout")
+
+    svg.text(px + pw / 2, py + ph / 2, f"Open centre\n{w_in - 2*rim:.0f} × {d_in - 2*rim:.0f} mm", "label-sm")
+
+    # Dimensions
+    svg.dim_h(px, px + pw, py + ph + 10, offset=25, label=f"outer {w_in:.0f}")
+    svg.dim_v(py, py + ph, px, offset=25, label=f"outer {d_in:.0f}")
+    svg.dim_h(inner_x, inner_x + inner_w, py + ph + 35, offset=20,
+              label=f"inner {w_in - 2*rim:.0f}")
+
+    outpath = os.path.join(outdir, "panel_shelf_brace.svg")
+    with open(outpath, "w") as f:
+        f.write(svg.render())
+    return outpath
+
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Generate cabinet dimensioned drawings (SVG)")
@@ -597,15 +843,23 @@ def main():
     print()
 
     files = []
+    # Overview drawings
     files.append(gen_front_baffle(p, args.outdir))
-    print(f"  ✓ {os.path.basename(files[-1])}")
     files.append(gen_side_panel(p, args.outdir))
-    print(f"  ✓ {os.path.basename(files[-1])}")
     files.append(gen_cut_list(p, args.outdir))
-    print(f"  ✓ {os.path.basename(files[-1])}")
     files.append(gen_assembly_dims(p, args.outdir))
-    print(f"  ✓ {os.path.basename(files[-1])}")
+    # Per-panel cut drawings
+    files.append(gen_panel_front_baffle(p, args.outdir))
+    files.append(gen_panel_back(p, args.outdir))
+    files.append(gen_panel_side(p, args.outdir, "left"))
+    files.append(gen_panel_side(p, args.outdir, "right"))
+    files.append(gen_panel_top_bottom(p, args.outdir, "top"))
+    files.append(gen_panel_top_bottom(p, args.outdir, "bottom"))
+    files.append(gen_panel_divider(p, args.outdir))
+    files.append(gen_panel_shelf_brace(p, args.outdir))
 
+    for f in files:
+        print(f"  ✓ {os.path.basename(f)}")
     print(f"\n{len(files)} SVG files written to {args.outdir}/")
 
 
