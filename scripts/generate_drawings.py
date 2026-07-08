@@ -3,29 +3,45 @@
 Generate dimensioned SVG drawings for the Mk3 cabinet.
 
 Parses cabinet.scad + driver SCAD files for all dimensions, then produces:
-  1. front_baffle.svg   — front baffle with mid + tweeter cutouts, rebate, pilot holes
-  2. side_panel.svg     — side panel with woofer cutout + pilot holes
-  3. cut_list.svg       — panel cut list with dimensions + quantities
-  4. assembly_dims.svg  — assembly measurement drawing (heights, spacing, edges)
-
-All drawings are 2D orthogonal projections with dimension lines, labels,
-and hole-position coordinates. SVG can be opened in any browser or
-converted to PDF/PNG with rsvg-convert or Inkscape.
+  - 12 SVG drawings (overview + per-panel cut drawings)
+  - 12 individual PDF files (one per drawing, via rsvg-convert)
+  - mk3-cabinet-drawings.pdf (all drawings in one PDF, logical order)
+  - index.html (interactive browser viewer with navigation + download)
 
 Usage:
-    python3 generate_drawings.py                    # write SVGs to assets/drawings/
+    python3 generate_drawings.py                    # write to assets/drawings/
     python3 generate_drawings.py --outdir /tmp/     # custom output
+    python3 generate_drawings.py --no-pdf           # skip PDF generation
 """
 import os
 import re
 import math
+import json
 import textwrap
+import subprocess
 
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_ROOT = os.path.dirname(_SCRIPT_DIR)
 _CAB_SCAD = os.path.join(_REPO_ROOT, "cad", "cabinet.scad")
 _WG_SCAD = os.path.join(_REPO_ROOT, "cad", "waveguide.scad")
 _MID_SCAD = os.path.join(_REPO_ROOT, "cad", "midrange.scad")
+
+# Drawing metadata — defines order in combined PDF and HTML viewer
+DRAWING_INFO = [
+    # (stem, display name, category, description)
+    ("assembly_dims",      "Assembly Drawing",    "Overview",  "Overall dimensions, driver heights, internal layout"),
+    ("cut_list",           "Cut List",            "Overview",  "All panels with dimensions and quantities"),
+    ("front_baffle",       "Front Baffle",        "Overview",  "Full baffle with mid + waveguide cutouts and pilot holes"),
+    ("side_panel",         "Side Panel",          "Overview",  "Side panel with woofer cutout and shelf brace positions"),
+    ("panel_front_baffle", "Front Baffle",        "Per Panel", "Cut drawing: R19 edges, mid + waveguide cutouts"),
+    ("panel_back",         "Back Panel",          "Per Panel", "Cut drawing: square edges, no cutouts"),
+    ("panel_side_left",    "Side Panel L",        "Per Panel", "Cut drawing: woofer on left face"),
+    ("panel_side_right",   "Side Panel R",        "Per Panel", "Cut drawing: woofer on right face (opposed)"),
+    ("panel_top",          "Top Panel",           "Per Panel", "Cut drawing: R19 front edge"),
+    ("panel_bottom",       "Bottom Panel",        "Per Panel", "Cut drawing: R19 front edge"),
+    ("panel_divider",      "Divider Plate",       "Per Panel", "Cut drawing: tilted 19° in cabinet"),
+    ("panel_shelf_brace",  "Shelf Brace ×3",      "Per Panel", "Cut drawing: ring shelf, 3 pieces at z=160/330/730"),
+]
 
 
 # ============================================================
@@ -875,11 +891,322 @@ def gen_panel_shelf_brace(p, outdir):
 
 
 
+# ============================================================
+#  PDF generation
+# ============================================================
+def gen_pdfs(outdir):
+    """Generate individual PDFs and one combined PDF using rsvg-convert."""
+    try:
+        subprocess.run(["rsvg-convert", "--version"], capture_output=True, check=True)
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        print("  ! rsvg-convert not found — skipping PDF generation")
+        return []
+
+    pdf_files = []
+
+    # Individual PDFs
+    for stem, name, _cat, _desc in DRAWING_INFO:
+        svg = os.path.join(outdir, f"{stem}.svg")
+        pdf = os.path.join(outdir, f"{stem}.pdf")
+        if not os.path.exists(svg):
+            continue
+        subprocess.run(
+            ["rsvg-convert", "-f", "pdf", "-o", pdf, svg],
+            check=True, capture_output=True
+        )
+        pdf_files.append(pdf)
+        print(f"  ✓ {stem}.pdf")
+
+    # Combined multi-page PDF (in DRAWING_INFO order)
+    svgs_ordered = [
+        os.path.join(outdir, f"{stem}.svg")
+        for stem, *_ in DRAWING_INFO
+        if os.path.exists(os.path.join(outdir, f"{stem}.svg"))
+    ]
+    combined = os.path.join(outdir, "mk3-cabinet-drawings.pdf")
+    subprocess.run(
+        ["rsvg-convert", "-f", "pdf", "-o", combined] + svgs_ordered,
+        check=True, capture_output=True
+    )
+    print(f"  ✓ mk3-cabinet-drawings.pdf  ({len(svgs_ordered)} pages)")
+    return pdf_files + [combined]
+
+
+# ============================================================
+#  HTML viewer
+# ============================================================
+def gen_html_viewer(outdir):
+    """Generate index.html — a self-contained interactive drawing viewer."""
+
+    drawings_js = json.dumps([
+        {"stem": stem, "name": name, "category": cat, "desc": desc,
+         "svg": f"{stem}.svg", "pdf": f"{stem}.pdf"}
+        for stem, name, cat, desc in DRAWING_INFO
+    ], indent=2)
+
+    html = f"""\
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Mk3 Cabinet Drawings</title>
+  <style>
+    *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    :root {{
+      --sidebar-w: 230px;
+      --accent:    #2980b9;
+      --sidebar-bg:#1c2028;
+      --sidebar-fg:#c8c8c0;
+      --hover-bg:  #2a3040;
+      --bg:        #f4f4f0;
+      --header-bg: #ffffff;
+      --border:    #e0e0d8;
+    }}
+    body {{
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex; height: 100dvh; overflow: hidden;
+      background: var(--bg); color: #222;
+    }}
+
+    /* ---- Sidebar ---- */
+    #sidebar {{
+      width: var(--sidebar-w); background: var(--sidebar-bg);
+      color: var(--sidebar-fg); display: flex; flex-direction: column;
+      flex-shrink: 0; overflow: hidden;
+    }}
+    .sb-head {{
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }}
+    .sb-head h1 {{
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: #fff;
+    }}
+    .sb-head p {{
+      font-size: 11px; color: rgba(200,200,190,.55); margin-top: 3px;
+    }}
+    #nav {{ flex: 1; overflow-y: auto; padding: 8px 0; }}
+    .group-label {{
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: rgba(200,200,190,.4);
+      padding: 12px 16px 4px;
+    }}
+    .nav-item {{
+      display: flex; align-items: flex-start; gap: 9px;
+      padding: 7px 14px; cursor: pointer; text-decoration: none;
+      color: var(--sidebar-fg); border-left: 2px solid transparent;
+      transition: background .1s;
+    }}
+    .nav-item:hover {{ background: var(--hover-bg); }}
+    .nav-item.active {{
+      background: rgba(41,128,185,.18);
+      border-left-color: var(--accent); color: #fff;
+    }}
+    .nav-icon {{ width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; opacity: .5; }}
+    .nav-item.active .nav-icon {{ opacity: 1; }}
+    .nav-name {{ font-size: 13px; line-height: 1.3; }}
+    .nav-desc {{ font-size: 10px; color: rgba(200,200,190,.45); margin-top: 1px; }}
+    .sb-foot {{
+      padding: 12px 16px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }}
+    .btn-all {{
+      display: block; background: var(--accent); color: #fff;
+      text-decoration: none; font-size: 12px; font-weight: 600;
+      padding: 8px 12px; border-radius: 5px; text-align: center;
+      transition: background .1s;
+    }}
+    .btn-all:hover {{ background: #3498db; }}
+
+    /* ---- Main ---- */
+    #main {{ flex: 1; display: flex; flex-direction: column; overflow: hidden; }}
+    #toolbar {{
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 20px; background: var(--header-bg);
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }}
+    .t-title {{ flex: 1; }}
+    .t-title h2 {{ font-size: 15px; font-weight: 600; }}
+    .t-title p  {{ font-size: 11px; color: #888; margin-top: 1px; }}
+    .t-btns {{ display: flex; gap: 7px; align-items: center; }}
+    .btn {{
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 6px 11px; border-radius: 5px; font-size: 12px;
+      font-weight: 600; text-decoration: none; cursor: pointer;
+      border: 1px solid; transition: all .1s; background: white;
+    }}
+    .btn-nav  {{ color: #555; border-color: #ddd; padding: 6px 9px; }}
+    .btn-nav:hover  {{ background: #f0f0f0; }}
+    .btn-nav:disabled {{ opacity: .3; cursor: default; pointer-events: none; }}
+    .btn-svg  {{ color: #555; border-color: #ddd; }}
+    .btn-svg:hover  {{ background: #f0f0f0; }}
+    .btn-pdf  {{ background: #e74c3c; color: #fff; border-color: #c0392b; }}
+    .btn-pdf:hover  {{ background: #c0392b; }}
+    .sep {{ width: 1px; height: 22px; background: #e0e0e0; margin: 0 2px; }}
+
+    /* ---- Viewer ---- */
+    #viewer {{
+      flex: 1; overflow: auto; display: flex;
+      align-items: flex-start; justify-content: center;
+      padding: 24px;
+    }}
+    #viewer img {{
+      max-width: 100%; height: auto;
+      background: white; border-radius: 4px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.1);
+    }}
+
+    /* ---- Mobile ---- */
+    #burger {{
+      display: none; position: fixed; top: 10px; left: 10px; z-index: 200;
+      background: var(--sidebar-bg); color: #fff; border: none;
+      padding: 7px 10px; border-radius: 5px; font-size: 17px; cursor: pointer;
+    }}
+    #overlay {{
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: rgba(0,0,0,.4);
+    }}
+    @media (max-width: 640px) {{
+      #sidebar {{
+        position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+        transform: translateX(-100%); transition: transform .2s;
+      }}
+      #sidebar.open {{ transform: translateX(0); }}
+      #burger {{ display: block; }}
+      #toolbar {{ padding-left: 52px; }}
+      #overlay.show {{ display: block; }}
+    }}
+  </style>
+</head>
+<body>
+
+<button id="burger" onclick="openSidebar()">☰</button>
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<nav id="sidebar">
+  <div class="sb-head">
+    <h1>Mk3 Drawings</h1>
+    <p>Cabinet dimensioned drawings</p>
+  </div>
+  <div id="nav"></div>
+  <div class="sb-foot">
+    <a class="btn-all" href="mk3-cabinet-drawings.pdf" download>⬇ Download all (PDF)</a>
+  </div>
+</nav>
+
+<div id="main">
+  <div id="toolbar">
+    <div class="t-title">
+      <h2 id="t-name">—</h2>
+      <p  id="t-desc">—</p>
+    </div>
+    <div class="t-btns">
+      <button class="btn btn-nav" id="btn-prev" onclick="go(-1)" title="Forrige (←)">&#8592;</button>
+      <button class="btn btn-nav" id="btn-next" onclick="go(1)"  title="Næste (→)">&#8594;</button>
+      <div class="sep"></div>
+      <a class="btn btn-svg" id="dl-svg" href="" download>⬇ SVG</a>
+      <a class="btn btn-pdf" id="dl-pdf" href="" download>⬇ PDF</a>
+    </div>
+  </div>
+  <div id="viewer">
+    <img id="img" src="" alt="">
+  </div>
+</div>
+
+<script>
+const D = {drawings_js};
+let cur = 0;
+
+function buildNav() {{
+  const nav = document.getElementById('nav');
+  let lastCat = null;
+  D.forEach((d, i) => {{
+    if (d.category !== lastCat) {{
+      const g = document.createElement('div');
+      g.className = 'group-label';
+      g.textContent = d.category;
+      nav.appendChild(g);
+      lastCat = d.category;
+    }}
+    const a = document.createElement('a');
+    a.className = 'nav-item';
+    a.id = 'ni' + i;
+    a.href = '#';
+    a.onclick = e => {{ e.preventDefault(); select(i); }};
+    a.innerHTML = `
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="4" y="3" width="14" height="18" rx="1"/>
+        <line x1="7" y1="8"  x2="15" y2="8"/>
+        <line x1="7" y1="12" x2="13" y2="12"/>
+        <line x1="7" y1="16" x2="11" y2="16"/>
+      </svg>
+      <div>
+        <div class="nav-name">${{d.name}}</div>
+        <div class="nav-desc">${{d.desc}}</div>
+      </div>`;
+    nav.appendChild(a);
+  }});
+}}
+
+function select(i) {{
+  cur = i;
+  const d = D[i];
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  const ni = document.getElementById('ni' + i);
+  if (ni) {{ ni.classList.add('active'); ni.scrollIntoView({{block:'nearest'}}); }}
+  document.getElementById('t-name').textContent = d.name;
+  document.getElementById('t-desc').textContent = d.desc;
+  document.getElementById('dl-svg').href     = d.svg;
+  document.getElementById('dl-svg').download = d.svg;
+  document.getElementById('dl-pdf').href     = d.pdf;
+  document.getElementById('dl-pdf').download = d.pdf;
+  document.getElementById('btn-prev').disabled = i === 0;
+  document.getElementById('btn-next').disabled = i === D.length - 1;
+  const img = document.getElementById('img');
+  img.src = d.svg;
+  img.alt = d.name;
+  document.getElementById('viewer').scrollTop = 0;
+  closeSidebar();
+}}
+
+function go(dir) {{
+  const n = cur + dir;
+  if (n >= 0 && n < D.length) select(n);
+}}
+
+function openSidebar()  {{ document.getElementById('sidebar').classList.add('open');
+                           document.getElementById('overlay').classList.add('show'); }}
+function closeSidebar() {{ document.getElementById('sidebar').classList.remove('open');
+                           document.getElementById('overlay').classList.remove('show'); }}
+
+document.addEventListener('keydown', e => {{
+  if (e.key === 'ArrowLeft')  go(-1);
+  if (e.key === 'ArrowRight') go(1);
+}});
+
+buildNav();
+select(0);
+</script>
+</body>
+</html>
+"""
+
+    outpath = os.path.join(outdir, "index.html")
+    with open(outpath, "w") as f:
+        f.write(html)
+    return outpath
+
+
+# ============================================================
+#  Main
+# ============================================================
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="Generate cabinet dimensioned drawings (SVG)")
+    parser = argparse.ArgumentParser(description="Generate cabinet drawings (SVG + PDF + HTML viewer)")
     parser.add_argument("--outdir", default=os.path.join(_REPO_ROOT, "assets", "drawings"),
-                        help="Output directory for SVG files")
+                        help="Output directory")
+    parser.add_argument("--no-pdf", action="store_true", help="Skip PDF generation")
     args = parser.parse_args()
 
     os.makedirs(args.outdir, exist_ok=True)
@@ -889,25 +1216,34 @@ def main():
     print(f"Mid z={p['mid_z']:.0f}, TW z={p['tw_z']:.0f}, Woofer z={p['woofer_z']:.0f}, cc={p['cc']:.0f}")
     print()
 
-    files = []
-    # Overview drawings
-    files.append(gen_front_baffle(p, args.outdir))
-    files.append(gen_side_panel(p, args.outdir))
-    files.append(gen_cut_list(p, args.outdir))
-    files.append(gen_assembly_dims(p, args.outdir))
+    svg_files = []
+    print("SVG drawings:")
+    # Overview drawings (in DRAWING_INFO order — assembly_dims, cut_list, front_baffle, side_panel)
+    svg_files.append(gen_assembly_dims(p, args.outdir));   print(f"  ✓ assembly_dims.svg")
+    svg_files.append(gen_cut_list(p, args.outdir));        print(f"  ✓ cut_list.svg")
+    svg_files.append(gen_front_baffle(p, args.outdir));    print(f"  ✓ front_baffle.svg")
+    svg_files.append(gen_side_panel(p, args.outdir));      print(f"  ✓ side_panel.svg")
     # Per-panel cut drawings
-    files.append(gen_panel_front_baffle(p, args.outdir))
-    files.append(gen_panel_back(p, args.outdir))
-    files.append(gen_panel_side(p, args.outdir, "left"))
-    files.append(gen_panel_side(p, args.outdir, "right"))
-    files.append(gen_panel_top_bottom(p, args.outdir, "top"))
-    files.append(gen_panel_top_bottom(p, args.outdir, "bottom"))
-    files.append(gen_panel_divider(p, args.outdir))
-    files.append(gen_panel_shelf_brace(p, args.outdir))
+    svg_files.append(gen_panel_front_baffle(p, args.outdir));     print(f"  ✓ panel_front_baffle.svg")
+    svg_files.append(gen_panel_back(p, args.outdir));              print(f"  ✓ panel_back.svg")
+    svg_files.append(gen_panel_side(p, args.outdir, "left"));      print(f"  ✓ panel_side_left.svg")
+    svg_files.append(gen_panel_side(p, args.outdir, "right"));     print(f"  ✓ panel_side_right.svg")
+    svg_files.append(gen_panel_top_bottom(p, args.outdir, "top")); print(f"  ✓ panel_top.svg")
+    svg_files.append(gen_panel_top_bottom(p, args.outdir, "bottom")); print(f"  ✓ panel_bottom.svg")
+    svg_files.append(gen_panel_divider(p, args.outdir));           print(f"  ✓ panel_divider.svg")
+    svg_files.append(gen_panel_shelf_brace(p, args.outdir));       print(f"  ✓ panel_shelf_brace.svg")
 
-    for f in files:
-        print(f"  ✓ {os.path.basename(f)}")
-    print(f"\n{len(files)} SVG files written to {args.outdir}/")
+    print(f"\n{len(svg_files)} SVG files written.")
+
+    if not args.no_pdf:
+        print("\nPDF export:")
+        gen_pdfs(args.outdir)
+
+    print("\nHTML viewer:")
+    viewer = gen_html_viewer(args.outdir)
+    print(f"  ✓ {os.path.basename(viewer)}")
+
+    print(f"\nAll output in: {args.outdir}/")
 
 
 if __name__ == "__main__":

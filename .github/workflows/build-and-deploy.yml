@@ -92,7 +92,7 @@ jobs:
       - name: Install OpenSCAD
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y openscad xvfb
+          sudo apt-get install -y openscad xvfb librsvg2-bin
 
       - name: Export STLs
         run: |
@@ -287,7 +287,7 @@ jobs:
   
           ls -lh ../assets/renders/driver_*.png
 
-      - name: Generate cabinet drawings (SVG)
+      - name: Generate cabinet drawings (SVG + PDF + HTML viewer)
         run: |
           python3 scripts/generate_drawings.py
           ls -lh assets/drawings/
