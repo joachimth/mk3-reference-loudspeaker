@@ -139,8 +139,8 @@ def load_params():
 #  SVG helpers
 # ============================================================
 def _est_text_width(text, font_size=16):
-    """Estimate rendered text width in pixels (rough: 0.55 × font_size × len)."""
-    return len(text) * font_size * 0.55
+    """Estimate rendered text width in pixels (sans-serif ~0.75 × font_size × len)."""
+    return len(text) * font_size * 0.75
 
 def _min_width(title, subtitle="", margin=80, extra=40):
     """Calculate minimum SVG width to fit title + subtitle without clipping."""
@@ -348,8 +348,7 @@ def gen_front_baffle(p, outdir):
         svg.circle(hx, hy, 1.5, "pilot")
 
     svg.text(cx, mid_y - mid_face_r - 12,
-             f"Midrange 18W/4424G00  Ø{p['mid_cut_d']:.1f} cutout, Ø{p['mid_face_d']:.1f} rebate, "
-             f"{p['mid_n_holes']}×Ø{p['mid_hole_d']:.1f} on Ø{p['mid_bcd']:.0f} BCD",
+             f"18W/4424G00  Ø{p['mid_cut_d']:.0f} cut  Ø{p['mid_face_d']:.0f} rebate  {p['mid_n_holes']}×Ø{p['mid_hole_d']:.1f}",
              "label-driver")
 
     # --- Waveguide/tweeter (below mid) ---
@@ -370,8 +369,7 @@ def gen_front_baffle(p, outdir):
 
     svg.center_cross(cx, tw_y, 8)
     svg.text(cx, tw_y + wg_h / 2 + 14,
-             f"Waveguide SB26STAC  {p['wg_flange_w']:.0f}×{p['wg_flange_h']:.0f} mm recess, "
-             f"R{p['wg_flange_r']:.0f}, 4×Ø3 pilot on {p['wg_bcd_x']:.0f}×{p['wg_bcd_y']:.0f} BCD",
+             f"SB26STAC  {p['wg_flange_w']:.0f}×{p['wg_flange_h']:.0f} recess  4×Ø3 pilot",
              "label-driver")
 
     # --- Dimensions ---
@@ -394,7 +392,7 @@ def gen_front_baffle(p, outdir):
 
     # Legend
     ly = py + ph + 50
-    svg.text(margin, ly, "---  Red dashed: cutout    Orange dashed: rebate/recess    Filled dots: pilot holes (Ø3)  ---", "note")
+    svg.text_wrap(margin, ly, "Red dashed: cutout    Orange: rebate    Dots: pilot Ø3", "note")
 
     outpath = os.path.join(outdir, "front_baffle.svg")
     with open(outpath, "w") as f:
@@ -446,13 +444,12 @@ def gen_side_panel(p, outdir):
         svg.circle(hx, hy, 1.5, "pilot")
 
     svg.text(cx, wz - frame_r - 12,
-             f"GRS 12SW-4HE  Ø{p['woofer_cut_d']:.0f} cutout, Ø{p['woofer_frame_d']:.0f} frame, "
-             f"{p['woofer_n_holes']}×Ø{p['woofer_hole_d']:.1f} on Ø{p['woofer_bcd']:.0f} BCD",
+             f"GRS 12SW-4HE  Ø{p['woofer_cut_d']:.0f} cut  Ø{p['woofer_frame_d']:.0f} frame  {p['woofer_n_holes']}×Ø{p['woofer_hole_d']:.1f}",
              "label-driver")
 
     # Note: second woofer is on the OPPOSITE side panel
     svg.text(cx, wz + frame_r + 20,
-             "(Opposed push-push: 2nd woofer on opposite side, same height)", "label-sm")
+             "(2nd woofer opposite side, same z)", "label-sm")
 
     # Dimensions
     svg.dim_h(px, px + pw, py + ph + 20, offset=35, label=f"{D:.0f}")
@@ -524,11 +521,11 @@ def gen_cut_list(p, outdir):
 
     # Summary
     sy = header_h + row_h + len(panels) * row_h + 20
-    svg.text(20, sy, f"Total panels: {len(panels)}  |  Total panel area: {total_area/1e6:.2f} m²  "
+    svg.text_wrap(20, sy, f"Total panels: {len(panels)}  |  Total panel area: {total_area/1e6:.2f} m²  "
              f"|  Plywood volume: {total_area * wall / 1e9:.2f} L", "note")
-    svg.text(20, sy + 18, "NOTE: Divider plate and shelf braces are cut to fit the internal cavity "
+    svg.text_wrap(20, sy + 18, "NOTE: Divider plate and shelf braces are cut to fit the internal cavity "
              f"({p['w_in']:.0f} × {p['d_in']:.0f} mm). Measure actual internal dims before cutting.", "note")
-    svg.text(20, sy + 34, "All dimensions from cabinet.scad (single source of truth). "
+    svg.text_wrap(20, sy + 34, "All dimensions from cabinet.scad (single source of truth). "
              "Verify driver cutouts against datasheet before cutting.", "note")
 
     outpath = os.path.join(outdir, "cut_list.svg")
@@ -628,13 +625,13 @@ def gen_assembly_dims(p, outdir):
 
     # Notes at bottom
     ny = sy + sh + 50
-    svg.text(margin / 2, ny,
+    svg.text_wrap(15, ny,
              f"Internal: {p['w_in']:.0f} × {p['d_in']:.0f} × {p['h_in']:.0f} mm  |  "
              f"Wall: {wall:.0f} mm  |  Roundover: R{rr:.0f}", "note")
-    svg.text(margin / 2, ny + 16,
+    svg.text_wrap(15, ny + 16,
              f"Driver heights: MID z={p['mid_z']:.0f}  WG/TW z={p['tw_z']:.0f}  "
              f"Woofer z={p['woofer_z']:.0f}  |  C-C mid/tw: {p['cc']:.0f} mm", "note")
-    svg.text(margin / 2, ny + 32,
+    svg.text_wrap(15, ny + 32,
              f"Shelf braces at z={[int(z) for z in p['shelf_zs']]}  |  "
              f"Divider tilt: {p['divider_tilt']:.0f}°", "note")
 
@@ -825,15 +822,16 @@ def gen_panel_divider(p, outdir):
 
     # Show tilt annotation: front edge is low, rear edge is high
     tilt_note = f"Front edge sits at z={p['mid_z'] - 80:.0f} mm, rises {p['divider_tilt']:.0f}° toward rear"
-    svg.text(px + pw / 2, py + ph / 2, "Cut to internal cavity shape\n(front edge follows rounded side walls)", "label-sm")
-    svg.text(px + pw / 2, py + ph + 25, tilt_note, "note")
+    svg.text_wrap(15, py + ph / 2 - 6, "Cut to internal cavity shape", "label-sm")
+    svg.text_wrap(15, py + ph / 2 + 8, "(front edge follows rounded side walls)", "label-sm")
+    svg.text_wrap(15, py + ph + 25, tilt_note, "note")
 
     _dim_outer(svg, px, py, pw, ph, f"int W={w_in:.0f}", f"int D={d_in:.0f}")
 
     # Tilt indicator line
     mid_y = py + ph / 2
     svg.line(px + 10, mid_y + 15, px + pw - 10, mid_y - 15, "center-line")
-    svg.text(px + pw / 2, mid_y - 20, f"tilt {p['divider_tilt']:.0f}°", "label-sm")
+    svg.text_wrap(15, mid_y - 20, f"tilt {p['divider_tilt']:.0f}°", "label-sm")
 
     outpath = os.path.join(outdir, "panel_divider.svg")
     with open(outpath, "w") as f:
@@ -877,7 +875,8 @@ def gen_panel_shelf_brace(p, outdir):
     inner_y = py + rim * scale
     svg.rrect(inner_x, inner_y, inner_w, inner_h, max(0, (rr - rim)) * scale, "cutout")
 
-    svg.text(px + pw / 2, py + ph / 2, f"Open centre\n{w_in - 2*rim:.0f} × {d_in - 2*rim:.0f} mm", "label-sm")
+    svg.text(px + pw / 2, py + ph / 2 - 6, "Open centre", "label-sm")
+    svg.text(px + pw / 2, py + ph / 2 + 8, f"{w_in - 2*rim:.0f} × {d_in - 2*rim:.0f} mm", "label-sm")
 
     # Dimensions
     svg.dim_h(px, px + pw, py + ph + 10, offset=25, label=f"outer {w_in:.0f}")
@@ -922,7 +921,7 @@ def gen_pine_cutplan(p, outdir):
                 f"Indvendigt: {w_in:.0f}×{d_in:.0f}×{h_in:.0f} mm")
 
     content_w = 3 * bw + 2 * gap + 2 * margin
-    title_w   = len(title) * 16 * 0.68 + 30  # 0.68 accounts for wide chars (×, —)
+    title_w   = _est_text_width(title, 16) + 30
     dw = int(max(content_w, title_w))
     dh = int(bh + hdr + margin + foot)
 

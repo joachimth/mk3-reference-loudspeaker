@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="595" height="613" viewBox="0 0 595 613">
+<svg xmlns="http://www.w3.org/2000/svg" width="654" height="613" viewBox="0 0 654 613">
 <style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
 .cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
 .rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
@@ -24,7 +24,7 @@
 .cp-bdlbl { fill: #444; font-family: sans-serif; font-size: 10px; text-anchor: middle; font-weight: bold; }
 .cp-bdsub { fill: #666; font-family: sans-serif; font-size: 9px; text-anchor: middle; }
 </style>
-<rect width="595" height="613" fill="white"/>
+<rect width="654" height="613" fill="white"/>
 <text x="15.0" y="20.0" class="title-text">Skæreplan — 3× 25×620×2420 mm massiv fyr (Jem &amp; Fix)</text>
 <text x="15.0" y="38.0" class="subtitle">Vægtykkelse: 25 mm  |  Udvendigt: 320×380×1180 mm  |  Indvendigt: 270×330×1130 mm</text>
 <rect x="70.0" y="130.0" width="111.6" height="435.6" class="cp-board"/>

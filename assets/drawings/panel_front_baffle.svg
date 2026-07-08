@@ -17,8 +17,10 @@
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
 <rect width="320" height="780" fill="white"/>
-<text x="15.0" y="20.0" class="title-text">Front Baffle — Cut Drawing</text>
-<text x="15.0" y="38.0" class="subtitle">320 × 1180 mm, 22 mm ply, R19 front edges</text>
+<text x="15.0" y="20.0" class="title-text">Front Baffle — Cut</text>
+<text x="15.0" y="38.0" class="title-text">Drawing</text>
+<text x="15.0" y="38.0" class="subtitle">320 × 1180 mm, 22 mm ply, R19 front</text>
+<text x="15.0" y="51.0" class="subtitle">edges</text>
 <rect x="80.0" y="110.0" width="160.0" height="590.0" rx="9.5" ry="9.5" class="panel"/>
 <circle cx="160.0" cy="167.5" r="44.8" class="rebate"/>
 <circle cx="160.0" cy="167.5" r="36.3" class="cutout"/>

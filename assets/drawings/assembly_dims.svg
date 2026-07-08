@@ -17,7 +17,8 @@
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
 <rect width="506.0" height="593.0" fill="white"/>
-<text x="15.0" y="25.0" class="title-text">Mk3 Cabinet — Assembly Measurement Drawing</text>
+<text x="15.0" y="25.0" class="title-text">Mk3 Cabinet — Assembly Measurement</text>
+<text x="15.0" y="43.0" class="title-text">Drawing</text>
 <rect x="50.0" y="60.0" width="112.0" height="413.0" rx="6.6" ry="6.6" class="panel"/>
 <text x="106.0" y="52.0" class="label">FRONT</text>
 <circle cx="106.0" cy="100.2" r="31.4" class="cutout"/>
@@ -81,7 +82,8 @@
 <polygon points="296.0,473.0 294.0,477.0 298.0,477.0" class="arrow"/>
 <polygon points="296.0,291.0 294.0,287.0 298.0,287.0" class="arrow"/>
 <text x="310.0" y="382.0" class="dim-text-v" transform="rotate(-90 310.0 382.0)">520</text>
-<text x="50.0" y="523.0" class="note">Internal: 276 × 336 × 1136 mm  |  Wall: 22 mm  |  Roundover: R19</text>
-<text x="50.0" y="539.0" class="note">Driver heights: MID z=1065  WG/TW z=901  Woofer z=520  |  C-C mid/tw: 164 mm</text>
-<text x="50.0" y="555.0" class="note">Shelf braces at z=[160, 330, 730]  |  Divider tilt: 19°</text>
+<text x="15.0" y="523.0" class="note">Internal: 276 × 336 × 1136 mm | Wall: 22 mm | Roundover: R19</text>
+<text x="15.0" y="539.0" class="note">Driver heights: MID z=1065 WG/TW z=901 Woofer z=520 | C-C</text>
+<text x="15.0" y="552.0" class="note">mid/tw: 164 mm</text>
+<text x="15.0" y="555.0" class="note">Shelf braces at z=[160, 330, 730]  |  Divider tilt: 19°</text>
 </svg>

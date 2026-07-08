@@ -12,6 +12,8 @@ on:
       - 'cad/**.scad'
       - 'assets/datasheets/**'
       - 'assets/cad/**'
+      - 'scripts/**.py'
+      - 'PARTS.md'
       - 'SIMULATIONS.md'
       - 'README.md'
       - 'docs/**'
@@ -350,7 +352,7 @@ jobs:
           # Build a static HTML site from README.md and docs
           pip install --quiet markdown pymdown-extensions
 
-          mkdir -p _site/docs _site/simulations/plots _site/assets/renders _site/assets/datasheets
+          mkdir -p _site/docs _site/simulations/plots _site/assets/renders _site/assets/datasheets _site/assets/drawings
 
           python3 << 'PYEOF'
           import markdown
@@ -486,6 +488,10 @@ jobs:
           cp assets/renders/*.png _site/assets/renders/ 2>/dev/null || true
           cp assets/datasheets/*.pdf _site/assets/datasheets/ 2>/dev/null || true
           cp assets/datasheets/*.csv _site/assets/datasheets/ 2>/dev/null || true
+          # Cabinet drawings (SVG, PDF, HTML viewer)
+          cp assets/drawings/*.svg _site/assets/drawings/ 2>/dev/null || true
+          cp assets/drawings/*.pdf _site/assets/drawings/ 2>/dev/null || true
+          cp assets/drawings/index.html _site/assets/drawings/ 2>/dev/null || true
           # 3D reference files
           mkdir -p _site/assets/cad
           cp assets/cad/*.step assets/cad/*.STEP assets/cad/*.stp assets/cad/*.STP assets/cad/*.stl assets/cad/*.STL _site/assets/cad/ 2>/dev/null || true

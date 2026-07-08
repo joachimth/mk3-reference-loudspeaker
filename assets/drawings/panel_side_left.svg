@@ -17,8 +17,10 @@
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
 <rect width="350" height="780" fill="white"/>
-<text x="15.0" y="20.0" class="title-text">Side Panel LEFT — Cut Drawing</text>
-<text x="15.0" y="38.0" class="subtitle">380 × 1180 mm, 22 mm ply, woofer on left face</text>
+<text x="15.0" y="20.0" class="title-text">Side Panel LEFT — Cut</text>
+<text x="15.0" y="38.0" class="title-text">Drawing</text>
+<text x="15.0" y="38.0" class="subtitle">380 × 1180 mm, 22 mm ply, woofer on left</text>
+<text x="15.0" y="51.0" class="subtitle">face</text>
 <rect x="80.0" y="110.0" width="190.0" height="590.0" class="panel"/>
 <circle cx="175.0" cy="440.0" r="83.0" class="rebate"/>
 <circle cx="175.0" cy="440.0" r="71.0" class="cutout"/>
