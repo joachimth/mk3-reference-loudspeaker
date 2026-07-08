@@ -41,7 +41,7 @@ DRAWING_INFO = [
     ("panel_bottom",       "Bottom Panel",        "Per Panel", "Cut drawing: R19 front edge"),
     ("panel_divider",      "Divider Plate",       "Per Panel", "Cut drawing: tilted 19° in cabinet"),
     ("panel_shelf_brace",  "Shelf Brace ×3",      "Per Panel", "Cut drawing: ring shelf, 3 pieces at z=160/330/730"),
-    ("pine_cutplan",       "Pine Board Cut Plan", "Alt. Material", "3× 25×620×2420 mm massiv fyr (Jem & Fix) — rip + crosscut layout"),
+    ("pine_cutplan",       "Pine Board Cut Plan", "Alt. Material", "5× 25×620×2420 mm massiv fyr (Jem & Fix) — ET PAR (venstre + højre)"),
 ]
 
 
@@ -896,8 +896,8 @@ def gen_panel_shelf_brace(p, outdir):
 # ============================================================
 def gen_pine_cutplan(p, outdir):
     """
-    Visual cut plan for 3x Jem & Fix solid pine boards (25x620x2420 mm).
-    Shows the 3 boards in portrait orientation with rip lines and piece labels.
+    Visual cut plan for solid pine boards (25x620x2420 mm, Jem & Fix).
+    Shows 5 boards for a PAIR of cabinets (left + right speaker).
     Wall thickness is hardcoded at 25 mm (pine board thickness).
     """
     WALL  = 25          # pine board thickness
@@ -907,20 +907,20 @@ def gen_pine_cutplan(p, outdir):
     d_in  = D - 2 * WALL   # 330
     h_in  = H - 2 * WALL   # 1130
 
-    scale  = 0.18
-    margin = 70
-    gap    = 55   # horizontal gap between boards
+    scale  = 0.14
+    margin = 60
+    gap    = 45   # horizontal gap between boards
     hdr    = 60   # vertical header (title + subtitle)
-    foot   = 48   # space below boards for labels + legend
+    foot   = 55   # space below boards for labels + legend
 
-    bw = BW * scale   # ~93 px
-    bh = BH * scale   # ~363 px
+    bw = BW * scale   # ~87 px
+    bh = BH * scale   # ~339 px
 
-    title    = "Skæreplan — 3× 25×620×2420 mm massiv fyr (Jem & Fix)"
-    subtitle = (f"Vægtykkelse: {WALL} mm  |  Udvendigt: {W:.0f}×{D:.0f}×{H:.0f} mm  |  "
-                f"Indvendigt: {w_in:.0f}×{d_in:.0f}×{h_in:.0f} mm")
+    title    = "Skæreplan — massiv fyr 25 mm (Jem & Fix) — ET PAR"
+    subtitle = (f"5× 620×2420×25 mm  |  320×380×1180 mm  |  2 kabinetter (V+H)")
 
-    content_w = 3 * bw + 2 * gap + 2 * margin
+    n_boards = 5
+    content_w = n_boards * bw + (n_boards - 1) * gap + 2 * margin
     title_w   = _est_text_width(title, 16) + 30
     dw = int(max(content_w, title_w))
     dh = int(bh + hdr + margin + foot)
@@ -956,12 +956,10 @@ def gen_pine_cutplan(p, outdir):
     def piece(bidx, x_mm, y_mm, w_mm, h_mm, label, sub="", cls="cp-piece"):
         x = px(bidx, x_mm);  y = py(y_mm)
         w = w_mm * scale;    h = h_mm * scale
-        # Clip piece rect to board width to avoid overdraw
         svg.elements.append(
             f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" class="{cls}"/>')
         cy = y + h / 2
         off = 5 if sub else 0
-        # Left-aligned at x+3px so text stays within the piece
         lbl_x = x + 3
         svg.elements.append(
             f'<text x="{lbl_x:.1f}" y="{cy - off:.1f}" class="cp-lbl">{label}</text>')
@@ -974,66 +972,100 @@ def gen_pine_cutplan(p, outdir):
         svg.elements.append(
             f'<line x1="{x:.1f}" y1="{py(0):.1f}" x2="{x:.1f}" y2="{py(BH):.1f}" class="cp-rip"/>')
 
-    def board_labels(bidx, nr, rip_mm):
+    def board_labels(bidx, nr, rip_mm, desc=""):
         cx = bx(bidx) + bw / 2
         y  = py(BH)
         svg.elements.append(
             f'<text x="{cx:.1f}" y="{y+15:.1f}" class="cp-bdlbl">Plade {nr}</text>')
         svg.elements.append(
-            f'<text x="{cx:.1f}" y="{y+27:.1f}" class="cp-bdsub">'
-            f'{BW}×{BH}×{WALL} mm  |  rip @ {rip_mm} mm</text>')
+            f'<text x="{cx:.1f}" y="{y+27:.1f}" class="cp-bdsub">{desc}</text>' if desc else
+            f'<text x="{cx:.1f}" y="{y+27:.1f}" class="cp-bdsub">rip @ {rip_mm} mm</text>')
+
+    def draw_board(bidx):
+        svg.elements.append(
+            f'<rect x="{bx(bidx):.1f}" y="{py(0):.1f}" width="{bw:.1f}" height="{bh:.1f}" class="cp-board"/>')
 
     # ----------------------------------------------------------------
-    # Board 1 — side panels
-    # Rip at 380 mm: strip A=380 (Side L + Side R + waste), strip B=240 (spare)
+    # Board 1 — Side L (cabinet 1) + Side L (cabinet 2)
+    # Rip at 380 mm: strip A=380 (2 sides + waste), strip B=240 (spare)
     # ----------------------------------------------------------------
     B = 0
-    svg.elements.append(
-        f'<rect x="{bx(B):.1f}" y="{py(0):.1f}" width="{bw:.1f}" height="{bh:.1f}" class="cp-board"/>')
+    draw_board(B)
     rip(B, 380)
-    piece(B,   0,    0, 380, 1180, "Side L",   f"380×1180 mm")
-    piece(B,   0, 1180, 380, 1180, "Side R",   f"380×1180 mm")
-    piece(B,   0, 2360, 380,   60, "spild",    "60 mm",       cls="cp-spare")
-    piece(B, 380,    0, 240, BH,   "reserve",  "240 mm",      cls="cp-spare")
-    board_labels(B, 1, 380)
+    piece(B,   0,    0, 380, 1180, "Side L (V)",  f"380×1180 mm")
+    piece(B,   0, 1180, 380, 1180, "Side L (H)",  f"380×1180 mm")
+    piece(B,   0, 2360, 380,   60, "spild",       "60 mm",       cls="cp-spare")
+    piece(B, 380,    0, 240, BH,   "reserve",     "240 mm",      cls="cp-spare")
+    board_labels(B, 1, 380, "sider V")
 
     # ----------------------------------------------------------------
-    # Board 2 — front + back + divider + shelf braces
-    # Rip at 320 mm: strip A=320 (Front + Back + waste), strip B=300 (Divider + 3×Shelf + spare)
+    # Board 2 — Side R (cabinet 1) + Side R (cabinet 2)
+    # Same layout as board 1
     # ----------------------------------------------------------------
     B = 1
-    svg.elements.append(
-        f'<rect x="{bx(B):.1f}" y="{py(0):.1f}" width="{bw:.1f}" height="{bh:.1f}" class="cp-board"/>')
-    rip(B, 320)
-    piece(B,   0,    0, 320, 1180, "Front",    f"320×1180 mm")
-    piece(B,   0, 1180, 320, 1180, "Bagplade", f"320×1180 mm")
-    piece(B,   0, 2360, 320,   60, "spild",    "60 mm",       cls="cp-spare")
-    piece(B, 320,    0, 300,  330, "Divider",  f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320,  330, 300,  330, "Hylde 1",  f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320,  660, 300,  330, "Hylde 2",  f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320,  990, 300,  330, "Hylde 3",  f"trim→{w_in:.0f}×{d_in:.0f}")
-    piece(B, 320, 1320, 300, 1100, "reserve",  "1100 mm",     cls="cp-spare")
-    board_labels(B, 2, 320)
+    draw_board(B)
+    rip(B, 380)
+    piece(B,   0,    0, 380, 1180, "Side R (V)",  f"380×1180 mm")
+    piece(B,   0, 1180, 380, 1180, "Side R (H)",  f"380×1180 mm")
+    piece(B,   0, 2360, 380,   60, "spild",       "60 mm",       cls="cp-spare")
+    piece(B, 380,    0, 240, BH,   "reserve",     "240 mm",      cls="cp-spare")
+    board_labels(B, 2, 380, "sider H")
 
     # ----------------------------------------------------------------
-    # Board 3 — top + bottom
-    # Rip at 320 mm: strip A=320 (Top + Bottom + large spare), strip B=300 (spare)
+    # Board 3 — Front (V+H) + Divider (V) + 3× Shelf (V)
+    # Rip at 320 mm: strip A=320 (2 fronts + waste), strip B=300 (divider + 3 shelves + spare)
     # ----------------------------------------------------------------
     B = 2
-    svg.elements.append(
-        f'<rect x="{bx(B):.1f}" y="{py(0):.1f}" width="{bw:.1f}" height="{bh:.1f}" class="cp-board"/>')
+    draw_board(B)
     rip(B, 320)
-    piece(B,   0,   0, 320,  380, "Toplåg",    f"320×380 mm")
-    piece(B,   0, 380, 320,  380, "Bundplade", f"320×380 mm")
-    piece(B,   0, 760, 320, 1660, "reserve",   "1660 mm",     cls="cp-spare")
-    piece(B, 320,   0, 300,   BH, "reserve",   "300 mm",      cls="cp-spare")
-    board_labels(B, 3, 320)
+    piece(B,   0,    0, 320, 1180, "Front (V)",   f"320×1180 mm")
+    piece(B,   0, 1180, 320, 1180, "Front (H)",   f"320×1180 mm")
+    piece(B,   0, 2360, 320,   60, "spild",       "60 mm",       cls="cp-spare")
+    piece(B, 320,    0, 300,  336, "Divider (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320,  336, 300,  336, "Hylde 1 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320,  672, 300,  336, "Hylde 2 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320, 1008, 300,  336, "Hylde 3 (V)", f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320, 1344, 300, 1076, "reserve",     "1076 mm",     cls="cp-spare")
+    board_labels(B, 3, 320, "front + div V + hylder V")
+
+    # ----------------------------------------------------------------
+    # Board 4 — Back (V+H) + Divider (H) + 3× Shelf (H)
+    # Same strip layout as board 3
+    # ----------------------------------------------------------------
+    B = 3
+    draw_board(B)
+    rip(B, 320)
+    piece(B,   0,    0, 320, 1180, "Bagplade (V)", f"320×1180 mm")
+    piece(B,   0, 1180, 320, 1180, "Bagplade (H)", f"320×1180 mm")
+    piece(B,   0, 2360, 320,   60, "spild",        "60 mm",       cls="cp-spare")
+    piece(B, 320,    0, 300,  336, "Divider (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320,  336, 300,  336, "Hylde 1 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320,  672, 300,  336, "Hylde 2 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320, 1008, 300,  336, "Hylde 3 (H)",  f"trim→{w_in:.0f}×{d_in:.0f}")
+    piece(B, 320, 1344, 300, 1076, "reserve",      "1076 mm",     cls="cp-spare")
+    board_labels(B, 4, 320, "bagplade + div H + hylder H")
+
+    # ----------------------------------------------------------------
+    # Board 5 — Top + Bottom for BOTH cabinets
+    # Rip at 320 mm: strip A=320 (4 pieces), strip B=300 (spare)
+    # 4× 380mm = 1520mm of 2420mm — fits easily
+    # ----------------------------------------------------------------
+    B = 4
+    draw_board(B)
+    rip(B, 320)
+    piece(B,   0,    0, 320,  380, "Toplåg (V)",   f"320×380 mm")
+    piece(B,   0,  380, 320,  380, "Bundplade (V)", f"320×380 mm")
+    piece(B,   0,  760, 320,  380, "Toplåg (H)",   f"320×380 mm")
+    piece(B,   0, 1140, 320,  380, "Bundplade (H)", f"320×380 mm")
+    piece(B,   0, 1520, 320,  900, "reserve",      "900 mm",      cls="cp-spare")
+    piece(B, 320,    0, 300,   BH, "reserve",      "300 mm",      cls="cp-spare")
+    board_labels(B, 5, 320, "toplåg + bund")
 
     # ----------------------------------------------------------------
     # Legend
     # ----------------------------------------------------------------
     lx = margin
-    ly = py(BH) + 34
+    ly = py(BH) + 40
     legend = [
         ("cp-piece", "Bruges"),
         ("cp-spare", "Reserve/spild"),

@@ -330,7 +330,7 @@ Alternative material cut plan:
 
 | Drawing | SVG | PDF | Description |
 |---|---|---|---|
-| Pine board cut plan | [SVG](assets/drawings/pine_cutplan.svg) | [PDF](assets/drawings/pine_cutplan.pdf) | 3× 25×620×2420 mm massiv fyr (Jem & Fix) — rip + crosscut layout |
+| Pine board cut plan | [SVG](assets/drawings/pine_cutplan.svg) | [PDF](assets/drawings/pine_cutplan.pdf) | 5× 25×620×2420 mm massiv fyr (Jem & Fix) — ET PAR (venstre + højre højttaler) |
 
 Generator: `scripts/generate_drawings.py` (parses SCAD source files, no hardcoded dimensions).
 
