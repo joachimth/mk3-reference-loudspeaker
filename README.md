@@ -13,7 +13,7 @@ A DIY active 3-way reference loudspeaker, inspired by Genelec 8361, Dutch & Dutc
 | Woofers | 2 × GRS 12SW-4HE (push-push, side-mounted) |
 | Midrange | ScanSpeak 18W/4424G00 (top of baffle, `cad/midrange.scad`) |
 | Tweeter | SB Acoustics SB26STAC-C000-4 in custom waveguide (below the midrange) |
-| Cabinet | 320 × 380 × 1180 mm, 22 mm birch plywood |
+| Cabinet | 320 × 400 × 1180 mm, 22 mm birch plywood |
 | Front edges | R19 vertical roundovers |
 | Bass volume | ~75 L net sealed (below divider plate) |
 | Mid chamber | ~13 L net sealed (top section; datasheet rec. 13 L) |
@@ -213,7 +213,7 @@ Baffle step is modeled with separate effective radii for side-mounted woofers vs
 
 | Driver | Mount | Baffle dimension | Effective radius | f_bs |
 |---|---|---|---|---|
-| 2× GRS 12SW-4HE | Side panel | D = 380 mm | 190 mm | 287 Hz |
+| 2× GRS 12SW-4HE | Side panel | D = 400 mm | 200 mm | 272 Hz |
 | 18W/4424G00 | Front baffle | W = 320 mm | 160 mm | 341 Hz |
 | SB26STAC-C000-4 | Front baffle | W = 320 mm | 160 mm | 341 Hz |
 
@@ -358,7 +358,7 @@ for the waveguide, and precise screw patterns.
 | ![Fit rear](assets/renders/baffel_insert_fit_rear.png) | ![Section](assets/renders/baffel_insert_section.png) | |
 | Fitted rear view | Half-section | |
 
-The insert is 285 x 380 x 15 mm with backside ribbing for stiffness. Print
+The insert is 285 x 400 x 15 mm with backside ribbing for stiffness. Print
 flat (backside down). `vis="fit"` shows the insert with the 18W/4424G00
 midrange and SB26STAC tweeter in place for visual verification.
 

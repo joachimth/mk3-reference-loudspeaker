@@ -72,16 +72,16 @@
 <text x="326.6" y="461.6" class="cp-sub">60 mm</text>
 <rect x="368.4" y="120.0" width="42.0" height="47.0" class="cp-piece"/>
 <text x="371.4" y="138.5" class="cp-lbl">Divider (V)</text>
-<text x="371.4" y="150.5" class="cp-sub">trim→270×330</text>
+<text x="371.4" y="150.5" class="cp-sub">trim→270×350</text>
 <rect x="368.4" y="167.0" width="42.0" height="47.0" class="cp-piece"/>
 <text x="371.4" y="185.6" class="cp-lbl">Hylde 1 (V)</text>
-<text x="371.4" y="197.6" class="cp-sub">trim→270×330</text>
+<text x="371.4" y="197.6" class="cp-sub">trim→270×350</text>
 <rect x="368.4" y="214.1" width="42.0" height="47.0" class="cp-piece"/>
 <text x="371.4" y="232.6" class="cp-lbl">Hylde 2 (V)</text>
-<text x="371.4" y="244.6" class="cp-sub">trim→270×330</text>
+<text x="371.4" y="244.6" class="cp-sub">trim→270×350</text>
 <rect x="368.4" y="261.1" width="42.0" height="47.0" class="cp-piece"/>
 <text x="371.4" y="279.6" class="cp-lbl">Hylde 3 (V)</text>
-<text x="371.4" y="291.6" class="cp-sub">trim→270×330</text>
+<text x="371.4" y="291.6" class="cp-sub">trim→270×350</text>
 <rect x="368.4" y="308.2" width="42.0" height="150.6" class="cp-spare"/>
 <text x="371.4" y="378.5" class="cp-lbl">reserve</text>
 <text x="371.4" y="390.5" class="cp-sub">1076 mm</text>
@@ -100,16 +100,16 @@
 <text x="458.4" y="461.6" class="cp-sub">60 mm</text>
 <rect x="500.2" y="120.0" width="42.0" height="47.0" class="cp-piece"/>
 <text x="503.2" y="138.5" class="cp-lbl">Divider (H)</text>
-<text x="503.2" y="150.5" class="cp-sub">trim→270×330</text>
+<text x="503.2" y="150.5" class="cp-sub">trim→270×350</text>
 <rect x="500.2" y="167.0" width="42.0" height="47.0" class="cp-piece"/>
 <text x="503.2" y="185.6" class="cp-lbl">Hylde 1 (H)</text>
-<text x="503.2" y="197.6" class="cp-sub">trim→270×330</text>
+<text x="503.2" y="197.6" class="cp-sub">trim→270×350</text>
 <rect x="500.2" y="214.1" width="42.0" height="47.0" class="cp-piece"/>
 <text x="503.2" y="232.6" class="cp-lbl">Hylde 2 (H)</text>
-<text x="503.2" y="244.6" class="cp-sub">trim→270×330</text>
+<text x="503.2" y="244.6" class="cp-sub">trim→270×350</text>
 <rect x="500.2" y="261.1" width="42.0" height="47.0" class="cp-piece"/>
 <text x="503.2" y="279.6" class="cp-lbl">Hylde 3 (H)</text>
-<text x="503.2" y="291.6" class="cp-sub">trim→270×330</text>
+<text x="503.2" y="291.6" class="cp-sub">trim→270×350</text>
 <rect x="500.2" y="308.2" width="42.0" height="150.6" class="cp-spare"/>
 <text x="503.2" y="378.5" class="cp-lbl">reserve</text>
 <text x="503.2" y="390.5" class="cp-sub">1076 mm</text>

@@ -43,7 +43,7 @@ use <SB26STAC-C000-4.scad>
 // ---- External shell -------------------------------------------------
 W       = 320;   // external width  [mm] (276 internal — two opposed 136 mm
                  //   deep 12SW-4HE do not fit the older 300 mm spec)
-D       = 380;   // external depth  [mm]
+D       = 400;   // external depth  [mm]
 H       = 1180;  // external height [mm]
 wall    = 22;    // panel thickness [mm] (22 mm birch plywood)
 round_r = 19;    // front vertical roundover radius [mm] (R50 leaves no

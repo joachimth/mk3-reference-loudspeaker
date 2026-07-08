@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="506.0" height="593.0" viewBox="0 0 506.0 593.0">
+<svg xmlns="http://www.w3.org/2000/svg" width="520.0" height="593.0" viewBox="0 0 520.0 593.0">
 <style>.panel { fill: #f5f0e0; stroke: #333; stroke-width: 1.5; }
 .cutout { fill: none; stroke: #c0392b; stroke-width: 1.2; stroke-dasharray: 6,3; }
 .rebate { fill: #faebe0; stroke: #e67e22; stroke-width: 1.0; stroke-dasharray: 4,2; }
@@ -16,7 +16,7 @@
 .arrow { stroke: #2980b9; stroke-width: 0.8; fill: #2980b9; }
 .center-line { stroke: #888; stroke-width: 0.5; stroke-dasharray: 8,3,2,3; }
 </style>
-<rect width="506.0" height="593.0" fill="white"/>
+<rect width="520.0" height="593.0" fill="white"/>
 <text x="15.0" y="25.0" class="title-text">Mk3 Cabinet — Assembly Measurement</text>
 <text x="15.0" y="43.0" class="title-text">Drawing</text>
 <rect x="50.0" y="60.0" width="112.0" height="413.0" rx="6.6" ry="6.6" class="panel"/>
@@ -55,35 +55,35 @@
 <polygon points="175.3,100.2 173.3,104.2 177.3,104.2" class="arrow"/>
 <polygon points="175.3,157.7 173.3,153.7 177.3,153.7" class="arrow"/>
 <text x="189.3" y="129.0" class="dim-text-v" transform="rotate(-90 189.3 129.0)">cc=164</text>
-<rect x="273.0" y="60.0" width="133.0" height="413.0" class="panel"/>
-<text x="339.5" y="52.0" class="label">SIDE</text>
-<circle cx="339.5" cy="291.0" r="49.7" class="cutout"/>
-<text x="339.5" y="233.3" class="label-sm">12SW</text>
-<line x1="276.0" y1="128.2" x2="403.0" y2="87.8" class="center-line"/>
-<text x="414.0" y="108.0" class="label-sm">divider 19°</text>
-<line x1="278.0" y1="417.0" x2="401.0" y2="417.0" class="center-line"/>
-<line x1="278.0" y1="357.5" x2="401.0" y2="357.5" class="center-line"/>
-<line x1="278.0" y1="217.5" x2="401.0" y2="217.5" class="center-line"/>
-<line x1="273.0" y1="478.0" x2="273.0" y2="463.0" class="dim-line"/>
-<line x1="406.0" y1="478.0" x2="406.0" y2="463.0" class="dim-line"/>
-<line x1="273.0" y1="463.0" x2="406.0" y2="463.0" class="dim-line"/>
-<polygon points="273.0,463.0 277.0,461.0 277.0,465.0" class="arrow"/>
-<polygon points="406.0,463.0 402.0,461.0 402.0,465.0" class="arrow"/>
-<text x="339.5" y="459.0" class="dim-text">D=380</text>
-<line x1="278.0" y1="60.0" x2="293.0" y2="60.0" class="dim-line"/>
-<line x1="278.0" y1="473.0" x2="293.0" y2="473.0" class="dim-line"/>
-<line x1="293.0" y1="60.0" x2="293.0" y2="473.0" class="dim-line"/>
-<polygon points="293.0,60.0 291.0,64.0 295.0,64.0" class="arrow"/>
-<polygon points="293.0,473.0 291.0,469.0 295.0,469.0" class="arrow"/>
-<text x="307.0" y="266.5" class="dim-text-v" transform="rotate(-90 307.0 266.5)">H=1180</text>
-<line x1="281.0" y1="473.0" x2="296.0" y2="473.0" class="dim-line"/>
-<line x1="281.0" y1="291.0" x2="296.0" y2="291.0" class="dim-line"/>
-<line x1="296.0" y1="473.0" x2="296.0" y2="291.0" class="dim-line"/>
-<polygon points="296.0,473.0 294.0,477.0 298.0,477.0" class="arrow"/>
-<polygon points="296.0,291.0 294.0,287.0 298.0,287.0" class="arrow"/>
-<text x="310.0" y="382.0" class="dim-text-v" transform="rotate(-90 310.0 382.0)">520</text>
-<text x="15.0" y="523.0" class="note">Internal: 276 × 336 × 1136 mm | Wall: 22 mm | Roundover: R19</text>
-<text x="15.0" y="539.0" class="note">Driver heights: MID z=1065 WG/TW z=901 Woofer z=520 | C-C</text>
-<text x="15.0" y="552.0" class="note">mid/tw: 164 mm</text>
+<rect x="280.0" y="60.0" width="140.0" height="413.0" class="panel"/>
+<text x="350.0" y="52.0" class="label">SIDE</text>
+<circle cx="350.0" cy="291.0" r="49.7" class="cutout"/>
+<text x="350.0" y="233.3" class="label-sm">12SW</text>
+<line x1="283.0" y1="128.2" x2="417.0" y2="85.3" class="center-line"/>
+<text x="428.0" y="106.8" class="label-sm">divider 19°</text>
+<line x1="285.0" y1="417.0" x2="415.0" y2="417.0" class="center-line"/>
+<line x1="285.0" y1="357.5" x2="415.0" y2="357.5" class="center-line"/>
+<line x1="285.0" y1="217.5" x2="415.0" y2="217.5" class="center-line"/>
+<line x1="280.0" y1="478.0" x2="280.0" y2="463.0" class="dim-line"/>
+<line x1="420.0" y1="478.0" x2="420.0" y2="463.0" class="dim-line"/>
+<line x1="280.0" y1="463.0" x2="420.0" y2="463.0" class="dim-line"/>
+<polygon points="280.0,463.0 284.0,461.0 284.0,465.0" class="arrow"/>
+<polygon points="420.0,463.0 416.0,461.0 416.0,465.0" class="arrow"/>
+<text x="350.0" y="459.0" class="dim-text">D=400</text>
+<line x1="285.0" y1="60.0" x2="300.0" y2="60.0" class="dim-line"/>
+<line x1="285.0" y1="473.0" x2="300.0" y2="473.0" class="dim-line"/>
+<line x1="300.0" y1="60.0" x2="300.0" y2="473.0" class="dim-line"/>
+<polygon points="300.0,60.0 298.0,64.0 302.0,64.0" class="arrow"/>
+<polygon points="300.0,473.0 298.0,469.0 302.0,469.0" class="arrow"/>
+<text x="314.0" y="266.5" class="dim-text-v" transform="rotate(-90 314.0 266.5)">H=1180</text>
+<line x1="288.0" y1="473.0" x2="303.0" y2="473.0" class="dim-line"/>
+<line x1="288.0" y1="291.0" x2="303.0" y2="291.0" class="dim-line"/>
+<line x1="303.0" y1="473.0" x2="303.0" y2="291.0" class="dim-line"/>
+<polygon points="303.0,473.0 301.0,477.0 305.0,477.0" class="arrow"/>
+<polygon points="303.0,291.0 301.0,287.0 305.0,287.0" class="arrow"/>
+<text x="317.0" y="382.0" class="dim-text-v" transform="rotate(-90 317.0 382.0)">520</text>
+<text x="15.0" y="523.0" class="note">Internal: 276 × 356 × 1136 mm  |  Wall: 22 mm  |  Roundover: R19</text>
+<text x="15.0" y="539.0" class="note">Driver heights: MID z=1065 WG/TW z=901 Woofer z=520 | C-C mid/tw:</text>
+<text x="15.0" y="552.0" class="note">164 mm</text>
 <text x="15.0" y="555.0" class="note">Shelf braces at z=[160, 330, 730]  |  Divider tilt: 19°</text>
 </svg>

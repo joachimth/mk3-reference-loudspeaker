@@ -126,7 +126,7 @@ def baffle_step_db_side(f):
 
     At low frequencies: -6 dB (4π radiation, full space).
     At high frequencies:  0 dB (2π radiation, half space into side).
-    Transition at f_bs_side ≈ 287 Hz (D=380mm).
+    Transition at f_bs_side ≈ 287 Hz (D=400mm).
     """
     fbs = F_BS_SIDE
     x = 1j * f / fbs

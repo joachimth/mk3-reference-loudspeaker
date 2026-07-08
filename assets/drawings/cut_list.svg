@@ -18,7 +18,7 @@
 </style>
 <rect width="780" height="460" fill="white"/>
 <text x="15.0" y="25.0" class="title-text">Mk3 Cabinet — Panel Cut List</text>
-<text x="15.0" y="44.0" class="subtitle">Material: 22 mm birch plywood  |  External: 320 × 380 × 1180 mm</text>
+<text x="15.0" y="44.0" class="subtitle">Material: 22 mm birch plywood  |  External: 320 × 400 × 1180 mm</text>
 <rect x="15.0" y="50.0" width="750.0" height="32.0" class="panel"/>
 <text x="40.0" y="68.0" class="label-sm">Panel</text>
 <text x="190.0" y="68.0" class="label-sm">Width (mm)</text>
@@ -43,13 +43,13 @@
 <rect x="15.0" y="156.0" width="750.0" height="32.0" class=""/>
 <rect x="15" y="156.0" width="750" height="32" fill="#f8f8f4"/>
 <text x="20.0" y="176.0" class="label-sm">Side panel L</text>
-<text x="190.0" y="176.0" class="label-sm">380</text>
+<text x="190.0" y="176.0" class="label-sm">400</text>
 <text x="280.0" y="176.0" class="label-sm">1180</text>
 <text x="360.0" y="176.0" class="label-sm">1</text>
 <text x="440.0" y="176.0" class="label-sm">22</text>
 <text x="620.0" y="176.0" class="label-sm">Woofer cutout Ø284, 8×Ø5.5 on Ø319 BCD</text>
 <text x="20.0" y="208.0" class="label-sm">Side panel R</text>
-<text x="190.0" y="208.0" class="label-sm">380</text>
+<text x="190.0" y="208.0" class="label-sm">400</text>
 <text x="280.0" y="208.0" class="label-sm">1180</text>
 <text x="360.0" y="208.0" class="label-sm">1</text>
 <text x="440.0" y="208.0" class="label-sm">22</text>
@@ -58,13 +58,13 @@
 <rect x="15" y="220.0" width="750" height="32" fill="#f8f8f4"/>
 <text x="20.0" y="240.0" class="label-sm">Top panel</text>
 <text x="190.0" y="240.0" class="label-sm">320</text>
-<text x="280.0" y="240.0" class="label-sm">380</text>
+<text x="280.0" y="240.0" class="label-sm">400</text>
 <text x="360.0" y="240.0" class="label-sm">1</text>
 <text x="440.0" y="240.0" class="label-sm">22</text>
 <text x="620.0" y="240.0" class="label-sm">Square edges</text>
 <text x="20.0" y="272.0" class="label-sm">Bottom panel</text>
 <text x="190.0" y="272.0" class="label-sm">320</text>
-<text x="280.0" y="272.0" class="label-sm">380</text>
+<text x="280.0" y="272.0" class="label-sm">400</text>
 <text x="360.0" y="272.0" class="label-sm">1</text>
 <text x="440.0" y="272.0" class="label-sm">22</text>
 <text x="620.0" y="272.0" class="label-sm">Square edges</text>
@@ -72,13 +72,13 @@
 <rect x="15" y="284.0" width="750" height="32" fill="#f8f8f4"/>
 <text x="20.0" y="304.0" class="label-sm">Divider plate</text>
 <text x="190.0" y="304.0" class="label-sm">320</text>
-<text x="280.0" y="304.0" class="label-sm">380</text>
+<text x="280.0" y="304.0" class="label-sm">400</text>
 <text x="360.0" y="304.0" class="label-sm">1</text>
 <text x="440.0" y="304.0" class="label-sm">22</text>
 <text x="620.0" y="304.0" class="label-sm">Tilted 19°, cut to fit cavity</text>
 <text x="20.0" y="336.0" class="label-sm">Shelf brace 1</text>
 <text x="190.0" y="336.0" class="label-sm">276</text>
-<text x="280.0" y="336.0" class="label-sm">336</text>
+<text x="280.0" y="336.0" class="label-sm">356</text>
 <text x="360.0" y="336.0" class="label-sm">1</text>
 <text x="440.0" y="336.0" class="label-sm">22</text>
 <text x="620.0" y="336.0" class="label-sm">Ring shelf, rim 45 mm, z=160</text>
@@ -86,18 +86,18 @@
 <rect x="15" y="348.0" width="750" height="32" fill="#f8f8f4"/>
 <text x="20.0" y="368.0" class="label-sm">Shelf brace 2</text>
 <text x="190.0" y="368.0" class="label-sm">276</text>
-<text x="280.0" y="368.0" class="label-sm">336</text>
+<text x="280.0" y="368.0" class="label-sm">356</text>
 <text x="360.0" y="368.0" class="label-sm">1</text>
 <text x="440.0" y="368.0" class="label-sm">22</text>
 <text x="620.0" y="368.0" class="label-sm">Ring shelf, rim 45 mm, z=330</text>
 <text x="20.0" y="400.0" class="label-sm">Shelf brace 3</text>
 <text x="190.0" y="400.0" class="label-sm">276</text>
-<text x="280.0" y="400.0" class="label-sm">336</text>
+<text x="280.0" y="400.0" class="label-sm">356</text>
 <text x="360.0" y="400.0" class="label-sm">1</text>
 <text x="440.0" y="400.0" class="label-sm">22</text>
 <text x="620.0" y="400.0" class="label-sm">Ring shelf, rim 45 mm, z=730</text>
-<text x="20.0" y="432.0" class="note">Total panels: 10  |  Total panel area: 2.30 m²  |  Plywood volume: 0.05 L</text>
-<text x="20.0" y="450.0" class="note">NOTE: Divider plate and shelf braces are cut to fit the internal cavity (276 × 336 mm). Measure</text>
+<text x="20.0" y="432.0" class="note">Total panels: 10  |  Total panel area: 2.38 m²  |  Plywood volume: 0.05 L</text>
+<text x="20.0" y="450.0" class="note">NOTE: Divider plate and shelf braces are cut to fit the internal cavity (276 × 356 mm). Measure</text>
 <text x="20.0" y="463.0" class="note">actual internal dims before cutting.</text>
 <text x="20.0" y="466.0" class="note">All dimensions from cabinet.scad (single source of truth). Verify driver cutouts against datasheet</text>
 <text x="20.0" y="479.0" class="note">before cutting.</text>

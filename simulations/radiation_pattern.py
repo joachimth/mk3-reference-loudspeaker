@@ -29,7 +29,7 @@ c_speed = 343.0
 #  Cabinet geometry (from cad/cabinet.scad)
 # ============================================================
 W = 0.320      # cabinet width [m]
-D = 0.380      # cabinet depth [m]
+D = 0.400      # cabinet depth [m]
 H = 1.180      # cabinet height [m]
 
 # Driver positions (millimetres from CAD → metres)
